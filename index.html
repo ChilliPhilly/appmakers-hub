@@ -1,0 +1,2312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AppMakers LA, QA/PM Onboarding</title>
+</head>
+<body>
+<!--
+  AppMakers LA, QA/PM Onboarding dashboard
+  =========================================
+  HOW TO ADD A NEW LEARNING (extensibility contract):
+    1) Add ONE tile: copy an <a class="tile"> block inside the right grid
+       (grid-start = "Start here", grid-ref = "Reference") and point href="#your-id".
+    2) Add ONE panel: copy a <section class="view" id="your-id"> block at the
+       bottom of <main>. The id MUST match the tile href.
+    3) That's it. Routing, back button and breadcrumb pick it up automatically.
+  Last content update: 9 Jul 2026 (added "QA insights from Carlos" module to the QA course).
+-->
+<style>
+  :root{
+    --paper:#F6F7F9; --card:#FFFFFF; --ink:#171C26; --muted:#616B7C;
+    --line:#E3E7ED; --line-soft:#EEF0F3;
+    --accent:#2952E3; --accent-ink:#1B3AAE; --accent-wash:#EAEEFD;
+    --good:#1F9D57; --good-wash:#E6F4EC;
+    --warn:#C77A0A; --warn-wash:#FBF0DE;
+    --crit:#D64545; --crit-wash:#FBE9E9;
+    --slate:#8792A3; --slate-wash:#EEF0F3;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --radius:12px; --radius-sm:8px;
+    --shadow:0 1px 2px rgba(23,28,38,.04),0 4px 16px rgba(23,28,38,.05);
+    --wrap:1400px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{margin:0;line-height:1.2;text-wrap:balance;letter-spacing:-.015em;}
+  p{margin:0}
+  a{color:inherit}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:.6875rem;text-transform:uppercase;
+    letter-spacing:.14em;color:var(--muted);}
+
+  /* ---- shell ---- */
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px;}
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(246,247,249,.86);
+    backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);}
+  .topbar-in{display:flex;align-items:center;gap:14px;height:56px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em;
+    text-decoration:none;font-size:.95rem;}
+  .brand .dot{width:22px;height:22px;border-radius:6px;background:var(--accent);
+    display:grid;place-items:center;flex:0 0 auto;}
+  .brand .dot svg{width:13px;height:13px;stroke:#fff;}
+  .crumb{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:8px;
+    min-width:0;overflow:hidden;}
+  .crumb .sep{color:var(--line);}
+  .crumb .cur{color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .home-btn{margin-left:auto;display:none;align-items:center;gap:7px;text-decoration:none;
+    font-size:.82rem;color:var(--muted);border:1px solid var(--line);background:var(--card);
+    padding:6px 12px;border-radius:99px;}
+  .home-btn:hover{color:var(--ink);border-color:var(--slate);}
+  .home-btn svg{width:14px;height:14px;stroke:currentColor;}
+  body:not([data-view="home"]) .home-btn{display:inline-flex;}
+
+  /* ---- views ---- */
+  .view{display:none;padding:40px 0 72px;}
+  .view.active{display:block;animation:rise .32s ease both;}
+  @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.view.active{animation:none}}
+
+  /* ---- home hero ---- */
+  .hero{padding-bottom:8px;}
+  .hero h1{font-size:2.1rem;margin:12px 0 10px;}
+  .hero .lead{color:var(--muted);max-width:60ch;font-size:1.05rem;}
+  .stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+  .stat{display:flex;align-items:baseline;gap:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:99px;padding:6px 14px;font-size:.82rem;}
+  .stat b{font-weight:600}
+  .stat .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+
+  .grouphead{display:flex;align-items:center;gap:14px;margin:40px 0 16px;}
+  .grouphead h2{font-size:.8rem;font-family:var(--mono);text-transform:uppercase;
+    letter-spacing:.14em;color:var(--muted);font-weight:600;}
+  .grouphead .rule{flex:1;height:1px;background:var(--line);}
+
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));}
+  .tile{position:relative;display:flex;flex-direction:column;gap:10px;text-decoration:none;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 18px 20px;box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;}
+  .tile:hover{transform:translateY(-2px);border-color:var(--accent);
+    box-shadow:0 2px 4px rgba(23,28,38,.05),0 12px 28px rgba(41,82,227,.10);}
+  .tile:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .tile .ico{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+    background:var(--accent-wash);}
+  .tile .ico svg{width:19px;height:19px;stroke:var(--accent-ink);}
+  .tile.warnrule .ico{background:var(--warn-wash);}
+  .tile.warnrule .ico svg{stroke:var(--warn);}
+  .tile h3{font-size:1.04rem;}
+  .tile p{color:var(--muted);font-size:.88rem;line-height:1.5;}
+  .tile .tag{position:absolute;top:16px;right:16px;font-family:var(--mono);font-size:.62rem;
+    letter-spacing:.08em;color:var(--slate);}
+  .tile .arrow{margin-top:auto;padding-top:6px;font-size:.8rem;color:var(--accent-ink);
+    font-weight:600;display:inline-flex;align-items:center;gap:5px;opacity:0;transform:translateX(-3px);
+    transition:opacity .18s,transform .18s;}
+  .tile:hover .arrow{opacity:1;transform:none;}
+  .tile .tprog{margin-top:auto;padding-top:14px;display:flex;flex-direction:column;gap:7px;}
+  .tprog-top{display:flex;justify-content:space-between;align-items:baseline;
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.03em;color:var(--muted);}
+  .tprog-top .pct{color:var(--accent-ink);font-weight:600;font-size:.8rem;}
+  .tprog-top .done{color:var(--good);}
+  .tbar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;}
+  .tbar span{display:block;height:100%;width:0;border-radius:99px;background:var(--accent);
+    transition:width .35s ease;}
+  .tbar span.full{background:var(--good);}
+
+  /* ---- section shell ---- */
+  .sec-head{margin-bottom:26px;}
+  .sec-head .eyebrow{display:block;margin-bottom:10px;}
+  .sec-head h1{font-size:1.9rem;}
+  .sec-head .desc{color:var(--muted);margin-top:10px;max-width:66ch;}
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow);}
+  .block h3{font-size:1.05rem;margin-bottom:6px;}
+  .block h3 + .sub{color:var(--muted);font-size:.9rem;margin-bottom:14px;}
+  .prose p + p{margin-top:10px;}
+  .prose{max-width:70ch;}
+
+  /* steps (how-to) */
+  ol.steps{list-style:none;counter-reset:s;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;}
+  ol.steps li{counter-increment:s;position:relative;padding-left:40px;}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:26px;height:26px;
+    border-radius:99px;background:var(--accent-wash);color:var(--accent-ink);font-family:var(--mono);
+    font-size:.8rem;font-weight:600;display:grid;place-items:center;}
+  ol.steps li b{font-weight:600}
+
+  /* key-value list */
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:2px 18px;}
+  .kv dt{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--muted);padding-top:9px;white-space:nowrap;}
+  .kv dd{margin:0;padding:7px 0;border-bottom:1px solid var(--line-soft);}
+  .kv > div{display:contents;}
+
+  /* callouts */
+  .note{display:flex;gap:12px;border-radius:var(--radius-sm);padding:14px 16px;font-size:.92rem;
+    border:1px solid var(--line);background:var(--paper);}
+  .note .b{font-weight:600}
+  .note svg{width:18px;height:18px;flex:0 0 auto;margin-top:2px;}
+  .note.crit{background:var(--crit-wash);border-color:#F1C9C9;} .note.crit svg{stroke:var(--crit)}
+  .note.warn{background:var(--warn-wash);border-color:#EFD9AE;} .note.warn svg{stroke:var(--warn)}
+  .note.info{background:var(--accent-wash);border-color:#CBD6FA;} .note.info svg{stroke:var(--accent-ink)}
+  .note.good{background:var(--good-wash);border-color:#BEE3CC;} .note.good svg{stroke:var(--good)}
+
+  /* checklist */
+  .checks{display:flex;flex-direction:column;gap:2px;}
+  .check-group{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.11em;
+    color:var(--muted);padding:16px 8px 5px;}
+  .check-group:first-child{padding-top:2px;}
+  .check .ct a{color:var(--accent-ink);}
+  .check{display:flex;gap:12px;align-items:flex-start;padding:11px 8px;border-radius:8px;cursor:pointer;
+    border:1px solid transparent;}
+  .check:hover{background:var(--paper);}
+  .check input{appearance:none;-webkit-appearance:none;width:20px;height:20px;margin:1px 0 0;flex:0 0 auto;
+    border:1.6px solid var(--slate);border-radius:6px;background:var(--card);cursor:pointer;position:relative;transition:.15s;}
+  .check input:checked{background:var(--accent);border-color:var(--accent);}
+  .check input:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);}
+  .check input:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .check .ct{transition:.15s;}
+  .check input:checked ~ .ct{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line);}
+  .check .ct small{display:block;color:var(--muted);font-size:.82rem;text-decoration:none;}
+  .progress{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:.8rem;color:var(--muted);
+    font-family:var(--mono);letter-spacing:.04em;}
+  .bar{flex:1;height:6px;border-radius:99px;background:var(--line);overflow:hidden;}
+  .bar span{display:block;height:100%;background:var(--accent);width:0;transition:width .3s ease;}
+
+  /* billing timeline */
+  .scroller{overflow-x:auto;padding-bottom:6px;}
+  .track{position:relative;min-width:560px;height:120px;margin:22px 4px 8px;}
+  .track .axis{position:absolute;left:0;right:0;top:60px;height:2px;background:var(--line);}
+  .track .tick{position:absolute;top:52px;width:2px;height:18px;background:var(--line);transform:translateX(-50%);}
+  .track .tick.big{height:26px;top:48px;}
+  .track .lab{position:absolute;top:82px;transform:translateX(-50%);font-family:var(--mono);font-size:.68rem;color:var(--muted);}
+  .track .flag{position:absolute;transform:translateX(-50%);text-align:center;width:150px;}
+  .track .flag .pin{width:12px;height:12px;border-radius:99px;margin:0 auto;border:2px solid var(--card);}
+  .track .flag .cap{font-size:.72rem;line-height:1.25;margin-top:6px;font-weight:600;}
+  .track .flag .cap small{display:block;font-weight:400;color:var(--muted);font-size:.68rem;}
+  .flag.f4{top:6px;} .flag.f4 .pin{background:var(--warn);}
+  .flag.f19{top:6px;} .flag.f19 .pin{background:var(--crit);}
+  .flag.f20{top:88px;} .flag.f20 .pin{background:var(--good);}
+
+  /* lifecycle timeline */
+  .phase-lab{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--accent-ink);margin:22px 0 4px;font-weight:600;}
+  .phase-lab:first-child{margin-top:0;}
+  .tl{list-style:none;margin:0;padding:0 0 0 26px;border-left:2px solid var(--line);
+    display:flex;flex-direction:column;gap:16px;}
+  .tl li{position:relative;}
+  .tl li::before{content:"";position:absolute;left:-33px;top:4px;width:12px;height:12px;border-radius:99px;
+    background:var(--card);border:2.5px solid var(--accent);}
+  .tl li .who{font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--slate);
+    text-transform:uppercase;}
+  .tl li .txt{margin-top:2px;}
+  .tl li .txt b{font-weight:600;}
+
+  /* status table */
+  table.tbl{width:100%;border-collapse:collapse;font-size:.9rem;min-width:520px;}
+  table.tbl th,table.tbl td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line-soft);vertical-align:top;}
+  table.tbl th{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;
+    color:var(--muted);font-weight:600;border-bottom:1px solid var(--line);}
+  table.tbl td:first-child{white-space:nowrap;}
+  .st{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.86rem;}
+  .st .d{width:9px;height:9px;border-radius:99px;flex:0 0 auto;}
+  .who-chip{font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;padding:2px 7px;border-radius:5px;
+    background:var(--slate-wash);color:var(--muted);white-space:nowrap;}
+  .who-chip.qa{background:var(--accent-wash);color:var(--accent-ink);}
+  .who-chip.dev{background:var(--good-wash);color:var(--good);}
+  .who-chip.pm{background:var(--warn-wash);color:var(--warn);}
+
+  .prio{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;}
+  .prio .p{flex:1;min-width:150px;border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;}
+  .prio .p .lv{font-family:var(--mono);font-weight:700;font-size:.9rem;}
+  .prio .p.p0 .lv{color:var(--crit)} .prio .p.p1 .lv{color:var(--warn)} .prio .p.p2 .lv{color:var(--good)}
+  .prio .p small{color:var(--muted);font-size:.82rem;}
+
+  /* people */
+  .people{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+  .person{border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;background:var(--paper);}
+  .person .nm{font-weight:650;}
+  .person .rl{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent-ink);margin:2px 0 6px;}
+  .person p{font-size:.86rem;color:var(--muted);}
+
+  ul.plain{margin:0;padding-left:20px;} ul.plain li{margin:6px 0;}
+  ul.plain li b{font-weight:600;}
+  .later{margin-top:10px;padding-top:14px;border-top:1px dashed var(--line);}
+
+  /* code-style template block */
+  .tmpl{font-family:var(--mono);font-size:.82rem;background:#0F1626;color:#D7DEEA;
+    border-radius:var(--radius-sm);padding:16px 18px;line-height:1.75;white-space:pre-wrap;
+    overflow-x:auto;}
+  .tmpl .lbl{color:#7FA0F0;}
+  .tmpl .cm{color:#6B7793;}
+
+  footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.8rem;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;}
+  footer .mono{font-size:.72rem;}
+
+  @media (max-width:560px){
+    .hero h1{font-size:1.7rem} .sec-head h1{font-size:1.55rem}
+    .wrap{padding:0 16px} .block{padding:18px}
+  }
+
+  /* ===== two-column shell + task rail ===== */
+  .shell{max-width:var(--wrap);margin:0 auto;padding:0 24px;display:flex;gap:36px;align-items:flex-start;}
+  .content{flex:1 1 auto;min-width:0;max-width:1000px;}
+  .taskrail{flex:0 0 328px;width:328px;position:sticky;top:72px;
+    max-height:calc(100vh - 88px);display:flex;flex-direction:column;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;}
+  .tasktoggle{display:none;margin-left:auto;align-items:center;gap:7px;cursor:pointer;
+    font-family:var(--sans);font-size:.82rem;color:var(--accent-ink);border:1px solid var(--line);
+    background:var(--card);padding:6px 12px;border-radius:99px;}
+  .tasktoggle svg{width:15px;height:15px;stroke:var(--accent-ink);}
+  .scrim{display:none;}
+
+  .tr-head{display:flex;align-items:center;gap:10px;padding:15px 16px 12px;border-bottom:1px solid var(--line-soft);}
+  .tr-head h2{font-size:1rem;}
+  .tr-head .cnt{font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--muted);}
+  .tr-close{margin-left:auto;border:none;background:none;font-size:1.5rem;line-height:1;
+    color:var(--muted);cursor:pointer;padding:0 2px;display:none;}
+  .tr-controls{padding:12px 16px;display:flex;flex-direction:column;gap:9px;border-bottom:1px solid var(--line-soft);}
+  .tr-select{width:100%;font:inherit;font-size:.84rem;padding:8px 10px;border:1px solid var(--line);
+    border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer;}
+  .tr-links{display:flex;flex-wrap:wrap;gap:6px;}
+  .tr-links:empty{display:none;}
+  .tr-links a{font-size:.72rem;text-decoration:none;padding:4px 10px;border-radius:99px;
+    border:1px solid #CBD6FA;color:var(--accent-ink);background:var(--accent-wash);}
+  .tr-links a:hover{border-color:var(--accent);}
+  .tr-add{display:flex;gap:8px;padding:12px 16px;}
+  .tr-input{flex:1;min-width:0;font:inherit;font-size:.85rem;padding:8px 10px;border:1px solid var(--line);
+    border-radius:8px;background:var(--card);color:var(--ink);}
+  .tr-input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent);}
+  .tr-addbtn{flex:0 0 auto;width:36px;border:1px solid var(--accent);background:var(--accent);color:#fff;
+    border-radius:8px;font-size:1.25rem;line-height:1;cursor:pointer;}
+  .tr-addbtn:hover{background:var(--accent-ink);}
+  .tr-list{flex:1;overflow:auto;padding:6px 8px 14px;}
+  .tr-empty{padding:10px 18px 20px;color:var(--muted);font-size:.82rem;}
+
+  .task{border-radius:9px;margin-bottom:1px;}
+  .task-main{display:flex;align-items:flex-start;gap:7px;padding:7px 6px;border-radius:8px;}
+  .task-main:hover{background:var(--paper);}
+  .caret{flex:0 0 auto;width:16px;height:22px;border:none;background:none;cursor:pointer;
+    color:var(--slate);font-size:.6rem;display:grid;place-items:center;transition:transform .15s;}
+  .caret.open{transform:rotate(90deg);}
+  .caret.hidden{visibility:hidden;}
+  .tcheck{flex:0 0 auto;margin-top:2px;display:inline-flex;}
+  .tcheck input{appearance:none;-webkit-appearance:none;width:18px;height:18px;margin:0;
+    border:1.6px solid var(--slate);border-radius:5px;background:var(--card);cursor:pointer;position:relative;transition:.15s;}
+  .tcheck input:checked{background:var(--accent);border-color:var(--accent);}
+  .tcheck input:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:4px;height:9px;
+    border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg);}
+  .ttext{flex:1;min-width:0;font-size:.87rem;line-height:1.45;cursor:text;word-break:break-word;padding-top:1px;}
+  .task.done > .task-main .ttext,.sub.done .ttext{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line);}
+  .tedit{flex:1;min-width:0;font:inherit;font-size:.87rem;padding:2px 6px;border:1px solid var(--accent);
+    border-radius:6px;background:var(--card);color:var(--ink);}
+  .tprog-mini{flex:0 0 auto;font-family:var(--mono);font-size:.64rem;color:var(--muted);margin-top:3px;}
+  .tactions{flex:0 0 auto;display:flex;gap:1px;opacity:0;transition:opacity .15s;}
+  .task-main:hover .tactions,.sub:hover .tactions{opacity:1;}
+  .tbtn{border:none;background:none;cursor:pointer;color:var(--muted);width:22px;height:22px;
+    border-radius:6px;font-size:1rem;line-height:1;display:grid;place-items:center;}
+  .tbtn:hover{background:var(--line);color:var(--ink);}
+  .tproj{margin:1px 0 5px 30px;font:inherit;font-size:.68rem;padding:2px 6px;border:1px solid var(--line);
+    border-radius:6px;background:var(--paper);color:var(--muted);cursor:pointer;max-width:calc(100% - 40px);}
+  .subs{margin:0 0 6px 19px;padding-left:11px;border-left:1px solid var(--line);display:flex;flex-direction:column;gap:1px;}
+  .sub{display:flex;align-items:flex-start;gap:7px;padding:5px 6px;border-radius:7px;}
+  .sub:hover{background:var(--paper);}
+  .sub .ttext{font-size:.83rem;}
+  .subadd{padding:3px 6px 2px;}
+  .subadd input{width:100%;font:inherit;font-size:.8rem;padding:5px 8px;border:1px dashed var(--line);
+    border-radius:6px;background:transparent;color:var(--ink);}
+  .subadd input:focus{outline:none;border-color:var(--accent);border-style:solid;}
+
+  @media (max-width:960px){
+    .shell{display:block;}
+    .content{max-width:none;}
+    .tasktoggle{display:inline-flex;}
+    .taskrail{position:fixed;top:0;right:0;height:100vh;max-height:none;width:min(380px,90vw);
+      border-radius:0;border-top:none;border-bottom:none;transform:translateX(102%);
+      transition:transform .28s ease;z-index:70;}
+    .taskrail.open{transform:none;}
+    .tr-close{display:inline-flex;}
+    .scrim{display:block;position:fixed;inset:0;background:rgba(20,25,35,.42);opacity:0;
+      pointer-events:none;transition:opacity .28s;z-index:60;}
+    .scrim.show{opacity:1;pointer-events:auto;}
+  }
+
+  /* ===== tab nav ===== */
+  .tabnav{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
+  .tabnav::-webkit-scrollbar{display:none;}
+  .tabnav a{padding:7px 13px;font-size:.86rem;color:var(--muted);text-decoration:none;border-radius:8px;white-space:nowrap;}
+  .tabnav a:hover{color:var(--ink);background:var(--paper);}
+  .tabnav a.active{color:var(--accent-ink);background:var(--accent-wash);font-weight:600;}
+
+  /* ===== shell: content centered, tasks are a pop-out drawer at all widths ===== */
+  .shell,.wrap{max-width:1180px;}
+  .shell{display:block;}
+  .content{max-width:1000px;margin:0 auto;}
+  .tasktoggle{display:inline-flex;}
+  .taskrail{position:fixed;top:0;right:0;height:100vh;max-height:none;width:min(390px,92vw);
+    border-radius:0;border-top:none;border-bottom:none;transform:translateX(102%);
+    transition:transform .28s ease;z-index:70;flex:none;}
+  .taskrail.open{transform:none;}
+  .tr-close{display:inline-flex;}
+  .scrim{display:block;position:fixed;inset:0;background:rgba(20,25,35,.42);opacity:0;
+    pointer-events:none;transition:opacity .28s;z-index:60;}
+  .scrim.show{opacity:1;pointer-events:auto;}
+
+  /* ===== home dashboard ===== */
+  .home-hero{padding-bottom:6px;}
+  .home-grid{display:grid;grid-template-columns:1fr 330px;gap:22px;align-items:start;margin-top:8px;}
+  .home-side{display:flex;flex-direction:column;}
+  .hcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px;margin-bottom:16px;}
+  .hcard-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+  .hcard-h h2{font-size:1.05rem;}
+  .hlink{font-family:var(--sans);font-size:.8rem;color:var(--accent-ink);background:none;border:none;
+    cursor:pointer;text-decoration:none;padding:0;}
+  .hlink:hover{text-decoration:underline;}
+  .hmuted{color:var(--muted);font-size:.85rem;}
+  .tgroup-h{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);
+    font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+    margin:14px 0 3px;padding-top:10px;border-top:1px solid var(--line-soft);}
+  .hcard-tasks .tgroup-h:first-child{border-top:none;padding-top:0;margin-top:0;}
+  .hcard .tr-add,.block .tr-add{padding:8px 0 2px;}
+  .pcard{display:block;text-decoration:none;border:1px solid var(--line);border-radius:9px;
+    padding:11px 13px;margin-bottom:8px;background:var(--paper);}
+  .pcard:hover{border-color:var(--accent);}
+  .pcard-t{font-weight:600;font-size:.9rem;}
+  .pcard-m{display:flex;justify-content:space-between;align-items:center;margin-top:6px;}
+  .pill{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--accent-wash);color:var(--accent-ink);padding:2px 8px;border-radius:99px;}
+
+  /* ===== project page: lifecycle timeline + phases ===== */
+  .pj-widgets{margin-bottom:4px;}
+  .lifebar{display:flex;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none;}
+  .lifebar::-webkit-scrollbar{display:none;}
+  .lifestep{flex:1;min-width:78px;border:none;background:none;cursor:pointer;font:inherit;color:var(--muted);
+    display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;padding:2px;}
+  .lifestep::before{content:"";position:absolute;top:11px;left:-50%;width:100%;height:2px;background:var(--line);}
+  .lifestep:first-child::before{display:none;}
+  .lifestep .dot{width:16px;height:16px;border-radius:99px;border:2px solid var(--line);background:var(--card);position:relative;z-index:1;}
+  .lifestep .lb{font-size:.72rem;text-align:center;}
+  .lifestep.past::before{background:var(--accent);}
+  .lifestep.past .dot{border-color:var(--accent);}
+  .lifestep.past .lb{color:var(--ink);}
+  .lifestep.cur .dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash);}
+  .lifestep.cur .lb{color:var(--accent-ink);font-weight:600;}
+  .phases{display:flex;flex-direction:column;gap:1px;}
+
+  @media (max-width:820px){ .home-grid{grid-template-columns:1fr;} }
+  /* ===== rich project cards + budget ===== */
+  .proj-cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+  a.projcard{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;transition:transform .18s,border-color .18s,box-shadow .18s;}
+  a.projcard:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 2px 4px rgba(23,28,38,.05),0 12px 28px rgba(41,82,227,.10);}
+  .projcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .projcard h3{font-size:1.1rem;}
+  .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:14px 0 12px;}
+  .pc-field{display:flex;flex-direction:column;gap:3px;}
+  .pc-field.wide{grid-column:1 / -1;}
+  .pc-field .k{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);}
+  .pc-field .v{font-size:.86rem;font-weight:600;}
+  .pc-field .tbar{margin-top:4px;}
+  .pc-open{font-size:.82rem;color:var(--accent-ink);font-weight:600;}
+  .budget-edit{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.85rem;}
+  .budget-edit label{display:inline-flex;align-items:center;gap:6px;color:var(--muted);}
+  .budget-edit .bnum{width:92px;font:inherit;font-size:.85rem;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);}
+  .budget-edit .bsep{color:var(--muted);}
+  .budget-edit .bpct{font-weight:600;color:var(--accent-ink);margin-left:auto;}
+  .budget-edit .bpct.muted{color:var(--muted);font-weight:400;}
+  /* ===== in-project navigator + sub-views ===== */
+  .pj-nav{position:sticky;top:56px;z-index:15;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    background:rgba(246,247,249,.93);backdrop-filter:saturate(140%) blur(8px);padding:10px 0;margin-bottom:22px;border-bottom:1px solid var(--line);}
+  .pjstages{display:flex;gap:6px;flex-wrap:wrap;}
+  .pjtab{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:99px;
+    padding:7px 14px;font:inherit;font-size:.82rem;cursor:pointer;}
+  .pjtab:hover{color:var(--ink);border-color:var(--slate);}
+  .pjtab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .pjstage-btn.current{border-color:var(--accent);}
+  .pjstage-btn .curdot{display:inline-block;width:6px;height:6px;border-radius:99px;background:var(--good);margin-left:6px;vertical-align:middle;}
+  .pjstage-btn.active .curdot{background:#fff;}
+  .pj-stagebar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--accent-wash);
+    border:1px solid #CBD6FA;border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:16px;font-size:.88rem;}
+  .pj-stagebar .cur-ok{margin-left:auto;color:var(--good);font-size:.72rem;}
+  .mf-btn.sm{padding:6px 12px;font-size:.8rem;margin-left:auto;}
+  .pj-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+  .pstat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow);}
+  .pstat .k{display:block;font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:4px;}
+  .pstat .v{font-size:1rem;font-weight:650;}
+  .linkrow{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--line-soft);}
+  .linkrow a{color:var(--accent-ink);text-decoration:none;font-size:.9rem;}
+  .linkrow a:hover{text-decoration:underline;}
+  .linkrow span{font-size:.9rem;}
+  .linkrow .tbtn{margin-left:auto;}
+  .linkadd{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .linkadd .tr-input{flex:1;min-width:120px;}
+
+  /* ===== docked, persistent tasks panel ===== */
+  .taskrail{top:56px;height:calc(100vh - 56px);width:392px;transform:translateX(100%);z-index:55;
+    box-shadow:-8px 0 30px rgba(23,28,38,.09);}
+  body.tasks-open .taskrail{transform:none;}
+  .scrim{display:none;}
+  @media (min-width:961px){ .shell{transition:margin-right .28s ease;} body.tasks-open .shell{margin-right:392px;} }
+  @media (max-width:960px){ .taskrail{top:0;height:100vh;width:min(390px,92vw);}
+    body.tasks-open .scrim{display:block;position:fixed;inset:0;background:rgba(20,25,35,.42);z-index:54;} }
+  @media (max-width:560px){ .pj-stats{grid-template-columns:1fr 1fr;} }
+  /* ===== project lifecycle stepper (in-project nav) ===== */
+  .pj-nav{align-items:center;gap:16px;}
+  .pjhome-btn{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);
+    background:var(--card);color:var(--muted);border-radius:99px;padding:8px 15px;font:inherit;font-size:.84rem;cursor:pointer;}
+  .pjhome-btn svg{width:16px;height:16px;}
+  .pjhome-btn:hover{color:var(--ink);border-color:var(--slate);}
+  .pjhome-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .pjstepper{display:flex;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none;padding:2px 0 0;}
+  .pjstepper::-webkit-scrollbar{display:none;}
+  .pjstep{flex:1;min-width:88px;position:relative;background:none;border:none;cursor:pointer;font:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 4px 0;color:var(--muted);}
+  .pjstep::before{content:"";position:absolute;top:18px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0;}
+  .pjstep:first-child::before{display:none;}
+  .pjstep .node{position:relative;z-index:1;width:26px;height:26px;border-radius:99px;border:2px solid var(--line);
+    background:var(--card);display:grid;place-items:center;font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--muted);transition:.18s;}
+  .pjstep .slabel{font-size:.74rem;text-align:center;white-space:nowrap;border-bottom:2px solid transparent;padding-bottom:1px;transition:.18s;}
+  .pjstep .snow{font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:var(--good);margin-top:-3px;}
+  .pjstep:hover .slabel{color:var(--ink);}
+  .pjstep.done::before,.pjstep.current::before{background:var(--accent);}
+  .pjstep.done .node{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .pjstep.done .slabel{color:var(--ink);}
+  .pjstep.current .node{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 4px var(--accent-wash);}
+  .pjstep.current .slabel{color:var(--accent-ink);font-weight:650;}
+  .pjstep.viewing .slabel{border-bottom-color:var(--accent);color:var(--ink);}
+  .pjstep.current.viewing .slabel{color:var(--accent-ink);}
+  /* ===== tools tab ===== */
+  .toolcard{border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:8px;background:var(--card);box-shadow:var(--shadow);}
+  .toolcard-top{display:flex;align-items:center;gap:8px;}
+  .toolcard-top a{font-weight:600;color:var(--accent-ink);text-decoration:none;font-size:.92rem;}
+  .toolcard-top a:hover{text-decoration:underline;}
+  .toolcard-top .noname{font-weight:600;font-size:.92rem;color:var(--ink);}
+  .toolcard-top .tbtn{margin-left:auto;}
+  .toolcard-meta{font-size:.82rem;color:var(--muted);margin-top:4px;}
+  .toolcard-meta .acct{font-family:var(--mono);}
+  .tooladd{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center;}
+  .tooladd .tr-input{flex:1;min-width:140px;}
+  /* ===== task filters, status, notes, drag ===== */
+  .taskfilter{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .seg button{border:none;background:var(--card);color:var(--muted);font:inherit;font-size:.8rem;padding:6px 13px;cursor:pointer;border-right:1px solid var(--line);}
+  .seg button:last-child{border-right:none;}
+  .seg button.active{background:var(--accent);color:#fff;}
+  .tf-when{max-width:220px;font-size:.82rem;padding:6px 10px;}
+  .grip{flex:0 0 auto;cursor:grab;display:inline-flex;align-items:center;color:var(--slate);opacity:0;transition:opacity .15s;margin-top:3px;}
+  .grip svg{width:13px;height:15px;fill:currentColor;}
+  .task-main:hover .grip,.sub:hover .grip{opacity:.55;}
+  .grip:hover{opacity:1;} .grip:active{cursor:grabbing;}
+  .task-main.dragging,.sub.dragging{opacity:.4;}
+  .task-main.drop-into,.sub.drop-into{box-shadow:inset 0 2px 0 var(--accent);}
+  .tstatus{flex:0 0 auto;font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:.08em;background:var(--warn-wash);color:var(--warn);padding:2px 7px;border-radius:99px;margin-top:2px;}
+  .task.pending > .task-main .tcheck input{border-color:var(--warn);}
+  .tbtn svg{width:14px;height:14px;stroke:currentColor;fill:none;pointer-events:none;}
+  .tbtn.on{color:var(--accent-ink);background:var(--accent-wash);}
+  .tnote{font-size:.82rem;color:var(--muted);background:var(--paper);border-left:2px solid var(--warn);padding:6px 10px;margin:2px 0 6px 34px;border-radius:0 6px 6px 0;cursor:text;white-space:pre-wrap;}
+  .tnote-edit{margin:4px 0 8px 34px;}
+  .tnote-input{width:100%;min-height:54px;font:inherit;font-size:.83rem;padding:8px 10px;border:1px solid var(--accent);border-radius:8px;resize:vertical;background:var(--card);color:var(--ink);}
+</style>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-cube" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></symbol>
+  <symbol id="i-timer" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="7" height="5" rx="1"/><rect x="14" y="15" width="7" height="5" rx="1"/><path d="M6.5 9v4a2 2 0 002 2H14"/></symbol>
+  <symbol id="i-tags" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h8l8 8-8 8-8-8z"/><circle cx="8.5" cy="8.5" r="1.3"/></symbol>
+  <symbol id="i-bug" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="7" width="8" height="12" rx="4"/><path d="M9 4l1.5 2M15 4l-1.5 2M4 11h4M16 11h4M4 17h4M16 17h4M12 7v12"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9-4 9 4v8l-9 4-9-4z"/><path d="M3 8l9 4 9-4M12 12v8"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M16 5.5a3 3 0 010 5.5M17 15c2.5.4 4 2 4 5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-arr" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M10 18h4"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h16"/><path d="M8 15v2M12 11v6M16 7v10"/></symbol>
+  <symbol id="i-app" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="12" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/></symbol>
+  <symbol id="i-glove" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 11V8a3 3 0 016 0v3"/><path d="M6 11h11a1 1 0 011 1v3a4 4 0 01-4 4H9a3 3 0 01-3-3z"/><path d="M6 12H4a1 1 0 00-1 1v1a2 2 0 002 2h1"/></symbol>
+  <symbol id="i-spec" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M8.5 13l2 2 4-4"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="15" cy="18" r="1.4"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="6" width="3.5" height="12" rx="1"/><rect x="13.5" y="6" width="3.5" height="12" rx="1"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#home"><span class="dot"><svg><use href="#i-cube"/></svg></span>AppMakers LA</a>
+    <nav class="tabnav" id="tabnav">
+      <a data-tab="home" href="#home">Home</a>
+      <a data-tab="onboarding" href="#onboarding">Onboarding</a>
+      <a data-tab="qa" href="#qa">QA Job</a>
+      <a data-tab="pm" href="#pm">PM Job</a>
+      <a data-tab="projects" href="#projects">Projects</a>
+      <a data-tab="tools" href="#tools">Tools</a>
+    </nav>
+    <button class="tasktoggle" id="tasktoggle" type="button" aria-label="Open tasks"><svg><use href="#i-check"/></svg><span>Tasks</span></button>
+  </div>
+</header>
+
+<div class="shell">
+<main class="content">
+
+  <!-- ============ HOME ============ -->
+  <section class="view" id="home">
+    <div class="hero home-hero">
+      <span class="eyebrow">Personal dashboard</span>
+      <h1>Your work, at a glance.</h1>
+      <p class="lead">Everything you need to do, your onboarding progress, and where each project stands. Add and tick tasks here or from the Tasks button up top.</p>
+    </div>
+    <div class="home-grid">
+      <div class="hcard hcard-tasks">
+        <div class="hcard-h"><h2>All tasks</h2><button class="hlink" id="homeOpenTasks" type="button">Open tasks panel</button></div>
+        <div id="homeTasks"></div>
+      </div>
+      <div class="home-side">
+        <div class="hcard">
+          <div class="hcard-h"><h2>Onboarding</h2><span class="mono" id="obPct">0%</span></div>
+          <div class="tbar" style="margin:4px 0 10px"><span id="obFill"></span></div>
+          <p class="hmuted" id="obNote">Getting set up at AppMakers.</p>
+          <a class="hlink" href="#onboarding">Go to onboarding</a>
+        </div>
+        <div class="hcard">
+          <div class="hcard-h"><h2>Training</h2></div>
+          <div class="train-row"><span>QA Job</span><span class="mono" data-trainpct="qa">0%</span></div>
+          <div class="tbar"><span data-trainfill="qa"></span></div>
+          <div class="train-row" style="margin-top:12px"><span>PM Job</span><span class="mono" data-trainpct="pm">0%</span></div>
+          <div class="tbar"><span data-trainfill="pm"></span></div>
+        </div>
+        <div class="hcard">
+          <div class="hcard-h"><h2>Projects</h2><a class="hlink" href="#projects">All projects</a></div>
+          <div id="homeProjects"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ONBOARDING (landing) ============ -->
+  <section class="view" id="onboarding">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding</span>
+      <h1>Getting onboarded at AppMakers</h1>
+      <p class="desc">Everything you need to be set up and effective at the company. Work through "Get set up" first, then use the rest as reference.</p>
+    </div>
+    <div class="grouphead"><h2>Get set up</h2><span class="rule"></span></div>
+    <div class="grid">
+      <a class="tile" href="#ob-sequence">
+        <span class="ico"><svg><use href="#i-list"/></svg></span>
+        <h3>My onboarding sequence</h3><p>The ordered steps to get set up and land your first project.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#habits">
+        <span class="ico"><svg><use href="#i-sun"/></svg></span>
+        <h3>Daily habits</h3><p>What to do every day so nothing bites you later.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#rules">
+        <span class="ico"><svg><use href="#i-alert"/></svg></span>
+        <h3>Rules that bite</h3><p>Three things that quietly cost you time or pay.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+    </div>
+    <div class="grouphead"><h2>How the company works</h2><span class="rule"></span></div>
+    <div class="grid">
+      <a class="tile" href="#time">
+        <span class="ico"><svg><use href="#i-timer"/></svg></span>
+        <h3>Time tracking</h3><p>Where it lives, how to log, and the folder / tag to get right.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#billing">
+        <span class="ico"><svg><use href="#i-cal"/></svg></span>
+        <h3>Billing cutoffs</h3><p>The 4th and 19th, and what happens if you are late.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#dashboards">
+        <span class="ico"><svg><use href="#i-chart"/></svg></span>
+        <h3>Dashboards &amp; hours</h3><p>Your dashboard, the 20th-to-19th cycle, reporting hours.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#makers-app">
+        <span class="ico"><svg><use href="#i-app"/></svg></span>
+        <h3>The Makers app</h3><p>The web app that turns ClickUp data into budgets and hours.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#people">
+        <span class="ico"><svg><use href="#i-users"/></svg></span>
+        <h3>People &amp; help</h3><p>Who does what, and who to go to when stuck.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#meetings">
+        <span class="ico"><svg><use href="#i-video"/></svg></span>
+        <h3>Meetings &amp; cadence</h3><p>Project stand-ups, Thursday meetings, the QA channel.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#lifecycle">
+        <span class="ico"><svg><use href="#i-flow"/></svg></span>
+        <h3>Project lifecycle</h3><p>How a project moves from sales form to build.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#where">
+        <span class="ico"><svg><use href="#i-folder"/></svg></span>
+        <h3>Where things live</h3><p>Tutorials, the PM Bible, client emails, what unlocks later.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+<section class="view" id="ob-sequence">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Your sequence</span>
+      <h1>My onboarding sequence</h1>
+      <p class="desc">The order things happen in. Your ticks are saved in this browser, so you can come back to it.</p>
+    </div>
+    <div class="block">
+      <div class="progress"><span data-count="onboarding">0 / 0</span><span class="bar"><span data-fill="onboarding"></span></span></div>
+      <div class="checks" data-checklist="onboarding">
+        <div class="check-group">Accounts, access &amp; tools</div>
+        <label class="check"><input type="checkbox" data-key="obc-clickup"><span class="ct">Confirm you're added to ClickUp<small>Get the desktop app, it behaves better than the browser. See <a href="#time">Time tracking</a>.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-email"><span class="ct">Confirm access to your email</span></label>
+        <label class="check"><input type="checkbox" data-key="obc-sig"><span class="ct">Create your email signature<small>Keep it simple: name, role, company. Example below.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-slack"><span class="ct">Confirm access to Slack and the key channels<small>Availability, plus the QA team channel.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-cal"><span class="ct">Set up your calendar<small>So project stand-ups and the Thursday company meeting land in one place.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-etz"><span class="ct">Set up everytimezone.com<small>The team is spread across the US, Europe and Asia. This makes finding overlap easy. <a href="https://everytimezone.com/" target="_blank" rel="noopener">everytimezone.com</a></small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-standup"><span class="ct">Confirm you're added to the weekly stand-ups</span></label>
+        <label class="check"><input type="checkbox" data-key="obc-time"><span class="ct">Input your first time recording<small>Track this onboarding under AppMakers MightyByte. See <a href="#time">Time tracking</a>.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="obc-app"><span class="ct">Get access to the AppMakers app<small>Ping Miguel to set up your account (usually once you're PMing). See <a href="#makers-app">The Makers app</a>.</small></span></label>
+        <div class="check-group">Your first steps</div>
+        <label class="check"><input type="checkbox" data-key="ob2"><span class="ct">Watch back this onboarding recording<small>Sheer sends it after the call, good to re-skim before day one.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="ob3"><span class="ct">Officially start on 6 Jul 2026</span></label>
+        <label class="check"><input type="checkbox" data-key="ob4"><span class="ct">Message the VA to get assigned a project<small>She assigns your first project(s) and links you with the person who'll onboard you to it.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="ob5"><span class="ct">Start as QA, shadowing a PM<small>Everyone QAs before they PM here, you learn QA while watching how the PM runs the project.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="ob6"><span class="ct">Later: get added to the Management section, the web app, and your personal dashboard<small>Sheer runs a separate mini-onboarding for the web app once you're PMing your own projects.</small></span></label>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Email signature example</h3>
+      <p class="prose" style="margin-bottom:12px">Keep it clean, name, role, company, and a way to reach you. Something like:</p>
+      <div class="tmpl">Phill Cocks
+QA &amp; Project Manager, AppMakers LA
+[you]@appmakers.example &nbsp;·&nbsp; Slack: @phill</div>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">No stupid questions.</span> Sheer said it more than once. Ping her any time, especially for ClickUp. If she can't answer she'll point you to who can.</div></div>
+  </section>
+
+<section class="view" id="habits">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Daily habits</span>
+      <h1>Daily habits</h1>
+      <p class="desc">Small things that keep you out of trouble, mostly around time and being reachable.</p>
+    </div>
+    <div class="block">
+      <div class="progress"><span data-count="habits">0 / 0</span><span class="bar"><span data-fill="habits"></span></span></div>
+      <div class="checks" data-checklist="habits">
+        <label class="check"><input type="checkbox" data-key="hb1"><span class="ct">Track your time daily<small>If you track as you go, the billing cutoffs never catch you out.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="hb2"><span class="ct">Be online roughly 9 to 5 Pacific<small>Your agreed window is ~8am to 1pm your time. US clients matter most when you're PMing.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="hb3"><span class="ct">Post in the Availability channel if you step out 45 min+<small>Under 30 min, don't worry. Flights / sick days / longer breaks, give the team a heads-up.</small></span></label>
+        <label class="check"><input type="checkbox" data-key="hb4"><span class="ct">Keep Slack on your phone<small>In case a client messages something urgent outside your core hours.</small></span></label>
+      </div>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Weekly:</span> stand-up call on Thursdays (icebreakers + company updates). Track that hour under <b>AppMakers MightyByte</b>, not a client project.</div></div>
+  </section>
+
+<section class="view" id="rules">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Rules that bite</span>
+      <h1>Rules that bite</h1>
+      <p class="desc">Three easy-to-miss things that quietly cost you time, or pay. Everything here is explained in full in the reference sections.</p>
+    </div>
+    <div class="note crit"><svg fill="none"><use href="#i-cal"/></svg><div><span class="b">Never miss the 19th.</span> It's the monthly billing cutoff. Hours you forget to add before it slip into <em>next</em> month's paycheck. <a href="#billing">See billing cutoffs →</a></div></div>
+    <div class="note warn"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">Always pick the "TeamSpace Time Tracking" folder.</span> When you add a project to a time entry, filter to that folder or the time won't track properly. <a href="#time">See time tracking →</a></div></div>
+    <div class="note warn"><svg fill="none"><use href="#i-tags"/></svg><div><span class="b">One tag only, QA or PM.</span> The system accepts a single tag and it bills the client differently. As a QA/PM you'll switch depending on what you actually did. <a href="#time">See time tracking →</a></div></div>
+  </section>
+
+<section class="view" id="time">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Time tracking</span>
+      <h1>Time tracking</h1>
+      <p class="desc">Everything runs on tracked hours. It's how clients get billed and how you get paid. Get the folder and the tag right and the rest is easy.</p>
+    </div>
+
+    <div class="block">
+      <h3>Where it lives</h3>
+      <p class="prose">ClickUp sidebar → <b>Time Sheets</b>. Use the ClickUp <b>desktop app</b> rather than the browser tab, it's more reliable. If the browser version shows the wrong thing, clear your cache. Two views: <b>Timesheet</b> (grid) and <b>Time Entries</b> (list, easier to read your notes and tags). Use whichever you prefer.</p>
+    </div>
+
+    <div class="block">
+      <h3>How to log an entry</h3>
+      <ol class="steps">
+        <li>Hit <b>Add Entry</b> (better than typing inline, it captures everything).</li>
+        <li>Type the <b>project name</b>, then <b>filter to the TeamSpace Time Tracking folder</b> so you don't pick the wrong item.</li>
+        <li>Set the <b>duration</b> (e.g. 1 hour).</li>
+        <li>Add a <b>short note</b>, what you did (e.g. "onboarding to ClickUp").</li>
+        <li>Add <b>one tag</b>, QA or PM (see below).</li>
+        <li>Leave <b>Billable</b> on (you'll basically never turn it off) and <b>Save</b>.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h3>Which project do I track under?</h3>
+      <dl class="kv">
+        <div><dt>Client work</dt><dd>Track under the <b>specific project</b> you worked on. This is almost always the answer.</dd></div>
+        <div><dt>Company time</dt><dd>Track under <b>AppMakers MightyByte</b>, but only for things like this onboarding, Thursday stand-ups, icebreakers and company updates.</dd></div>
+      </dl>
+    </div>
+
+    <div class="note warn"><svg fill="none"><use href="#i-tags"/></svg><div><span class="b">The tag decides the billing.</span> QA vs PM bill the client differently and only one tag is allowed. Pick based on what you did; if unsure, ask or make your best guess. Sometimes a PM marks QA deliberately to save the client hours.</div></div>
+
+    <div class="block">
+      <h3>The timer, if you prefer it</h3>
+      <p class="prose">The <b>Track Time</b> icon in the top bar opens a timer you can start from anywhere in ClickUp. Press play, work, press stop and it saves automatically. Downside: you then have to go back and attach the task, note and tag. Sheer's tip: add those <em>first</em> so you're not editing afterwards.</p>
+    </div>
+  </section>
+
+<section class="view" id="billing">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Billing cutoffs</span>
+      <h1>Billing cutoffs</h1>
+      <p class="desc">Most clients are billed monthly; two or three big ones are billed twice a month. Cutoff dates stop people editing hours after a client's already been invoiced.</p>
+    </div>
+
+    <div class="block">
+      <h3>The month at a glance</h3>
+      <div class="scroller">
+        <div class="track">
+          <div class="axis"></div>
+          <div class="tick big" style="left:10%"></div><div class="lab" style="left:10%">1</div>
+          <div class="tick" style="left:30%"></div>
+          <div class="tick" style="left:63.3%"></div>
+          <div class="tick" style="left:66.6%"></div>
+          <div class="tick big" style="left:96.6%"></div><div class="lab" style="left:96.6%">30</div>
+          <div class="flag f4" style="left:30%"><div class="cap">4th<small>biweekly cutoff</small></div><div class="pin" style="margin-top:6px"></div></div>
+          <div class="flag f19" style="left:63.3%"><div class="cap">19th<small>monthly cutoff</small></div><div class="pin" style="margin-top:6px"></div></div>
+          <div class="flag f20" style="left:66.6%"><div class="pin"></div><div class="cap">20th<small>most clients billed</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3><span class="st"><span class="d" style="background:var(--warn)"></span>The 4th, biweekly cutoff</span></h3>
+      <p class="prose">Only affects the two or three big clients billed twice a month. It does <b>not</b> affect your end-of-month paycheck. Missed the 3rd or 4th? Just add those hours on the 5th, 6th or 7th. You still get paid and the client still gets billed.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="st"><span class="d" style="background:var(--crit)"></span>The 19th, monthly cutoff</span></h3>
+      <p class="prose">This is the one that matters. The 19th is the last day to add hours for that month; most clients are billed on the <b>20th</b>. Forget the 18th/19th and add them on the 20th or 21st, and those hours won't appear until <b>next month's</b> paycheck. <b>Crystal</b> (Dan's assistant) messages everyone on the 18th/19th as a reminder and asks for your total hours.</p>
+    </div>
+
+    <div class="note crit"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Trying to add time before a passed cutoff auto-deletes it</span> and sends you a Slack message saying so. The fix is always the same: log it on a date <em>after</em> the cutoff. Best defence: track daily.</div></div>
+  </section>
+
+<section class="view" id="dashboards">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Dashboards &amp; hours</span>
+      <h1>Dashboards &amp; hours</h1>
+      <p class="desc">Where you see your workload and, importantly, your monthly hours.</p>
+    </div>
+
+    <div class="block">
+      <h3>Your personal dashboard</h3>
+      <p class="prose">Sheer makes one for everyone. It shows your tasks by status, total active tasks, P0 tasks, completed over time, and a time-reporting card. You <b>own it</b>, favourite it to pin it, and add or edit cards (e.g. split QA vs PM hours).</p>
+    </div>
+
+    <div class="block">
+      <h3>Set the cycle: 20th to 19th</h3>
+      <p class="prose">Timesheets only show a week at a time, so use the dashboard's time card for the month. Set its range to the billing cycle: the <b>20th of last month to the 19th of this month</b>. Use <b>Edit mode</b> (top) or click the date range directly. The little arrow next to the hours expands them <b>per project</b>, handy for checking you're not over the estimated hours.</p>
+    </div>
+
+    <div class="note warn"><svg fill="none"><use href="#i-cal"/></svg><div><span class="b">Report to Crystal.</span> Around the 18th/19th she asks everyone for their total monthly hours so payroll can go out. Your dashboard set to the 20th-to-19th range is where you read that number. See <a href="#billing">billing cutoffs</a>.</div></div>
+
+    <div class="block">
+      <h3>PM time-reporting dashboard</h3>
+      <p class="prose">Sheer adds you to this. It shows everyone's hours, time by user, by project, and PM vs QA split. Useful once you're PMing and need to see how many hours your developers logged.</p>
+    </div>
+  </section>
+
+<section class="view" id="makers-app">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · The Makers app</span>
+      <h1>The Makers app</h1>
+      <p class="desc">A web app that pulls ClickUp data into a view that's far easier to read than ClickUp's own dashboards.</p>
+    </div>
+
+    <div class="block">
+      <h3>What it shows, per project</h3>
+      <ul class="plain">
+        <li>Invoice amount vs time, target dev budget, and R&amp;D cost.</li>
+        <li>Budget consumed and <b>credit available</b>.</li>
+        <li>Hours this cycle (20th to 19th) and total hours tracked.</li>
+        <li>Per-person <b>PM vs QA</b> hours, and <b>estimated vs actual</b> hours, so you can see if a project went over.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Getting access</h3>
+      <p class="prose"><b>Miguel</b> makes you an account. Usually only PMs get added, so the VA will decide whether to add you now or once you move into PMing. Why it exists: ClickUp dashboards are fiddly with date ranges, the app auto-sets to the cycle and is easy to toggle.</p>
+    </div>
+  </section>
+
+<section class="view" id="people">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · People &amp; help</span>
+      <h1>People &amp; help</h1>
+      <p class="desc">Who does what, and who to go to when you're stuck.</p>
+    </div>
+    <div class="block">
+      <div class="people">
+        <div class="person"><div class="nm">Sheer</div><div class="rl">Onboarding · QA/PM/HR/Ops</div><p>Onboarded you. Your go-to for ClickUp and general questions.</p></div>
+        <div class="person"><div class="nm">The VA</div><div class="rl">Project assignment</div><p>Talk to her once you start. She assigns your first project(s) and links you with your onboarder for it.</p></div>
+        <div class="person"><div class="nm">Aaron</div><div class="rl">Sales</div><p>Adds new projects via a form and assigns the PM. Sends contracts + first invoices.</p></div>
+        <div class="person"><div class="nm">Dan</div><div class="rl">Founder</div><p>Sets the availability expectation (~9 to 5 Pacific).</p></div>
+        <div class="person"><div class="nm">Crystal</div><div class="rl">Dan's assistant</div><p>Messages everyone on the 18th/19th about month-end hours.</p></div>
+        <div class="person"><div class="nm">Miguel</div><div class="rl">Automations / ClickUp</div><p>Built the ClickUp automations. Those "is that a bot?" automated messages are from him. He's real.</p></div>
+      </div>
+    </div>
+  </section>
+
+<section class="view" id="meetings">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Meetings &amp; cadence</span>
+      <h1>Meetings &amp; cadence</h1>
+      <p class="desc">The regular meetings, and the channel where QA process gets shaped.</p>
+    </div>
+
+    <div class="block">
+      <h3>Project stand-ups</h3>
+      <p class="prose">Some projects run a weekly stand-up. If you join a project and aren't added, just ask the PM. If a project needs one and doesn't have it, suggest it.</p>
+    </div>
+
+    <div class="block">
+      <h3>Thursday company meeting</h3>
+      <p class="prose" style="margin-bottom:12px">Every Thursday, rotating through four formats (each is labelled in the calendar, "stand up, learning nuggets", etc.). Usually 15 to 30 minutes.</p>
+      <dl class="kv">
+        <div><dt>Company updates</dt><dd>Every other month (start of month). A PowerPoint on company news, plus intros for new people.</dd></div>
+        <div><dt>Learning nuggets</dt><dd>2nd Thursday. Someone shares something useful. Dev-specific ones can run longer, you're welcome but it may not be relevant.</dd></div>
+        <div><dt>Icebreakers</dt><dd>Other Thursdays. Prompts to get to know each other since the team's remote.</dd></div>
+        <div><dt>Game days</dt><dd>Every other month. Silly games, $25 gift card for the winner.</dd></div>
+      </dl>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-users"/></svg><div><span class="b">QA team channel:</span> you're in it. QAs compare process and tools here (JAM and huddle AI-notes came out of it), as AppMakers standardises how everyone QAs. Bring ideas.</div></div>
+  </section>
+
+<section class="view" id="lifecycle">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Project lifecycle</span>
+      <h1>Project lifecycle</h1>
+      <p class="desc">How a project travels from a sales form to a shipping build. A lot of this runs on automations, so folders appear and archive on their own.</p>
+    </div>
+
+    <div class="block">
+      <div class="phase-lab">Phase 1 · R&amp;D</div>
+      <ul class="tl">
+        <li><span class="who">Aaron · Sales</span><div class="txt"><b>Project added via a form</b>, PM assigned. This creates the project folder with an <b>R&amp;D</b> folder and a <b>Project Documents</b> folder inside.</div></li>
+        <li><span class="who">Automation</span><div class="txt"><b>Client gets the first email</b> with a link to a <b>kickoff questionnaire</b>. Their answers land in Project Documents; the PM gets a Slack ping.</div></li>
+        <li><span class="who">PM</span><div class="txt"><b>Study the questionnaire before the kickoff call</b> so you know what they want going in.</div></li>
+        <li><span class="who">Developers</span><div class="txt"><b>Build estimates</b> in the Estimates sheet once the PM shares designs. (Being moved into the web app over time.)</div></li>
+      </ul>
+
+      <div class="phase-lab">Phase 2 · Sign-off</div>
+      <ul class="tl">
+        <li><span class="who">Client</span><div class="txt"><b>Approves the estimates.</b></div></li>
+        <li><span class="who">Aaron · Sales</span><div class="txt"><b>Sends the contract + first invoice</b> via another form. Client signs and pays.</div></li>
+        <li><span class="who">Automation</span><div class="txt"><b>R&amp;D folder is archived</b> and three new folders open: <b>Bugs &amp; Tasks</b>, <b>Builds</b>, and <b>Test Cases</b>. Tasks are auto-pulled from the Estimates sheet with their hours.</div></li>
+      </ul>
+
+      <div class="phase-lab">Phase 3 · Build &amp; test loop</div>
+      <ul class="tl">
+        <li><span class="who">Developers</span><div class="txt"><b>Build features</b>, mark tasks Ready to test, and ship a build. <a href="#builds">See builds &amp; testing →</a></div></li>
+        <li><span class="who">QA, you</span><div class="txt"><b>Test the build</b>, log bugs, mark things Done or Retest failed. Loop until it's clean.</div></li>
+        <li><span class="who">Automation</span><div class="txt"><b>At the end</b>, the liaison sends the client a review request.</div></li>
+      </ul>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">Folder memory:</span> <b>Project Documents stays forever</b> (kickoff links, estimates, designs, admin, QA and PM both add links here). <b>R&amp;D gets archived</b> once the project moves into development.</div></div>
+  
+    <div class="block">
+      <h3>How projects are scoped before a client signs</h3>
+      <p class="prose">Before anything is signed, a project sits in <b>R&amp;D</b>. The client fills the <b>kickoff questionnaire</b> (it lands in Project Documents), and developers build <b>estimates</b> from the designs in the Estimates sheet (moving into the web app). That package, the questionnaire, the designs, and the estimated QA/PM hours, is what the client approves. You can see it in ClickUp: the <b>R&amp;D folder</b> holds the estimates and specs, and <b>Project Documents</b> holds the questionnaire and design links. Once signed, R&amp;D is archived and Bugs &amp; Tasks, Builds and Test Cases open.</p>
+    </div>
+    <div class="block">
+      <h3>Seeing progress, MVP scope and the schedule</h3>
+      <dl class="kv">
+        <div><dt>Progress over time</dt><dd>The board <a href="#statuses">statuses</a> drive it, marking tasks Done nudges the project's progress bar. The <a href="#makers-app">Makers app</a> and PM time-reporting dashboard show hours vs estimate.</dd></div>
+        <div><dt>What dev is on now</dt><dd>Tasks marked <b>In progress</b>. Queued work is <b>To do</b> / <b>Not started</b>; work ready for you is <b>Ready to test</b>.</dd></div>
+        <div><dt>The schedule</dt><dd>Shaped by <b>sprints</b> (each sprint is usually one build). See <a href="#pm-running">Running a project</a>.</dd></div>
+        <div><dt>Which tasks are MVP</dt><dd>The tasks pulled from the estimates, grouped into the MVP phases (for Box and Ring, the four MVP phases in its R&amp;D summary). If it is ever unclear what is MVP vs later, that is a fair question for the PM.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+<section class="view" id="where">
+    <div class="sec-head">
+      <span class="eyebrow">Onboarding · Where things live</span>
+      <h1>Where things live</h1>
+      <p class="desc">All under <b>TeamSpace</b> in ClickUp.</p>
+    </div>
+    <div class="block">
+      <h3>Tutorials</h3>
+      <ul class="plain">
+        <li>QA team tutorials, time tracking, and PM-specific guides.</li>
+        <li>Miguel's Loom videos.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Documents</h3>
+      <ul class="plain">
+        <li><b>PM Bible</b>, the main reference for PMing.</li>
+        <li><b>QA Bible</b>, being added by Sheer, will cover the testing steps in this dashboard.</li>
+        <li><b>Project Lifecycle</b>, may be slightly out of date vs the newer automations.</li>
+        <li>The <b>three automated client emails</b>: R&amp;D sign-up → contract + payment welcome → R&amp;D-to-app-development.</li>
+        <li>Maintenance plans, and the kickoff form.</li>
+      </ul>
+    </div>
+    <div class="block">
+      <h3>Unlocks later</h3>
+      <div class="later">
+        <ul class="plain">
+          <li><b>Management section</b>, a list of your projects and their budgeting.</li>
+          <li><b>The web app</b>, makes ClickUp data more digestible; separate mini-onboarding.</li>
+          <li><b>Your personal dashboard</b>, monthly hours by project (change the date range to see totals).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QA JOB (landing) ============ -->
+  <section class="view" id="qa">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job</span>
+      <h1>Doing the QA role well</h1>
+      <p class="desc">You start here, QA first, shadowing a PM. This is the whole job: test builds, find and write up bugs, keep the board honest.</p>
+    </div>
+    <div class="grid">
+      <a class="tile" href="#qa-workflow">
+        <span class="ico"><svg><use href="#i-check"/></svg></span>
+        <h3>QA testing workflow</h3><p>The whole loop: onboard, test each build, mark it complete.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#statuses">
+        <span class="ico"><svg><use href="#i-tags"/></svg></span>
+        <h3>Task statuses</h3><p>What each status and board colour means, and who sets it.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#bugs">
+        <span class="ico"><svg><use href="#i-bug"/></svg></span>
+        <h3>Finding &amp; writing bugs</h3><p>The bug write-up format, bug vs feature, retest-failed.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#testcases">
+        <span class="ico"><svg><use href="#i-doc"/></svg></span>
+        <h3>Test cases &amp; plans</h3><p>Build a test plan before you start testing.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#builds">
+        <span class="ico"><svg><use href="#i-box"/></svg></span>
+        <h3>Builds &amp; merging</h3><p>How a build reaches you and when to mark it complete.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#devices">
+        <span class="ico"><svg><use href="#i-phone"/></svg></span>
+        <h3>Test devices &amp; tools</h3><p>TestFlight, Android/APK, BrowserStack, JAM.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#qa-insights">
+        <span class="ico"><svg><use href="#i-flow"/></svg></span>
+        <h3>QA insights from Carlos</h3><p>A working QA's habits: explore first, sanity vs regression, priority feel.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#qa-resources">
+        <span class="ico"><svg><use href="#i-folder"/></svg></span>
+        <h3>QA resources</h3><p>Docs, tools and templates to keep handy.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+<section class="view" id="qa-workflow">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Testing workflow</span>
+      <h1>QA testing workflow</h1>
+      <p class="desc">The full loop, from joining a project to signing off a build. You'll start here as a QA shadowing a PM.</p>
+    </div>
+
+    <div class="block">
+      <h3>1. Get onto the project</h3>
+      <p class="prose">The VA assigns you. Usually the <b>lead developer or PM</b> gets on a call to onboard you, walking the designs or explaining the app and what's expected. On small projects they may just ask you to onboard yourself.</p>
+    </div>
+
+    <div class="block">
+      <h3>2. Get your bearings before testing</h3>
+      <p class="prose">Review the <b>specs</b> (in ClickUp or the channel), the <b>designs</b>, and the <b>estimates</b> (how many QA hours were quoted and every task we said we'd deliver). Then build a <a href="#testcases">test plan</a>. The first build is usually thin, just login and project setup.</p>
+    </div>
+
+    <div class="block">
+      <h3>3. The build loop</h3>
+      <ol class="steps">
+        <li>A new build is marked <b>Testing</b>, you get a Slack ping. Open Bugs &amp; Tasks, filter to <b>Ready to test</b>.</li>
+        <li>Test each task. Works? Mark <b>Done</b>. Broken? Mark <b>Retest failed</b> or log a <a href="#bugs">new bug</a>.</li>
+        <li>When you've been through everything, go to <b>Builds</b> and mark the build <b>Complete</b>. See <a href="#builds">builds &amp; merging</a>.</li>
+      </ol>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How deep to test each build?</span> Test everything on the first build. Later builds, do a quick pass plus whatever the <b>release notes</b> say changed. If notes are thin, just ask the dev on the channel: "would anything have broken with this release?" You don't need a full deep-dive every time.</div></div>
+  
+    <div class="example"><span class="xl">Real-world example</span><p>On a first build you might only see "Apple login", "Google login" and "project setup". You open the build, log in both ways, and if the app opens at all you mark project setup <b>Done</b>. Anything that doesn't work becomes a bug.</p></div>
+  </section>
+
+<section class="view" id="statuses">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Task statuses</span>
+      <h1>Task statuses</h1>
+      <p class="desc">The shared language on every board. Definitions also live in the Tutorials if you forget. Who-sets-it: <span class="who-chip pm">PM</span> <span class="who-chip dev">DEV</span> <span class="who-chip qa">QA</span>.</p>
+    </div>
+    <div class="block">
+      <div class="scroller">
+        <table class="tbl">
+          <thead><tr><th>Status</th><th>Who</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td><span class="st"><span class="d" style="background:var(--slate)"></span>Not started</span></td><td><span class="who-chip">SYS</span></td><td>Hasn't been picked up yet.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--accent)"></span>To do</span></td><td><span class="who-chip pm">PM</span></td><td>Tasks you want the developer to do next.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--warn)"></span>In progress</span></td><td><span class="who-chip dev">DEV</span></td><td>Developer is actively working on it.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:#6C8CD5"></span>Ready to release</span></td><td><span class="who-chip dev">DEV</span></td><td>Finished, but waiting on another dev, e.g. back-end done, front-end still coming.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--good)"></span>Ready to test</span></td><td><span class="who-chip dev">DEV</span></td><td>Released to staging. <b>Your cue to test.</b></td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--crit)"></span>Retest failed</span></td><td><span class="who-chip qa">QA</span></td><td>You tested the "fix" and it didn't work.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--slate)"></span>Backlog</span></td><td><span class="who-chip pm">PM</span>/<span class="who-chip qa">QA</span></td><td>Maybe later, not now.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:#B08900"></span>Blocked</span></td><td><span class="who-chip">any</span></td><td>Waiting on something (a design, the client, another person).</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:#9AA3B0"></span>Cancelled</span></td><td><span class="who-chip">any</span></td><td>Not happening anymore.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:#9AA3B0"></span>Not reproducible</span></td><td><span class="who-chip dev">DEV</span>/<span class="who-chip qa">QA</span></td><td>Can't find a way to reproduce the bug.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:#9AA3B0"></span>Not a bug</span></td><td><span class="who-chip dev">DEV</span></td><td>Developer reckons what you logged isn't actually a defect.</td></tr>
+            <tr><td><span class="st"><span class="d" style="background:var(--good)"></span>Done</span></td><td><span class="who-chip qa">QA</span></td><td>Tested and works. Clears it from view and nudges the project's progress bar.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+<section class="view" id="bugs">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Finding &amp; writing bugs</span>
+      <h1>Finding &amp; writing bugs</h1>
+      <p class="desc">You test the ready-to-test tasks, mark the ones that work <b>Done</b>, and log anything broken as a bug. A clear write-up is the difference between a fast fix and a confused developer.</p>
+    </div>
+
+    <div class="block">
+      <h3>Reading the board</h3>
+      <dl class="kv">
+        <div><dt>Green tick</dt><dd><b>Done</b>. Tested and working (you set this).</dd></div>
+        <div><dt>Orange</dt><dd><b>Ready to test</b>. The dev has released it, your cue to test.</dd></div>
+        <div><dt>To do</dt><dd>You've flagged it for the dev to work on next.</dd></div>
+        <div><dt>Not started</dt><dd>The default when a task is created.</dd></div>
+      </dl>
+      <p class="prose" style="margin-top:12px">If a ready-to-test task works, mark it <b>Done</b> and move on. Obvious ones (Apple login, project setup) need no description; if you can open the app at all, setup is done.</p>
+    </div>
+
+    <div class="block">
+      <h3>The fields that matter</h3>
+      <ol class="steps">
+        <li><b>Name it clearly as a bug</b> so the developer sees at a glance what it is.</li>
+        <li>Set it to <b>To do</b> and <b>assign a developer</b> (if you're not sure which, assign <b>both</b> and they'll sort it out, but always assign someone).</li>
+        <li>Open <b>Show custom fields</b> and mark <b>Bug</b> or <b>Feature</b>.</li>
+        <li>Attach <b>screenshots / video</b>, set the <b>platform</b> (iOS, Android, web, iPad, all, or leave blank), and a <b>priority</b> (default P0).</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h3>Write the bug like this</h3>
+      <p class="prose" style="margin-bottom:14px">The format the team aims for. Paste rough notes into Claude or ChatGPT to shape them into this. If you attach a video, add <b>PFA</b> ("please find attached") to the description so the dev knows to look.</p>
+      <div class="tmpl"><span class="cm"># Title, starts with where + what</span>
+<span class="lbl">Bug:</span> Admin, job seeker list resets
+
+<span class="lbl">Description:</span> The saved job-seeker list clears after refresh. PFA video.
+<span class="lbl">Expected behaviour:</span> The list stays after a refresh.
+<span class="lbl">Steps to reproduce:</span> 1) Open admin  2) Save a list  3) Refresh
+<span class="lbl">Expected result:</span> List is still there.
+<span class="lbl">Actual result:</span> List is empty.</div>
+    </div>
+
+    <div class="block">
+      <h3>Bug vs Feature</h3>
+      <dl class="kv">
+        <div><dt>Bug</dt><dd>Something's broken or behaving wrong.</dd></div>
+        <div><dt>Feature</dt><dd>A client request or a missing piece you're adding, not a defect. E.g. the dev never added the little "show password" eye on login, that's a feature task, not a bug.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Retest failed vs a new bug</h3>
+      <dl class="kv">
+        <div><dt>Retest failed</dt><dd>The dev marked a bug Ready to test (said they fixed it), you tested, and it's <b>still broken</b>. Mark the same task <b>Retest failed</b> and tell them.</dd></div>
+        <div><dt>New bug</dt><dd>Something <b>different</b> is now broken. Log a fresh bug.</dd></div>
+      </dl>
+      <div class="note info" style="margin-top:14px"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Splitting example:</span> if "Login" is one task but only <b>Apple</b> login is broken (Google works), mark Login <b>Done</b> and raise a new <b>"Apple login doesn't work"</b> bug, so the two don't get tangled.</div></div>
+    </div>
+
+    <div class="block">
+      <h3>Priority</h3>
+      <p class="prose" style="margin-bottom:12px">Early on, post bugs to <b>Slack first</b> and let the PM set the priority. You'll pick up the feel for it quickly.</p>
+      <div class="prio">
+        <div class="p p0"><span class="lv">P0</span><br><small>App-breaking. Stops people using it.</small></div>
+        <div class="p p1"><span class="lv">P1</span><br><small>Serious, but not a full blocker.</small></div>
+        <div class="p p2"><span class="lv">P2</span><br><small>Minor / lower urgency.</small></div>
+      </div>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-tags"/></svg><div><span class="b">Make the board yours.</span> Build your own QA-list view. Pin it, make it private, <b>protect</b> it (reverts other people's changes) and set it to auto-save. List, board or Kanban all work. You can hide closed tasks so you only see To do / In progress / Ready to test.</div></div>
+  </section>
+
+<section class="view" id="testcases">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Test cases &amp; plans</span>
+      <h1>Test cases &amp; plans</h1>
+      <p class="desc">Every project has a <b>Test Cases</b> folder in ClickUp. It starts empty, you build the plan.</p>
+    </div>
+
+    <div class="block">
+      <h3>Build a test plan</h3>
+      <p class="prose" style="margin-bottom:12px">Before you test, add cases with these fields:</p>
+      <dl class="kv">
+        <div><dt>Name</dt><dd>What you're testing (e.g. "Email login").</dd></div>
+        <div><dt>Steps</dt><dd>How to run the test.</dd></div>
+        <div><dt>Expected result</dt><dd>What should happen.</dd></div>
+        <div><dt>Status</dt><dd>Pass, fail, standby (revisit later), or none.</dd></div>
+        <div><dt>Note</dt><dd>Anything extra, e.g. "still works on build 0.03".</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Start faster</h3>
+      <p class="prose">Common cases repeat across apps, splash screen, login, sign up, log out, onboarding. Copy them from a similar project's Test Cases folder rather than retyping, and lean on Claude/ChatGPT to draft cases. Add <b>edge cases</b> as they occur to you while testing. (Auto-populating a few defaults is something Sheer may set up with Miguel.)</p>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-check"/></svg><div><span class="b">Re-running basics:</span> you don't formally re-run every basic case on each build. Do a quick check, then mark <b>standby</b> or drop a note so you know it was re-checked.</div></div>
+  
+    <div class="example"><span class="xl">Real-world example</span><p><b>Name:</b> Email login. <b>Steps:</b> 1) Open app 2) Enter valid email + password 3) Tap Login. <b>Expected:</b> Lands on the home screen. <b>Status:</b> Pass / Fail / Standby.</p></div>
+  </section>
+
+<section class="view" id="builds">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Builds &amp; merging</span>
+      <h1>Builds &amp; merging</h1>
+      <p class="desc">The Builds folder is how a developer hands a testable build to you. Used by devs, QAs and PMs.</p>
+    </div>
+
+    <div class="block">
+      <h3>How a build reaches you</h3>
+      <ol class="steps">
+        <li>Developer marks completed tasks <b>Ready to test</b> in Bugs &amp; Tasks.</li>
+        <li>An automation <b>links those tasks</b> into a build (with their IDs and names).</li>
+        <li>Developer opens the build, adds a <b>version name</b>, <b>release notes</b> (some devs write lots, some none), and an <b>APK</b>, then marks it <b>Testing</b>.</li>
+        <li>A <b>Slack notification</b> goes to the PM and QA with the release notes and APK, so it's in two places.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h3>How you test it</h3>
+      <p class="prose">Two ways in: go to <b>Bugs &amp; Tasks</b> filtered to <b>Ready to test</b> (and Retest failed), or open the build under <b>Builds</b> and use <b>Link tasks</b> to see everything attached. Work through each task, marking Done or Retest failed and logging new bugs. See <a href="#devices">test devices &amp; tools</a> for how to install a build.</p>
+    </div>
+
+    <div class="block">
+      <h3>Ready to release &amp; merging</h3>
+      <p class="prose">With two developers (say back-end and front-end), one may finish work the other hasn't. Pushing it alone would give you nothing to see, so they mark it <b>Ready to release</b> (blue): "done, but not in this build, it'll come once we merge." Devs merge into <b>one</b> build, so you shouldn't normally see two builds testing at once.</p>
+    </div>
+
+    <div class="block">
+      <h3>Mark it complete</h3>
+      <p class="prose">When you've been through the whole build, go to <b>Builds</b> and mark it <b>Complete</b>, this is the QA's job. That fires a Slack message telling the PM and devs the build is tested. If you ever see several builds "testing" at once, it usually means a build wasn't marked complete, or a dev pushed a quick hotfix mid-test. Finish your current build, then move to the next (or if it's just a one-change hotfix, mark the current done and focus on the changed area).</p>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-flow"/></svg><div><span class="b">Sprints and builds:</span> each sprint is usually one build. Bugs you add don't always show inside the sprint (that's the PM's call), but it's good practice to add the important ones to the sprint so the dev's direction is clear.</div></div>
+
+    <div class="note good"><svg fill="none"><use href="#i-doc"/></svg><div><span class="b">Coming soon (Lobby's process):</span> a per-build summary listing new bugs (P0/P1) with their ID + name, any retest-failed, and QA notes. The goal is to auto-post it to the channel when you move a build from Testing to Done. For now it's filled in manually.</div></div>
+  </section>
+
+<section class="view" id="devices">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Test devices &amp; tools</span>
+      <h1>Test devices &amp; tools</h1>
+      <p class="desc">How to actually get a build onto a device, and the tools that make testing faster.</p>
+    </div>
+
+    <div class="block">
+      <h3>Installing a build</h3>
+      <dl class="kv">
+        <div><dt>iOS</dt><dd>Give them the email on your Apple account so they add you to <b>TestFlight</b>, then install builds there.</dd></div>
+        <div><dt>Android</dt><dd>The <b>APK</b> is on the build in ClickUp and auto-posted to the Slack channel. Copy the link, send it to yourself on Slack, install on an Android. (The company is starting to buy QAs an Android, ask if you need one.)</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>BrowserStack, when you don't have the device</h3>
+      <p class="prose">Upload the APK and test on many virtual devices. It's a <b>shared login</b> (ask Sheer), and only one person can use it at a time, logging in kicks the other out. Pick a <b>recent Google Pixel and a recent Samsung</b> (e.g. Pixel 9/10). Aim for newer phones, older tech stacks can break on new OSes and most users upgrade. Only test very old phones to chase a specific reported issue, don't burn time fixing bugs that only hit a 10-year-old handset.</p>
+    </div>
+
+    <div class="block">
+      <h3>Handy tools</h3>
+      <dl class="kv">
+        <div><dt>JAM</dt><dd>Records a bug with extra developer detail (not just a screen video). Web and app. Raised by a QA in the team channel.</dd></div>
+        <div><dt>Slack huddles</dt><dd>Enable <b>AI notes</b> for huddles so you don't miss anything when someone huddles you.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+<section class="view" id="qa-insights">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job &middot; Mentor insights</span>
+      <h1>QA insights from Carlos</h1>
+      <p class="desc">From a 1:1 with <b>Carlos Franco</b> (8 Jul 2026), ex QA/PM, now full-time QA on Maxim. How an experienced MightyByte QA actually runs a project, beyond the formal process. <a href="https://fathom.video/share/jzs2D6P6Koee64ZX1UroyG2k3VzCP1X-" target="_blank" rel="noopener">Watch the recording (76 min)</a>.</p>
+    </div>
+
+    <div class="block">
+      <h3>The order of work: explore first, then write cases</h3>
+      <p class="prose">Do <b>exploratory testing before writing test cases</b>. Go through every nook and cranny on the fly to build familiarity with the app, then write the cases that occur to you: <b>positive, negative and boundary</b>. You can pre-write cases from the specs before the first build if you want a head start, but Carlos prefers to explore first. And remember who reads what: <b>devs read bugs, not test cases</b>. Test cases are your coverage tool; the bug report is the communication tool, so bugs get the full detail every time.</p>
+    </div>
+
+    <div class="block">
+      <h3>When do you stop testing?</h3>
+      <p class="prose">There is no concrete rule. You stop when you're confident you've covered <b>every feature</b> with positive, negative and boundary cases and you've tried everything you can think of. Coverage confidence, not a checklist, is the exit condition.</p>
+    </div>
+
+    <div class="block">
+      <h3>Regression strategy: sanity per sprint, full suite before release</h3>
+      <dl class="kv">
+        <div><dt>New feature lands</dt><dd>Deep-test that feature (new cases, every nook and cranny). A new feature usually breaks something else.</dd></div>
+        <div><dt>Rest of the app</dt><dd>Run a <b>sanity test</b>: a condensed pass over the core features only, not the full suite.</dd></div>
+        <div><dt>Before store release</dt><dd>Run <b>full regression</b>, the whole suite. A mature project can be 200+ cases.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Priority feel (in practice it's P0 or P1)</h3>
+      <dl class="kv">
+        <div><dt>P0</dt><dd>Broken on <b>normal, obvious usage</b>: a page that errors when you tap Subscription or Logout. Blockers.</dd></div>
+        <div><dt>P1</dt><dd>A real bug on a <b>hidden path</b> most users won't hit, e.g. tapping return on an empty search field throws an exception page.</dd></div>
+        <div><dt>P2</dt><dd>Typos, a missing period. Carlos has almost never used it.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>One bug, one report, across builds</h3>
+      <p class="prose">If a bug isn't fixed by the next build, <b>don't log it again</b>. The original report stands; add a note like "still present on build 1.0.3" and remind the dev. And always log bugs in the system even if you also discussed them on a call, because the dev may take days to get to the fix and shouldn't have to remember the conversation.</p>
+    </div>
+
+    <div class="block">
+      <h3>Evidence workflow</h3>
+      <p class="prose">Don't screen-record your whole session, you could be exploring for 20 to 30 minutes at a time. Explore freely; when you find a bug, <b>reproduce it once more with the native screen recorder running</b>, then attach that video to the report. iOS and Android both have built-in recorders.</p>
+    </div>
+
+    <div class="block">
+      <h3>UI judgement: Figma is the referee</h3>
+      <p class="prose">Think the UI looks off? <b>Check it against Figma.</b> If it doesn't match, raise it with the dev (a bug report plus a ping). If it matches but you still don't like it, that's the client's chosen design, out of scope unless they ask for a change. Watch for screen-size differences: an element sitting lower on a smaller phone may not be a real bug. And missing functionality you feel should exist is a <b>feature request</b>, not a bug, and needs the client to want it.</p>
+    </div>
+
+    <div class="block">
+      <h3>Odds and ends worth knowing</h3>
+      <dl class="kv">
+        <div><dt>Android IAP</dt><dd>Sandbox subscription payments error on virtually every project. Report it to the dev, then keep testing on the free plan.</dd></div>
+        <div><dt>Devices</dt><dd>Don't buy your own Android; ask Dovrat for one. BrowserStack in the meantime.</dd></div>
+        <div><dt>Builds</dt><dd>Always test the latest build. APKs arrive on the ClickUp Builds page or Slack (depends on the dev's habit); iOS arrives as a TestFlight invite when the dev is ready for you.</dd></div>
+        <div><dt>Automation</dt><dd>Small projects have none (budget); devs may keep unit tests on their side, ask them. Playwright is starting on Maxim but nobody has had time, an opening if you want it.</dd></div>
+        <div><dt>QA hours</dt><dd>In estimates, QA gets roughly a fifth of the engineering hours (Carlos's info is about 18 months old).</dd></div>
+      </dl>
+    </div>
+
+    <div class="note good"><svg fill="none"><use href="#i-check"/></svg><div><span class="b">AI tricks Carlos rates:</span> paste the client-call transcript into AI next to your draft spec and ask for discrepancies ("you wrote X, but the client actually said Y"). The same trick works for generating test cases from the spec or transcript; some Maxim QAs do that, Carlos still writes his by hand out of habit.</div></div>
+
+    <div class="example"><span class="xl">Real-world example</span><p>Carlos's bug: <b>"Searching an empty word returns an exception page."</b> Steps: 1) On the LRN app, tap the search bar 2) On the keyboard, tap return 3) Observe the result. Expected: a "no results found" state. Actual: an exception page. Rated <b>P1</b>, not P0, because tapping return on an empty search is a hidden path, not normal usage. Evidence video attached, platform set to Android.</p></div>
+  </section>
+
+  <!-- ============ QA RESOURCES ============ -->
+  <section class="view" id="qa-resources">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job · Resources</span>
+      <h1>QA resources</h1>
+      <p class="desc">The docs, tools and templates you'll come back to. This is the "keep it handy" page once you're trained up.</p>
+    </div>
+    <div id="res-docs-qa"></div>
+    <div id="res-tpl-qa"></div>
+    <div id="res-ex-qa"></div>
+
+    <div class="block">
+      <h3>Where the docs live</h3>
+      <dl class="kv">
+        <div><dt>Tutorials</dt><dd>TeamSpace → Tutorials: QA team guides, time tracking, Miguel's Loom videos.</dd></div>
+        <div><dt>QA Bible</dt><dd>Being added by Sheer under TeamSpace → Documents; it will mirror the QA steps in this course.</dd></div>
+        <div><dt>PM Bible</dt><dd>TeamSpace → Documents. Useful background even as a QA.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>Tools</h3>
+      <dl class="kv">
+        <div><dt>ClickUp app</dt><dd>Use the desktop app over the browser. See <a href="#time">Time tracking</a>.</dd></div>
+        <div><dt>BrowserStack</dt><dd>Test other devices without the physical phone. Shared login, ask Sheer. See <a href="#devices">Test devices &amp; tools</a>.</dd></div>
+        <div><dt>JAM</dt><dd>Records bugs with extra developer detail. See <a href="#devices">Test devices &amp; tools</a>.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>Templates</h3>
+      <dl class="kv">
+        <div><dt>Bug write-up</dt><dd>The Title / Description / Steps / Expected / Actual format. See <a href="#bugs">Finding &amp; writing bugs</a>.</dd></div>
+        <div><dt>Test case</dt><dd>Name / Steps / Expected / Status / Note. See <a href="#testcases">Test cases &amp; plans</a>.</dd></div>
+        <div><dt>Status reference</dt><dd>What each board status means. See <a href="#statuses">Task statuses</a>.</dd></div>
+      </dl>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">Add your own.</span> As you find links, docs or shortcuts that help, tell me and I'll pin them here.</div></div>
+  </section>
+
+  <!-- ============ PM JOB (landing) ============ -->
+  <section class="view" id="pm">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job</span>
+      <h1>Doing the PM role well</h1>
+      <p class="desc">Where you are heading once you have QA down. This grows as you learn, seeded with what we know so far.</p>
+    </div>
+    <div class="grid">
+      <a class="tile" href="#pm-overview">
+        <span class="ico"><svg><use href="#i-users"/></svg></span>
+        <h3>What a PM owns</h3><p>The shape of the role and the rhythm of a project.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#pm-running">
+        <span class="ico"><svg><use href="#i-flow"/></svg></span>
+        <h3>Running a project</h3><p>Kickoff, estimates, sprints, delivery, client comms.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#pm-budgets">
+        <span class="ico"><svg><use href="#i-chart"/></svg></span>
+        <h3>Budgets &amp; hours</h3><p>Keeping a project inside its estimated hours.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#specs">
+        <span class="ico"><svg><use href="#i-spec"/></svg></span>
+        <h3>Reading &amp; writing specs</h3><p>How specs are built, and a template for your own.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#pm-resources">
+        <span class="ico"><svg><use href="#i-folder"/></svg></span>
+        <h3>PM resources</h3><p>Key docs, tools and templates for the PM role.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ PM OVERVIEW ============ -->
+  <section class="view" id="pm-overview">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · What a PM owns</span>
+      <h1>What a PM owns</h1>
+      <p class="desc">Seeded from what we know so far. It fills out as you shadow PMs and take on your own projects.</p>
+    </div>
+    <div class="block">
+      <h3>The shape of the role</h3>
+      <p class="prose">A PM owns a project end to end: the client relationship, the kickoff, getting estimates from developers, scheduling the work, running sprints, watching the budget and hours, and getting it shipped. At AppMakers you QA first, then grow into this, so a lot of it clicks once you have seen a few projects from the QA seat.</p>
+    </div>
+    <div class="block">
+      <h3>The rhythm of a project</h3>
+      <ol class="steps">
+        <li>Get assigned and <b>onboard</b> to the project (designs, specs, estimates).</li>
+        <li>Run the <b>kickoff</b> off the client's questionnaire.</li>
+        <li>Get <b>estimates</b> from the developers; these set the hours you are held to.</li>
+        <li><b>Schedule</b> the work into sprints/builds and direct the developers.</li>
+        <li>Keep the <b>client updated</b>, manage scope, and watch the <b>budget</b>.</li>
+        <li><b>Ship</b>, then follow up.</li>
+      </ol>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Grows as you learn.</span> Add what you pick up shadowing PMs here. The <a href="#specs">specs</a> and <a href="#pm-budgets">budgets</a> pages already cover two big PM muscles.</div></div>
+  </section>
+
+  <!-- ============ PM RUNNING ============ -->
+  <section class="view" id="pm-running">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · Running a project</span>
+      <h1>Running a project</h1>
+      <p class="desc">The mechanics of moving a project along, drawn from the AppMakers process.</p>
+    </div>
+    <div class="block">
+      <h3>Kickoff</h3>
+      <p class="prose">The client fills a <b>kickoff questionnaire</b> (it lands in the project's Project Documents folder, and you get a Slack ping). Study it before the kickoff call so you walk in knowing what they want. See <a href="#lifecycle">project lifecycle</a> for where this sits.</p>
+    </div>
+    <div class="block">
+      <h3>Estimates</h3>
+      <p class="prose">Developers build estimates from the designs. Those estimated QA and PM hours are the budget you manage against, so know them. See <a href="#pm-budgets">budgets &amp; hours</a>.</p>
+    </div>
+    <div class="block">
+      <h3>Sprints &amp; delivery</h3>
+      <p class="prose">Create <b>sprints</b> to tell developers what to work on next; each sprint is usually one build. Add the important bugs to the sprint so direction is clear. The QA marks builds complete once tested. See <a href="#builds">builds &amp; merging</a>.</p>
+    </div>
+  </section>
+
+  <!-- ============ PM BUDGETS ============ -->
+  <section class="view" id="pm-budgets">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · Budgets &amp; hours</span>
+      <h1>Budgets &amp; hours</h1>
+      <p class="desc">The number a PM is always watching: are we inside the hours we quoted?</p>
+    </div>
+    <div class="block">
+      <h3>Where you see it</h3>
+      <p class="prose">The <a href="#makers-app">Makers app</a> and the PM time-reporting dashboard show invoice vs time, budget consumed, credit available, and <b>estimated vs actual hours</b> per project. The little arrow on the ClickUp <a href="#dashboards">dashboard</a> breaks hours down per project.</p>
+    </div>
+    <div class="block">
+      <h3>What to watch</h3>
+      <ul class="plain">
+        <li>Are QA + PM hours tracking under the estimate, or drifting over?</li>
+        <li>Is the client's credit / budget running low before the work is done?</li>
+        <li>Which tasks are eating the most time, and is that worth flagging?</li>
+      </ul>
+    </div>
+  </section>
+
+<section class="view" id="specs">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · Reading &amp; writing specs</span>
+      <h1>Reading &amp; writing specs</h1>
+      <p class="desc">A spec is the shared source of truth, so design, dev and QA all build the same thing. As QA you read it to learn what "correct" means; as you move toward PM you'll write them. Box and Ring is your worked example.</p>
+    </div>
+
+    <div class="block">
+      <h3>Anatomy of a good feature spec</h3>
+      <p class="prose" style="margin-bottom:12px">Seven parts. If any are missing, that's your first set of questions.</p>
+      <dl class="kv">
+        <div><dt>1 Context</dt><dd>The problem, the goal, and who it's for. Why are we building this?</dd></div>
+        <div><dt>2 Flow</dt><dd>Entry point → each step → the end states. A user story, not a feature list.</dd></div>
+        <div><dt>3 States &amp; edges</dt><dd>Empty, loading, error, offline, concurrent, declined, timed-out. The unhappy paths.</dd></div>
+        <div><dt>4 Acceptance criteria</dt><dd>Testable statements of "done". This is what you convert straight into <a href="#testcases">test cases</a>.</dd></div>
+        <div><dt>5 Non-functional</dt><dd>Performance, security, privacy, accessibility. The numbers and limits.</dd></div>
+        <div><dt>6 Out of scope</dt><dd>What this is NOT doing, and what's deferred past MVP.</dd></div>
+        <div><dt>7 Open questions</dt><dd>Unknowns and dependencies, each with an owner and a name attached.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>How the Box and Ring doc measures up</h3>
+      <dl class="kv">
+        <div><dt>Strong on</dt><dd>Flows and UX detail, and the product thinking (the scoring philosophy is genuinely good, it explains the <em>why</em>).</dd></div>
+        <div><dt>Thin on</dt><dd>Acceptance criteria, non-functional requirements, and a clear edge-case matrix per feature. Great to learn structure from, then layer the missing parts on.</dd></div>
+      </dl>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-check"/></svg><div><span class="b">The QA-to-spec loop.</span> Every vague line in a spec is either a test case waiting to be written or a question to ask. Reading a spec as a QA <em>is</em> practising to write one: you spot what's ambiguous, and that's exactly what you'd make explicit if you were the author.</div></div>
+
+    <div class="block">
+      <h3>Spec smells (red flags to catch)</h3>
+      <ul class="plain">
+        <li>Vague verbs: "handles", "supports", "manages", with no detail on how.</li>
+        <li>Missing numbers: limits, timeouts, grace periods, sizes left unstated.</li>
+        <li>No error or empty states, only the happy path is described.</li>
+        <li>A decision with no owner ("TBD" with nobody's name on it).</li>
+        <li>No definition of done, so nobody can agree when it's finished.</li>
+        <li>Duplicated or clashing section numbers (a sign it grew without a tidy-up).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>A template you can copy</h3>
+      <div class="tmpl"><span class="lbl">Feature:</span> [name]
+<span class="lbl">Context:</span> problem, goal, who it's for
+<span class="lbl">Flow:</span> entry point → steps → end states
+<span class="lbl">States &amp; edges:</span> empty / error / offline / concurrent / declined
+<span class="lbl">Acceptance criteria:</span>
+  <span class="cm">- [ ] testable statement of done</span>
+  <span class="cm">- [ ] ...</span>
+<span class="lbl">Non-functional:</span> performance, security, privacy, accessibility
+<span class="lbl">Out of scope:</span> what this is NOT / deferred
+<span class="lbl">Open questions:</span> unknown → owner</div>
+    </div>
+  </section>
+
+  <!-- ============ PM RESOURCES ============ -->
+  <section class="view" id="pm-resources">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · Resources</span>
+      <h1>PM resources</h1>
+      <p class="desc">The docs, tools and templates a PM leans on. Grows as you take on projects.</p>
+    </div>
+    <div id="res-docs-pm"></div>
+    <div id="res-tpl-pm"></div>
+    <div id="res-ex-pm"></div>
+
+    <div class="block">
+      <h3>Key docs</h3>
+      <dl class="kv">
+        <div><dt>PM Bible</dt><dd>The main PM reference. TeamSpace → Documents.</dd></div>
+        <div><dt>Project Lifecycle</dt><dd>How a project flows end to end. See <a href="#lifecycle">Project lifecycle</a>.</dd></div>
+        <div><dt>Client emails</dt><dd>The three automated client emails (R&amp;D sign-up, contract, app development). TeamSpace → Documents.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>Tools</h3>
+      <dl class="kv">
+        <div><dt>The Makers app</dt><dd>Budgets, hours, estimated vs actual. See <a href="#makers-app">The Makers app</a>.</dd></div>
+        <div><dt>Time reporting</dt><dd>The PM time-reporting dashboard. See <a href="#dashboards">Dashboards &amp; hours</a>.</dd></div>
+        <div><dt>Estimates</dt><dd>The Estimates sheet (moving into the web app estimate system).</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>Templates</h3>
+      <dl class="kv">
+        <div><dt>Spec template</dt><dd>Context / flow / edges / acceptance criteria. See <a href="#specs">Reading &amp; writing specs</a>.</dd></div>
+        <div><dt>Kickoff questionnaire</dt><dd>The client-facing form you study before the kickoff call.</dd></div>
+      </dl>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">Add your own.</span> Send me any PM docs, links or templates and I'll pin them here.</div></div>
+  </section>
+
+  <!-- ============ PROJECTS (landing) ============ -->
+  <section class="view" id="projects">
+    <div class="sec-head">
+      <span class="eyebrow">Projects</span>
+      <h1>Your projects</h1>
+      <p class="desc">Each project has its own page: where it's up to, your tasks for it, upcoming meetings, document links, and a summary of the app. Give me a new project's info and I'll add its card here.</p>
+    </div>
+    <div class="proj-cards" id="projectsList"></div>
+    <p class="tr-empty">More project cards appear here as you take them on.</p>
+  </section>
+
+<section class="view" id="box-and-ring">
+    <div class="sec-head">
+      <span class="eyebrow">Projects · Box and Ring</span>
+      <h1>Box and Ring</h1>
+      <p class="desc">A couples' app for having a structured, refereed argument. Here's the whole thing in one read: what it is, how a fight works, what's actually being built, and where you'd push as QA. The full 15-section spec and the Figma are the detail behind it.</p>
+    </div>
+
+    <div class="pj-nav" id="pjnav-box-and-ring"></div>
+    <div class="pj-view" id="pjhome-box-and-ring"></div>
+    <div class="pj-view" id="pjtest-box-and-ring">
+      <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> This is the testing playbook <em>and</em> your QA training ground for Box and Ring: which parts need normal QA, which parts need AI evaluation, and the handful of invariants that outrank every other bug. It sits on top of the general <a href="#qa-workflow">QA workflow</a>, <a href="#bugs">bug write-up</a> and <a href="#testcases">test-case</a> process, it does not replace them.</div></div>
+      <div class="block">
+        <h3>Start here: your first pass</h3>
+        <ol class="steps">
+          <li>Read this whole page once, then skim the <a href="#box-and-ring">R&amp;D summary</a> so you know what the app is meant to do.</li>
+          <li>Build your <a href="#testcases">test-case</a> library from the privacy matrix, the invariants, and the scoring rules below.</li>
+          <li>Start your <b>golden test conversations</b> (see AI evals) early, they are reusable on every build.</li>
+          <li>On each build: run the invariants and safety checks first, then the feature you were told changed.</li>
+        </ol>
+      </div>
+      <div class="block">
+        <h3>Your job here is two questions, not one</h3>
+        <p class="prose">Every feature gets tested against two things, in order. First, <b>"does it work?"</b> (the button fires, the timer counts down, nothing crashes). That is normal QA, and it is the floor. Second, <b>"does it do what it's for?"</b> (a couple finishes a spar feeling closer and fairly treated, Glovy feels supportive not cold). On this app that second question is not a nice-to-have layered on top, it <em>is</em> the requirement. A build can be 100% bug-free and still fail, if it makes a couple feel judged or lets one partner beat the other. When two issues compete for your attention, the one that breaks the <b>vision</b> wins.</p>
+      </div>
+      <div class="block">
+        <h3>Two kinds of testing live in this app</h3>
+        <dl class="kv">
+          <div><dt>Deterministic QA</dt><dd>Same input, same output, pass/fail. The timer, whisper privacy plumbing, round transitions, notifications, login, scheduling gates. Test these the normal way.</dd></div>
+          <div><dt>AI evaluation</dt><dd>Everything Glovy <em>says</em> or <em>scores</em>. The AI can give a different answer to the same input, so there is no single correct result to assert. You judge outputs against criteria (safe, on-tone, neutral, accurate, no invention), not against one right answer. Realistically about half of this job is AI evals, and it is the harder half.</dd></div>
+        </dl>
+        <div class="note warn"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">AI is not deterministic.</span> Feed Glovy the same conversation twice and the score can differ slightly. Do not test it for an exact number. Test it for <b>reasonableness</b> (is this a defensible call?) and <b>consistency within a range</b> (does it land in roughly the same band each time?).</div></div>
+      </div>
+      <div class="block">
+        <h3>The invariants that outrank every other bug</h3>
+        <p class="prose" style="margin-bottom:12px">If any of these break, it is not a normal bug, it is a stop-ship. Test them exhaustively and adversarially.</p>
+        <dl class="kv">
+          <div><dt>Never out-score</dt><dd>No shared screen may ever let one partner see they beat the other. The couple is the team, the conflict is the opponent. Individual feedback lives only in the private "Your Corner", measured against your <em>own</em> past, never your partner's. A comparison leaking onto a shared screen is critical.</dd></div>
+          <div><dt>Private never leaks</dt><dd>A whisper meant for one partner, the challenger's private note, and "Your Corner" must never surface to the other partner. One leak destroys trust in the whole product.</dd></div>
+          <div><dt>Safety always reachable</dt><dd>Emergency exit and timeout are visible throughout a spar, crisis resources are always accessible, and out-of-scope situations (abuse, self-harm, addiction) escalate to real help. Every safety event is logged.</dd></div>
+        </dl>
+      </div>
+      <div class="block">
+        <h3>AI evals: how to test what Glovy does</h3>
+        <p class="prose" style="margin-bottom:12px">Build a library of <b>golden test conversations</b> (deliberately crafted transcripts: a calm one, a heated one, a contemptuous one, one that mentions self-harm, a very short one). Run each through Glovy and rate the output against a rubric. Re-run the <em>same</em> set on every build to catch <b>regressions</b> (Glovy getting worse after a change). That library becomes one of your most valuable assets on this project.</p>
+        <div class="scroller">
+          <table class="tbl">
+            <thead><tr><th>Glovy touchpoint</th><th>What can go wrong</th><th>How you test it</th></tr></thead>
+            <tbody>
+              <tr><td>Match intro</td><td>Takes a side, wrong tone for the emotions given, ignores stated goals</td><td>Feed varied emotion / goal combos, check neutrality and that it reflects both sides</td></tr>
+              <tr><td>Whispers (private coaching)</td><td>Leaks to the other partner, generic advice, wrong partner</td><td>Confirm isolation to one partner, check advice is specific and on-context</td></tr>
+              <tr><td>Tap-to-use suggestions</td><td>Suggests something aggressive or off-topic</td><td>Check every suggestion is constructive and fits the current round</td></tr>
+              <tr><td>Scoring &amp; decision</td><td>Feels unfair, punishes bluntness, invents evidence</td><td>Rubric plus the hard-rule checks below, verify every rating cites a real message</td></tr>
+              <tr><td>Post-fight summary</td><td>Invents things that were not said, blames one partner</td><td>Cross-check the summary against the transcript, no invention, balanced</td></tr>
+              <tr><td>Memory / recall (later)</td><td>Wrong memory retrieved, invented memory, another couple's data</td><td>Check it recalls the right prior spar, never fabricates, and never mixes couples</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note warn"><svg fill="none"><use href="#i-glove"/></svg><div><span class="b">Two AI failures to hunt specifically.</span> <b>Hallucination:</b> Glovy must "show its work", every rating and summary line ties to a real moment in the chat. A quote or claim that was never said is a bug. <b>Cross-couple leakage:</b> when memory / RAG arrives, retrieving one couple's history into another couple's spar is a catastrophic privacy failure. Test for it deliberately.</div></div>
+      </div>
+      <div class="block">
+        <h3>Scoring rules you CAN pass/fail test</h3>
+        <p class="prose" style="margin-bottom:12px">The scorecard is mostly AI judgment, but the designers laid <b>hard rules on top</b> of it. Those rules are deterministic, so you can assert them like normal QA.</p>
+        <dl class="kv">
+          <div><dt>Contempt caps Tone</dt><dd>Feed a transcript with one clearly contemptuous line (mockery, name-calling). Tone must not rise above its low ceiling no matter how pleasant the rest was.</dd></div>
+          <div><dt>Too short = No Decision</dt><dd>A four-message exchange must return "No Decision", never a Knockout. Not enough conversation to judge fairly.</dd></div>
+          <div><dt>Baseline is not zero</dt><dd>Showing up and engaging honestly earns a passing mark. A score only drops below that for a real reason.</dd></div>
+          <div><dt>Safety overrides the score</dt><dd>If anything raises a safety concern, the scorecard steps aside entirely and support resources appear instead. Never a number over someone's wellbeing.</dd></div>
+        </dl>
+      </div>
+      <div class="block">
+        <h3>Real-time text, where the nasty bugs live</h3>
+        <p class="prose" style="margin-bottom:12px">The live fight runs in a Durable Object (the "BoutRoom") over WebSocket, so two phones have to agree on message order, the current round, the timer and pause state. Race conditions and reconnection are the classic failure points. Throw adversarial cases at it:</p>
+        <ol class="steps">
+          <li>Kill wifi mid-round on one device, then bring it back, do the missed messages arrive, in order, with the timer still correct?</li>
+          <li>Background the app during a round, does presence update, does the round state survive on return?</li>
+          <li>Both partners type and send at the exact same moment, do messages scramble or duplicate?</li>
+          <li>Pause on one device, resume from the other, do both land in the same state?</li>
+          <li>Let a round timer expire while someone is mid-message, what happens to that message and the transition?</li>
+        </ol>
+      </div>
+      <div class="block">
+        <h3>Who sees what: the privacy matrix</h3>
+        <p class="prose" style="margin-bottom:12px">Turn this into a test checklist. For each surface, confirm exactly who can and cannot see it. The leak cases (marked <b>Never</b>) are the ones that matter most.</p>
+        <div class="scroller">
+          <table class="tbl">
+            <thead><tr><th>Surface</th><th>Partner A</th><th>Partner B</th><th>Glovy</th></tr></thead>
+            <tbody>
+              <tr><td>Standard chat messages</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+              <tr><td>Round, timer, progress, ground rules</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+              <tr><td>Glovy public messages (intro, transitions)</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+              <tr><td>A's whisper to Glovy</td><td>Yes</td><td><b>Never</b></td><td>Yes</td></tr>
+              <tr><td>A's private note (set at challenge)</td><td>Yes</td><td><b>Never</b></td><td>Yes</td></tr>
+              <tr><td>A's "Your Corner" feedback</td><td>Yes</td><td><b>Never</b></td><td>Yes</td></tr>
+              <tr><td>Shared result + Tale of the Tape</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Safety testing (life-critical, test exhaustively)</h3>
+        <dl class="kv">
+          <div><dt>False negatives are the worst bug</dt><dd>The Red Card detector (Llama Guard) missing real violence or self-harm language is the highest-severity failure in the app. Test with a wide range of phrasings, not just the obvious ones.</dd></div>
+          <div><dt>Always-on exits</dt><dd>Emergency exit and timeout stay reachable in every state of a spar, including mid-round and during a pause.</dd></div>
+          <div><dt>Escalation</dt><dd>When Glovy detects something beyond its scope, it recommends professional help rather than trying to coach through it.</dd></div>
+          <div><dt>Logging</dt><dd>Every safety event is recorded, it feeds the admin safety dashboard.</dd></div>
+        </dl>
+        <div class="note warn"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Open question to raise.</span> Crisis resources in the spec are US-only (988, Crisis Text Line, the DV hotline). If pilot couples are outside the US, those numbers are wrong or useless. Flag it before pilot.</div></div>
+      </div>
+      <div class="block">
+        <h3>Cross-cutting, don't forget these</h3>
+        <dl class="kv">
+          <div><dt>Test in staging</dt><dd>You do your work on the staging copy, and you are effectively the gate between staging and production. "Is this good enough for real couples?" is your call.</dd></div>
+          <div><dt>Every combo</dt><dd>iOS and Android, light and dark. A bug can hide in just one of the four.</dd></div>
+          <div><dt>How deep per build</dt><dd>First build, test everything. Later builds, a quick pass plus whatever the release notes changed. If notes are thin, ask the dev "would anything have broken with this release?"</dd></div>
+        </dl>
+      </div>
+      <div class="block">
+        <h3>Close the acceptance-criteria gap</h3>
+        <p class="prose">The spec is still light on per-feature acceptance criteria. That gap is yours to close: turn each spec line into concrete <a href="#testcases">test cases</a> (Name, Steps, Expected result, Status, Note) and log anything broken with the <a href="#bugs">bug format</a> (title = where + what, expected vs actual, steps, screenshots / PFA, priority). While you are at it, raise the <b>product risks</b>, not just the bugs: the message character limit and the no-show grace period have no numbers yet, and 10 minutes of thumb-typing may be too tight for heated or complex topics (likely why voice and video are on the roadmap). Naming those early, while they are cheap to change, is the PM half of the job.</p>
+      </div>
+    </div>
+
+    <div class="pj-view" id="pjstage-box-and-ring"></div>
+    <div class="pj-view" id="pjrnd-box-and-ring">
+
+    <div class="block">
+      <h3>What it is</h3>
+      <p class="prose">Two partners work through one conflict as a guided, timed conversation dressed up as a boxing match. An AI character, <b>Glovy</b>, referees and coaches. It is <b>not therapy</b>, and it hands people to real professionals the moment things get serious (abuse, self-harm, addiction).</p>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">The whole MVP exists to answer one question:</span> <em>"Can two people successfully complete a guided fight, and feel it was valuable?"</em> Anything that doesn't serve that is deferred. When you're weighing a bug or a question, that's the bar it's measured against.</div></div>
+
+    <div class="block">
+      <h3>How one fight works</h3>
+      <ol class="steps">
+        <li>A partner starts a challenge: picks how they feel (1 of 12), a topic, and a goal, plus an optional <b>private note only Glovy sees</b>.</li>
+        <li>The other partner accepts (in the MVP it's <b>accept or decline</b>, no haggling) and does their own emotional check-in.</li>
+        <li>Both agree to the <b>ground rules</b> (a hard gate, no agreement = no fight), then a 3-2-1 countdown.</li>
+        <li>Four timed rounds of real-time text: <b>Tell → Mirror → Propose → Commit</b> (3 / 2 / 3 / 2 min), refereed by Glovy, with private <b>whispers</b> to Glovy on the side.</li>
+        <li>It ends and Glovy delivers a summary, and later a full scorecard, on how the <em>couple</em> did against the conflict.</li>
+      </ol>
+    </div>
+
+    <div class="block">
+      <h3>The words you'll keep hearing</h3>
+      <dl class="kv">
+        <div><dt>Spar / Fight / Bout</dt><dd>One structured conversation about one issue.</dd></div>
+        <div><dt>Glovy</dt><dd>The AI referee and coach. Runs the fight, whispers advice, scores it.</dd></div>
+        <div><dt>Rounds</dt><dd>Tell → Mirror → Propose → Commit (timed 3 / 2 / 3 / 2 min).</dd></div>
+        <div><dt>Whisper</dt><dd>A private message between one partner and Glovy. The other partner never sees it.</dd></div>
+        <div><dt>Scorecard</dt><dd>The post-fight result, shown as a boxing decision.</dd></div>
+        <div><dt>Shadow boxing</dt><dd>Solo practice against a bot, offered while you wait for a partner.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>What's being built, and when</h3>
+      <p class="prose" style="margin-bottom:16px">The MVP ships in four phases over roughly 14 weeks, each with a hard "done when" gate. This is your working model; the full spec is the reference behind it.</p>
+      <ul class="tl">
+        <li><span class="who">Phase 1 · Weeks 1 to 3</span><div class="txt"><b>Foundation &amp; pairing.</b> Accounts, chat-style onboarding, avatar, invite + pair, dashboard shell, light/dark.<br><em>Done when:</em> both partners land on a shared dashboard, on iOS and Android, in light and dark.</div></li>
+        <li><span class="who">Phase 2 · Weeks 3 to 7</span><div class="txt"><b>The core fight loop (text).</b> Scheduling, ground-rules gate, real-time text fight over 4 rounds, basic public Glovy, an AI summary, pause/resume.<br><em>Done when:</em> two people complete a full timed, multi-round, refereed text fight that ends in a summary. <b>This is the primary proof.</b></div></li>
+        <li><span class="who">Phase 3 · Weeks 7 to 10</span><div class="txt"><b>Make it valuable &amp; safe.</b> The whisper system, trigger detection, tap-to-use suggestions, the full 5-dimension scorecard, the full safety net, and shadow boxing.<br><em>Done when:</em> a fight has private coaching + a full scorecard + a working safety net; solo users can practise.</div></li>
+        <li><span class="who">Phase 4 · Weeks 10 to 14</span><div class="txt"><b>Polish, insight &amp; pilot ship.</b> History &amp; stats, no-show/rematch, notifications, Glovy animation, minimal admin, legal, app-store prep.<br><em>Done when:</em> a polished, legally-covered build is in pilot couples' hands.</div></li>
+      </ul>
+    </div>
+
+    <div class="note good"><svg fill="none"><use href="#i-check"/></svg><div><span class="b">The scoring idea (worth understanding).</span> The couple is the team; the opponent is the conflict, never each other. Golden rule: <b>no shared screen ever lets one partner out-score the other</b>. It's grounded in Gottman research, shown as a boxing decision (Knockout, Unanimous, Split, Draw, Saved by the Bell) with private per-person coaching underneath.</div></div>
+
+    <div class="block">
+      <h3>Not in the MVP (so don't test or expect it)</h3>
+      <dl class="kv">
+        <div><dt>Richer chat</dt><dd>Voice messages, read receipts, reply-to-message, delete, search.</dd></div>
+        <div><dt>Fight mechanics</dt><dd>Overtime, the timeout corner, the counter-proposal loop, the public/private toggle.</dd></div>
+        <div><dt>Glovy depth</dt><dd>Cross-bout memory / recall, couple insights (compatibility, patterns).</dd></div>
+        <div><dt>Big surfaces</dt><dd>Spectator mode, video calls, subscription / billing, the full admin dashboard.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>What to test hardest</h3>
+      <dl class="kv">
+        <div><dt>Safety (P3)</dt><dd>Emergency exit always visible, crisis resources, out-of-scope escalation, every event logged. Life-critical, test exhaustively.</dd></div>
+        <div><dt>Whisper privacy (P3)</dt><dd>A whisper must <b>never</b> surface to the partner. One leak destroys trust.</dd></div>
+        <div><dt>Real-time text (P2)</dt><dd>Message ordering, reconnect / resume from buffer, presence, typing, the round state machine. The live fight runs in a Durable Object, race conditions live here.</dd></div>
+        <div><dt>Scheduling (P2)</dt><dd>Accept/decline only, ASAP where partner B proposes the time, reminders, the ground-rules hard gate, the poster only appearing once both accept.</dd></div>
+        <div><dt>Scorecard rules (P3)</dt><dd>The "never out-score" guarantee, "too short to call", and safety overriding the score.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Open questions to raise</h3>
+      <ul class="plain">
+        <li>The message <b>character limit</b> and the no-show <b>grace period</b> aren't given as numbers.</li>
+        <li>Raw transcripts are deleted after <b>7 days</b> (summaries kept forever), so fight <b>replay</b> only works inside that window. Is "older fights show summary only" the intended experience?</li>
+        <li>Crisis resources are <b>US-only</b> (988, etc.), what about non-US pilot couples?</li>
+        <li>Still light on per-feature <b>acceptance criteria</b>, that's the gap you close by turning each line into <a href="#specs">test cases</a>.</li>
+      </ul>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">The detail behind this.</span> Design in <a href="https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring?node-id=476-3191" target="_blank" rel="noopener">Figma</a>; the full 15-section spec is the written reference. Stack worth knowing: Cloudflare Workers + Hono, Durable Objects (the live fight is a "BoutRoom" over WebSocket), MongoDB Atlas, R2 for avatars, FCM/APNs push, Llama Guard for safety. Baseline: iOS + Android, light + dark.</div></div>
+  </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section class="view" id="tools">
+    <div class="sec-head">
+      <span class="eyebrow">Tools</span>
+      <h1>Tools &amp; access</h1>
+      <p class="desc">Quick links to the tools you use, plus a note on where each login lives. Add your own below.</p>
+    </div>
+    <div class="note crit"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Don't store real passwords here.</span> This page saves to your browser only, it is not encrypted and is tied to this Chrome profile (lost if the profile is cleared). Keep passwords in <b>Apple Passwords</b> (or 1Password / Bitwarden) and just note here where the login lives.</div></div>
+    <div id="toolsList"></div>
+  </section>
+
+</main>
+
+<aside class="taskrail" id="taskrail" aria-label="Task tracker">
+  <div class="tr-head">
+    <h2>Tasks</h2><span class="cnt" id="trCount"></span>
+    <button class="tr-close" id="trClose" type="button" aria-label="Close tasks">&times;</button>
+  </div>
+  <div class="tr-controls">
+    <select class="tr-select" id="trProject" aria-label="Filter by project"></select>
+    <div class="tr-links" id="trLinks"></div>
+  </div>
+  <form class="tr-add" id="trAddForm" autocomplete="off">
+    <input class="tr-input" id="trAdd" placeholder="Add a task…" aria-label="Add a task">
+    <button class="tr-addbtn" type="submit" aria-label="Add task">+</button>
+  </form>
+  <div class="tr-list" id="trList"></div>
+  <p class="tr-empty" id="trEmpty" hidden>Nothing here yet. Add a task above.</p>
+</aside>
+
+</div>
+<div class="scrim" id="scrim"></div>
+
+<footer>
+  <div class="wrap">
+    <span>AppMakers LA, QA/PM onboarding reference.</span>
+    <span class="mono">A living doc · last updated 8 Jul 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var STAGES=['R&D','Estimates','Development','Testing','Ship'];
+  var PROJECTS=[
+    {id:'box-and-ring', name:'Box and Ring',
+     links:[{label:'Figma',url:'https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring'}],
+     meetings:[],
+     defaultStage:'Development',
+     defaultPhases:['Phase 1: Foundation & pairing (wk 1 to 3)','Phase 2: Core fight loop, text (wk 3 to 7)','Phase 3: Whisper, scorecard & safety (wk 7 to 10)','Phase 4: Polish, insight & pilot ship (wk 10 to 14)']}
+  ];
+  function proj(id){for(var i=0;i<PROJECTS.length;i++)if(PROJECTS[i].id===id)return PROJECTS[i];return null;}
+
+  var SECTION_TAB={home:'home',
+    onboarding:'onboarding','ob-sequence':'onboarding',habits:'onboarding',rules:'onboarding',
+    time:'onboarding',billing:'onboarding',dashboards:'onboarding','makers-app':'onboarding',
+    people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
+    qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-insights':'qa','qa-resources':'qa',
+    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-resources':'pm',
+    projects:'projects','box-and-ring':'projects','tools':'tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring',tools:'Tools'};
+
+  function load(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+  function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function nid(){return 't'+Math.random().toString(36).slice(2,9);}
+  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-resources']};
+  var MKEY='appmakers-modules-v1'; var mstate=load(MKEY)||{}; function saveM(){store(MKEY,mstate);}
+  function trackOf(id){for(var k in MODULES)if(MODULES[k].indexOf(id)>-1)return k;return null;}
+  function trackName(t){return t==='qa'?'QA':'PM';}
+  function trackStats(t){var m=MODULES[t],d=0;m.forEach(function(x){if(mstate[x])d++;});return {done:d,total:m.length};}
+  function nextModule(t){var m=MODULES[t];for(var i=0;i<m.length;i++)if(!mstate[m[i]])return m[i];return null;}
+
+  var CKEY='appmakers-onboarding-v1'; var checks=load(CKEY)||{}; function saveChecks(){store(CKEY,checks);}
+  var TKEY='appmakers-tasks-v1'; var tstate=load(TKEY);
+  if(!tstate||!tstate.tasks){tstate={filter:'all',tasks:[
+    {id:nid(),text:'Get across Box and Ring',project:'box-and-ring',done:false,open:true,subs:[
+      {id:nid(),text:'Read the full spec',done:false},{id:nid(),text:'Walk the Figma flows',done:false},{id:nid(),text:'List open questions for the client',done:false}]},
+    {id:nid(),text:'Draft the Phase 2 test plan (core fight loop)',project:'box-and-ring',done:false,open:false,subs:[
+      {id:nid(),text:'Real-time sync cases',done:false},{id:nid(),text:'Scheduling accept / decline cases',done:false},{id:nid(),text:'Ground-rules gate cases',done:false}]}
+  ]};}
+  function stampClosed(){tstate.tasks.forEach(function(t){var d=taskDone(t);if(d&&!t.closedAt)t.closedAt=Date.now();if(!d&&t.closedAt)t.closedAt=0;});}
+  function saveTasks(){stampClosed();store(TKEY,tstate);}
+  var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
+  function projState(id){if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];return pstate[id];}
+  function savePS(){store(PKEY,pstate);}
+  var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
+  if(!resData.pm)resData.pm={docs:[],examples:[{label:'Kickoff call examples',url:'https://docs.google.com/document/d/1XsLIrVnYsZGOjGE78WTNCjQGK7HT6vFgW7F5Ykb1kiY/edit'}]};
+  function resState(t){if(!resData[t])resData[t]={docs:[],examples:[]};if(!resData[t].docs)resData[t].docs=[];if(!resData[t].examples)resData[t].examples=[];if(!resData[t].templates)resData[t].templates=[];return resData[t];}
+  function saveRes(){store(RESKEY,resData);}
+  var TOOLKEY='appmakers-tools-v1'; var toolsData=load(TOOLKEY);
+  if(!toolsData){toolsData=[
+    {label:'ClickUp',url:'https://app.clickup.com',account:'',note:'Use the desktop app'},
+    {label:'AppMakers app',url:'',account:'',note:'Miguel provisions access'},
+    {label:'BrowserStack',url:'https://www.browserstack.com',account:'',note:'Shared login, ask Sheer. One user at a time'},
+    {label:'Figma',url:'https://www.figma.com',account:'',note:''},
+    {label:'JAM',url:'https://jam.dev',account:'',note:'Bug recorder'},
+    {label:'Every Time Zone',url:'https://everytimezone.com',account:'',note:''}
+  ]; store(TOOLKEY,toolsData);}
+  function saveTools(){store(TOOLKEY,toolsData);}
+  function renderTools(){
+    var host=document.getElementById('toolsList'); if(!host)return; host.innerHTML='';
+    var b=block('Your tools');
+    var list=document.createElement('div');
+    if(!toolsData.length){var e=document.createElement('p');e.className='hmuted';e.textContent='No tools yet. Add one below.';list.appendChild(e);}
+    toolsData.forEach(function(t,idx){
+      var card=document.createElement('div');card.className='toolcard';
+      var top=document.createElement('div');top.className='toolcard-top';
+      if(t.url){var a=document.createElement('a');a.textContent=t.label;a.href=t.url;a.target='_blank';a.rel='noopener';top.appendChild(a);}
+      else{var sp=document.createElement('span');sp.className='noname';sp.textContent=t.label;top.appendChild(sp);}
+      top.appendChild(btn('\u00D7','Remove',function(){toolsData.splice(idx,1);saveTools();renderTools();}));
+      card.appendChild(top);
+      if(t.account||t.note){var m=document.createElement('div');m.className='toolcard-meta';m.innerHTML=(t.account?'<span class="acct">'+esc(t.account)+'</span>':'')+((t.account&&t.note)?' · ':'')+(t.note?esc(t.note):'');card.appendChild(m);}
+      list.appendChild(card);
+    });
+    b.appendChild(list);
+    var f=document.createElement('form');f.className='tooladd';
+    var i1=document.createElement('input');i1.className='tr-input';i1.placeholder='Tool name';
+    var i2=document.createElement('input');i2.className='tr-input';i2.placeholder='https://... (optional)';
+    var i3=document.createElement('input');i3.className='tr-input';i3.placeholder='Account / email (optional)';
+    var i4=document.createElement('input');i4.className='tr-input';i4.placeholder='Note (e.g. password in Apple Passwords)';
+    var bt=document.createElement('button');bt.className='tr-addbtn';bt.type='submit';bt.textContent='+';
+    f.appendChild(i1);f.appendChild(i2);f.appendChild(i3);f.appendChild(i4);f.appendChild(bt);
+    f.onsubmit=function(e){e.preventDefault();var lab=i1.value.trim();if(!lab)return;toolsData.push({label:lab,url:i2.value.trim(),account:i3.value.trim(),note:i4.value.trim()});saveTools();renderTools();};
+    b.appendChild(f);host.appendChild(b);
+  }
+
+  var views=[].slice.call(document.querySelectorAll('.view'));
+  var tabnav=document.getElementById('tabnav');
+  var rail=document.getElementById('taskrail'), scrim=document.getElementById('scrim');
+  var TOKEY='appmakers-tasksopen';
+  function openRail(){document.body.classList.add('tasks-open');store(TOKEY,1);}
+  function closeRail(){document.body.classList.remove('tasks-open');store(TOKEY,0);}
+  function toggleRail(){if(document.body.classList.contains('tasks-open'))closeRail();else openRail();}
+  if(load(TOKEY))document.body.classList.add('tasks-open');
+
+  function route(){
+    var id=(location.hash||'#home').slice(1); if(!SECTION_TAB[id])id='home';
+    views.forEach(function(v){v.classList.toggle('active',v.id===id);});
+    document.body.setAttribute('data-view',id);
+    var tab=SECTION_TAB[id];
+    [].slice.call(tabnav.querySelectorAll('a')).forEach(function(a){a.classList.toggle('active',a.getAttribute('data-tab')===tab);});
+    document.title='AppMakers LA, '+(id==='home'?'Dashboard':TITLES[id]);
+    if(id==='home')renderHome();
+    if(id==='box-and-ring')renderProject('box-and-ring');
+    if(id==='projects')renderProjectsList();
+    if(id==='qa-resources')renderResources('qa');
+    if(id==='pm-resources')renderResources('pm');
+    if(id==='tools')renderTools();
+    decorate(id);
+    window.scrollTo(0,0);
+  }
+  window.addEventListener('hashchange',route);
+
+  /* ----- checklists ----- */
+  function setText(sel,t){var e=document.querySelector(sel);if(e)e.textContent=t;}
+  function refreshCheck(name){
+    var list=document.querySelector('[data-checklist="'+name+'"]'); if(!list)return;
+    var boxes=list.querySelectorAll('input[type=checkbox]'); var done=0; boxes.forEach(function(b){if(b.checked)done++;});
+    var total=boxes.length, pct=total?Math.round(done/total*100):0;
+    setText('[data-count="'+name+'"]',done+' / '+total);
+    var fill=document.querySelector('[data-fill="'+name+'"]'); if(fill)fill.style.width=pct+'%';
+    var tc=document.querySelector('[data-tcount="'+name+'"]'); if(tc){tc.textContent=done+' / '+total;tc.className=(done===total&&total)?'done':'';}
+    setText('[data-tpct="'+name+'"]',pct+'%');
+    var tf=document.querySelector('[data-tfill="'+name+'"]'); if(tf){tf.style.width=pct+'%';tf.className=(pct===100)?'full':'';}
+    if(name==='onboarding')renderObProgress();
+  }
+  document.querySelectorAll('[data-checklist]').forEach(function(list){
+    var name=list.getAttribute('data-checklist');
+    list.querySelectorAll('input[type=checkbox]').forEach(function(box){
+      var k=box.getAttribute('data-key'); if(checks[k])box.checked=true;
+      box.addEventListener('change',function(){checks[k]=box.checked;saveChecks();refreshCheck(name);});
+    });
+    refreshCheck(name);
+  });
+  function renderObProgress(){
+    var list=document.querySelector('[data-checklist="onboarding"]'); if(!list)return;
+    var b=list.querySelectorAll('input[type=checkbox]'); var d=0; b.forEach(function(x){if(x.checked)d++;});
+    var pct=b.length?Math.round(d/b.length*100):0;
+    var pe=document.getElementById('obPct'); if(pe)pe.textContent=pct+'%';
+    var fe=document.getElementById('obFill'); if(fe)fe.style.width=pct+'%';
+    var ne=document.getElementById('obNote'); if(ne)ne.textContent=d+' of '+b.length+' onboarding steps done.';
+  }
+
+  /* ----- task engine ----- */
+  var editing=null, focusSub=null, focusAt=null, noting=null, dragCtx=null;
+  function findTask(id){for(var i=0;i<tstate.tasks.length;i++)if(tstate.tasks[i].id===id)return tstate.tasks[i];return null;}
+  function taskDone(t){if(t.subs&&t.subs.length)return t.subs.every(function(s){return s.done;});return !!t.done;}
+  function inWhen(ts,w){if(!ts)return false;var n=new Date();var sod=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime();if(w==='today')return ts>=sod;if(w==='yesterday')return ts>=sod-86400000&&ts<sod;if(w==='week')return ts>=n.getTime()-7*86400000;return true;}
+  function reorderArr(arr,dragId,targetId){var di=-1,ti=-1,i;for(i=0;i<arr.length;i++){if(arr[i].id===dragId)di=i;if(arr[i].id===targetId)ti=i;}if(di<0||ti<0||di===ti)return;var it=arr.splice(di,1)[0];var ni=-1;for(i=0;i<arr.length;i++){if(arr[i].id===targetId){ni=i;break;}}if(ni<0)ni=arr.length;arr.splice(ni,0,it);}
+  function ibtn(sym,title,fn,on){var b=document.createElement('button');b.className='tbtn'+(on?' on':'');b.type='button';b.title=title;b.innerHTML='<svg><use href="#'+sym+'"/></svg>';b.onclick=fn;return b;}
+  function attachDnD(dragEl,rowEl,ctx){
+    dragEl.setAttribute('draggable','true');
+    dragEl.addEventListener('dragstart',function(e){e.stopPropagation();dragCtx=ctx;rowEl.classList.add('dragging');try{e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',ctx.id);e.dataTransfer.setDragImage(rowEl,12,12);}catch(_){}});
+    dragEl.addEventListener('dragend',function(e){e.stopPropagation();rowEl.classList.remove('dragging');});
+    rowEl.addEventListener('dragover',function(e){if(!dragCtx||dragCtx.type!==ctx.type||dragCtx.id===ctx.id)return;if(ctx.type==='sub'&&dragCtx.parentId!==ctx.parentId)return;if(ctx.type==='task'&&(dragCtx.project||null)!==(ctx.project||null))return;e.preventDefault();e.stopPropagation();rowEl.classList.add('drop-into');});
+    rowEl.addEventListener('dragleave',function(e){rowEl.classList.remove('drop-into');});
+    rowEl.addEventListener('drop',function(e){e.preventDefault();e.stopPropagation();rowEl.classList.remove('drop-into');if(!dragCtx||dragCtx.id===ctx.id){dragCtx=null;return;}
+      if(ctx.type==='task'&&dragCtx.type==='task'&&(dragCtx.project||null)===(ctx.project||null)){reorderArr(tstate.tasks,dragCtx.id,ctx.id);}
+      else if(ctx.type==='sub'&&dragCtx.type==='sub'&&dragCtx.parentId===ctx.parentId){var par=findTask(ctx.parentId);if(par&&par.subs)reorderArr(par.subs,dragCtx.id,ctx.id);}
+      dragCtx=null;saveTasks();renderAll();});
+  }
+  function btn(txt,title,fn){var b=document.createElement('button');b.className='tbtn';b.type='button';b.textContent=txt;b.title=title;b.onclick=fn;return b;}
+  function editInput(val){var i=document.createElement('input');i.className='tedit';i.value=val;i.setAttribute('data-edit','1');
+    i.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();commitEdit(i.value);}else if(e.key==='Escape'){editing=null;renderAll();}};
+    i.onblur=function(){commitEdit(i.value);};return i;}
+  function startEdit(tid,sid){editing={tid:tid,sid:sid};renderAll();}
+  function commitEdit(val){if(!editing)return;val=(val||'').trim();
+    if(editing.phase!=null){for(var pid in pstate){(pstate[pid].phases||[]).forEach(function(ph){if(ph.id===editing.phase&&val)ph.text=val;});}editing=null;savePS();renderAll();return;}
+    var t=findTask(editing.tid);
+    if(t){if(editing.sid==null){if(val)t.text=val;}else{var s=(t.subs||[]).filter(function(x){return x.id===editing.sid;})[0];if(s&&val)s.text=val;}}
+    editing=null;saveTasks();renderAll();}
+
+  function taskRow(t,showProj){
+    var done=taskDone(t), hasSubs=t.subs&&t.subs.length;
+    var wrap=document.createElement('div');wrap.className='task'+(done?' done':'')+((t.pending&&!done)?' pending':'');
+    var main=document.createElement('div');main.className='task-main';
+    var grip=document.createElement('span');grip.className='grip';grip.innerHTML='<svg><use href="#i-grip"/></svg>';main.appendChild(grip);
+    var caret=document.createElement('button');caret.type='button';caret.className='caret'+(t.open?' open':'')+(hasSubs?'':' hidden');caret.textContent='\u25B6';
+    caret.onclick=function(){t.open=!t.open;saveTasks();renderAll();};main.appendChild(caret);
+    var lbl=document.createElement('label');lbl.className='tcheck';var cb=document.createElement('input');cb.type='checkbox';cb.checked=done;
+    cb.onchange=function(){if(hasSubs){t.subs.forEach(function(s){s.done=cb.checked;});}else{t.done=cb.checked;}saveTasks();renderAll();};lbl.appendChild(cb);main.appendChild(lbl);
+    if(editing&&editing.tid===t.id&&editing.sid==null){main.appendChild(editInput(t.text));}
+    else{var sp=document.createElement('span');sp.className='ttext';sp.textContent=t.text;sp.title='Double-click to edit';sp.ondblclick=function(){startEdit(t.id,null);};main.appendChild(sp);
+      if(t.pending&&!done){var pc=document.createElement('span');pc.className='tstatus';pc.textContent='Pending';main.appendChild(pc);}
+      if(hasSubs){var mini=document.createElement('span');mini.className='tprog-mini';mini.textContent=t.subs.filter(function(s){return s.done;}).length+'/'+t.subs.length;main.appendChild(mini);}}
+    var acts=document.createElement('div');acts.className='tactions';
+    acts.appendChild(ibtn('i-pause','Toggle pending',function(){t.pending=!t.pending;saveTasks();renderAll();},(t.pending&&!done)));
+    acts.appendChild(ibtn('i-note','Note',function(){noting=(noting===t.id?null:t.id);renderAll();},!!(t.note&&t.note.trim())));
+    acts.appendChild(btn('+','Add subtask',function(){t.open=true;focusSub=t.id;if(!t.subs)t.subs=[];saveTasks();renderAll();}));
+    acts.appendChild(btn('\u00D7','Delete task',function(){tstate.tasks=tstate.tasks.filter(function(x){return x.id!==t.id;});saveTasks();renderAll();}));
+    main.appendChild(acts);wrap.appendChild(main);
+    attachDnD(grip,main,{type:'task',id:t.id,project:t.project||null});
+    if(noting===t.id){var na=document.createElement('div');na.className='tnote-edit';var ta=document.createElement('textarea');ta.className='tnote-input';ta.value=t.note||'';ta.placeholder='Add a note…';ta.setAttribute('data-noteedit','1');ta.onblur=function(){t.note=ta.value.trim();noting=null;saveTasks();renderAll();};na.appendChild(ta);wrap.appendChild(na);}
+    else if(t.note&&t.note.trim()){var nd=document.createElement('div');nd.className='tnote';nd.textContent=t.note;nd.title='Click to edit note';nd.onclick=function(){noting=t.id;renderAll();};wrap.appendChild(nd);}
+    if(showProj){var pss=document.createElement('select');pss.className='tproj';var o='<option value="">No project</option>';
+      PROJECTS.forEach(function(pp){o+='<option value="'+pp.id+'"'+(t.project===pp.id?' selected':'')+'>'+esc(pp.name)+'</option>';});
+      pss.innerHTML=o;pss.onchange=function(){t.project=pss.value||null;saveTasks();renderAll();};wrap.appendChild(pss);}
+    if(t.open&&(hasSubs||focusSub===t.id)){
+      var se=document.createElement('div');se.className='subs';
+      (t.subs||[]).forEach(function(sb){
+        var row=document.createElement('div');row.className='sub'+(sb.done?' done':'');
+        var sgrip=document.createElement('span');sgrip.className='grip';sgrip.innerHTML='<svg><use href="#i-grip"/></svg>';row.appendChild(sgrip);
+        var sl=document.createElement('label');sl.className='tcheck';var sc=document.createElement('input');sc.type='checkbox';sc.checked=sb.done;
+        sc.onchange=function(){sb.done=sc.checked;saveTasks();renderAll();};sl.appendChild(sc);row.appendChild(sl);
+        if(editing&&editing.tid===t.id&&editing.sid===sb.id){row.appendChild(editInput(sb.text));}
+        else{var ss=document.createElement('span');ss.className='ttext';ss.textContent=sb.text;ss.title='Double-click to edit';ss.ondblclick=function(){startEdit(t.id,sb.id);};row.appendChild(ss);}
+        var sa=document.createElement('div');sa.className='tactions';sa.appendChild(btn('\u00D7','Delete subtask',function(){t.subs=t.subs.filter(function(x){return x.id!==sb.id;});saveTasks();renderAll();}));
+        row.appendChild(sa);se.appendChild(row);
+        attachDnD(sgrip,row,{type:'sub',id:sb.id,parentId:t.id});
+      });
+      var ar=document.createElement('div');ar.className='subadd';var si=document.createElement('input');si.placeholder='Add a subtask…';si.setAttribute('data-subadd',t.id);
+      si.onkeydown=function(e){if(e.key==='Enter'){var v=si.value.trim();if(v){if(!t.subs)t.subs=[];t.subs.push({id:nid(),text:v,done:false});focusSub=t.id;saveTasks();renderAll();}}else if(e.key==='Escape'){focusSub=null;renderAll();}};
+      ar.appendChild(si);se.appendChild(ar);wrap.appendChild(se);
+    }
+    return wrap;
+  }
+  function addForm(project,where){
+    var f=document.createElement('form');f.className='tr-add';f.autocomplete='off';
+    var i=document.createElement('input');i.className='tr-input';i.placeholder='Add a task…';i.setAttribute('data-addat',where);
+    var b=document.createElement('button');b.className='tr-addbtn';b.type='submit';b.textContent='+';
+    f.appendChild(i);f.appendChild(b);
+    f.onsubmit=function(e){e.preventDefault();var v=i.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:project,done:false,open:false,subs:[]});focusAt=where;saveTasks();renderAll();};
+    return f;
+  }
+
+  function renderDrawer(){
+    var listEl=document.getElementById('trList'); if(!listEl)return;
+    var sel=document.getElementById('trProject'); var o='<option value="all">All projects</option>';
+    PROJECTS.forEach(function(p){o+='<option value="'+p.id+'">'+esc(p.name)+'</option>';}); sel.innerHTML=o; sel.value=tstate.filter||'all';
+    var linksEl=document.getElementById('trLinks'); linksEl.innerHTML='';
+    if(tstate.filter!=='all'){(projState(tstate.filter).links||[]).forEach(function(l){var a=document.createElement('a');a.textContent=l.label;a.href=l.url;if(l.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}linksEl.appendChild(a);});}
+    listEl.innerHTML='';
+    var tasks=tstate.tasks.filter(function(t){return tstate.filter==='all'||t.project===tstate.filter;});
+    var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
+    var cnt=document.getElementById('trCount'); if(cnt)cnt.textContent=tstate.tasks.length?open+' open':'';
+    var emp=document.getElementById('trEmpty'); if(emp)emp.hidden=tasks.length>0;
+    tasks.forEach(function(t){listEl.appendChild(taskRow(t,tstate.filter==='all'));});
+  }
+  function renderHome(){
+    renderObProgress();
+    var hp=document.getElementById('homeProjects');
+    if(hp){hp.innerHTML='';PROJECTS.forEach(function(p){var ps=projState(p.id);var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
+      var a=document.createElement('a');a.className='pcard';a.href='#'+p.id;a.innerHTML='<div class="pcard-t">'+esc(p.name)+'</div><div class="pcard-m"><span class="pill">'+esc(ps.stage)+'</span><span class="mono">'+open+' open'+((ps.budget&&ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?(' · '+Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100)+'% budget'):'')+'</span></div>';hp.appendChild(a);});}
+    var host=document.getElementById('homeTasks'); if(!host)return; host.innerHTML='';
+    var hf=tstate.homeFilter||(tstate.homeFilter={status:'open',when:'week'});
+    var bar=document.createElement('div');bar.className='taskfilter';
+    var segs=[['open','Open'],['closed','Closed'],['all','All']];
+    var bh='<div class="seg">'+segs.map(function(o){return '<button type="button" data-st="'+o[0]+'" class="'+(hf.status===o[0]?'active':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
+    if(hf.status==='closed'){var whens=[['today','Closed today'],['yesterday','Closed yesterday'],['week','Closed in last 7 days'],['all','All closed']];bh+='<select class="tr-select tf-when">'+whens.map(function(o){return '<option value="'+o[0]+'"'+(hf.when===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>';}
+    bar.innerHTML=bh;host.appendChild(bar);
+    bar.querySelectorAll('.seg button').forEach(function(bt){bt.onclick=function(){hf.status=bt.getAttribute('data-st');saveTasks();renderHome();};});
+    var wsel=bar.querySelector('.tf-when'); if(wsel)wsel.onchange=function(){hf.when=wsel.value;saveTasks();renderHome();};
+    function pass(t){var d=taskDone(t);if(hf.status==='open')return !d;if(hf.status==='all')return true;if(!d)return false;return inWhen(t.closedAt,hf.when);}
+    var groups=PROJECTS.map(function(p){return {id:p.id,name:p.name};}); groups.push({id:null,name:'No project'});
+    groups.forEach(function(g){
+      var items=tstate.tasks.filter(function(t){return (t.project||null)===g.id;}).filter(pass);
+      if(!items.length&&(hf.status==='closed'||g.id===null))return;
+      var opencount=items.filter(function(t){return !taskDone(t);}).length;
+      var h=document.createElement('div');h.className='tgroup-h';h.innerHTML='<span>'+esc(g.name)+'</span><span class="mono">'+(hf.status==='open'?opencount+' open':items.length+' shown')+'</span>';host.appendChild(h);
+      items.forEach(function(t){host.appendChild(taskRow(t,false));});
+      if(hf.status!=='closed')host.appendChild(addForm(g.id,'home-'+(g.id||'none')));
+    });
+  }
+  function block(t){var d=document.createElement('div');d.className='block';var h=document.createElement('h3');h.innerHTML=t;d.appendChild(h);return d;}
+  var pjView={};
+  function renderProject(id){
+    var ps=projState(id), sub=pjView[id]||'home';
+    var nav=document.getElementById('pjnav-'+id);
+    if(nav){
+      var ci=STAGES.indexOf(ps.stage);
+      var h='<button type="button" class="pjhome-btn'+(sub==='home'?' active':'')+'" data-sub="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/></svg>Home</button><div class="pjstepper">';
+      STAGES.forEach(function(stg,idx){
+        var state=idx<ci?'done':(idx===ci?'current':'future');
+        h+='<button type="button" class="pjstep '+state+(sub===stg?' viewing':'')+'" data-sub="'+esc(stg)+'"><span class="node">'+(idx<ci?'\u2713':(idx+1))+'</span><span class="slabel">'+esc(stg)+'</span>'+(idx===ci?'<span class="snow">Now</span>':'')+'</button>';
+      });
+      h+='</div>';nav.innerHTML=h;
+      nav.querySelectorAll('[data-sub]').forEach(function(btn2){btn2.onclick=function(){pjView[id]=btn2.getAttribute('data-sub');renderProject(id);window.scrollTo(0,0);};});
+    }
+    var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id);
+    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Testing'&&!!tst);
+    if(home)home.style.display=isHome?'':'none';
+    if(rnd)rnd.style.display=isRnd?'':'none';
+    if(tst)tst.style.display=isTest?'':'none';
+    if(stg)stg.style.display=(!isHome&&!isRnd&&!isTest)?'':'none';
+    if(isHome)renderPJHome(id);
+    else if(isRnd)renderStageBar(id,rnd,'R&D');
+    else if(isTest)renderStageBar(id,tst,'Testing');
+    else renderPJStage(id,sub);
+  }
+  function renderStageBar(id,container,stageName){
+    if(!container)return; var ps=projState(id);
+    var old=container.querySelector('.pj-stagebar'); if(old)old.remove();
+    var bar=document.createElement('div');bar.className='pj-stagebar';var isCur=ps.stage===stageName;
+    bar.innerHTML='<span>Project is currently in <b>'+esc(ps.stage)+'</b></span>'+(isCur?'<span class="cur-ok mono">YOU ARE HERE</span>':'<button type="button" class="mf-btn sm">Set '+esc(stageName)+' as current</button>');
+    container.insertBefore(bar,container.firstChild);
+    var b2=bar.querySelector('button'); if(b2)b2.onclick=function(){ps.stage=stageName;savePS();renderProject(id);renderProjectsList();renderHome();};
+  }
+  function renderPJStage(id,stageName){
+    var host=document.getElementById('pjstage-'+id); if(!host)return; host.innerHTML='';
+    renderStageBar(id,host,stageName);
+    var b=document.createElement('div');b.className='block';
+    b.innerHTML='<h3>'+esc(stageName)+'</h3><p class="hmuted">This is where the '+esc(stageName)+' outputs live. Ask me to add stage-specific content here, or track the work as epics and tasks on the project Home.</p>';
+    host.appendChild(b);
+  }
+  function renderPJHome(id){
+    var host=document.getElementById('pjhome-'+id); if(!host)return; host.innerHTML=''; var ps=projState(id);
+    var open=tstate.tasks.filter(function(t){return t.project===id&&!taskDone(t);}).length;
+    var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length;
+    var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
+    var st=document.createElement('div');st.className='pj-stats';
+    st.innerHTML='<div class="pstat"><span class="k">Stage</span><span class="v">'+esc(ps.stage)+'</span></div><div class="pstat"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span></div><div class="pstat"><span class="k">Open tasks</span><span class="v">'+open+'</span></div><div class="pstat"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span></div>';
+    host.appendChild(st);
+    var tb=block('Active tasks');var its=tstate.tasks.filter(function(t){return t.project===id;});
+    if(!its.length){var e=document.createElement('p');e.className='hmuted';e.textContent='No tasks yet. Add one below.';tb.appendChild(e);}
+    its.forEach(function(t){tb.appendChild(taskRow(t,false));});tb.appendChild(addForm(id,'pjhome-'+id));host.appendChild(tb);
+    var bb=block('Budget');
+    bb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Used vs total, pull the numbers from the Makers app (hours or dollars).</p><div class="budget-edit"><label>Used <input type="number" min="0" class="bnum" data-b="used" value="'+esc(ps.budget.used)+'"></label><span class="bsep">/</span><label>Total <input type="number" min="0" class="bnum" data-b="total" value="'+esc(ps.budget.total)+'"></label><span class="bpct'+(bpct==null?' muted':'')+'">'+(bpct!=null?bpct+'% used':'not set')+'</span></div><div class="tbar" style="margin-top:10px"><span style="width:'+(bpct!=null?bpct:0)+'%"></span></div>');
+    bb.querySelectorAll('.bnum').forEach(function(inp){inp.onchange=function(){ps.budget[inp.getAttribute('data-b')]=inp.value;savePS();renderProject(id);renderProjectsList();renderHome();};});
+    host.appendChild(bb);
+    var eb=block('Stages &amp; epics');eb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Your own breakdown for this project. Add, tick, rename or remove.</p>');
+    var el=document.createElement('div');el.className='phases';
+    ps.phases.forEach(function(ph){
+      var row=document.createElement('div');row.className='sub'+(ph.done?' done':'');
+      var l=document.createElement('label');l.className='tcheck';var c=document.createElement('input');c.type='checkbox';c.checked=ph.done;c.onchange=function(){ph.done=c.checked;savePS();renderProject(id);renderProjectsList();};l.appendChild(c);row.appendChild(l);
+      if(editing&&editing.phase===ph.id){row.appendChild(editInput(ph.text));}
+      else{var sp=document.createElement('span');sp.className='ttext';sp.textContent=ph.text;sp.title='Double-click to edit';sp.ondblclick=function(){editing={phase:ph.id};renderAll();};row.appendChild(sp);}
+      var sa=document.createElement('div');sa.className='tactions';sa.appendChild(btn('\u00D7','Delete',function(){ps.phases=ps.phases.filter(function(x){return x.id!==ph.id;});savePS();renderProject(id);renderProjectsList();}));row.appendChild(sa);el.appendChild(row);
+    });
+    eb.appendChild(el);
+    var pf=document.createElement('form');pf.className='tr-add';var pi=document.createElement('input');pi.className='tr-input';pi.placeholder='Add a stage or epic…';pi.setAttribute('data-addat','phase-'+id);
+    var pbtn=document.createElement('button');pbtn.className='tr-addbtn';pbtn.type='submit';pbtn.textContent='+';pf.appendChild(pi);pf.appendChild(pbtn);
+    pf.onsubmit=function(e){e.preventDefault();var v=pi.value.trim();if(!v)return;ps.phases.push({id:nid(),text:v,done:false});focusAt='phase-'+id;savePS();renderAll();};
+    eb.appendChild(pf);host.appendChild(eb);
+    var lb=block('Project links');var ll=document.createElement('div');
+    (ps.links||[]).forEach(function(lk,idx){var row=document.createElement('div');row.className='linkrow';
+      var a=document.createElement('a');a.textContent=lk.label;a.href=lk.url;if(lk.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}row.appendChild(a);
+      row.appendChild(btn('\u00D7','Remove link',function(){ps.links.splice(idx,1);savePS();renderProject(id);}));ll.appendChild(row);});
+    lb.appendChild(ll);
+    var lf=document.createElement('form');lf.className='linkadd';
+    var li1=document.createElement('input');li1.className='tr-input';li1.placeholder='Label';
+    var li2=document.createElement('input');li2.className='tr-input';li2.placeholder='https://...';
+    var lbt=document.createElement('button');lbt.className='tr-addbtn';lbt.type='submit';lbt.textContent='+';
+    lf.appendChild(li1);lf.appendChild(li2);lf.appendChild(lbt);
+    lf.onsubmit=function(e){e.preventDefault();var lab=li1.value.trim(),url=li2.value.trim();if(!lab||!url)return;if(!ps.links)ps.links=[];ps.links.push({label:lab,url:url});savePS();renderProject(id);};
+    lb.appendChild(lf);host.appendChild(lb);
+    var db=block('Key dates &amp; deadlines');var dl=document.createElement('div');
+    (ps.dates||[]).forEach(function(dt,idx){var row=document.createElement('div');row.className='linkrow';
+      var sp=document.createElement('span');sp.innerHTML='<b>'+esc(dt.when)+'</b> '+esc(dt.label);row.appendChild(sp);
+      row.appendChild(btn('\u00D7','Remove',function(){ps.dates.splice(idx,1);savePS();renderProject(id);}));dl.appendChild(row);});
+    db.appendChild(dl);
+    var df=document.createElement('form');df.className='linkadd';
+    var di1=document.createElement('input');di1.className='tr-input';di1.placeholder='When (e.g. Thu 9am)';
+    var di2=document.createElement('input');di2.className='tr-input';di2.placeholder='What';
+    var dbt=document.createElement('button');dbt.className='tr-addbtn';dbt.type='submit';dbt.textContent='+';
+    df.appendChild(di1);df.appendChild(di2);df.appendChild(dbt);
+    df.onsubmit=function(e){e.preventDefault();var w=di1.value.trim(),lab=di2.value.trim();if(!w||!lab)return;if(!ps.dates)ps.dates=[];ps.dates.push({when:w,label:lab});savePS();renderProject(id);};
+    db.appendChild(df);host.appendChild(db);
+  }
+  function pick(sel){if(rail&&rail.classList.contains('open')){var d=document.querySelector('#taskrail '+sel);if(d)return d;}return document.querySelector('.view.active '+sel)||document.querySelector(sel);}
+  function renderAll(){
+    renderDrawer();
+    var v=document.body.getAttribute('data-view');
+    if(v==='home')renderHome();
+    if(v==='box-and-ring')renderProject('box-and-ring');
+    var t;
+    if(editing){t=pick('[data-edit]');if(t){t.focus();try{t.setSelectionRange(t.value.length,t.value.length);}catch(e){}}}
+    else if(focusSub){t=pick('[data-subadd="'+focusSub+'"]');if(t)t.focus();focusSub=null;}
+    else if(focusAt){t=pick('[data-addat="'+focusAt+'"]');if(t)t.focus();focusAt=null;}
+    else if(noting){t=pick('[data-noteedit]');if(t)t.focus();}
+  }
+
+  var tg=document.getElementById('tasktoggle'); if(tg)tg.onclick=toggleRail;
+  var cl=document.getElementById('trClose'); if(cl)cl.onclick=closeRail;
+  if(scrim)scrim.onclick=closeRail;
+  var ho=document.getElementById('homeOpenTasks'); if(ho)ho.onclick=openRail;
+  var sp2=document.getElementById('trProject'); if(sp2)sp2.addEventListener('change',function(){tstate.filter=sp2.value;saveTasks();renderDrawer();});
+  var af=document.getElementById('trAddForm'); if(af)af.addEventListener('submit',function(e){e.preventDefault();var inp=document.getElementById('trAdd');var v=inp.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:(tstate.filter!=='all'?tstate.filter:null),done:false,open:false,subs:[]});inp.value='';saveTasks();renderAll();});
+
+  function renderTrack(t){
+    var sec=document.getElementById(t); if(!sec)return;
+    var st=trackStats(t), pct=st.total?Math.round(st.done/st.total*100):0, nx=nextModule(t);
+    var host=sec.querySelector('.track-prog');
+    if(!host){host=document.createElement('div');host.className='track-prog';var sh=sec.querySelector('.sec-head');if(sh)sh.insertAdjacentElement('afterend',host);else sec.insertBefore(host,sec.firstChild);}
+    var msg=st.done>=st.total?('You are fully trained on '+trackName(t)+'. Use these as reference any time.'):('You are '+st.done+' of '+st.total+' modules through '+trackName(t)+'. Next up is highlighted.');
+    host.innerHTML='<div class="tp-top"><b>'+msg+'</b><span class="mono">'+st.done+' / '+st.total+'</span></div><div class="tbar"><span style="width:'+pct+'%"></span></div>';
+    MODULES[t].forEach(function(mid,idx){var tl=sec.querySelector('a.tile[href="#'+mid+'"]');if(!tl)return;
+      tl.classList.toggle('done',!!mstate[mid]);tl.classList.toggle('next',mid===nx);
+      var b=tl.querySelector('.tbadge');if(!b){b=document.createElement('span');b.className='tbadge';tl.appendChild(b);}
+      b.textContent=mstate[mid]?'\u2713':String(idx+1);});
+  }
+  function afterModule(id){
+    var t=trackOf(id), sec=document.getElementById(id); if(!sec)return;
+    var f=sec.querySelector('.module-foot'); if(!f){f=document.createElement('div');f.className='module-foot';sec.appendChild(f);}
+    var done=!!mstate[id], idx=MODULES[t].indexOf(id), nx=MODULES[t][idx+1];
+    var nextHtml=nx?('<a class="mf-next" href="#'+nx+'">Next: '+TITLES[nx]+' \u2192</a>'):('<a class="mf-next" href="#'+t+'">Back to '+trackName(t)+' \u2192</a>');
+    f.innerHTML='<button type="button" class="mf-btn'+(done?' is-done':'')+'">'+(done?'Completed \u2713':'Mark module complete')+'</button>'+nextHtml;
+    f.querySelector('.mf-btn').onclick=function(){mstate[id]=!mstate[id];saveM();afterModule(id);renderTraining();};
+  }
+  function tileProg(href,name){
+    var tl=document.querySelector('a.tile[href="#'+href+'"]'); if(!tl)return;
+    var list=document.querySelector('[data-checklist="'+name+'"]'); if(!list)return;
+    var bx=list.querySelectorAll('input[type=checkbox]'),d=0;bx.forEach(function(x){if(x.checked)d++;});
+    var total=bx.length,pct=total?Math.round(d/total*100):0;
+    var w=tl.querySelector('.tprog'); if(!w){w=document.createElement('div');w.className='tprog';w.innerHTML='<div class="tprog-top"><span class="c"></span><span class="pct"></span></div><div class="tbar"><span></span></div>';tl.appendChild(w);}
+    w.querySelector('.c').textContent=d+' / '+total; w.querySelector('.pct').textContent=pct+'%';
+    var f=w.querySelector('.tbar span'); f.style.width=pct+'%'; f.className=(pct===100)?'full':'';
+  }
+  function renderTraining(){['qa','pm'].forEach(function(t){var st=trackStats(t),pct=st.total?Math.round(st.done/st.total*100):0;
+    var pe=document.querySelector('[data-trainpct="'+t+'"]');if(pe)pe.textContent=pct+'%';
+    var fe=document.querySelector('[data-trainfill="'+t+'"]');if(fe){fe.style.width=pct+'%';fe.className=(pct===100)?'full':'';}});}
+  function injectExamples(){for(var t in MODULES){MODULES[t].forEach(function(id){if(id.indexOf('resources')>-1)return;
+    var sec=document.getElementById(id);if(!sec||sec.querySelector('.example'))return;
+    var ex=document.createElement('div');ex.className='example todo';
+    ex.innerHTML='<span class="xl">Real-world example</span><p>Space to drop a real example from your projects as you hit one. Ask to have it added here.</p>';
+    sec.appendChild(ex);});}}
+  function decorate(id){tileProg('ob-sequence','onboarding');tileProg('habits','habits');if(MODULES[id])renderTrack(id);if(trackOf(id))afterModule(id);renderTraining();}
+
+  function currentEpic(ps){for(var i=0;i<ps.phases.length;i++)if(!ps.phases[i].done)return ps.phases[i].text;return ps.phases.length?'All epics complete':'No epics yet';}
+  function renderProjectsList(){
+    var host=document.getElementById('projectsList'); if(!host)return; host.innerHTML='';
+    PROJECTS.forEach(function(p){
+      var ps=projState(p.id);
+      var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
+      var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length, ppct=pt?Math.round(pd/pt*100):0;
+      var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
+      var a=document.createElement('a');a.className='projcard';a.href='#'+p.id;
+      a.innerHTML='<div class="projcard-top"><h3>'+esc(p.name)+'</h3><span class="pill">'+esc(ps.stage)+'</span></div>'+
+        '<div class="pc-grid">'+
+          '<div class="pc-field wide"><span class="k">Current epic</span><span class="v">'+esc(currentEpic(ps))+'</span></div>'+
+          '<div class="pc-field"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span><div class="tbar"><span style="width:'+ppct+'%"></span></div></div>'+
+          '<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
+          '<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
+        '</div><span class="pc-open">Open project \u2192</span>';
+      host.appendChild(a);
+    });
+  }
+  function renderResList(host,track,kind,title,desc){
+    var data=resState(track)[kind]; host.innerHTML='';
+    var b=block(title); b.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">'+desc+'</p>');
+    var list=document.createElement('div');
+    if(!data.length){var e=document.createElement('p');e.className='hmuted';e.textContent='Nothing added yet. Paste a link below.';list.appendChild(e);}
+    data.forEach(function(item,idx){var row=document.createElement('div');row.className='linkrow';
+      var a=document.createElement('a');a.textContent=item.label;a.href=item.url;if(item.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}row.appendChild(a);
+      row.appendChild(btn('\u00D7','Remove',function(){data.splice(idx,1);saveRes();renderResources(track);}));list.appendChild(row);});
+    b.appendChild(list);
+    var f=document.createElement('form');f.className='linkadd';
+    var i1=document.createElement('input');i1.className='tr-input';i1.placeholder='Label';
+    var i2=document.createElement('input');i2.className='tr-input';i2.placeholder='https://...';
+    var bt=document.createElement('button');bt.className='tr-addbtn';bt.type='submit';bt.textContent='+';
+    f.appendChild(i1);f.appendChild(i2);f.appendChild(bt);
+    f.onsubmit=function(e){e.preventDefault();var lab=i1.value.trim(),url=i2.value.trim();if(!lab||!url)return;data.push({label:lab,url:url});saveRes();renderResources(track);};
+    b.appendChild(f); host.appendChild(b);
+  }
+  function renderResources(track){
+    var d=document.getElementById('res-docs-'+track), t=document.getElementById('res-tpl-'+track), x=document.getElementById('res-ex-'+track);
+    if(d)renderResList(d,track,'docs','Documents & links','Standard docs you keep coming back to. Paste a share link (Google Docs, Drive, Notion). File upload is not supported in this page.');
+    if(t)renderResList(t,track,'templates','Templates','Reusable templates you fill in each time, e.g. a spec skeleton, a bug write-up, a kickoff agenda.');
+    if(x)renderResList(x,track,'examples','Examples','Real examples to learn from, e.g. sample kickoff calls or a filled-in spec.');
+  }
+  if(!load('appmakers-seed-ob1')){
+    var mk=function(text,project,subs){return {id:nid(),text:text,project:project||null,done:false,open:false,subs:(subs||[]).map(function(x){return {id:nid(),text:x,done:false};})};};
+    var pack=[
+      mk('Get added to Box and Ring (ClickUp + Makers app)','box-and-ring',['Ask Dovrat to add me','Anelta: shadow QA tasks']),
+      mk('Get added to the Box and Ring weekly standup (Dovrat)','box-and-ring',[]),
+      mk('Read the Box and Ring doc','box-and-ring',[]),
+      mk('Send Dovrat a daily update',null,['Progress','Pending items','Daily plan']),
+      mk('Ask Dovrat: do I need an Android phone?',null,[]),
+      mk('Get added to the Glimmerverse project (Labi)',null,['Shadow meetings']),
+      mk('Investigate Kaizen project status',null,[]),
+      mk('Get my role set to QA in the system (Shir)',null,[]),
+      mk('Set up email signature',null,[]),
+      mk('Learn the QA standard process',null,[]),
+      mk('Go through the R&D onboarding documentation',null,[]),
+      mk('Go through the R&D kickoff calls training',null,[]),
+      mk('Touch base with Dan',null,[]),
+      mk('Touch base with Dovrat',null,[]),
+      mk('Configure phone to receive Slack messages',null,[]),
+      mk('Find out: how are projects scoped before a client signs? Can we see it in the system?',null,[]),
+      mk('Find out: how to track project progress over time (MVP tasks, what dev is on, schedule)',null,[])
+    ];
+    tstate.tasks=tstate.tasks.concat(pack); saveTasks(); store('appmakers-seed-ob1',1);
+    var bps=projState('box-and-ring');
+    if(!bps.links.some(function(l){return (l.url||'').indexOf('1g-nGQ4')>-1;})){bps.links.push({label:'Box and Ring doc',url:'https://docs.google.com/document/d/1g-nGQ4DpIAdM6rB1kmumH-GFGUpTYfnG1PNMv4EkWq4/edit'});savePS();}
+  }
+  injectExamples();
+  renderDrawer();
+  route();
+})();
+</script>
+
+
+</body>
+</html>
