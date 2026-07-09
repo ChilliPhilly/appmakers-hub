@@ -577,6 +577,22 @@
   .modal-btns .tf-clear:hover{color:var(--ink);border-color:var(--slate);}
   .modal-danger{border:1px solid var(--crit);background:var(--crit);color:#fff;font:inherit;font-size:.84rem;padding:8px 15px;border-radius:8px;cursor:pointer;}
   .modal-danger:disabled{opacity:.45;cursor:default;}
+  /* ===== compact drawer header ===== */
+  .tr-controls{flex-direction:row;flex-wrap:wrap;align-items:center;gap:8px;padding:9px 12px;}
+  .tr-controls .tr-select{flex:1;min-width:130px;width:auto;}
+  .tr-controls .tr-links{width:100%;}
+  #trToolbar{flex:0 0 auto;}
+  #trToolbar .taskfilter.compact{margin-bottom:0;gap:6px;flex-wrap:nowrap;}
+  .tf-funnel{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--muted);}
+  .tf-funnel svg{width:15px;height:15px;}
+  .tf-funnel.on{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-wash);}
+  .tf-holder{display:contents;}
+  #trToolbar .tf-more{width:100%;margin:2px 0 0;row-gap:6px;}
+  #trToolbar .tf-more .tf-when{max-width:170px;}
+  .tr-add{padding:9px 12px 7px;}
+  .tr-add .tr-input,.tr-addbtn{height:34px;}
+  .tr-addbtn{font-size:1.1rem;}
+  .tr-list{padding-top:6px;}
 </style>
 
 <!-- icon sprite -->
@@ -606,6 +622,7 @@
   <symbol id="i-spec" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M8.5 13l2 2 4-4"/></symbol>
   <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="15" cy="18" r="1.4"/></symbol>
   <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="6" width="3.5" height="12" rx="1"/><rect x="13.5" y="6" width="3.5" height="12" rx="1"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16l-6 7v6l-4-2v-4z"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V5h4v2M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
   <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></symbol>
 </svg>
@@ -1958,30 +1975,43 @@ QA &amp; Project Manager, AppMakers LA
     else if(fl.sort==='priority')out=out.slice().sort(function(a,b){return (b.hi?1:0)-(a.hi?1:0);});
     else if(fl.sort==='due')out=out.slice().sort(function(a,b){return (a.due||'9999-99-99').localeCompare(b.due||'9999-99-99');});
     return out;}
-  function taskToolbar(scope,onchange,clearScope){
+  function taskToolbar(scope,onchange,clearScope,compact){
     var fl=tfilters(scope);
-    var bar=document.createElement('div');bar.className='taskfilter';
+    var bar=document.createElement('div');bar.className='taskfilter'+(compact?' compact':'');
     var seg=document.createElement('div');seg.className='seg';
     [['open','Open'],['closed','Closed'],['all','All']].forEach(function(o){
       var b=document.createElement('button');b.type='button';b.textContent=o[1];if(fl.status===o[0])b.className='active';
       b.onclick=function(){fl.status=o[0];saveTasks();onchange();};seg.appendChild(b);});
     bar.appendChild(seg);
+    var more=bar;
+    if(compact){
+      var hasActive=(fl.q&&fl.q.length)||(fl.sort&&fl.sort!=='manual');
+      var fb=document.createElement('button');fb.type='button';fb.className='tbtn tf-funnel'+((fl.more||hasActive)?' on':'');
+      fb.title='Search, sort and clean up';fb.innerHTML='<svg><use href="#i-filter"/></svg>';
+      fb.onclick=function(){fl.more=!fl.more;saveTasks();onchange();};
+      bar.appendChild(fb);
+      if(!fl.more){return bar;}
+      more=document.createElement('div');more.className='taskfilter tf-more';
+      var holder=document.createElement('div');holder.appendChild(bar);holder.appendChild(more);
+      holder.className='tf-holder';
+      bar=holder;
+    }
     if(fl.status==='closed'){var w=document.createElement('select');w.className='tr-select tf-when';
       [['today','Closed today'],['yesterday','Closed yesterday'],['week','Last 7 days'],['all','All closed']].forEach(function(o){
         var op=document.createElement('option');op.value=o[0];op.textContent=o[1];if(fl.when===o[0])op.selected=true;w.appendChild(op);});
-      w.onchange=function(){fl.when=w.value;saveTasks();onchange();};bar.appendChild(w);}
+      w.onchange=function(){fl.when=w.value;saveTasks();onchange();};more.appendChild(w);}
     var q=document.createElement('input');q.className='tr-input tf-q';q.placeholder='Search…';q.value=fl.q||'';q.setAttribute('data-q',scope);
     q.oninput=function(){fl.q=q.value;saveTasks();onchange();
       var qq=document.querySelector('[data-q="'+scope+'"]');if(qq){qq.focus();try{qq.setSelectionRange(qq.value.length,qq.value.length);}catch(e){}}};
-    bar.appendChild(q);
+    more.appendChild(q);
     var so=document.createElement('select');so.className='tr-select tf-sort';
     [['manual','My order'],['newest','Newest'],['az','A to Z'],['priority','Priority'],['due','Due date']].forEach(function(o){
       var op=document.createElement('option');op.value=o[0];op.textContent='Sort: '+o[1];if(fl.sort===o[0])op.selected=true;so.appendChild(op);});
-    so.onchange=function(){fl.sort=so.value;saveTasks();onchange();};bar.appendChild(so);
+    so.onchange=function(){fl.sort=so.value;saveTasks();onchange();};more.appendChild(so);
     if(clearScope!==undefined){var cb2=document.createElement('button');cb2.type='button';cb2.className='tbtn tf-sweep';cb2.title='Clean up completed tasks\u2026';
       cb2.innerHTML='<svg><use href="#i-trash"/></svg>';
       cb2.onclick=function(){openClearModal(clearScope);};
-      bar.appendChild(cb2);}
+      more.appendChild(cb2);}
     return bar;}
   function updateBadge(){
     var tg2=document.getElementById('tasktoggle'); if(!tg2)return;
@@ -2233,7 +2263,7 @@ QA &amp; Project Manager, AppMakers LA
     PROJECTS.forEach(function(p){o+='<option value="'+p.id+'">'+esc(p.name)+'</option>';}); sel.innerHTML=o; sel.value=tstate.filter||'all';
     var linksEl=document.getElementById('trLinks'); linksEl.innerHTML='';
     if(tstate.filter!=='all'){(projState(tstate.filter).links||[]).forEach(function(l){var a=document.createElement('a');a.textContent=l.label;a.href=l.url;if(l.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}linksEl.appendChild(a);});}
-    var tbHost=document.getElementById('trToolbar'); if(tbHost){tbHost.innerHTML='';tbHost.appendChild(taskToolbar('drawer',renderDrawer,tstate.filter||'all'));}
+    var tbHost=document.getElementById('trToolbar'); if(tbHost){tbHost.innerHTML='';tbHost.appendChild(taskToolbar('drawer',renderDrawer,tstate.filter||'all',true));}
     listEl.innerHTML='';
     var fl=tfilters('drawer');
     var tasks=pipeline(tstate.tasks.filter(function(t){return tstate.filter==='all'||t.project===tstate.filter;}),fl);
