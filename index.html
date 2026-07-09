@@ -593,6 +593,16 @@
   .tr-add .tr-input,.tr-addbtn{height:34px;}
   .tr-addbtn{font-size:1.1rem;}
   .tr-list{padding-top:6px;}
+  /* ===== fixed funnel position + parent/sub hierarchy ===== */
+  #trMore:empty{display:none;}
+  #trMore .tf-more{padding:0 12px 9px;margin:0;border-bottom:1px solid var(--line-soft);row-gap:6px;}
+  .task > .task-main .ttext{font-weight:600;}
+  .task.done > .task-main .ttext{font-weight:500;}
+  .subs{margin:0 12px 10px 42px;border-left:3px solid #CBD6FA;background:var(--paper);border-radius:0 8px 8px 0;}
+  .sub .ttext{font-weight:400;font-size:.84rem;}
+  .sub .tcheck input{width:16px;height:16px;border-radius:5px;}
+  .sub .tcheck input:checked::after{left:4.5px;top:1px;width:4px;height:8px;}
+  .task .tproj{margin-left:46px;}
 </style>
 
 <!-- icon sprite -->
@@ -1884,6 +1894,7 @@ QA &amp; Project Manager, AppMakers LA
     <div class="tr-links" id="trLinks"></div>
     <div id="trToolbar"></div>
   </div>
+  <div id="trMore"></div>
   <form class="tr-add" id="trAddForm" autocomplete="off">
     <input class="tr-input" id="trAdd" placeholder="Add a task…" aria-label="Add a task">
     <button class="tr-addbtn" type="submit" aria-label="Add task">+</button>
@@ -1990,11 +2001,10 @@ QA &amp; Project Manager, AppMakers LA
       fb.title='Search, sort and clean up';fb.innerHTML='<svg><use href="#i-filter"/></svg>';
       fb.onclick=function(){fl.more=!fl.more;saveTasks();onchange();};
       bar.appendChild(fb);
+      var mh=document.getElementById('trMore'); if(mh)mh.innerHTML='';
       if(!fl.more){return bar;}
       more=document.createElement('div');more.className='taskfilter tf-more';
-      var holder=document.createElement('div');holder.appendChild(bar);holder.appendChild(more);
-      holder.className='tf-holder';
-      bar=holder;
+      if(mh)mh.appendChild(more);
     }
     if(fl.status==='closed'){var w=document.createElement('select');w.className='tr-select tf-when';
       [['today','Closed today'],['yesterday','Closed yesterday'],['week','Last 7 days'],['all','All closed']].forEach(function(o){
