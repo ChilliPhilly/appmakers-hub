@@ -603,6 +603,17 @@
   .sub .tcheck input{width:16px;height:16px;border-radius:5px;}
   .sub .tcheck input:checked::after{left:4.5px;top:1px;width:4px;height:8px;}
   .task .tproj{margin-left:46px;}
+  /* ===== unified task panel ===== */
+  .tp-row{margin-bottom:8px;flex-wrap:nowrap;}
+  .tp-proj{flex:1;min-width:120px;width:auto;font-size:.82rem;padding:6px 8px;}
+  .tp-more{margin:0 0 8px;row-gap:6px;}
+  .tp-empty{padding:8px 4px;}
+  #trPanel{padding:10px 12px 14px;}
+  #trPanel .tr-add{padding:0 0 8px;}
+  .tr-linkswrap:has(.tr-links:empty){display:none;}
+  .tr-linkswrap{padding:8px 12px 0;}
+  .hcard-tasks .tr-add{padding:0 0 8px;}
+  .hcard-tasks .tgroup-h:first-of-type{border-top:none;}
 </style>
 
 <!-- icon sprite -->
@@ -1889,18 +1900,8 @@ QA &amp; Project Manager, AppMakers LA
     <h2>Tasks</h2><span class="cnt" id="trCount"></span>
     <button class="tr-close" id="trClose" type="button" aria-label="Close tasks">&times;</button>
   </div>
-  <div class="tr-controls">
-    <select class="tr-select" id="trProject" aria-label="Filter by project"></select>
-    <div class="tr-links" id="trLinks"></div>
-    <div id="trToolbar"></div>
-  </div>
-  <div id="trMore"></div>
-  <form class="tr-add" id="trAddForm" autocomplete="off">
-    <input class="tr-input" id="trAdd" placeholder="Add a task…" aria-label="Add a task">
-    <button class="tr-addbtn" type="submit" aria-label="Add task">+</button>
-  </form>
-  <div class="tr-list" id="trList"></div>
-  <p class="tr-empty" id="trEmpty" hidden>Nothing here yet. Add a task above.</p>
+  <div class="tr-linkswrap"><div class="tr-links" id="trLinks"></div></div>
+  <div class="tr-list" id="trPanel"></div>
   <div class="tr-data">
     <button type="button" class="tf-clear" id="trExport">Export data</button>
     <button type="button" class="tf-clear" id="trImport">Import data</button>
@@ -1986,43 +1987,78 @@ QA &amp; Project Manager, AppMakers LA
     else if(fl.sort==='priority')out=out.slice().sort(function(a,b){return (b.hi?1:0)-(a.hi?1:0);});
     else if(fl.sort==='due')out=out.slice().sort(function(a,b){return (a.due||'9999-99-99').localeCompare(b.due||'9999-99-99');});
     return out;}
-  function taskToolbar(scope,onchange,clearScope,compact){
+  function taskPanel(host,scope,lockProject,rerender){
+    host.innerHTML='';
     var fl=tfilters(scope);
-    var bar=document.createElement('div');bar.className='taskfilter'+(compact?' compact':'');
-    var seg=document.createElement('div');seg.className='seg';
-    [['open','Open'],['closed','Closed'],['all','All']].forEach(function(o){
-      var b=document.createElement('button');b.type='button';b.textContent=o[1];if(fl.status===o[0])b.className='active';
-      b.onclick=function(){fl.status=o[0];saveTasks();onchange();};seg.appendChild(b);});
-    bar.appendChild(seg);
-    var more=bar;
-    if(compact){
-      var hasActive=(fl.q&&fl.q.length)||(fl.sort&&fl.sort!=='manual');
-      var fb=document.createElement('button');fb.type='button';fb.className='tbtn tf-funnel'+((fl.more||hasActive)?' on':'');
-      fb.title='Search, sort and clean up';fb.innerHTML='<svg><use href="#i-filter"/></svg>';
-      fb.onclick=function(){fl.more=!fl.more;saveTasks();onchange();};
-      bar.appendChild(fb);
-      var mh=document.getElementById('trMore'); if(mh)mh.innerHTML='';
-      if(!fl.more){return bar;}
-      more=document.createElement('div');more.className='taskfilter tf-more';
-      if(mh)mh.appendChild(more);
+    if(fl.project===undefined)fl.project='all';
+    var pj=(lockProject!==undefined)?lockProject:fl.project;
+    var row=document.createElement('div');row.className='taskfilter compact tp-row';
+    if(lockProject===undefined){
+      var sel=document.createElement('select');sel.className='tr-select tp-proj';
+      var o='<option value="all">All projects</option>';
+      PROJECTS.forEach(function(p){o+='<option value="'+p.id+'">'+esc(p.name)+'</option>';});
+      o+='<option value="none">No project</option>';
+      sel.innerHTML=o;sel.value=pj;
+      sel.onchange=function(){fl.project=sel.value;saveTasks();rerender();};
+      row.appendChild(sel);
     }
-    if(fl.status==='closed'){var w=document.createElement('select');w.className='tr-select tf-when';
-      [['today','Closed today'],['yesterday','Closed yesterday'],['week','Last 7 days'],['all','All closed']].forEach(function(o){
-        var op=document.createElement('option');op.value=o[0];op.textContent=o[1];if(fl.when===o[0])op.selected=true;w.appendChild(op);});
-      w.onchange=function(){fl.when=w.value;saveTasks();onchange();};more.appendChild(w);}
-    var q=document.createElement('input');q.className='tr-input tf-q';q.placeholder='Search…';q.value=fl.q||'';q.setAttribute('data-q',scope);
-    q.oninput=function(){fl.q=q.value;saveTasks();onchange();
-      var qq=document.querySelector('[data-q="'+scope+'"]');if(qq){qq.focus();try{qq.setSelectionRange(qq.value.length,qq.value.length);}catch(e){}}};
-    more.appendChild(q);
-    var so=document.createElement('select');so.className='tr-select tf-sort';
-    [['manual','My order'],['newest','Newest'],['az','A to Z'],['priority','Priority'],['due','Due date']].forEach(function(o){
-      var op=document.createElement('option');op.value=o[0];op.textContent='Sort: '+o[1];if(fl.sort===o[0])op.selected=true;so.appendChild(op);});
-    so.onchange=function(){fl.sort=so.value;saveTasks();onchange();};more.appendChild(so);
-    if(clearScope!==undefined){var cb2=document.createElement('button');cb2.type='button';cb2.className='tbtn tf-sweep';cb2.title='Clean up completed tasks\u2026';
-      cb2.innerHTML='<svg><use href="#i-trash"/></svg>';
-      cb2.onclick=function(){openClearModal(clearScope);};
-      more.appendChild(cb2);}
-    return bar;}
+    var seg=document.createElement('div');seg.className='seg';
+    [['open','Open'],['closed','Closed'],['all','All']].forEach(function(o2){
+      var b2=document.createElement('button');b2.type='button';b2.textContent=o2[1];if(fl.status===o2[0])b2.className='active';
+      b2.onclick=function(){fl.status=o2[0];saveTasks();rerender();};seg.appendChild(b2);});
+    row.appendChild(seg);
+    var hasActive=(fl.q&&fl.q.length)||(fl.sort&&fl.sort!=='manual');
+    var fb=document.createElement('button');fb.type='button';fb.className='tbtn tf-funnel'+((fl.more||hasActive)?' on':'');
+    fb.title='Search, sort and clean up';fb.innerHTML='<svg><use href="#i-filter"/></svg>';
+    fb.onclick=function(){fl.more=!fl.more;saveTasks();rerender();};
+    row.appendChild(fb);
+    host.appendChild(row);
+    var clearScope=(pj==='all')?'all':(pj==='none'?null:pj);
+    if(fl.more){
+      var more=document.createElement('div');more.className='taskfilter tp-more';
+      if(fl.status==='closed'){var w=document.createElement('select');w.className='tr-select tf-when';
+        [['today','Closed today'],['yesterday','Closed yesterday'],['week','Last 7 days'],['all','All closed']].forEach(function(o3){
+          var op=document.createElement('option');op.value=o3[0];op.textContent=o3[1];if(fl.when===o3[0])op.selected=true;w.appendChild(op);});
+        w.onchange=function(){fl.when=w.value;saveTasks();rerender();};more.appendChild(w);}
+      var q=document.createElement('input');q.className='tr-input tf-q';q.placeholder='Search…';q.value=fl.q||'';q.setAttribute('data-q',scope);
+      q.oninput=function(){fl.q=q.value;saveTasks();rerender();
+        var qq=document.querySelector('[data-q="'+scope+'"]');if(qq){qq.focus();try{qq.setSelectionRange(qq.value.length,qq.value.length);}catch(e){}}};
+      more.appendChild(q);
+      var so=document.createElement('select');so.className='tr-select tf-sort';
+      [['manual','My order'],['newest','Newest'],['az','A to Z'],['priority','Priority'],['due','Due date']].forEach(function(o4){
+        var op2=document.createElement('option');op2.value=o4[0];op2.textContent='Sort: '+o4[1];if(fl.sort===o4[0])op2.selected=true;so.appendChild(op2);});
+      so.onchange=function(){fl.sort=so.value;saveTasks();rerender();};more.appendChild(so);
+      var cb2=document.createElement('button');cb2.type='button';cb2.className='tbtn tf-sweep';cb2.title='Clean up completed tasks\u2026';
+      cb2.innerHTML='<svg><use href="#i-trash"/></svg>';cb2.onclick=function(){openClearModal(clearScope);};
+      more.appendChild(cb2);
+      host.appendChild(more);
+    }
+    if(fl.status!=='closed')host.appendChild(addForm((pj==='all'||pj==='none')?null:pj,scope+'-add'));
+    function inScope(t){if(pj==='all')return true;var p2=t.project||null;return pj==='none'?p2===null:p2===pj;}
+    var showProjChip=(pj==='all');
+    if(fl.status!=='closed'){
+      var dueNow=tstate.tasks.filter(function(t){return !taskDone(t)&&t.due&&t.due<=todayStr()&&inScope(t)&&taskMatches(t,fl.q);});
+      if(dueNow.length){var dh=document.createElement('div');dh.className='tgroup-h due-h';dh.innerHTML='<span>Due today / overdue</span><span class="mono">'+dueNow.length+'</span>';host.appendChild(dh);
+        dueNow.forEach(function(t){host.appendChild(taskRow(t,showProjChip));});}
+    }
+    var any=false;
+    if(pj==='all'){
+      var groups=PROJECTS.map(function(p){return {id:p.id,name:p.name};});groups.push({id:null,name:'No project'});
+      groups.forEach(function(g){
+        var items=pipeline(tstate.tasks.filter(function(t){return (t.project||null)===g.id;}),fl);
+        if(!items.length)return;
+        any=true;
+        var opencount=items.filter(function(t){return !taskDone(t);}).length;
+        var h=document.createElement('div');h.className='tgroup-h';h.innerHTML='<span>'+esc(g.name)+'</span><span class="mono">'+(fl.status==='open'?opencount+' open':items.length+' shown')+'</span>';host.appendChild(h);
+        items.forEach(function(t){host.appendChild(taskRow(t,false));});
+      });
+    }else{
+      var items2=pipeline(tstate.tasks.filter(inScope),fl);
+      items2.forEach(function(t){host.appendChild(taskRow(t,false));});
+      any=items2.length>0;
+    }
+    if(!any){var e=document.createElement('p');e.className='hmuted tp-empty';e.textContent=(fl.status==='closed')?'No completed tasks match.':'Nothing here yet. Add a task above.';host.appendChild(e);}
+  }
   function updateBadge(){
     var tg2=document.getElementById('tasktoggle'); if(!tg2)return;
     var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
@@ -2268,19 +2304,13 @@ QA &amp; Project Manager, AppMakers LA
   }
 
   function renderDrawer(){
-    var listEl=document.getElementById('trList'); if(!listEl)return;
-    var sel=document.getElementById('trProject'); var o='<option value="all">All projects</option>';
-    PROJECTS.forEach(function(p){o+='<option value="'+p.id+'">'+esc(p.name)+'</option>';}); sel.innerHTML=o; sel.value=tstate.filter||'all';
-    var linksEl=document.getElementById('trLinks'); linksEl.innerHTML='';
-    if(tstate.filter!=='all'){(projState(tstate.filter).links||[]).forEach(function(l){var a=document.createElement('a');a.textContent=l.label;a.href=l.url;if(l.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}linksEl.appendChild(a);});}
-    var tbHost=document.getElementById('trToolbar'); if(tbHost){tbHost.innerHTML='';tbHost.appendChild(taskToolbar('drawer',renderDrawer,tstate.filter||'all',true));}
-    listEl.innerHTML='';
-    var fl=tfilters('drawer');
-    var tasks=pipeline(tstate.tasks.filter(function(t){return tstate.filter==='all'||t.project===tstate.filter;}),fl);
+    var host=document.getElementById('trPanel'); if(!host)return;
+    var fl=tfilters('drawer'); if(fl.project===undefined)fl.project='all';
+    var linksEl=document.getElementById('trLinks'); if(linksEl){linksEl.innerHTML='';
+      if(fl.project!=='all'&&fl.project!=='none'){(projState(fl.project).links||[]).forEach(function(l){var a=document.createElement('a');a.textContent=l.label;a.href=l.url;if(l.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}linksEl.appendChild(a);});}}
+    taskPanel(host,'drawer',undefined,renderDrawer);
     var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
     var cnt=document.getElementById('trCount'); if(cnt)cnt.textContent=tstate.tasks.length?open+' open':'';
-    var emp=document.getElementById('trEmpty'); if(emp)emp.hidden=tasks.length>0;
-    tasks.forEach(function(t){listEl.appendChild(taskRow(t,tstate.filter==='all'));});
     updateBadge();
   }
   function renderHome(){
@@ -2288,23 +2318,8 @@ QA &amp; Project Manager, AppMakers LA
     var hp=document.getElementById('homeProjects');
     if(hp){hp.innerHTML='';PROJECTS.forEach(function(p){var ps=projState(p.id);var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
       var a=document.createElement('a');a.className='pcard';a.href='#'+p.id;a.innerHTML='<div class="pcard-t">'+esc(p.name)+'</div><div class="pcard-m"><span class="pill">'+esc(ps.stage)+'</span><span class="mono">'+open+' open'+((ps.budget&&ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?(' \u00B7 '+Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100)+'% budget'):'')+'</span></div>';hp.appendChild(a);});}
-    var host=document.getElementById('homeTasks'); if(!host)return; host.innerHTML='';
-    var fl=tfilters('home');
-    host.appendChild(taskToolbar('home',renderHome,'all'));
-    if(fl.status!=='closed'){
-      var dueNow=tstate.tasks.filter(function(t){return !taskDone(t)&&t.due&&t.due<=todayStr()&&taskMatches(t,fl.q);});
-      if(dueNow.length){var dh=document.createElement('div');dh.className='tgroup-h due-h';dh.innerHTML='<span>Due today / overdue</span><span class="mono">'+dueNow.length+'</span>';host.appendChild(dh);
-        dueNow.forEach(function(t){host.appendChild(taskRow(t,true));});}
-    }
-    var groups=PROJECTS.map(function(p){return {id:p.id,name:p.name};}); groups.push({id:null,name:'No project'});
-    groups.forEach(function(g){
-      var items=pipeline(tstate.tasks.filter(function(t){return (t.project||null)===g.id;}),fl);
-      if(!items.length&&(fl.status==='closed'||g.id===null||fl.q))return;
-      var opencount=items.filter(function(t){return !taskDone(t);}).length;
-      var h=document.createElement('div');h.className='tgroup-h';h.innerHTML='<span>'+esc(g.name)+'</span><span class="mono">'+(fl.status==='open'?opencount+' open':items.length+' shown')+'</span>';host.appendChild(h);
-      items.forEach(function(t){host.appendChild(taskRow(t,false));});
-      if(fl.status!=='closed'&&!fl.q)host.appendChild(addForm(g.id,'home-'+(g.id||'none')));
-    });
+    var host=document.getElementById('homeTasks'); if(!host)return;
+    taskPanel(host,'home',undefined,renderHome);
     updateBadge();
   }
   function block(t){var d=document.createElement('div');d.className='block';var h=document.createElement('h3');h.innerHTML=t;d.appendChild(h);return d;}
@@ -2356,13 +2371,10 @@ QA &amp; Project Manager, AppMakers LA
     var st=document.createElement('div');st.className='pj-stats';
     st.innerHTML='<div class="pstat"><span class="k">Stage</span><span class="v">'+esc(ps.stage)+'</span></div><div class="pstat"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span></div><div class="pstat"><span class="k">Open tasks</span><span class="v">'+open+'</span></div><div class="pstat"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span></div>';
     host.appendChild(st);
-    var tb=block('Active tasks');
-    tb.appendChild(taskToolbar('proj',function(){renderProject(id);},id));
-    var fl2=tfilters('proj');
-    var its=pipeline(tstate.tasks.filter(function(t){return t.project===id;}),fl2);
-    if(!its.length){var e=document.createElement('p');e.className='hmuted';e.textContent='Nothing matches here. Add one below.';tb.appendChild(e);}
-    its.forEach(function(t){tb.appendChild(taskRow(t,false));});
-    if(fl2.status!=='closed')tb.appendChild(addForm(id,'pjhome-'+id));
+    var tb=block('Tasks');
+    var inner=document.createElement('div');
+    taskPanel(inner,'proj',id,function(){renderProject(id);});
+    tb.appendChild(inner);
     host.appendChild(tb);
     var bb=block('Budget');
     bb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Used vs total, pull the numbers from the Makers app (hours or dollars).</p><div class="budget-edit"><label>Used <input type="number" min="0" class="bnum" data-b="used" value="'+esc(ps.budget.used)+'"></label><span class="bsep">/</span><label>Total <input type="number" min="0" class="bnum" data-b="total" value="'+esc(ps.budget.total)+'"></label><span class="bpct'+(bpct==null?' muted':'')+'">'+(bpct!=null?bpct+'% used':'not set')+'</span></div><div class="tbar" style="margin-top:10px"><span style="width:'+(bpct!=null?bpct:0)+'%"></span></div>');
@@ -2423,8 +2435,6 @@ QA &amp; Project Manager, AppMakers LA
   var cl=document.getElementById('trClose'); if(cl)cl.onclick=closeRail;
   if(scrim)scrim.onclick=closeRail;
   var ho=document.getElementById('homeOpenTasks'); if(ho)ho.onclick=openRail;
-  var sp2=document.getElementById('trProject'); if(sp2)sp2.addEventListener('change',function(){tstate.filter=sp2.value;saveTasks();renderDrawer();});
-  var af=document.getElementById('trAddForm'); if(af)af.addEventListener('submit',function(e){e.preventDefault();var inp=document.getElementById('trAdd');var v=inp.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:(tstate.filter!=='all'?tstate.filter:null),done:false,open:false,subs:[],createdAt:Date.now()});inp.value='';saveTasks();renderAll();});
 
   function renderTrack(t){
     var sec=document.getElementById(t); if(!sec)return;
