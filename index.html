@@ -560,6 +560,23 @@
   .tr-list{padding:10px 12px 14px;}
   #trToolbar .taskfilter .seg button{padding:6px 11px;}
   #trToolbar .tf-sort{max-width:132px;}
+  /* ===== clear-completed modal + subtle sweep button ===== */
+  .tf-sweep{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--muted);}
+  .tf-sweep:hover{color:var(--crit);border-color:var(--crit);background:var(--card);}
+  .tf-sweep svg{width:15px;height:15px;}
+  .modal-scrim{position:fixed;inset:0;background:rgba(20,25,35,.45);z-index:90;display:grid;place-items:center;padding:20px;}
+  .modal-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 16px 50px rgba(23,28,38,.25);
+    padding:20px 22px;width:min(420px,94vw);}
+  .modal-card h3{font-size:1.05rem;margin-bottom:6px;}
+  .modal-scopes{display:flex;flex-direction:column;gap:0;margin-bottom:12px;}
+  .modal-scopes .check{padding:7px 6px;}
+  .modal-age{display:flex;flex-direction:column;gap:7px;font-size:.85rem;color:var(--muted);margin-bottom:12px;}
+  .modal-age .tr-select{width:100%;}
+  .modal-count{font-size:.85rem;font-weight:600;margin-bottom:14px;color:var(--ink);}
+  .modal-btns{display:flex;justify-content:flex-end;gap:10px;}
+  .modal-btns .tf-clear:hover{color:var(--ink);border-color:var(--slate);}
+  .modal-danger{border:1px solid var(--crit);background:var(--crit);color:#fff;font:inherit;font-size:.84rem;padding:8px 15px;border-radius:8px;cursor:pointer;}
+  .modal-danger:disabled{opacity:.45;cursor:default;}
 </style>
 
 <!-- icon sprite -->
@@ -589,6 +606,7 @@
   <symbol id="i-spec" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9z"/><path d="M8.5 13l2 2 4-4"/></symbol>
   <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="15" cy="18" r="1.4"/></symbol>
   <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="6" width="3.5" height="12" rx="1"/><rect x="13.5" y="6" width="3.5" height="12" rx="1"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 7V5h4v2M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></symbol>
   <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></symbol>
 </svg>
 
@@ -1960,13 +1978,9 @@ QA &amp; Project Manager, AppMakers LA
     [['manual','My order'],['newest','Newest'],['az','A to Z'],['priority','Priority'],['due','Due date']].forEach(function(o){
       var op=document.createElement('option');op.value=o[0];op.textContent='Sort: '+o[1];if(fl.sort===o[0])op.selected=true;so.appendChild(op);});
     so.onchange=function(){fl.sort=so.value;saveTasks();onchange();};bar.appendChild(so);
-    if(clearScope!==undefined){var cb2=document.createElement('button');cb2.type='button';cb2.className='tf-clear';cb2.textContent='Clear completed';
-      cb2.onclick=function(){
-        var doomed=tstate.tasks.filter(function(t){return taskDone(t)&&(clearScope==='all'||(t.project||null)===clearScope);});
-        if(!doomed.length){alert('No completed tasks to clear here.');return;}
-        if(!confirm('Delete '+doomed.length+' completed task'+(doomed.length>1?'s':'')+'? This cannot be undone.'))return;
-        var ids={};doomed.forEach(function(t){ids[t.id]=1;});
-        tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();renderAll();};
+    if(clearScope!==undefined){var cb2=document.createElement('button');cb2.type='button';cb2.className='tbtn tf-sweep';cb2.title='Clean up completed tasks\u2026';
+      cb2.innerHTML='<svg><use href="#i-trash"/></svg>';
+      cb2.onclick=function(){openClearModal(clearScope);};
       bar.appendChild(cb2);}
     return bar;}
   function updateBadge(){
@@ -1975,6 +1989,52 @@ QA &amp; Project Manager, AppMakers LA
     var b=tg2.querySelector('.tcount');
     if(!b){b=document.createElement('span');b.className='tcount';tg2.appendChild(b);}
     b.textContent=open||'';b.style.display=open?'':'none';}
+  function openClearModal(defaultScope){
+    var old=document.getElementById('clearModal'); if(old)old.remove();
+    var scrim2=document.createElement('div');scrim2.className='modal-scrim';scrim2.id='clearModal';
+    var card=document.createElement('div');card.className='modal-card';
+    card.innerHTML='<h3>Clean up completed tasks</h3><p class="hmuted" style="margin-bottom:12px">Choose what to remove. This deletes tasks permanently.</p>';
+    var scopes=PROJECTS.map(function(p){return {id:p.id,name:p.name};}); scopes.push({id:null,name:'No project'});
+    var scopeWrap=document.createElement('div');scopeWrap.className='modal-scopes';
+    var boxes=[];
+    scopes.forEach(function(g){
+      var lb=document.createElement('label');lb.className='check';
+      var cb=document.createElement('input');cb.type='checkbox';
+      cb.checked=(defaultScope==='all')||((g.id||null)===defaultScope);
+      cb.setAttribute('data-scope',g.id===null?'':g.id);
+      var sp=document.createElement('span');sp.className='ct';sp.textContent=g.name;
+      lb.appendChild(cb);lb.appendChild(sp);scopeWrap.appendChild(lb);boxes.push(cb);
+    });
+    card.appendChild(scopeWrap);
+    var ageRow=document.createElement('div');ageRow.className='modal-age';
+    ageRow.innerHTML='<span>Only clear tasks completed:</span>';
+    var ageSel=document.createElement('select');ageSel.className='tr-select';
+    [['7','More than 7 days ago (keep recent)'],['1','More than a day ago'],['0','Any time (everything done)']].forEach(function(o){
+      var op=document.createElement('option');op.value=o[0];op.textContent=o[1];ageSel.appendChild(op);});
+    ageRow.appendChild(ageSel);card.appendChild(ageRow);
+    var countEl=document.createElement('p');countEl.className='modal-count';card.appendChild(countEl);
+    var btns=document.createElement('div');btns.className='modal-btns';
+    var cancel=document.createElement('button');cancel.type='button';cancel.className='tf-clear';cancel.textContent='Cancel';
+    var del=document.createElement('button');del.type='button';del.className='modal-danger';
+    btns.appendChild(cancel);btns.appendChild(del);card.appendChild(btns);
+    scrim2.appendChild(card);document.body.appendChild(scrim2);
+    function doomedNow(){
+      var sel={};boxes.forEach(function(b2){if(b2.checked)sel[b2.getAttribute('data-scope')]=1;});
+      var days=Number(ageSel.value);var cutoff=days?Date.now()-days*86400000:Infinity;
+      return tstate.tasks.filter(function(t){
+        if(!taskDone(t))return false;
+        if(!sel[t.project||''])return false;
+        if(days===0)return true;
+        return (t.closedAt||0)<cutoff;});
+    }
+    function refresh2(){var n=doomedNow().length;countEl.textContent=n?('This will delete '+n+' task'+(n>1?'s':'')+'.'):'Nothing matches, nothing will be deleted.';
+      del.textContent=n?('Delete '+n+' task'+(n>1?'s':'')):'Delete';del.disabled=!n;}
+    boxes.forEach(function(b2){b2.onchange=refresh2;});ageSel.onchange=refresh2;refresh2();
+    cancel.onclick=function(){scrim2.remove();};
+    scrim2.onclick=function(e){if(e.target===scrim2)scrim2.remove();};
+    del.onclick=function(){var ids={};doomedNow().forEach(function(t){ids[t.id]=1;});
+      tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();scrim2.remove();renderAll();};
+  }
   var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1'];
   function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
