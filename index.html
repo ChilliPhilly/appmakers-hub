@@ -511,6 +511,29 @@
   .tnote{font-size:.82rem;color:var(--muted);background:var(--paper);border-left:2px solid var(--warn);padding:6px 10px;margin:2px 0 6px 34px;border-radius:0 6px 6px 0;cursor:text;white-space:pre-wrap;}
   .tnote-edit{margin:4px 0 8px 34px;}
   .tnote-input{width:100%;min-height:54px;font:inherit;font-size:.83rem;padding:8px 10px;border:1px solid var(--accent);border-radius:8px;resize:vertical;background:var(--card);color:var(--ink);}
+  /* ===== task toolbar v2, due, priority, badge, data ===== */
+  .taskfilter{row-gap:8px;}
+  .tf-q{flex:1;min-width:110px;max-width:230px;padding:6px 10px;font-size:.82rem;}
+  .tf-sort{max-width:150px;font-size:.8rem;padding:6px 8px;}
+  .tf-clear{border:1px solid var(--line);background:var(--card);color:var(--muted);font:inherit;font-size:.76rem;padding:6px 11px;border-radius:8px;cursor:pointer;}
+  .tf-clear:hover{color:var(--crit);border-color:var(--crit);}
+  #trToolbar .taskfilter{margin-bottom:0;}
+  #trToolbar .tf-q{max-width:none;}
+  .tcount{margin-left:6px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.66rem;
+    padding:1px 7px;border-radius:99px;}
+  .thigh{flex:0 0 auto;font-family:var(--mono);font-size:.56rem;text-transform:uppercase;letter-spacing:.08em;
+    background:var(--crit-wash);color:var(--crit);padding:2px 7px;border-radius:99px;margin-top:2px;}
+  .tdue{flex:0 0 auto;font-family:var(--mono);font-size:.62rem;color:var(--muted);border:1px solid var(--line);
+    padding:1px 7px;border-radius:99px;margin-top:2px;white-space:nowrap;}
+  .tdue.over{color:var(--crit);border-color:#F1C9C9;background:var(--crit-wash);font-weight:600;}
+  .tdue-edit{display:flex;gap:6px;align-items:center;margin:4px 0 8px 34px;}
+  .tdue-edit .tr-input{max-width:180px;padding:5px 8px;font-size:.82rem;}
+  .tgroup-h.due-h span:first-child{color:var(--crit);}
+  .tr-data{display:flex;gap:8px;padding:10px 16px;border-top:1px solid var(--line-soft);}
+  .tr-datapanel{padding:0 16px 14px;}
+  .tr-datapanel textarea{width:100%;min-height:80px;font-family:var(--mono);font-size:.68rem;
+    border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--paper);color:var(--ink);resize:vertical;}
+  .tr-datarow{display:flex;gap:10px;align-items:center;margin-top:8px;font-size:.78rem;}
 </style>
 
 <!-- icon sprite -->
@@ -1798,6 +1821,7 @@ QA &amp; Project Manager, AppMakers LA
   <div class="tr-controls">
     <select class="tr-select" id="trProject" aria-label="Filter by project"></select>
     <div class="tr-links" id="trLinks"></div>
+    <div id="trToolbar"></div>
   </div>
   <form class="tr-add" id="trAddForm" autocomplete="off">
     <input class="tr-input" id="trAdd" placeholder="Add a task…" aria-label="Add a task">
@@ -1805,6 +1829,14 @@ QA &amp; Project Manager, AppMakers LA
   </form>
   <div class="tr-list" id="trList"></div>
   <p class="tr-empty" id="trEmpty" hidden>Nothing here yet. Add a task above.</p>
+  <div class="tr-data">
+    <button type="button" class="tf-clear" id="trExport">Export data</button>
+    <button type="button" class="tf-clear" id="trImport">Import data</button>
+  </div>
+  <div class="tr-datapanel" id="trDataPanel" hidden>
+    <textarea id="trDataText" spellcheck="false"></textarea>
+    <div class="tr-datarow"><button type="button" class="mf-btn sm" id="trDataApply" hidden>Apply import</button><span class="hmuted" id="trDataMsg"></span></div>
+  </div>
 </aside>
 
 </div>
@@ -1813,7 +1845,7 @@ QA &amp; Project Manager, AppMakers LA
 <footer>
   <div class="wrap">
     <span>AppMakers LA, QA/PM onboarding reference.</span>
-    <span class="mono">A living doc · last updated 8 Jul 2026</span>
+    <span class="mono">A living doc · last updated 9 Jul 2026</span>
   </div>
 </footer>
 
@@ -1859,6 +1891,68 @@ QA &amp; Project Manager, AppMakers LA
   ]};}
   function stampClosed(){tstate.tasks.forEach(function(t){var d=taskDone(t);if(d&&!t.closedAt)t.closedAt=Date.now();if(!d&&t.closedAt)t.closedAt=0;});}
   function saveTasks(){stampClosed();store(TKEY,tstate);}
+  function todayStr(){var n=new Date();return n.getFullYear()+'-'+('0'+(n.getMonth()+1)).slice(-2)+'-'+('0'+n.getDate()).slice(-2);}
+  function isOverdue(t){return !!t.due&&!taskDone(t)&&t.due<todayStr();}
+  function fmtDue(d){var m=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];var p=(d||'').split('-');if(p.length!==3)return d;return m[Number(p[1])-1]+' '+Number(p[2]);}
+  function tfilters(scope){
+    if(!tstate.tf)tstate.tf={};
+    if(!tstate.tf[scope]){tstate.tf[scope]={status:'open',when:'week',q:'',sort:'manual'};
+      if(scope==='home'&&tstate.homeFilter){tstate.tf.home.status=tstate.homeFilter.status||'open';tstate.tf.home.when=tstate.homeFilter.when||'week';}}
+    return tstate.tf[scope];
+  }
+  function taskMatches(t,q){if(!q)return true;q=q.toLowerCase();
+    if((t.text||'').toLowerCase().indexOf(q)>-1)return true;
+    if((t.note||'').toLowerCase().indexOf(q)>-1)return true;
+    var ss=t.subs||[];for(var i=0;i<ss.length;i++)if((ss[i].text||'').toLowerCase().indexOf(q)>-1)return true;
+    return false;}
+  function pipeline(items,fl){
+    var out=items.filter(function(t){var d=taskDone(t);
+      if(fl.status==='open'&&d)return false;
+      if(fl.status==='closed'){if(!d)return false;if(!inWhen(t.closedAt,fl.when))return false;}
+      return taskMatches(t,fl.q);});
+    if(fl.sort==='newest')out=out.slice().sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0);});
+    else if(fl.sort==='az')out=out.slice().sort(function(a,b){return (a.text||'').localeCompare(b.text||'');});
+    else if(fl.sort==='priority')out=out.slice().sort(function(a,b){return (b.hi?1:0)-(a.hi?1:0);});
+    else if(fl.sort==='due')out=out.slice().sort(function(a,b){return (a.due||'9999-99-99').localeCompare(b.due||'9999-99-99');});
+    return out;}
+  function taskToolbar(scope,onchange,clearScope){
+    var fl=tfilters(scope);
+    var bar=document.createElement('div');bar.className='taskfilter';
+    var seg=document.createElement('div');seg.className='seg';
+    [['open','Open'],['closed','Closed'],['all','All']].forEach(function(o){
+      var b=document.createElement('button');b.type='button';b.textContent=o[1];if(fl.status===o[0])b.className='active';
+      b.onclick=function(){fl.status=o[0];saveTasks();onchange();};seg.appendChild(b);});
+    bar.appendChild(seg);
+    if(fl.status==='closed'){var w=document.createElement('select');w.className='tr-select tf-when';
+      [['today','Closed today'],['yesterday','Closed yesterday'],['week','Last 7 days'],['all','All closed']].forEach(function(o){
+        var op=document.createElement('option');op.value=o[0];op.textContent=o[1];if(fl.when===o[0])op.selected=true;w.appendChild(op);});
+      w.onchange=function(){fl.when=w.value;saveTasks();onchange();};bar.appendChild(w);}
+    var q=document.createElement('input');q.className='tr-input tf-q';q.placeholder='Search…';q.value=fl.q||'';q.setAttribute('data-q',scope);
+    q.oninput=function(){fl.q=q.value;saveTasks();onchange();
+      var qq=document.querySelector('[data-q="'+scope+'"]');if(qq){qq.focus();try{qq.setSelectionRange(qq.value.length,qq.value.length);}catch(e){}}};
+    bar.appendChild(q);
+    var so=document.createElement('select');so.className='tr-select tf-sort';
+    [['manual','My order'],['newest','Newest'],['az','A to Z'],['priority','Priority'],['due','Due date']].forEach(function(o){
+      var op=document.createElement('option');op.value=o[0];op.textContent='Sort: '+o[1];if(fl.sort===o[0])op.selected=true;so.appendChild(op);});
+    so.onchange=function(){fl.sort=so.value;saveTasks();onchange();};bar.appendChild(so);
+    if(clearScope!==undefined){var cb2=document.createElement('button');cb2.type='button';cb2.className='tf-clear';cb2.textContent='Clear completed';
+      cb2.onclick=function(){
+        var doomed=tstate.tasks.filter(function(t){return taskDone(t)&&(clearScope==='all'||(t.project||null)===clearScope);});
+        if(!doomed.length){alert('No completed tasks to clear here.');return;}
+        if(!confirm('Delete '+doomed.length+' completed task'+(doomed.length>1?'s':'')+'? This cannot be undone.'))return;
+        var ids={};doomed.forEach(function(t){ids[t.id]=1;});
+        tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();renderAll();};
+      bar.appendChild(cb2);}
+    return bar;}
+  function updateBadge(){
+    var tg2=document.getElementById('tasktoggle'); if(!tg2)return;
+    var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
+    var b=tg2.querySelector('.tcount');
+    if(!b){b=document.createElement('span');b.className='tcount';tg2.appendChild(b);}
+    b.textContent=open||'';b.style.display=open?'':'none';}
+  var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1'];
+  function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
+  function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
   function projState(id){if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];return pstate[id];}
   function savePS(){store(PKEY,pstate);}
@@ -1961,7 +2055,7 @@ QA &amp; Project Manager, AppMakers LA
   }
 
   /* ----- task engine ----- */
-  var editing=null, focusSub=null, focusAt=null, noting=null, dragCtx=null;
+  var editing=null, focusSub=null, focusAt=null, noting=null, dragCtx=null, duing=null;
   function findTask(id){for(var i=0;i<tstate.tasks.length;i++)if(tstate.tasks[i].id===id)return tstate.tasks[i];return null;}
   function taskDone(t){if(t.subs&&t.subs.length)return t.subs.every(function(s){return s.done;});return !!t.done;}
   function inWhen(ts,w){if(!ts)return false;var n=new Date();var sod=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime();if(w==='today')return ts>=sod;if(w==='yesterday')return ts>=sod-86400000&&ts<sod;if(w==='week')return ts>=n.getTime()-7*86400000;return true;}
@@ -2001,8 +2095,12 @@ QA &amp; Project Manager, AppMakers LA
     if(editing&&editing.tid===t.id&&editing.sid==null){main.appendChild(editInput(t.text));}
     else{var sp=document.createElement('span');sp.className='ttext';sp.textContent=t.text;sp.title='Double-click to edit';sp.ondblclick=function(){startEdit(t.id,null);};main.appendChild(sp);
       if(t.pending&&!done){var pc=document.createElement('span');pc.className='tstatus';pc.textContent='Pending';main.appendChild(pc);}
+      if(t.hi&&!done){var hc=document.createElement('span');hc.className='thigh';hc.textContent='High';main.appendChild(hc);}
+      if(t.due){var dc=document.createElement('span');dc.className='tdue'+(isOverdue(t)?' over':'');dc.textContent=fmtDue(t.due);dc.title='Due date';main.appendChild(dc);}
       if(hasSubs){var mini=document.createElement('span');mini.className='tprog-mini';mini.textContent=t.subs.filter(function(s){return s.done;}).length+'/'+t.subs.length;main.appendChild(mini);}}
     var acts=document.createElement('div');acts.className='tactions';
+    var hib=btn('!','Toggle high priority',function(){t.hi=!t.hi;saveTasks();renderAll();});if(t.hi)hib.className='tbtn on';acts.appendChild(hib);
+    acts.appendChild(ibtn('i-cal','Due date',function(){duing=(duing===t.id?null:t.id);renderAll();},!!t.due));
     acts.appendChild(ibtn('i-pause','Toggle pending',function(){t.pending=!t.pending;saveTasks();renderAll();},(t.pending&&!done)));
     acts.appendChild(ibtn('i-note','Note',function(){noting=(noting===t.id?null:t.id);renderAll();},!!(t.note&&t.note.trim())));
     acts.appendChild(btn('+','Add subtask',function(){t.open=true;focusSub=t.id;if(!t.subs)t.subs=[];saveTasks();renderAll();}));
@@ -2011,6 +2109,11 @@ QA &amp; Project Manager, AppMakers LA
     attachDnD(grip,main,{type:'task',id:t.id,project:t.project||null});
     if(noting===t.id){var na=document.createElement('div');na.className='tnote-edit';var ta=document.createElement('textarea');ta.className='tnote-input';ta.value=t.note||'';ta.placeholder='Add a note…';ta.setAttribute('data-noteedit','1');ta.onblur=function(){t.note=ta.value.trim();noting=null;saveTasks();renderAll();};na.appendChild(ta);wrap.appendChild(na);}
     else if(t.note&&t.note.trim()){var nd=document.createElement('div');nd.className='tnote';nd.textContent=t.note;nd.title='Click to edit note';nd.onclick=function(){noting=t.id;renderAll();};wrap.appendChild(nd);}
+    if(duing===t.id){var da=document.createElement('div');da.className='tdue-edit';
+      var di=document.createElement('input');di.type='date';di.className='tr-input';di.value=t.due||'';
+      di.onchange=function(){t.due=di.value||'';duing=null;saveTasks();renderAll();};
+      var dx=btn('\u00D7','Clear due date',function(){t.due='';duing=null;saveTasks();renderAll();});
+      da.appendChild(di);da.appendChild(dx);wrap.appendChild(da);}
     if(showProj){var pss=document.createElement('select');pss.className='tproj';var o='<option value="">No project</option>';
       PROJECTS.forEach(function(pp){o+='<option value="'+pp.id+'"'+(t.project===pp.id?' selected':'')+'>'+esc(pp.name)+'</option>';});
       pss.innerHTML=o;pss.onchange=function(){t.project=pss.value||null;saveTasks();renderAll();};wrap.appendChild(pss);}
@@ -2038,7 +2141,7 @@ QA &amp; Project Manager, AppMakers LA
     var i=document.createElement('input');i.className='tr-input';i.placeholder='Add a task…';i.setAttribute('data-addat',where);
     var b=document.createElement('button');b.className='tr-addbtn';b.type='submit';b.textContent='+';
     f.appendChild(i);f.appendChild(b);
-    f.onsubmit=function(e){e.preventDefault();var v=i.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:project,done:false,open:false,subs:[]});focusAt=where;saveTasks();renderAll();};
+    f.onsubmit=function(e){e.preventDefault();var v=i.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:project,done:false,open:false,subs:[],createdAt:Date.now()});focusAt=where;saveTasks();renderAll();};
     return f;
   }
 
@@ -2048,37 +2151,39 @@ QA &amp; Project Manager, AppMakers LA
     PROJECTS.forEach(function(p){o+='<option value="'+p.id+'">'+esc(p.name)+'</option>';}); sel.innerHTML=o; sel.value=tstate.filter||'all';
     var linksEl=document.getElementById('trLinks'); linksEl.innerHTML='';
     if(tstate.filter!=='all'){(projState(tstate.filter).links||[]).forEach(function(l){var a=document.createElement('a');a.textContent=l.label;a.href=l.url;if(l.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}linksEl.appendChild(a);});}
+    var tbHost=document.getElementById('trToolbar'); if(tbHost){tbHost.innerHTML='';tbHost.appendChild(taskToolbar('drawer',renderDrawer,tstate.filter||'all'));}
     listEl.innerHTML='';
-    var tasks=tstate.tasks.filter(function(t){return tstate.filter==='all'||t.project===tstate.filter;});
+    var fl=tfilters('drawer');
+    var tasks=pipeline(tstate.tasks.filter(function(t){return tstate.filter==='all'||t.project===tstate.filter;}),fl);
     var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
     var cnt=document.getElementById('trCount'); if(cnt)cnt.textContent=tstate.tasks.length?open+' open':'';
     var emp=document.getElementById('trEmpty'); if(emp)emp.hidden=tasks.length>0;
     tasks.forEach(function(t){listEl.appendChild(taskRow(t,tstate.filter==='all'));});
+    updateBadge();
   }
   function renderHome(){
     renderObProgress();
     var hp=document.getElementById('homeProjects');
     if(hp){hp.innerHTML='';PROJECTS.forEach(function(p){var ps=projState(p.id);var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
-      var a=document.createElement('a');a.className='pcard';a.href='#'+p.id;a.innerHTML='<div class="pcard-t">'+esc(p.name)+'</div><div class="pcard-m"><span class="pill">'+esc(ps.stage)+'</span><span class="mono">'+open+' open'+((ps.budget&&ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?(' · '+Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100)+'% budget'):'')+'</span></div>';hp.appendChild(a);});}
+      var a=document.createElement('a');a.className='pcard';a.href='#'+p.id;a.innerHTML='<div class="pcard-t">'+esc(p.name)+'</div><div class="pcard-m"><span class="pill">'+esc(ps.stage)+'</span><span class="mono">'+open+' open'+((ps.budget&&ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?(' \u00B7 '+Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100)+'% budget'):'')+'</span></div>';hp.appendChild(a);});}
     var host=document.getElementById('homeTasks'); if(!host)return; host.innerHTML='';
-    var hf=tstate.homeFilter||(tstate.homeFilter={status:'open',when:'week'});
-    var bar=document.createElement('div');bar.className='taskfilter';
-    var segs=[['open','Open'],['closed','Closed'],['all','All']];
-    var bh='<div class="seg">'+segs.map(function(o){return '<button type="button" data-st="'+o[0]+'" class="'+(hf.status===o[0]?'active':'')+'">'+o[1]+'</button>';}).join('')+'</div>';
-    if(hf.status==='closed'){var whens=[['today','Closed today'],['yesterday','Closed yesterday'],['week','Closed in last 7 days'],['all','All closed']];bh+='<select class="tr-select tf-when">'+whens.map(function(o){return '<option value="'+o[0]+'"'+(hf.when===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>';}
-    bar.innerHTML=bh;host.appendChild(bar);
-    bar.querySelectorAll('.seg button').forEach(function(bt){bt.onclick=function(){hf.status=bt.getAttribute('data-st');saveTasks();renderHome();};});
-    var wsel=bar.querySelector('.tf-when'); if(wsel)wsel.onchange=function(){hf.when=wsel.value;saveTasks();renderHome();};
-    function pass(t){var d=taskDone(t);if(hf.status==='open')return !d;if(hf.status==='all')return true;if(!d)return false;return inWhen(t.closedAt,hf.when);}
+    var fl=tfilters('home');
+    host.appendChild(taskToolbar('home',renderHome,'all'));
+    if(fl.status!=='closed'){
+      var dueNow=tstate.tasks.filter(function(t){return !taskDone(t)&&t.due&&t.due<=todayStr()&&taskMatches(t,fl.q);});
+      if(dueNow.length){var dh=document.createElement('div');dh.className='tgroup-h due-h';dh.innerHTML='<span>Due today / overdue</span><span class="mono">'+dueNow.length+'</span>';host.appendChild(dh);
+        dueNow.forEach(function(t){host.appendChild(taskRow(t,true));});}
+    }
     var groups=PROJECTS.map(function(p){return {id:p.id,name:p.name};}); groups.push({id:null,name:'No project'});
     groups.forEach(function(g){
-      var items=tstate.tasks.filter(function(t){return (t.project||null)===g.id;}).filter(pass);
-      if(!items.length&&(hf.status==='closed'||g.id===null))return;
+      var items=pipeline(tstate.tasks.filter(function(t){return (t.project||null)===g.id;}),fl);
+      if(!items.length&&(fl.status==='closed'||g.id===null||fl.q))return;
       var opencount=items.filter(function(t){return !taskDone(t);}).length;
-      var h=document.createElement('div');h.className='tgroup-h';h.innerHTML='<span>'+esc(g.name)+'</span><span class="mono">'+(hf.status==='open'?opencount+' open':items.length+' shown')+'</span>';host.appendChild(h);
+      var h=document.createElement('div');h.className='tgroup-h';h.innerHTML='<span>'+esc(g.name)+'</span><span class="mono">'+(fl.status==='open'?opencount+' open':items.length+' shown')+'</span>';host.appendChild(h);
       items.forEach(function(t){host.appendChild(taskRow(t,false));});
-      if(hf.status!=='closed')host.appendChild(addForm(g.id,'home-'+(g.id||'none')));
+      if(fl.status!=='closed'&&!fl.q)host.appendChild(addForm(g.id,'home-'+(g.id||'none')));
     });
+    updateBadge();
   }
   function block(t){var d=document.createElement('div');d.className='block';var h=document.createElement('h3');h.innerHTML=t;d.appendChild(h);return d;}
   var pjView={};
@@ -2129,9 +2234,14 @@ QA &amp; Project Manager, AppMakers LA
     var st=document.createElement('div');st.className='pj-stats';
     st.innerHTML='<div class="pstat"><span class="k">Stage</span><span class="v">'+esc(ps.stage)+'</span></div><div class="pstat"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span></div><div class="pstat"><span class="k">Open tasks</span><span class="v">'+open+'</span></div><div class="pstat"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span></div>';
     host.appendChild(st);
-    var tb=block('Active tasks');var its=tstate.tasks.filter(function(t){return t.project===id;});
-    if(!its.length){var e=document.createElement('p');e.className='hmuted';e.textContent='No tasks yet. Add one below.';tb.appendChild(e);}
-    its.forEach(function(t){tb.appendChild(taskRow(t,false));});tb.appendChild(addForm(id,'pjhome-'+id));host.appendChild(tb);
+    var tb=block('Active tasks');
+    tb.appendChild(taskToolbar('proj',function(){renderProject(id);},id));
+    var fl2=tfilters('proj');
+    var its=pipeline(tstate.tasks.filter(function(t){return t.project===id;}),fl2);
+    if(!its.length){var e=document.createElement('p');e.className='hmuted';e.textContent='Nothing matches here. Add one below.';tb.appendChild(e);}
+    its.forEach(function(t){tb.appendChild(taskRow(t,false));});
+    if(fl2.status!=='closed')tb.appendChild(addForm(id,'pjhome-'+id));
+    host.appendChild(tb);
     var bb=block('Budget');
     bb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Used vs total, pull the numbers from the Makers app (hours or dollars).</p><div class="budget-edit"><label>Used <input type="number" min="0" class="bnum" data-b="used" value="'+esc(ps.budget.used)+'"></label><span class="bsep">/</span><label>Total <input type="number" min="0" class="bnum" data-b="total" value="'+esc(ps.budget.total)+'"></label><span class="bpct'+(bpct==null?' muted':'')+'">'+(bpct!=null?bpct+'% used':'not set')+'</span></div><div class="tbar" style="margin-top:10px"><span style="width:'+(bpct!=null?bpct:0)+'%"></span></div>');
     bb.querySelectorAll('.bnum').forEach(function(inp){inp.onchange=function(){ps.budget[inp.getAttribute('data-b')]=inp.value;savePS();renderProject(id);renderProjectsList();renderHome();};});
@@ -2193,7 +2303,7 @@ QA &amp; Project Manager, AppMakers LA
   if(scrim)scrim.onclick=closeRail;
   var ho=document.getElementById('homeOpenTasks'); if(ho)ho.onclick=openRail;
   var sp2=document.getElementById('trProject'); if(sp2)sp2.addEventListener('change',function(){tstate.filter=sp2.value;saveTasks();renderDrawer();});
-  var af=document.getElementById('trAddForm'); if(af)af.addEventListener('submit',function(e){e.preventDefault();var inp=document.getElementById('trAdd');var v=inp.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:(tstate.filter!=='all'?tstate.filter:null),done:false,open:false,subs:[]});inp.value='';saveTasks();renderAll();});
+  var af=document.getElementById('trAddForm'); if(af)af.addEventListener('submit',function(e){e.preventDefault();var inp=document.getElementById('trAdd');var v=inp.value.trim();if(!v)return;tstate.tasks.push({id:nid(),text:v,project:(tstate.filter!=='all'?tstate.filter:null),done:false,open:false,subs:[],createdAt:Date.now()});inp.value='';saveTasks();renderAll();});
 
   function renderTrack(t){
     var sec=document.getElementById(t); if(!sec)return;
@@ -2302,6 +2412,12 @@ QA &amp; Project Manager, AppMakers LA
     if(!bps.links.some(function(l){return (l.url||'').indexOf('1g-nGQ4')>-1;})){bps.links.push({label:'Box and Ring doc',url:'https://docs.google.com/document/d/1g-nGQ4DpIAdM6rB1kmumH-GFGUpTYfnG1PNMv4EkWq4/edit'});savePS();}
   }
   injectExamples();
+  var exB=document.getElementById('trExport'),imB=document.getElementById('trImport');
+  var dp=document.getElementById('trDataPanel'),dt=document.getElementById('trDataText'),dap=document.getElementById('trDataApply'),dm=document.getElementById('trDataMsg');
+  if(exB)exB.onclick=function(){dp.hidden=false;dap.hidden=true;dt.value=exportData();dt.focus();dt.select();
+    try{navigator.clipboard.writeText(dt.value);dm.textContent='Copied to clipboard. Paste it into Import on your other device.';}catch(e){dm.textContent='Select all and copy, then paste into Import on your other device.';}};
+  if(imB)imB.onclick=function(){dp.hidden=false;dap.hidden=false;dt.value='';dm.textContent='Paste exported data here, then press Apply.';dt.focus();};
+  if(dap)dap.onclick=function(){try{var n=importData(dt.value.trim());dm.textContent='Imported '+n+' data sets. Reloading\u2026';setTimeout(function(){location.reload();},600);}catch(e){dm.textContent='That does not look like exported data. Paste the exact text from Export.';}};
   renderDrawer();
   route();
 })();
