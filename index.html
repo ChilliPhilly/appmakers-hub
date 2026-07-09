@@ -640,6 +640,25 @@
     .tp-proj{min-width:0;flex-basis:100%;}
   }
   @media (prefers-reduced-motion:reduce){ .bar span,.tbar span{transition:none;} }
+  /* ===== meetings ===== */
+  .pj-stats-5{grid-template-columns:repeat(5,1fr);}
+  @media (max-width:820px){ .pj-stats-5{grid-template-columns:repeat(2,1fr);} }
+  .meeting{border:1px solid var(--line);border-radius:10px;background:var(--card);margin-bottom:10px;padding:10px 12px;box-shadow:var(--shadow);}
+  .mt-top{display:flex;align-items:center;gap:10px;position:relative;}
+  .mt-top .tactions{position:absolute;right:0;top:50%;transform:translateY(-50%);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 4px;}
+  .mt-date{flex:0 0 auto;font-family:var(--mono);font-size:.66rem;background:var(--slate-wash);color:var(--muted);padding:3px 9px;border-radius:99px;white-space:nowrap;}
+  .mt-title{font-weight:600;font-size:.92rem;color:var(--accent-ink);text-decoration:none;}
+  .mt-title:hover{text-decoration:underline;}
+  .mt-title.plain{color:var(--ink);}
+  .mt-title:not(.plain)::after{content:" \2197";font-size:.75em;}
+  .mt-actions{margin:8px 0 0 8px;padding:2px 8px;background:var(--paper);border:1px solid var(--line-soft);border-radius:8px;}
+  .mt-addaction{display:flex;gap:8px;align-items:center;padding:6px 0 6px;}
+  .mt-addaction .tr-input{flex:1;min-width:100px;padding:6px 9px;font-size:.83rem;border-style:dashed;background:transparent;}
+  .mt-addaction .tr-input:focus{border-style:solid;}
+  .mt-me{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;color:var(--muted);white-space:nowrap;}
+  .mt-addaction .tr-addbtn{width:30px;height:30px;font-size:1rem;}
+  .mt-add .mt-datein{max-width:150px;flex:0 0 auto;}
+  .tmeet{background:var(--accent-wash);color:var(--accent-ink);border-color:#F5D3DF;}
 </style>
 
 <!-- icon sprite -->
@@ -2144,7 +2163,7 @@ QA &amp; Project Manager, AppMakers LA
   function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
-  function projState(id){if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];return pstate[id];}
+  function projState(id){if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
   function savePS(){store(PKEY,pstate);}
   var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
   if(!resData.pm)resData.pm={docs:[],examples:[{label:'Kickoff call examples',url:'https://docs.google.com/document/d/1XsLIrVnYsZGOjGE78WTNCjQGK7HT6vFgW7F5Ykb1kiY/edit'}]};
@@ -2287,6 +2306,7 @@ QA &amp; Project Manager, AppMakers LA
       if(t.pending&&!done){var pc=document.createElement('span');pc.className='tstatus';pc.textContent='Pending';main.appendChild(pc);}
       if(t.hi&&!done){var hc=document.createElement('span');hc.className='thigh';hc.textContent='High';main.appendChild(hc);}
       if(t.due){var dc=document.createElement('span');dc.className='tdue'+(isOverdue(t)?' over':'');dc.textContent=fmtDue(t.due);dc.title='Due date';main.appendChild(dc);}
+      if(t.fromMeeting){var mc=document.createElement('span');mc.className='tdue tmeet';mc.textContent='Meeting';mc.title='Action item from a meeting';main.appendChild(mc);}
       if(hasSubs){var mini=document.createElement('span');mini.className='tprog-mini';mini.textContent=t.subs.filter(function(s){return s.done;}).length+'/'+t.subs.length;main.appendChild(mini);}}
     var acts=document.createElement('div');acts.className='tactions';
     var hib=btn('!','Toggle high priority',function(){t.hi=!t.hi;saveTasks();renderAll();});if(t.hi)hib.className='tbtn on';acts.appendChild(hib);
@@ -2397,18 +2417,12 @@ QA &amp; Project Manager, AppMakers LA
     var open=tstate.tasks.filter(function(t){return t.project===id&&!taskDone(t);}).length;
     var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length;
     var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
-    var st=document.createElement('div');st.className='pj-stats';
-    st.innerHTML='<div class="pstat"><span class="k">Stage</span><span class="v">'+esc(ps.stage)+'</span></div><div class="pstat"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span></div><div class="pstat"><span class="k">Open tasks</span><span class="v">'+open+'</span></div><div class="pstat"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span></div>';
+    var lastMt=(ps.meetings||[]).slice().sort(function(x,y){return (y.date||'').localeCompare(x.date||'');})[0];
+    var st=document.createElement('div');st.className='pj-stats pj-stats-5';
+    st.innerHTML='<div class="pstat"><span class="k">Stage</span><span class="v">'+esc(ps.stage)+'</span></div><div class="pstat"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span></div><div class="pstat"><span class="k">Open tasks</span><span class="v">'+open+'</span></div><div class="pstat"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span></div><div class="pstat"><span class="k">Last meeting</span><span class="v">'+(lastMt?esc(fmtDue(lastMt.date)):'None yet')+'</span></div>';
     host.appendChild(st);
-    var tb=block('Tasks');
-    var inner=document.createElement('div');
-    taskPanel(inner,'proj',id,function(){renderProject(id);});
-    tb.appendChild(inner);
-    host.appendChild(tb);
-    var bb=block('Budget');
-    bb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Used vs total, pull the numbers from the Makers app (hours or dollars).</p><div class="budget-edit"><label>Used <input type="number" min="0" class="bnum" data-b="used" value="'+esc(ps.budget.used)+'"></label><span class="bsep">/</span><label>Total <input type="number" min="0" class="bnum" data-b="total" value="'+esc(ps.budget.total)+'"></label><span class="bpct'+(bpct==null?' muted':'')+'">'+(bpct!=null?bpct+'% used':'not set')+'</span></div><div class="tbar" style="margin-top:10px"><span style="width:'+(bpct!=null?bpct:0)+'%"></span></div>');
-    bb.querySelectorAll('.bnum').forEach(function(inp){inp.onchange=function(){ps.budget[inp.getAttribute('data-b')]=inp.value;savePS();renderProject(id);renderProjectsList();renderHome();};});
-    host.appendChild(bb);
+
+    /* --- Stages & epics (status first) --- */
     var eb=block('Stages &amp; epics');eb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Your own breakdown for this project. Add, tick, rename or remove.</p>');
     var el=document.createElement('div');el.className='phases';
     ps.phases.forEach(function(ph){
@@ -2423,6 +2437,79 @@ QA &amp; Project Manager, AppMakers LA
     var pbtn=document.createElement('button');pbtn.className='tr-addbtn';pbtn.type='submit';pbtn.textContent='+';pf.appendChild(pi);pf.appendChild(pbtn);
     pf.onsubmit=function(e){e.preventDefault();var v=pi.value.trim();if(!v)return;ps.phases.push({id:nid(),text:v,done:false});focusAt='phase-'+id;savePS();renderAll();};
     eb.appendChild(pf);host.appendChild(eb);
+
+    /* --- Meetings --- */
+    var mb=block('Meetings');
+    mb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Weekly and impromptu calls for this project. Paste the Fathom share link from the "View meeting" email. Action items assigned to you land in your task list automatically.</p>');
+    var mlist=document.createElement('div');
+    var sorted=(ps.meetings||[]).slice().sort(function(x,y){return (y.date||'').localeCompare(x.date||'');});
+    if(!sorted.length){var me0=document.createElement('p');me0.className='hmuted';me0.textContent='No meetings logged yet. Add the first one below.';mlist.appendChild(me0);}
+    sorted.forEach(function(mt){
+      var card=document.createElement('div');card.className='meeting';
+      var top=document.createElement('div');top.className='mt-top';
+      var dchip=document.createElement('span');dchip.className='mt-date';dchip.textContent=fmtDue(mt.date)||'No date';top.appendChild(dchip);
+      if(mt.url){var ta=document.createElement('a');ta.className='mt-title';ta.textContent=mt.title||'Meeting';ta.href=mt.url;ta.target='_blank';ta.rel='noopener';ta.title='Open the Fathom recording';top.appendChild(ta);}
+      else{var ts=document.createElement('span');ts.className='mt-title plain';ts.textContent=mt.title||'Meeting';top.appendChild(ts);}
+      var tacts=document.createElement('div');tacts.className='tactions';
+      tacts.appendChild(btn('\u00D7','Remove meeting (linked tasks stay in your task list)',function(){ps.meetings=ps.meetings.filter(function(x){return x.id!==mt.id;});savePS();renderProject(id);}));
+      top.appendChild(tacts);card.appendChild(top);
+      var acts=document.createElement('div');acts.className='mt-actions';
+      (mt.actions||[]).forEach(function(ac){
+        var row=document.createElement('div');
+        var linked=ac.taskId?tstate.tasks.filter(function(t){return t.id===ac.taskId;})[0]:null;
+        var isDone=linked?taskDone(linked):!!ac.done;
+        row.className='sub'+(isDone?' done':'');
+        var l2=document.createElement('label');l2.className='tcheck';var c2=document.createElement('input');c2.type='checkbox';c2.checked=isDone;
+        c2.onchange=function(){if(linked){linked.done=c2.checked;saveTasks();}else{ac.done=c2.checked;savePS();}renderAll();};
+        l2.appendChild(c2);row.appendChild(l2);
+        var t2=document.createElement('span');t2.className='ttext';t2.textContent=ac.text;row.appendChild(t2);
+        if(ac.taskId&&!linked){var gone=document.createElement('span');gone.className='tdue';gone.textContent='task removed';row.appendChild(gone);}
+        else if(ac.taskId){var mine=document.createElement('span');mine.className='tdue tmeet';mine.textContent='Yours';mine.title='In your task list';row.appendChild(mine);}
+        var ra=document.createElement('div');ra.className='tactions';
+        ra.appendChild(btn('\u00D7','Remove action item',function(){mt.actions=mt.actions.filter(function(x){return x.id!==ac.id;});savePS();renderAll();}));
+        row.appendChild(ra);acts.appendChild(row);
+      });
+      var af2=document.createElement('form');af2.className='mt-addaction';
+      var ai=document.createElement('input');ai.className='tr-input';ai.placeholder='Add an action item…';ai.setAttribute('data-addat','mtact-'+mt.id);
+      var meLbl=document.createElement('label');meLbl.className='mt-me';
+      var meCb=document.createElement('input');meCb.type='checkbox';meCb.checked=true;
+      meLbl.appendChild(meCb);meLbl.appendChild(document.createTextNode(' mine'));
+      var ab=document.createElement('button');ab.className='tr-addbtn';ab.type='submit';ab.textContent='+';
+      af2.appendChild(ai);af2.appendChild(meLbl);af2.appendChild(ab);
+      af2.onsubmit=function(e){e.preventDefault();var v=ai.value.trim();if(!v)return;
+        var ac={id:nid(),text:v};
+        if(meCb.checked){var task={id:nid(),text:v,project:id,done:false,open:false,subs:[],createdAt:Date.now(),fromMeeting:mt.id};tstate.tasks.push(task);ac.taskId=task.id;saveTasks();}
+        else{ac.done=false;}
+        if(!mt.actions)mt.actions=[];mt.actions.push(ac);focusAt='mtact-'+mt.id;savePS();renderAll();};
+      acts.appendChild(af2);card.appendChild(acts);
+      mlist.appendChild(card);
+    });
+    mb.appendChild(mlist);
+    var mf=document.createElement('form');mf.className='linkadd mt-add';
+    var md=document.createElement('input');md.type='date';md.className='tr-input mt-datein';md.value=todayStr();
+    var mtt=document.createElement('input');mtt.className='tr-input';mtt.placeholder='Meeting title (e.g. Weekly standup)';
+    var mu=document.createElement('input');mu.className='tr-input';mu.placeholder='Fathom link (optional)';
+    var mbn=document.createElement('button');mbn.className='tr-addbtn';mbn.type='submit';mbn.textContent='+';
+    mf.appendChild(md);mf.appendChild(mtt);mf.appendChild(mu);mf.appendChild(mbn);
+    mf.onsubmit=function(e){e.preventDefault();var ti=mtt.value.trim();if(!ti)return;
+      ps.meetings.push({id:nid(),date:md.value||todayStr(),title:ti,url:mu.value.trim(),actions:[]});
+      savePS();renderProject(id);};
+    mb.appendChild(mf);host.appendChild(mb);
+
+    /* --- Tasks --- */
+    var tb=block('Tasks');
+    var inner=document.createElement('div');
+    taskPanel(inner,'proj',id,function(){renderProject(id);});
+    tb.appendChild(inner);
+    host.appendChild(tb);
+
+    /* --- Budget --- */
+    var bb=block('Budget');
+    bb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Used vs total, pull the numbers from the Makers app (hours or dollars).</p><div class="budget-edit"><label>Used <input type="number" min="0" class="bnum" data-b="used" value="'+esc(ps.budget.used)+'"></label><span class="bsep">/</span><label>Total <input type="number" min="0" class="bnum" data-b="total" value="'+esc(ps.budget.total)+'"></label><span class="bpct'+(bpct==null?' muted':'')+'">'+(bpct!=null?bpct+'% used':'not set')+'</span></div><div class="tbar" style="margin-top:10px"><span style="width:'+(bpct!=null?bpct:0)+'%"></span></div>');
+    bb.querySelectorAll('.bnum').forEach(function(inp){inp.onchange=function(){ps.budget[inp.getAttribute('data-b')]=inp.value;savePS();renderProject(id);renderProjectsList();renderHome();};});
+    host.appendChild(bb);
+
+    /* --- Links --- */
     var lb=block('Project links');var ll=document.createElement('div');
     (ps.links||[]).forEach(function(lk,idx){var row=document.createElement('div');row.className='linkrow';
       var a=document.createElement('a');a.textContent=lk.label;a.href=lk.url;if(lk.url.charAt(0)!=='#'){a.target='_blank';a.rel='noopener';}row.appendChild(a);
@@ -2435,6 +2522,8 @@ QA &amp; Project Manager, AppMakers LA
     lf.appendChild(li1);lf.appendChild(li2);lf.appendChild(lbt);
     lf.onsubmit=function(e){e.preventDefault();var lab=li1.value.trim(),url=li2.value.trim();if(!lab||!url)return;if(!ps.links)ps.links=[];ps.links.push({label:lab,url:url});savePS();renderProject(id);};
     lb.appendChild(lf);host.appendChild(lb);
+
+    /* --- Key dates --- */
     var db=block('Key dates &amp; deadlines');var dl=document.createElement('div');
     (ps.dates||[]).forEach(function(dt,idx){var row=document.createElement('div');row.className='linkrow';
       var sp=document.createElement('span');sp.innerHTML='<b>'+esc(dt.when)+'</b> '+esc(dt.label);row.appendChild(sp);
