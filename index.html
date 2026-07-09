@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#E11D5F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23E11D5F'/%3E%3Ctext x='32' y='45' font-family='Poppins,Arial,sans-serif' font-size='38' font-weight='700' fill='white' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <title>AppMakers LA, QA/PM Onboarding</title>
 </head>
 <body>
@@ -630,6 +632,14 @@
     background-size:auto, 52px 52px, 52px 52px;
     -webkit-mask-image:linear-gradient(to bottom, #000 70%, transparent);
     mask-image:linear-gradient(to bottom, #000 70%, transparent);}
+  /* ===== queued polish: overdue badge, mobile hero, reduced motion, celebration ===== */
+  .tcount-ovr{background:var(--crit);margin-left:4px;}
+  @media (max-width:560px){
+    .home-hero::before{inset:-24px -16px -8px;}
+    .tp-row{flex-wrap:wrap;}
+    .tp-proj{min-width:0;flex-basis:100%;}
+  }
+  @media (prefers-reduced-motion:reduce){ .bar span,.tbar span{transition:none;} }
 </style>
 
 <!-- icon sprite -->
@@ -2077,10 +2087,13 @@ QA &amp; Project Manager, AppMakers LA
   }
   function updateBadge(){
     var tg2=document.getElementById('tasktoggle'); if(!tg2)return;
-    var open=0;tstate.tasks.forEach(function(t){if(!taskDone(t))open++;});
+    var open=0,ovr=0;tstate.tasks.forEach(function(t){if(!taskDone(t)){open++;if(isOverdue(t))ovr++;}});
     var b=tg2.querySelector('.tcount');
     if(!b){b=document.createElement('span');b.className='tcount';tg2.appendChild(b);}
-    b.textContent=open||'';b.style.display=open?'':'none';}
+    b.textContent=open||'';b.style.display=open?'':'none';
+    var ob=tg2.querySelector('.tcount-ovr');
+    if(!ob){ob=document.createElement('span');ob.className='tcount tcount-ovr';ob.title='Overdue';tg2.appendChild(ob);}
+    ob.textContent=ovr||'';ob.style.display=ovr?'':'none';}
   function openClearModal(defaultScope){
     var old=document.getElementById('clearModal'); if(old)old.remove();
     var scrim2=document.createElement('div');scrim2.className='modal-scrim';scrim2.id='clearModal';
@@ -2226,9 +2239,9 @@ QA &amp; Project Manager, AppMakers LA
     var list=document.querySelector('[data-checklist="onboarding"]'); if(!list)return;
     var b=list.querySelectorAll('input[type=checkbox]'); var d=0; b.forEach(function(x){if(x.checked)d++;});
     var pct=b.length?Math.round(d/b.length*100):0;
-    var pe=document.getElementById('obPct'); if(pe)pe.textContent=pct+'%';
-    var fe=document.getElementById('obFill'); if(fe)fe.style.width=pct+'%';
-    var ne=document.getElementById('obNote'); if(ne)ne.textContent=d+' of '+b.length+' onboarding steps done.';
+    var pe=document.getElementById('obPct'); if(pe)pe.textContent=(pct===100)?'Complete \u2713':pct+'%';
+    var fe=document.getElementById('obFill'); if(fe){fe.style.width=pct+'%';fe.className=(pct===100)?'full':'';}
+    var ne=document.getElementById('obNote'); if(ne)ne.textContent=(pct===100)?'All onboarding steps complete. Nice work.':d+' of '+b.length+' onboarding steps done.';
   }
 
   /* ----- task engine ----- */
@@ -2482,7 +2495,7 @@ QA &amp; Project Manager, AppMakers LA
     var f=w.querySelector('.tbar span'); f.style.width=pct+'%'; f.className=(pct===100)?'full':'';
   }
   function renderTraining(){['qa','pm'].forEach(function(t){var st=trackStats(t),pct=st.total?Math.round(st.done/st.total*100):0;
-    var pe=document.querySelector('[data-trainpct="'+t+'"]');if(pe)pe.textContent=pct+'%';
+    var pe=document.querySelector('[data-trainpct="'+t+'"]');if(pe)pe.textContent=(pct===100)?'Complete \u2713':pct+'%';
     var fe=document.querySelector('[data-trainfill="'+t+'"]');if(fe){fe.style.width=pct+'%';fe.className=(pct===100)?'full':'';}});}
   function injectExamples(){for(var t in MODULES){MODULES[t].forEach(function(id){if(id.indexOf('resources')>-1)return;
     var sec=document.getElementById(id);if(!sec||sec.querySelector('.example'))return;
@@ -2569,7 +2582,5 @@ QA &amp; Project Manager, AppMakers LA
   route();
 })();
 </script>
-
-
 </body>
 </html>
