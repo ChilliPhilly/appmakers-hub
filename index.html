@@ -447,12 +447,12 @@
   .linkadd .tr-input{flex:1;min-width:120px;}
 
   /* ===== docked, persistent tasks panel ===== */
-  .taskrail{top:56px;height:calc(100vh - 56px);width:392px;transform:translateX(100%);z-index:55;
+  .taskrail{top:56px;height:calc(100vh - 56px);width:452px;transform:translateX(100%);z-index:55;
     box-shadow:-8px 0 30px rgba(23,28,38,.09);}
   body.tasks-open .taskrail{transform:none;}
   .scrim{display:none;}
-  @media (min-width:961px){ .shell{transition:margin-right .28s ease;} body.tasks-open .shell{margin-right:392px;} }
-  @media (max-width:960px){ .taskrail{top:0;height:100vh;width:min(390px,92vw);}
+  @media (min-width:961px){ .shell{transition:margin-right .28s ease;} body.tasks-open .shell{margin-right:452px;} }
+  @media (max-width:960px){ .taskrail{top:0;height:100vh;width:min(452px,94vw);}
     body.tasks-open .scrim{display:block;position:fixed;inset:0;background:rgba(20,25,35,.42);z-index:54;} }
   @media (max-width:560px){ .pj-stats{grid-template-columns:1fr 1fr;} }
   /* ===== project lifecycle stepper (in-project nav) ===== */
@@ -534,6 +534,32 @@
   .tr-datapanel textarea{width:100%;min-height:80px;font-family:var(--mono);font-size:.68rem;
     border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--paper);color:var(--ink);resize:vertical;}
   .tr-datarow{display:flex;gap:10px;align-items:center;margin-top:8px;font-size:.78rem;}
+  /* ===== task cards v3: roomy text, overlay actions, boxed subtasks ===== */
+  .task{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;
+    box-shadow:0 1px 2px rgba(23,28,38,.04);overflow:hidden;}
+  .task.done{background:var(--paper);}
+  .task > .task-main{position:relative;padding:9px 10px;border-radius:0;}
+  .task > .task-main:hover{background:transparent;}
+  .task .ttext{font-size:.88rem;}
+  .tactions{position:absolute;right:6px;top:50%;transform:translateY(-50%);gap:2px;
+    background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 4px;
+    box-shadow:0 2px 8px rgba(23,28,38,.10);z-index:2;}
+  .task.done > .task-main .tactions{background:var(--paper);}
+  .sub{position:relative;}
+  .sub .tactions{background:var(--paper);}
+  @media (hover:none){
+    .tactions{position:static;transform:none;opacity:.8;border:none;box-shadow:none;background:transparent;padding:0;}
+  }
+  .subs{margin:0 10px 8px 10px;padding:4px 8px;border-left:none;background:var(--paper);
+    border:1px solid var(--line-soft);border-radius:8px;}
+  .sub{padding:6px 6px;}
+  .sub + .sub{border-top:1px solid var(--line-soft);border-radius:0;}
+  .subadd{padding:4px 6px 3px;}
+  .task .tproj{margin:0 10px 9px 44px;}
+  .tdue-edit{margin:0 10px 10px 44px;}
+  .tr-list{padding:10px 12px 14px;}
+  #trToolbar .taskfilter .seg button{padding:6px 11px;}
+  #trToolbar .tf-sort{max-width:132px;}
 </style>
 
 <!-- icon sprite -->
@@ -1902,7 +1928,6 @@ QA &amp; Project Manager, AppMakers LA
   }
   function taskMatches(t,q){if(!q)return true;q=q.toLowerCase();
     if((t.text||'').toLowerCase().indexOf(q)>-1)return true;
-    if((t.note||'').toLowerCase().indexOf(q)>-1)return true;
     var ss=t.subs||[];for(var i=0;i<ss.length;i++)if((ss[i].text||'').toLowerCase().indexOf(q)>-1)return true;
     return false;}
   function pipeline(items,fl){
@@ -2055,7 +2080,7 @@ QA &amp; Project Manager, AppMakers LA
   }
 
   /* ----- task engine ----- */
-  var editing=null, focusSub=null, focusAt=null, noting=null, dragCtx=null, duing=null;
+  var editing=null, focusSub=null, focusAt=null, dragCtx=null, duing=null;
   function findTask(id){for(var i=0;i<tstate.tasks.length;i++)if(tstate.tasks[i].id===id)return tstate.tasks[i];return null;}
   function taskDone(t){if(t.subs&&t.subs.length)return t.subs.every(function(s){return s.done;});return !!t.done;}
   function inWhen(ts,w){if(!ts)return false;var n=new Date();var sod=new Date(n.getFullYear(),n.getMonth(),n.getDate()).getTime();if(w==='today')return ts>=sod;if(w==='yesterday')return ts>=sod-86400000&&ts<sod;if(w==='week')return ts>=n.getTime()-7*86400000;return true;}
@@ -2102,13 +2127,10 @@ QA &amp; Project Manager, AppMakers LA
     var hib=btn('!','Toggle high priority',function(){t.hi=!t.hi;saveTasks();renderAll();});if(t.hi)hib.className='tbtn on';acts.appendChild(hib);
     acts.appendChild(ibtn('i-cal','Due date',function(){duing=(duing===t.id?null:t.id);renderAll();},!!t.due));
     acts.appendChild(ibtn('i-pause','Toggle pending',function(){t.pending=!t.pending;saveTasks();renderAll();},(t.pending&&!done)));
-    acts.appendChild(ibtn('i-note','Note',function(){noting=(noting===t.id?null:t.id);renderAll();},!!(t.note&&t.note.trim())));
     acts.appendChild(btn('+','Add subtask',function(){t.open=true;focusSub=t.id;if(!t.subs)t.subs=[];saveTasks();renderAll();}));
     acts.appendChild(btn('\u00D7','Delete task',function(){tstate.tasks=tstate.tasks.filter(function(x){return x.id!==t.id;});saveTasks();renderAll();}));
     main.appendChild(acts);wrap.appendChild(main);
     attachDnD(grip,main,{type:'task',id:t.id,project:t.project||null});
-    if(noting===t.id){var na=document.createElement('div');na.className='tnote-edit';var ta=document.createElement('textarea');ta.className='tnote-input';ta.value=t.note||'';ta.placeholder='Add a note…';ta.setAttribute('data-noteedit','1');ta.onblur=function(){t.note=ta.value.trim();noting=null;saveTasks();renderAll();};na.appendChild(ta);wrap.appendChild(na);}
-    else if(t.note&&t.note.trim()){var nd=document.createElement('div');nd.className='tnote';nd.textContent=t.note;nd.title='Click to edit note';nd.onclick=function(){noting=t.id;renderAll();};wrap.appendChild(nd);}
     if(duing===t.id){var da=document.createElement('div');da.className='tdue-edit';
       var di=document.createElement('input');di.type='date';di.className='tr-input';di.value=t.due||'';
       di.onchange=function(){t.due=di.value||'';duing=null;saveTasks();renderAll();};
@@ -2295,7 +2317,6 @@ QA &amp; Project Manager, AppMakers LA
     if(editing){t=pick('[data-edit]');if(t){t.focus();try{t.setSelectionRange(t.value.length,t.value.length);}catch(e){}}}
     else if(focusSub){t=pick('[data-subadd="'+focusSub+'"]');if(t)t.focus();focusSub=null;}
     else if(focusAt){t=pick('[data-addat="'+focusAt+'"]');if(t)t.focus();focusAt=null;}
-    else if(noting){t=pick('[data-noteedit]');if(t)t.focus();}
   }
 
   var tg=document.getElementById('tasktoggle'); if(tg)tg.onclick=toggleRail;
