@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "box-and-ring": {
+      "meetings": [
+        {
+          "id": "fathom-741461872",
+          "date": "2026-07-09",
+          "title": "Sprint 2 planning (dev team)",
+          "url": "https://fathom.video/calls/741461872",
+          "actions": [
+            { "id": "fa-741461872-1", "text": "Get added to TestFlight (Sourav is adding you and Ertan; Dovrat posting Apple IDs)", "assign": "me" },
+            { "id": "fa-741461872-2", "text": "Dovrat: get client answers on open spec questions" }
+          ]
+        }
+      ]
+    }
+  }
+}

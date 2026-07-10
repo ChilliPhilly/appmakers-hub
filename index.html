@@ -2667,6 +2667,31 @@ QA &amp; Project Manager, AppMakers LA
     try{navigator.clipboard.writeText(dt.value);dm.textContent='Copied to clipboard. Paste it into Import on your other device.';}catch(e){dm.textContent='Select all and copy, then paste into Import on your other device.';}};
   if(imB)imB.onclick=function(){dp.hidden=false;dap.hidden=false;dt.value='';dm.textContent='Paste exported data here, then press Apply.';dt.focus();};
   if(dap)dap.onclick=function(){try{var n=importData(dt.value.trim());dm.textContent='Imported '+n+' data sets. Reloading\u2026';setTimeout(function(){location.reload();},600);}catch(e){dm.textContent='That does not look like exported data. Paste the exact text from Export.';}};
+  /* meetings feed: confirmed meetings committed to meetings.json (same origin)
+     are imported ONCE into local state; local state stays the source of truth. */
+  try{
+    fetch('meetings.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(feed){
+      if(!feed||!feed.projects)return;
+      var seen=load('appmakers-feedseen')||[]; var changed=false;
+      for(var pid in feed.projects){
+        if(!proj(pid))continue;
+        var psx=projState(pid);
+        (feed.projects[pid].meetings||[]).forEach(function(fm){
+          if(!fm.id||seen.indexOf(fm.id)>-1)return;
+          seen.push(fm.id); changed=true;
+          var m={id:fm.id,date:fm.date||'',title:fm.title||'Meeting',url:fm.url||'',actions:[]};
+          (fm.actions||[]).forEach(function(fa){
+            var ac={id:fa.id||nid(),text:fa.text||''};
+            if(fa.assign==='me'){var task={id:nid(),text:ac.text,project:pid,done:false,open:false,subs:[],createdAt:Date.now(),fromMeeting:m.id};tstate.tasks.push(task);ac.taskId=task.id;}
+            else ac.done=false;
+            m.actions.push(ac);
+          });
+          psx.meetings.push(m);
+        });
+      }
+      if(changed){store('appmakers-feedseen',seen);saveTasks();savePS();renderAll();}
+    }).catch(function(){});
+  }catch(e){}
   renderDrawer();
   route();
 })();
