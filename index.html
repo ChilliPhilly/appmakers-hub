@@ -957,8 +957,8 @@
   .qa-sessions .prio-btn.sel.P2{background:var(--qa-block);border-color:var(--qa-block);color:#fff}
   .qa-sessions .prio-btn.sel.P3{background:var(--qa-skip);border-color:var(--qa-skip);color:#fff}
 
-  .qa-sessions .view{display:none}
-  .qa-sessions .view.active{display:block}
+  .qa-sessions .qa-view{display:none}
+  .qa-sessions .qa-view.active{display:block}
   @media (max-width:640px){
     .qa-sessions .statgrp{flex-wrap:wrap;width:74px}
     .qa-sessions .detail{padding-left:14px}
@@ -2173,13 +2173,11 @@ QA &amp; Project Manager, AppMakers LA
 
     <div class="pj-view" id="pjqa-box-and-ring">
 <div class="qa-sessions">
-  <p class="sub">Build-verification testing during Development. Each session is one plan against one build; tick tests off as you walk through them. Acceptance testing (the final pre-client pass) lives in the Testing stage, not here.</p>
-
   <!-- ============ VIEW 1: sessions table ============ -->
-  <section class="view active" id="qa-view-list">
+  <section class="qa-view active" id="qa-view-list">
     <div class="card">
       <div class="card-head">
-        <h2>Sessions</h2>
+        <h2>Test sessions</h2>
         <div style="display:flex;gap:8px">
           <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import this session's ticks, edits and results (for moving between browsers)">⇅ Data</button>
           <button class="btn-new" type="button" title="In the real hub this shows the prompt to paste to Claude for a plan">+ New test session</button>
@@ -2220,7 +2218,7 @@ QA &amp; Project Manager, AppMakers LA
   </section>
 
   <!-- ============ VIEW 2: session detail ============ -->
-  <section class="view" id="qa-view-detail">
+  <section class="qa-view" id="qa-view-detail">
     <div class="detail-top">
       <button class="back" id="qa-back" type="button">&larr; All sessions</button>
     </div>
@@ -2451,12 +2449,12 @@ QA &amp; Project Manager, AppMakers LA
 
 <script>
 (function(){
-  var STAGES=['R&D','Estimates','Development','Testing','Ship'];
+  var STAGES=['R&D','Estimates','Development / QA','Acceptance Testing','Ship'];
   var PROJECTS=[
     {id:'box-and-ring', name:'Box and Ring',
      links:[{label:'Figma',url:'https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring'},{label:'Estimates',url:'https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754'}],
      meetings:[],
-     defaultStage:'Development',
+     defaultStage:'Development / QA',
      defaultPhases:['Phase 1: Foundation & pairing (wk 1 to 3)','Phase 2: Core fight loop, text (wk 3 to 7)','Phase 3: Whisper, scorecard & safety (wk 7 to 10)','Phase 4: Polish, insight & pilot ship (wk 10 to 14)']}
   ];
   function proj(id){for(var i=0;i<PROJECTS.length;i++)if(PROJECTS[i].id===id)return PROJECTS[i];return null;}
@@ -2645,7 +2643,8 @@ QA &amp; Project Manager, AppMakers LA
   function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
-  function projState(id){if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
+  var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
+  function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
   function savePS(){store(PKEY,pstate);}
   var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
   if(!resData.pm)resData.pm={docs:[],examples:[{label:'Kickoff call examples',url:'https://docs.google.com/document/d/1XsLIrVnYsZGOjGE78WTNCjQGK7HT6vFgW7F5Ykb1kiY/edit'}]};
@@ -2869,7 +2868,7 @@ QA &amp; Project Manager, AppMakers LA
       nav.querySelectorAll('[data-sub]').forEach(function(btn2){btn2.onclick=function(){pjView[id]=btn2.getAttribute('data-sub');renderProject(id);window.scrollTo(0,0);};});
     }
     var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id), qa=document.getElementById('pjqa-'+id);
-    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Testing'&&!!tst), isDev=(sub==='Development'&&!!qa);
+    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Acceptance Testing'&&!!tst), isDev=(sub==='Development / QA'&&!!qa);
     if(home)home.style.display=isHome?'':'none';
     if(rnd)rnd.style.display=isRnd?'':'none';
     if(tst)tst.style.display=isTest?'':'none';
@@ -2877,8 +2876,8 @@ QA &amp; Project Manager, AppMakers LA
     if(stg)stg.style.display=(!isHome&&!isRnd&&!isTest&&!isDev)?'':'none';
     if(isHome)renderPJHome(id);
     else if(isRnd)renderStageBar(id,rnd,'R&D');
-    else if(isTest)renderStageBar(id,tst,'Testing');
-    else if(isDev)renderStageBar(id,qa,'Development');
+    else if(isTest)renderStageBar(id,tst,'Acceptance Testing');
+    else if(isDev){/* Test sessions view renders itself; the stepper shows the stage */}
     else renderPJStage(id,sub);
   }
   function renderStageBar(id,container,stageName){
@@ -4094,8 +4093,11 @@ QA &amp; Project Manager, AppMakers LA
       `<span><span class="dot d-s"></span>${t.skip} skipped</span>`;
     document.getElementById("qa-list-bar-lbl").textContent = `${t.done} / ${t.total} done`;
     const bugs = document.getElementById("qa-list-bugs");
-    bugs.textContent = t.fail;
-    bugs.classList.toggle("zero", t.fail===0);
+    let filed = 0;
+    GROUPS.forEach(g=>g.items.forEach(it=>{ if((state[it.n]||{}).bug) filed++; }));
+    bugs.textContent = filed;
+    bugs.title = filed + " defect(s) filed in ClickUp from this session";
+    bugs.classList.toggle("zero", filed===0);
     // per-flow: coloured status counts + done/total
     root.querySelectorAll(".grp").forEach(g=>{
       const items = (g.__grp||{items:[]}).items;
