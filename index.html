@@ -2625,7 +2625,7 @@ QA &amp; Project Manager, AppMakers LA
     del.onclick=function(){var ids={};doomedNow().forEach(function(t){ids[t.id]=1;});
       tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();scrim2.remove();renderAll();};
   }
-  var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1'];
+  var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','qa-session-boxandring-0.0.1-2'];
   function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
