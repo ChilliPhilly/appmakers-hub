@@ -3302,6 +3302,11 @@ QA &amp; Project Manager, AppMakers LA
   if (!Array.isArray(state.__m.removedItems)) state.__m.removedItems = [];
   if (!Array.isArray(state.__m.removedGroups)) state.__m.removedGroups = [];
   const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
+  // multi-tab safety: each tab snapshots state at load; when another tab saves,
+  // refresh this tab as soon as it's in the background so it never shows stale data
+  window.addEventListener("storage", ev => {
+    if (ev.key === KEY && document.hidden) location.reload();
+  });
   const itemState = n => {
     let s = state[n];
     if (typeof s !== "object" || s === null || Array.isArray(s)) s = state[n] = {};
@@ -4095,9 +4100,9 @@ QA &amp; Project Manager, AppMakers LA
     const bugs = document.getElementById("qa-list-bugs");
     let filed = 0;
     GROUPS.forEach(g=>g.items.forEach(it=>{ if((state[it.n]||{}).bug) filed++; }));
-    bugs.textContent = filed;
-    bugs.title = filed + " defect(s) filed in ClickUp from this session";
-    bugs.classList.toggle("zero", filed===0);
+    bugs.textContent = t.fail;
+    bugs.title = t.fail + " failed test(s) \u00b7 " + filed + " filed in ClickUp";
+    bugs.classList.toggle("zero", t.fail===0);
     // per-flow: coloured status counts + done/total
     root.querySelectorAll(".grp").forEach(g=>{
       const items = (g.__grp||{items:[]}).items;
