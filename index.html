@@ -966,6 +966,21 @@
   }
   @media (prefers-reduced-motion: reduce){ .qa-sessions *{transition:none!important} }
 
+  /* the hub is light-only: pin the component's tokens to light regardless of OS
+     dark mode (this plain :root block comes after the @media dark block, so it wins) */
+  :root{
+    --qa-bg:#ffffff; --qa-bg-soft:#f7f7f8; --qa-card:#ffffff; --qa-ink:#16181d; --qa-ink-2:#5c6270; --qa-ink-3:#9aa1ad;
+    --qa-line:#e7e8ec; --qa-line-strong:#d5d7dd;
+    --qa-accent:#e8365f; --qa-accent-soft:#fdeef2;
+    --qa-pass:#1f9a5e; --qa-fail:#cf3434; --qa-fail-soft:#fbebeb;
+    --qa-block:#d9912b; --qa-block-soft:#fdf3e3;
+    --qa-skip:#8b93a1; --qa-skip-soft:#eef0f3;
+    --qa-unsure:#6f5bd0; --qa-unsure-soft:#efeafc;
+    --qa-untested:#e2e4e9;
+    --qa-chip-cu:#5d4db3; --qa-chip-cu-soft:#efecfa;
+    --qa-chip-wb:#2b6cb0; --qa-chip-wb-soft:#e9f1f9;
+    --qa-shadow:0 1px 2px rgba(22,24,29,.05),0 4px 16px rgba(22,24,29,.05);
+  }
   /* embed: the hub page supplies width/padding */
   #pjqa-box-and-ring .qa-sessions{max-width:none;padding:0 0 56px}
 </style>
