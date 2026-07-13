@@ -659,6 +659,315 @@
   .mt-addaction .tr-addbtn{width:30px;height:30px;font-size:1rem;}
   .mt-add .mt-datein{max-width:150px;flex:0 0 auto;}
   .tmeet{background:var(--accent-wash);color:var(--accent-ink);border-color:#F5D3DF;}
+
+  /* Tokens: shared with the future hub integration. Chip tokens have dark variants. */
+  :root{
+    --qa-bg:#ffffff; --qa-bg-soft:#f7f7f8; --qa-card:#ffffff; --qa-ink:#16181d; --qa-ink-2:#5c6270; --qa-ink-3:#9aa1ad;
+    --qa-line:#e7e8ec; --qa-line-strong:#d5d7dd;
+    --qa-accent:#e8365f; --qa-accent-soft:#fdeef2;
+    --qa-pass:#1f9a5e; --qa-fail:#cf3434; --qa-fail-soft:#fbebeb;
+    --qa-block:#d9912b; --qa-block-soft:#fdf3e3;
+    --qa-skip:#8b93a1; --qa-skip-soft:#eef0f3;
+    --qa-unsure:#6f5bd0; --qa-unsure-soft:#efeafc;
+    --qa-untested:#e2e4e9;
+    --qa-chip-cu:#5d4db3; --qa-chip-cu-soft:#efecfa;
+    --qa-chip-wb:#2b6cb0; --qa-chip-wb-soft:#e9f1f9;
+    --qa-shadow:0 1px 2px rgba(22,24,29,.05),0 4px 16px rgba(22,24,29,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --qa-bg:#131419; --qa-bg-soft:#1a1c22; --qa-card:#1d1f26; --qa-ink:#eceef2; --qa-ink-2:#a6acb8; --qa-ink-3:#6e7482;
+      --qa-line:#2a2d36; --qa-line-strong:#3a3e49;
+      --qa-accent:#f0507a; --qa-accent-soft:#3a1f28;
+      --qa-pass:#3dbb7d; --qa-fail:#e05555; --qa-fail-soft:#3a1d1d;
+      --qa-block:#e0a447; --qa-block-soft:#382c15;
+      --qa-skip:#8b93a1; --qa-skip-soft:#262a31;
+      --qa-unsure:#9e8ef0; --qa-unsure-soft:#2a2347;
+      --qa-untested:#33363f;
+      --qa-chip-cu:#a99bf0; --qa-chip-cu-soft:#282344;
+      --qa-chip-wb:#7db1e8; --qa-chip-wb-soft:#1b2a3a;
+      --qa-shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"]{
+    --qa-bg:#131419; --qa-bg-soft:#1a1c22; --qa-card:#1d1f26; --qa-ink:#eceef2; --qa-ink-2:#a6acb8; --qa-ink-3:#6e7482;
+    --qa-line:#2a2d36; --qa-line-strong:#3a3e49;
+    --qa-accent:#f0507a; --qa-accent-soft:#3a1f28;
+    --qa-pass:#3dbb7d; --qa-fail:#e05555; --qa-fail-soft:#3a1d1d;
+    --qa-block:#e0a447; --qa-block-soft:#382c15;
+    --qa-skip:#8b93a1; --qa-skip-soft:#262a31;
+    --qa-unsure:#9e8ef0; --qa-unsure-soft:#2a2347;
+    --qa-untested:#33363f;
+    --qa-chip-cu:#a99bf0; --qa-chip-cu-soft:#282344;
+    --qa-chip-wb:#7db1e8; --qa-chip-wb-soft:#1b2a3a;
+    --qa-shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+  }
+  :root[data-theme="light"]{
+    --qa-bg:#ffffff; --qa-bg-soft:#f7f7f8; --qa-card:#ffffff; --qa-ink:#16181d; --qa-ink-2:#5c6270; --qa-ink-3:#9aa1ad;
+    --qa-line:#e7e8ec; --qa-line-strong:#d5d7dd;
+    --qa-accent:#e8365f; --qa-accent-soft:#fdeef2;
+    --qa-pass:#1f9a5e; --qa-fail:#cf3434; --qa-fail-soft:#fbebeb;
+    --qa-block:#d9912b; --qa-block-soft:#fdf3e3;
+    --qa-skip:#8b93a1; --qa-skip-soft:#eef0f3;
+    --qa-unsure:#6f5bd0; --qa-unsure-soft:#efeafc;
+    --qa-untested:#e2e4e9;
+    --qa-chip-cu:#5d4db3; --qa-chip-cu-soft:#efecfa;
+    --qa-chip-wb:#2b6cb0; --qa-chip-wb-soft:#e9f1f9;
+    --qa-shadow:0 1px 2px rgba(22,24,29,.05),0 4px 16px rgba(22,24,29,.05);
+  }
+
+
+  /* Everything below is scoped under .qa-sessions for safe embedding. */
+  .qa-sessions{max-width:980px;margin:0 auto;padding:32px 24px 96px}
+  .qa-sessions *{box-sizing:border-box}
+  .qa-sessions .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .qa-sessions .eyebrow{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--qa-ink-3)}
+  .qa-sessions .page-title{font-size:28px;font-weight:700;margin:6px 0 4px;letter-spacing:-.02em;text-wrap:balance}
+  .qa-sessions .sub{color:var(--qa-ink-2);max-width:62ch;margin:0 0 28px}
+
+  .qa-sessions .card{background:var(--qa-card);border:1px solid var(--qa-line);border-radius:14px;box-shadow:var(--qa-shadow);overflow:hidden}
+  .qa-sessions .card-head{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 20px;border-bottom:1px solid var(--qa-line)}
+  .qa-sessions .card-head h2{font-size:16px;margin:0}
+  .qa-sessions .btn-new{border:none;background:var(--qa-accent);color:#fff;font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:9px;cursor:pointer}
+  .qa-sessions .btn-new:focus-visible,.qa-sessions .row-btn:focus-visible,.qa-sessions .stat-btn:focus-visible,
+  .qa-sessions .back:focus-visible,.qa-sessions .grp-head:focus-visible,.qa-sessions .files-head:focus-visible,
+  .qa-sessions .fchip:focus-visible,.qa-sessions .add-btn:focus-visible,.qa-sessions .rm:focus-visible,
+  .qa-sessions .grp-del:focus-visible,.qa-sessions .btn-danger:focus-visible,.qa-sessions .btn-plain:focus-visible,
+  .qa-sessions .prio-btn:focus-visible,.qa-sessions .att-thumb:focus-visible,.qa-sessions .att-add:focus-visible,
+  .qa-sessions .editable:focus-visible,
+  .qa-sessions .add-form input:focus-visible,.qa-sessions .add-form button:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+
+  .qa-sessions .table-scroll{overflow-x:auto}
+  .qa-sessions table{width:100%;border-collapse:collapse;font-size:14px}
+  .qa-sessions thead th{text-align:left;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--qa-ink-3);font-weight:500;padding:10px 14px;border-bottom:1px solid var(--qa-line);white-space:nowrap}
+  .qa-sessions tbody td{padding:14px;border-bottom:1px solid var(--qa-line);vertical-align:middle}
+  .qa-sessions tbody tr:last-child td{border-bottom:none}
+  .qa-sessions tbody tr.sess{cursor:pointer;transition:background .12s}
+  .qa-sessions tbody tr.sess:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .tnum{font-variant-numeric:tabular-nums}
+  .qa-sessions .type-pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--qa-accent-soft);color:var(--qa-accent)}
+  /* multi-select pill with popover checklist */
+  .qa-sessions .msel{position:relative;display:inline-block}
+  .qa-sessions .msel-btn{border:none;font-size:12px;font-weight:600;padding:3px 22px 3px 10px;border-radius:99px;background:var(--qa-accent-soft) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="8" height="6" viewBox="0 0 8 6"><path d="M1 1l3 3 3-3" fill="none" stroke="%23888" stroke-width="1.5" stroke-linecap="round"/></svg>') no-repeat right 8px center;color:var(--qa-accent);cursor:pointer;white-space:nowrap}
+  .qa-sessions .msel.plat .msel-btn{background-color:var(--qa-chip-wb-soft);color:var(--qa-chip-wb)}
+  .qa-sessions .msel-btn:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+  .qa-sessions .meta-chip .msel-btn{margin:-2px -6px -2px 0}
+  .qa-sessions .msel-pop{position:fixed;z-index:60;background:var(--qa-card);border:1px solid var(--qa-line);border-radius:12px;box-shadow:var(--qa-shadow);min-width:270px;max-width:330px;padding:6px;display:none}
+  .qa-sessions .msel.open .msel-pop{display:block}
+  .qa-sessions .msel-row{display:flex;gap:9px;padding:7px 9px;border-radius:8px;cursor:pointer;align-items:flex-start;width:100%;background:none;border:none;text-align:left;color:var(--qa-ink)}
+  .qa-sessions .msel-row:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .msel-row:focus-visible{outline:2px solid var(--qa-accent);outline-offset:-2px}
+  .qa-sessions .msel-check{width:15px;height:15px;border:1.5px solid var(--qa-line-strong);border-radius:5px;flex:none;margin-top:2px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;line-height:1;color:transparent}
+  .qa-sessions .msel-row[aria-checked="true"] .msel-check{background:var(--qa-accent);border-color:var(--qa-accent);color:#fff}
+  .qa-sessions .msel.plat .msel-row[aria-checked="true"] .msel-check{background:var(--qa-chip-wb);border-color:var(--qa-chip-wb)}
+  .qa-sessions .msel-name{font-size:12.5px;font-weight:600;display:block}
+  .qa-sessions .msel-desc{font-size:11px;color:var(--qa-ink-3);line-height:1.35;display:block;margin-top:1px}
+  .qa-sessions .bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--qa-untested);min-width:120px}
+  .qa-sessions .bar i{display:block;height:100%}
+  .qa-sessions .bar .p{background:var(--qa-pass)}.qa-sessions .bar .f{background:var(--qa-fail)}
+  .qa-sessions .bar .u{background:var(--qa-unsure)}
+  .qa-sessions .bar .b{background:var(--qa-block)}.qa-sessions .bar .s{background:var(--qa-skip)}
+  .qa-sessions .bar-lbl{font-size:12px;color:var(--qa-ink-2);margin-top:5px;font-variant-numeric:tabular-nums}
+  .qa-sessions .bugchip{font-size:12.5px;font-weight:600;color:var(--qa-fail);background:var(--qa-fail-soft);padding:3px 9px;border-radius:99px;font-variant-numeric:tabular-nums}
+  .qa-sessions .bugchip.zero{color:var(--qa-ink-3);background:var(--qa-skip-soft)}
+  .qa-sessions .example-tag{font-size:10.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3);border:1px solid var(--qa-line-strong);border-radius:6px;padding:1px 6px;margin-left:8px}
+
+  .qa-sessions .detail-top{display:flex;justify-content:flex-end;margin-bottom:16px}
+  .qa-sessions .back{border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-2);border-radius:9px;padding:7px 13px;font-size:13.5px;cursor:pointer}
+  .qa-sessions .summary{position:sticky;top:12px;z-index:5;background:var(--qa-card);border:1px solid var(--qa-line);border-radius:14px;box-shadow:var(--qa-shadow);padding:16px 20px;margin-bottom:22px}
+  .qa-sessions .purpose{margin:0 0 12px;font-size:13px;color:var(--qa-ink-2);max-width:75ch;border-left:2px solid var(--qa-accent);padding-left:10px}
+  .qa-sessions .editable{border-radius:6px;padding:1px 4px;margin:-1px -4px;cursor:text}
+  .qa-sessions .editable:hover{background:var(--qa-bg-soft);box-shadow:inset 0 0 0 1px var(--qa-line-strong)}
+  .qa-sessions .summary-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .qa-sessions .meta-chip{display:inline-flex;gap:6px;align-items:baseline;font-size:12.5px;color:var(--qa-ink-2);background:var(--qa-bg-soft);border:1px solid var(--qa-line);border-radius:8px;padding:4px 10px;white-space:nowrap}
+  .qa-sessions .meta-chip b{color:var(--qa-ink);font-weight:600}
+  .qa-sessions .summary-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .qa-sessions .summary-bar .bar{flex:1;height:10px;min-width:200px}
+  .qa-sessions .done-lbl{font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .qa-sessions .counts{display:flex;gap:14px;font-size:12.5px;color:var(--qa-ink-2);font-variant-numeric:tabular-nums;flex-wrap:wrap}
+  .qa-sessions .dot{display:inline-block;width:8px;height:8px;border-radius:99px;margin-right:5px;vertical-align:middle}
+  .qa-sessions .d-p{background:var(--qa-pass)}.qa-sessions .d-f{background:var(--qa-fail)}
+  .qa-sessions .d-u2{background:var(--qa-unsure)}
+  .qa-sessions .d-b{background:var(--qa-block)}.qa-sessions .d-s{background:var(--qa-skip)}
+
+  /* build notes: status chips (snapshot at time of test) + list rows */
+  .qa-sessions .stchip{display:inline-flex;align-items:center;gap:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;padding:2.5px 8px;border-radius:99px;white-space:nowrap;flex:none}
+  .qa-sessions .stchip::before{content:"";width:7px;height:7px;border-radius:99px;background:currentColor}
+  .qa-sessions .stchip.rtt{color:var(--qa-block);background:var(--qa-block-soft)}
+  .qa-sessions .stchip.rf{color:var(--qa-fail);background:var(--qa-fail-soft)}
+  .qa-sessions .stchip.done{color:var(--qa-pass);background:var(--qa-skip-soft)}
+  .qa-sessions .bn-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--qa-line);font-size:13px}
+  .qa-sessions .bn-row:last-child{border-bottom:none}
+  .qa-sessions .bn-id{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:var(--qa-ink-3);flex:none;width:72px}
+  .qa-sessions .bn-title{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .qa-sessions .bn-note{font-size:11.5px;color:var(--qa-ink-3);margin:8px 0 0}
+  .qa-sessions .build-link{border:none;background:none;padding:0;cursor:pointer;color:var(--qa-ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;text-decoration:underline;text-decoration-color:var(--qa-line-strong);text-underline-offset:3px}
+  .qa-sessions .build-link:hover{text-decoration-color:var(--qa-accent);color:var(--qa-accent)}
+  .qa-sessions .build-link:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+
+  /* modals (build notes, attachment preview, delete confirm) */
+  .qa-modal-overlay{position:fixed;inset:0;background:rgba(10,11,14,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .qa-modal-overlay.open{display:flex}
+  .qa-modal{background:var(--qa-card);color:var(--qa-ink);border:1px solid var(--qa-line);border-radius:14px;box-shadow:var(--qa-shadow);max-width:640px;width:100%;max-height:80vh;overflow-y:auto;padding:18px 20px}
+  .qa-modal.small{max-width:420px}
+  .qa-modal-head{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .qa-modal-head .t{font-weight:650;font-size:15px}
+  .qa-modal-head .x{margin-left:auto;border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-2);border-radius:8px;width:28px;height:28px;cursor:pointer;font-size:14px;line-height:1}
+  .qa-modal-head .x:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+  .qa-modal .sub-lbl{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3);margin-bottom:10px}
+  .qa-modal .att-view{max-width:100%;max-height:64vh;display:block;margin:0 auto;border-radius:10px}
+  .qa-sessions .confirm-msg{font-size:14px;color:var(--qa-ink);margin:4px 0 0}
+  .qa-sessions .confirm-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+  .qa-sessions .btn-danger{border:none;background:var(--qa-fail);color:#fff;font-weight:600;font-size:13.5px;padding:8px 14px;border-radius:9px;cursor:pointer}
+  .qa-sessions .btn-plain{border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-2);font-size:13.5px;padding:8px 14px;border-radius:9px;cursor:pointer}
+
+  .qa-sessions .files{border:1px solid var(--qa-line);border-radius:12px;background:var(--qa-card);margin:-10px 0 22px;overflow:hidden}
+  .qa-sessions .files-head{width:100%;display:flex;align-items:center;gap:8px;background:none;border:none;color:var(--qa-ink-2);cursor:pointer;padding:9px 14px;font-size:12.5px;text-align:left}
+  .qa-sessions .files-head:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .files-head .chev{transition:transform .15s;color:var(--qa-ink-3);flex:none}
+  .qa-sessions .files.open .files-head .chev{transform:rotate(90deg)}
+  .qa-sessions .files-head .lbl{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--qa-ink-3)}
+  .qa-sessions .files-head .cnt{color:var(--qa-ink-3);font-variant-numeric:tabular-nums}
+  .qa-sessions .files-head .hint{margin-left:auto;color:var(--qa-ink-3);font-size:11.5px;white-space:nowrap}
+  .qa-sessions .files-body{display:none;padding:12px 14px;border-top:1px solid var(--qa-line)}
+  .qa-sessions .files.open .files-body{display:flex;flex-wrap:wrap;gap:8px}
+  .qa-sessions .files.open .files-body.bn{display:block}
+  .qa-sessions .fchip{display:inline-flex;align-items:center;gap:7px;text-decoration:none;border:1px solid var(--qa-line-strong);border-radius:9px;padding:6px 11px;background:var(--qa-bg-soft);color:var(--qa-ink);font-size:12.5px;max-width:100%}
+  .qa-sessions .fchip:hover{border-color:var(--qa-accent);color:var(--qa-accent)}
+  .qa-sessions .fchip .ftype{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3);flex:none}
+  .qa-sessions .fchip .fname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  .qa-sessions .grp{margin-bottom:18px}
+  .qa-sessions .grp-desc{margin:0;padding:10px 14px;font-size:13px;color:var(--qa-ink-2);border-bottom:1px solid var(--qa-line);background:var(--qa-bg-soft);font-style:italic}
+  .qa-sessions .grp-head{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:none;border:none;color:var(--qa-ink);cursor:pointer;padding:8px 4px;border-radius:8px}
+  .qa-sessions .grp-head:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .grp-head .chev{transition:transform .15s;color:var(--qa-ink-3);flex:none}
+  .qa-sessions .grp.open .grp-head .chev{transform:rotate(90deg)}
+  .qa-sessions .grp-title{font-size:15px;font-weight:650;letter-spacing:-.01em}
+  .qa-sessions .grp-sub{display:inline-flex;gap:5px;align-items:center;font-size:12.5px;color:var(--qa-ink-3);margin-left:auto;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .qa-sessions .gp{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;font-weight:700;padding:1.5px 8px;border-radius:99px;color:#fff}
+  .qa-sessions .gp.p{background:var(--qa-pass)}
+  .qa-sessions .gp.f{background:var(--qa-fail)}
+  .qa-sessions .gp.u{background:var(--qa-unsure)}
+  .qa-sessions .gp.b{background:var(--qa-block)}
+  .qa-sessions .gp.s{background:var(--qa-skip)}
+  .qa-sessions .gp-total{font-size:12px;color:var(--qa-ink-2);font-weight:600;margin-left:4px}
+  .qa-sessions .grp-rec{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--qa-ink-3);border:1px solid var(--qa-line-strong);border-radius:6px;padding:1px 6px;margin-left:8px;flex:none;white-space:nowrap}
+  .qa-sessions .grp-del{border:none;background:none;color:var(--qa-ink-3);cursor:pointer;padding:3px;border-radius:7px;flex:none;display:inline-flex;margin-left:2px}
+  .qa-sessions .grp-del:hover{color:var(--qa-fail);background:var(--qa-fail-soft)}
+  .qa-sessions .grp-body{display:none;border:1px solid var(--qa-line);border-radius:12px;overflow:hidden;margin-top:6px;background:var(--qa-card)}
+  .qa-sessions .grp.open .grp-body{display:block}
+
+  .qa-sessions .item{border-bottom:1px solid var(--qa-line)}
+  .qa-sessions .item:last-child{border-bottom:none}
+  .qa-sessions .row-line{display:flex;align-items:center;gap:10px;padding:10px 14px}
+  .qa-sessions .row-line:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .row-btn{flex:1;min-width:0;display:flex;align-items:center;gap:12px;background:none;border:none;color:var(--qa-ink);text-align:left;padding:2px 0;cursor:pointer;font-size:14px}
+  .qa-sessions .item .chev{color:var(--qa-ink-3);transition:transform .15s;flex:none}
+  .qa-sessions .item.open .chev{transform:rotate(90deg)}
+  .qa-sessions .inum{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--qa-ink-3);width:20px;flex:none;font-variant-numeric:tabular-nums}
+  .qa-sessions .idchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;padding:2.5px 7px;border-radius:6px;flex:none;white-space:nowrap}
+  .qa-sessions .idchip.cu{background:var(--qa-chip-cu-soft);color:var(--qa-chip-cu)}
+  .qa-sessions .idchip.wb{background:var(--qa-chip-wb-soft);color:var(--qa-chip-wb)}
+  .qa-sessions .idchip.new{background:var(--qa-skip-soft);color:var(--qa-ink-2)}
+  .qa-sessions .idchip.added{background:var(--qa-accent-soft);color:var(--qa-accent)}
+  .qa-sessions .ititle{flex:1;min-width:0}
+  .qa-sessions .ititle .t{font-weight:550}
+  .qa-sessions .flag{font-size:10.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--qa-block);background:var(--qa-block-soft);border-radius:6px;padding:2px 7px;margin-left:8px;white-space:nowrap}
+  /* bug id + priority + attachment chips sit LEFT of the result icons */
+  .qa-sessions .rowchips{display:flex;gap:5px;align-items:center;flex:none}
+  .qa-sessions .priochip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;flex:none}
+  .qa-sessions .priochip.P0,.qa-sessions .priochip.P1{background:var(--qa-fail-soft);color:var(--qa-fail)}
+  .qa-sessions .priochip.P2{background:var(--qa-block-soft);color:var(--qa-block)}
+  .qa-sessions .priochip.P3{background:var(--qa-skip-soft);color:var(--qa-skip)}
+  .qa-sessions .bugidchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:6px;background:var(--qa-fail-soft);color:var(--qa-fail);flex:none}
+  .qa-sessions .att-count{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;padding:2px 7px;border-radius:6px;background:var(--qa-skip-soft);color:var(--qa-ink-2);flex:none}
+  .qa-sessions .spinchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;padding:2px 7px;border-radius:6px;background:var(--qa-unsure-soft);color:var(--qa-unsure);flex:none}
+  .qa-sessions .copychip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;padding:2px 7px;border-radius:6px;background:var(--qa-skip-soft);color:var(--qa-ink-2);flex:none}
+  .qa-sessions .act-row{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .qa-sessions .spin-btn{border:1px dashed var(--qa-line-strong);background:none;color:var(--qa-ink-2);border-radius:8px;padding:4px 12px;font-size:12.5px;cursor:pointer}
+  .qa-sessions .spin-btn:hover{color:var(--qa-accent);border-color:var(--qa-accent)}
+  .qa-sessions .spin-btn:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+  .qa-sessions .move-sel{border:1px dashed var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-2);border-radius:8px;padding:4px 8px;font:inherit;font-size:12.5px;cursor:pointer;max-width:260px}
+  .qa-sessions .move-sel:hover{color:var(--qa-accent);border-color:var(--qa-accent)}
+  .qa-sessions .move-sel:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+  .qa-sessions .statgrp{display:flex;gap:4px;flex:none}
+  .qa-sessions .stat-btn{width:32px;height:28px;border-radius:8px;border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-3);cursor:pointer;font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+  .qa-sessions .stat-btn:hover{border-color:var(--qa-ink-3)}
+  .qa-sessions .item[data-status="pass"]   .stat-btn[data-s="pass"]{background:var(--qa-pass);border-color:var(--qa-pass);color:#fff}
+  .qa-sessions .item[data-status="fail"]   .stat-btn[data-s="fail"]{background:var(--qa-fail);border-color:var(--qa-fail);color:#fff}
+  .qa-sessions .item[data-status="unsure"] .stat-btn[data-s="unsure"]{background:var(--qa-unsure);border-color:var(--qa-unsure);color:#fff}
+  .qa-sessions .item[data-status="block"]  .stat-btn[data-s="block"]{background:var(--qa-block);border-color:var(--qa-block);color:#fff}
+  .qa-sessions .item[data-status="skip"]   .stat-btn[data-s="skip"]{background:var(--qa-skip);border-color:var(--qa-skip);color:#fff}
+  .qa-sessions .item[data-status="pass"] .row-line{box-shadow:inset 3px 0 0 var(--qa-pass)}
+  .qa-sessions .item[data-status="fail"] .row-line{box-shadow:inset 3px 0 0 var(--qa-fail)}
+  .qa-sessions .item[data-status="unsure"] .row-line{box-shadow:inset 3px 0 0 var(--qa-unsure)}
+  .qa-sessions .item[data-status="block"] .row-line{box-shadow:inset 3px 0 0 var(--qa-block)}
+  .qa-sessions .item[data-status="skip"] .row-line{opacity:.65;box-shadow:inset 3px 0 0 var(--qa-skip)}
+  .qa-sessions .rm{width:26px;height:26px;border-radius:7px;border:none;background:none;color:var(--qa-ink-3);cursor:pointer;flex:none;display:inline-flex;align-items:center;justify-content:center}
+  .qa-sessions .rm:hover{color:var(--qa-fail);background:var(--qa-fail-soft)}
+  .qa-sessions .dup{width:26px;height:26px;border-radius:7px;border:none;background:none;color:var(--qa-ink-3);cursor:pointer;flex:none;display:inline-flex;align-items:center;justify-content:center}
+  .qa-sessions .dup:hover{color:var(--qa-accent);background:var(--qa-accent-soft)}
+  .qa-sessions .dup:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
+
+  /* add-test / add-flow */
+  .qa-sessions .add-btn{display:block;width:100%;text-align:left;border:none;background:none;color:var(--qa-ink-3);cursor:pointer;font-size:13px;padding:10px 14px}
+  .qa-sessions .add-btn:hover{color:var(--qa-accent);background:var(--qa-bg-soft)}
+  .qa-sessions .add-btn.flow{border:1px dashed var(--qa-line-strong);border-radius:12px;padding:12px 16px;margin-top:2px}
+  .qa-sessions .add-form{display:flex;gap:8px;padding:10px 14px;align-items:center}
+  .qa-sessions .add-form.flow{border:1px dashed var(--qa-line-strong);border-radius:12px;padding:12px 16px}
+  .qa-sessions .add-form input{flex:1;min-width:0;border:1px solid var(--qa-line-strong);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font:inherit;font-size:13.5px;padding:7px 10px}
+  .qa-sessions .add-form button{border:none;border-radius:8px;padding:7px 13px;font-size:13px;font-weight:600;cursor:pointer}
+  .qa-sessions .add-form .ok{background:var(--qa-accent);color:#fff}
+  .qa-sessions .add-form .no{background:var(--qa-bg-soft);color:var(--qa-ink-2);border:1px solid var(--qa-line-strong)}
+
+  /* expanded test-case editor: compact click-to-edit fields */
+  .qa-sessions .detail{display:none;padding:4px 14px 16px 46px;color:var(--qa-ink-2);font-size:13.5px}
+  .qa-sessions .item.open .detail{display:block}
+  .qa-sessions .fline-wrap{margin-top:2px}
+  .qa-sessions .fline{display:flex;gap:12px;align-items:baseline;padding:4px 8px;border-radius:8px;cursor:text;border:1px solid transparent}
+  .qa-sessions .fline:hover{background:var(--qa-bg-soft);border-color:var(--qa-line)}
+  .qa-sessions .flabel{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3);width:72px;flex:none}
+  .qa-sessions .fval{flex:1;min-width:0;font-size:13px;color:var(--qa-ink);white-space:pre-wrap;word-break:break-word}
+  .qa-sessions .fval.empty{color:var(--qa-ink-3);font-style:italic}
+  .qa-sessions .fedit{display:flex;gap:12px;align-items:flex-start;padding:4px 8px}
+  .qa-sessions .fedit .flabel{padding-top:8px}
+  .qa-sessions .fedit textarea{flex:1;min-width:0;border:1px solid var(--qa-accent);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font:inherit;font-size:13px;padding:8px 10px;resize:vertical;min-height:96px}
+  .qa-sessions .fedit input[type="text"]{flex:1;min-width:0;border:1px solid var(--qa-accent);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font:inherit;font-size:13px;padding:6px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .qa-sessions .fval .bugidchip{margin-right:6px}
+
+  /* attachments: drag screenshots/clips onto a test case */
+  .qa-sessions .att-line{display:flex;gap:12px;align-items:flex-start;padding:4px 8px;margin-top:2px}
+  .qa-sessions .att-body{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .qa-sessions .att-empty{font-size:13px;color:var(--qa-ink-3);font-style:italic}
+  .qa-sessions .att-thumb{position:relative;width:56px;height:56px;border:1px solid var(--qa-line-strong);border-radius:8px;overflow:hidden;background:var(--qa-bg-soft);cursor:pointer;padding:0}
+  .qa-sessions .att-thumb img,.qa-sessions .att-thumb video{width:100%;height:100%;object-fit:cover;display:block}
+  .qa-sessions .att-thumb:hover{border-color:var(--qa-accent)}
+  .qa-sessions .att-thumb .att-x{position:absolute;top:1px;right:1px;width:16px;height:16px;border:none;border-radius:5px;background:rgba(10,11,14,.65);color:#fff;font-size:10px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center}
+  .qa-sessions .att-thumb:hover .att-x{display:inline-flex}
+  .qa-sessions .att-add{border:1px dashed var(--qa-line-strong);background:none;color:var(--qa-ink-3);border-radius:8px;width:56px;height:56px;cursor:pointer;font-size:20px;line-height:1}
+  .qa-sessions .att-add:hover{color:var(--qa-accent);border-color:var(--qa-accent)}
+  .qa-sessions .item.dropping{outline:2px dashed var(--qa-accent);outline-offset:-2px;background:var(--qa-accent-soft)}
+
+  .qa-sessions .prio-row{display:flex;gap:6px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .qa-sessions .prio-row .plabel{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--qa-ink-3);margin-right:2px}
+  .qa-sessions .prio-btn{border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-3);border-radius:8px;padding:4px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;font-weight:700;cursor:pointer}
+  .qa-sessions .prio-btn:hover{border-color:var(--qa-ink-3)}
+  .qa-sessions .prio-btn.sel.P0,.qa-sessions .prio-btn.sel.P1{background:var(--qa-fail);border-color:var(--qa-fail);color:#fff}
+  .qa-sessions .prio-btn.sel.P2{background:var(--qa-block);border-color:var(--qa-block);color:#fff}
+  .qa-sessions .prio-btn.sel.P3{background:var(--qa-skip);border-color:var(--qa-skip);color:#fff}
+
+  .qa-sessions .view{display:none}
+  .qa-sessions .view.active{display:block}
+  @media (max-width:640px){
+    .qa-sessions .statgrp{flex-wrap:wrap;width:74px}
+    .qa-sessions .detail{padding-left:14px}
+    .qa-sessions .summary{position:static}
+  }
+  @media (prefers-reduced-motion: reduce){ .qa-sessions *{transition:none!important} }
+
+  /* embed: the hub page supplies width/padding */
+  #pjqa-box-and-ring .qa-sessions{max-width:none;padding:0 0 56px}
 </style>
 
 <!-- icon sprite -->
@@ -1846,6 +2155,106 @@ QA &amp; Project Manager, AppMakers LA
       </div>
     </div>
 
+    <div class="pj-view" id="pjqa-box-and-ring">
+<div class="qa-sessions">
+  <p class="sub">Build-verification testing during Development. Each session is one plan against one build; tick tests off as you walk through them. Acceptance testing (the final pre-client pass) lives in the Testing stage, not here.</p>
+
+  <!-- ============ VIEW 1: sessions table ============ -->
+  <section class="view active" id="qa-view-list">
+    <div class="card">
+      <div class="card-head">
+        <h2>Sessions</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import this session's ticks, edits and results (for moving between browsers)">⇅ Data</button>
+          <button class="btn-new" type="button" title="In the real hub this shows the prompt to paste to Claude for a plan">+ New test session</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Build</th><th>Type</th><th>Platform</th><th>Progress</th><th>Bugs</th></tr>
+        </thead>
+        <tbody>
+          <tr class="sess" id="qa-open-session" tabindex="0" role="button" aria-label="Open session: sanity test build 0.0.1 (2)">
+            <td class="tnum">13 Jul 2026</td>
+            <td class="tnum"><button class="build-link" id="qa-build-link" type="button" title="View build notes + item statuses at time of test">0.0.1 (2)</button></td>
+            <td><span class="msel" id="qa-type-list"></span></td>
+            <td><span class="msel plat" id="qa-plat-list"></span></td>
+            <td>
+              <div class="bar" id="qa-list-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
+              <div class="bar-lbl" id="qa-list-bar-lbl">0 / 13 done</div>
+            </td>
+            <td><span class="bugchip zero" id="qa-list-bugs">0</span></td>
+          </tr>
+          <tr class="sess" style="opacity:.55;cursor:default" title="Illustrative only — shows the finished-session look">
+            <td class="tnum">6 Jul 2026<span class="example-tag">example</span></td>
+            <td class="mono tnum">0.0.1 (1)</td>
+            <td><span class="type-pill">Sanity</span></td>
+            <td>iOS · iPhone</td>
+            <td>
+              <div class="bar"><i class="p" style="width:70%"></i><i class="f" style="width:20%"></i><i class="b" style="width:10%"></i></div>
+              <div class="bar-lbl">10 / 10 done</div>
+            </td>
+            <td><span class="bugchip">2</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 2: session detail ============ -->
+  <section class="view" id="qa-view-detail">
+    <div class="detail-top">
+      <button class="back" id="qa-back" type="button">&larr; All sessions</button>
+    </div>
+
+    <div class="summary">
+      <p class="purpose"><b>Purpose:</b> <span class="editable" id="qa-purpose" contenteditable="true" spellcheck="false"></span></p>
+      <div class="summary-top">
+        <span class="meta-chip"><b class="mono">0.0.1 (2)</b> build</span>
+        <span class="meta-chip">type <span class="msel" id="qa-type-det"></span></span>
+        <span class="meta-chip">platform <span class="msel plat" id="qa-plat-det"></span></span>
+        <span class="meta-chip">device <b>iPhone 15 Pro</b></span>
+        <span class="meta-chip">OS <b>iOS 18.5</b></span>
+        <span class="meta-chip"><b>13 Jul 2026</b></span>
+        <span class="meta-chip">tester <b>Phill</b></span>
+        <span class="meta-chip">recordings <b>2 planned</b></span>
+      </div>
+      <div class="summary-bar">
+        <span class="done-lbl" id="qa-done-lbl">0 / 13 tests complete</span>
+        <div class="bar" id="qa-sum-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
+        <div class="counts" id="qa-sum-counts"></div>
+      </div>
+    </div>
+
+    <div class="files" id="qa-files">
+      <button class="files-head" type="button" aria-expanded="false">
+        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Project documents</span>
+        <span class="cnt" id="qa-files-cnt"></span>
+        <span class="hint">reference while testing</span>
+      </button>
+      <div class="files-body" id="qa-files-body"></div>
+    </div>
+
+    <div class="files" id="qa-bnotes">
+      <button class="files-head" type="button" aria-expanded="false">
+        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Build notes</span>
+        <span class="cnt mono">0.0.1 (2)</span>
+        <span class="hint">item statuses at time of test</span>
+      </button>
+      <div class="files-body bn" id="qa-bnotes-body"></div>
+    </div>
+
+    <div id="qa-groups"></div>
+    <button class="add-btn flow" id="qa-add-flow" type="button">+ Add flow</button>
+  </section>
+</div>
+
+
+    </div>
     <div class="pj-view" id="pjstage-box-and-ring"></div>
     <div class="pj-view" id="pjrnd-box-and-ring">
 
@@ -1967,12 +2376,69 @@ QA &amp; Project Manager, AppMakers LA
   </div>
 </footer>
 
+<div class="qa-modal-overlay" id="qa-att-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Attachment preview">
+      <div class="qa-modal-head">
+        <span class="t" id="qa-att-name"></span>
+        <button class="x" id="qa-att-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <div id="qa-att-body"></div>
+    </div>
+  </div>
+</div>
+
+<div class="qa-modal-overlay" id="qa-data-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Session data export / import">
+      <div class="qa-modal-head">
+        <span class="t">Session data — export / import</span>
+        <button class="x" id="qa-data-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <p class="confirm-msg" style="margin-bottom:10px">Copy this JSON to move your ticks, edits, priorities and defect IDs to another browser, or paste an export below and Apply. Attachments don't travel — they stay in each browser.</p>
+      <textarea id="qa-data-text" spellcheck="false" style="width:100%;min-height:180px;border:1px solid var(--qa-line-strong);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;padding:10px;resize:vertical"></textarea>
+      <div class="confirm-actions">
+        <span id="qa-data-msg" style="margin-right:auto;font-size:12px;color:var(--qa-ink-3);align-self:center"></span>
+        <button class="btn-plain" id="qa-data-copy" type="button">Copy export</button>
+        <button class="btn-danger" id="qa-data-apply" type="button">Apply import</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="qa-modal-overlay" id="qa-confirm-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal small" role="alertdialog" aria-modal="true" aria-label="Confirm delete">
+      <div class="qa-modal-head"><span class="t">Delete?</span></div>
+      <p class="confirm-msg" id="qa-confirm-msg"></p>
+      <div class="confirm-actions">
+        <button class="btn-plain" id="qa-confirm-no" type="button">Cancel</button>
+        <button class="btn-danger" id="qa-confirm-yes" type="button">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="qa-modal-overlay" id="qa-modal-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Build notes 0.0.1 (2)">
+      <div class="qa-modal-head">
+        <span class="t">Build notes — <span class="mono">0.0.1 (2)</span></span>
+        <button class="x" id="qa-modal-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="sub-lbl">Item statuses at time of test · 13 Jul 2026</div>
+      <div id="qa-modal-body"></div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 (function(){
   var STAGES=['R&D','Estimates','Development','Testing','Ship'];
   var PROJECTS=[
     {id:'box-and-ring', name:'Box and Ring',
-     links:[{label:'Figma',url:'https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring'}],
+     links:[{label:'Figma',url:'https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring'},{label:'Estimates',url:'https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754'}],
      meetings:[],
      defaultStage:'Development',
      defaultPhases:['Phase 1: Foundation & pairing (wk 1 to 3)','Phase 2: Core fight loop, text (wk 3 to 7)','Phase 3: Whisper, scorecard & safety (wk 7 to 10)','Phase 4: Polish, insight & pilot ship (wk 10 to 14)']}
@@ -2386,15 +2852,17 @@ QA &amp; Project Manager, AppMakers LA
       h+='</div>';nav.innerHTML=h;
       nav.querySelectorAll('[data-sub]').forEach(function(btn2){btn2.onclick=function(){pjView[id]=btn2.getAttribute('data-sub');renderProject(id);window.scrollTo(0,0);};});
     }
-    var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id);
-    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Testing'&&!!tst);
+    var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id), qa=document.getElementById('pjqa-'+id);
+    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Testing'&&!!tst), isDev=(sub==='Development'&&!!qa);
     if(home)home.style.display=isHome?'':'none';
     if(rnd)rnd.style.display=isRnd?'':'none';
     if(tst)tst.style.display=isTest?'':'none';
-    if(stg)stg.style.display=(!isHome&&!isRnd&&!isTest)?'':'none';
+    if(qa)qa.style.display=isDev?'':'none';
+    if(stg)stg.style.display=(!isHome&&!isRnd&&!isTest&&!isDev)?'':'none';
     if(isHome)renderPJHome(id);
     else if(isRnd)renderStageBar(id,rnd,'R&D');
     else if(isTest)renderStageBar(id,tst,'Testing');
+    else if(isDev)renderStageBar(id,qa,'Development');
     else renderPJStage(id,sub);
   }
   function renderStageBar(id,container,stageName){
@@ -2661,6 +3129,15 @@ QA &amp; Project Manager, AppMakers LA
     if(!bps.links.some(function(l){return (l.url||'').indexOf('1g-nGQ4')>-1;})){bps.links.push({label:'Box and Ring doc',url:'https://docs.google.com/document/d/1g-nGQ4DpIAdM6rB1kmumH-GFGUpTYfnG1PNMv4EkWq4/edit'});savePS();}
   }
   injectExamples();
+  // Always-run idempotent link migrations (the seed block above only runs once ever,
+  // so links added later must be pushed into existing saved state here).
+  (function(){
+    var bps=projState('box-and-ring');
+    if(!bps.links.some(function(l){return (l.url||'').indexOf('143JDlKki')>-1;})){
+      bps.links.push({label:'Estimates',url:'https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754'});
+      savePS();
+    }
+  })();
   var exB=document.getElementById('trExport'),imB=document.getElementById('trImport');
   var dp=document.getElementById('trDataPanel'),dt=document.getElementById('trDataText'),dap=document.getElementById('trDataApply'),dm=document.getElementById('trDataMsg');
   if(exB)exB.onclick=function(){dp.hidden=false;dap.hidden=true;dt.value=exportData();dt.focus();dt.select();
@@ -2694,6 +3171,1010 @@ QA &amp; Project Manager, AppMakers LA
   }catch(e){}
   renderDrawer();
   route();
+})();
+</script>
+<script>
+(function(){
+  const root = document.getElementById("qa-groups");
+  if (!root || root.dataset.init) return;   // double-run guard
+  root.dataset.init = "1";
+
+  const DEFAULT_PURPOSE = "verify the three Ready-to-Test fixes in this build (sign-up loop, invite link crash, QR scanner) by walking the two user flows they sit on, and smoke the four Done fixes plus adjacent areas.";
+
+  const PLAN = [
+    {part:"Flow 1 — New user: sign-up to dashboard", rec:"Recording 1",
+     desc:"The account-creation journey end to end. Carries this build's sign-up loop fix (ID-20372) plus three known problem branches, each tested at its natural point in the walk.",
+     items:[
+      {n:1,id:"ID-20372",kind:"cu",title:"Sign up with a new account",
+       steps:["Fresh state (log out fully / reinstall)","Get Started → sign up with a NEW email + password","Submit"],
+       expected:"Verification screen appears (not bounced to Get Started); verification email arrives.",
+       edge:"After submitting, kill the app and reopen — should resume sensibly, not loop."},
+      {n:2,id:"Login-01-02",kind:"wb",title:"Back buttons during onboarding (test while you're in there)",
+       steps:["On the onboarding questions screen tap back","On “choose your fighter” tap back"],
+       expected:"Back returns to the previous step. Both previously broken — narrate current behaviour.",
+       edge:null},
+      {n:3,id:"Login-01-03",kind:"wb",title:"Sign up again with the SAME credentials",
+       steps:["Repeat sign-up using item 1's credentials"],
+       expected:"“Account already exists” error. Previously failed (P0) — narrate whatever happens.",
+       edge:null},
+      {n:4,id:"ID-20373",kind:"cu",flag:"expect broken",title:"Log in with wrong password",
+       steps:["Log in with a valid email but wrong password"],
+       expected:"Clear, professional error (spec). Known still-broken — narrate exact wording, don't re-file.",
+       edge:null},
+      {n:5,id:"NEW",kind:"new",title:"Log in correctly (smoke)",
+       steps:["Log in with correct credentials"],
+       expected:"Lands on dashboard; session survives app kill + relaunch.",
+       edge:null},
+    ]},
+    {part:"Flow 2 — Connect with your partner (invite)", rec:"Recording 2 · first half",
+     desc:"Highest-risk area this build: four of the eight bugs shipped here. Walks every invite entry point.",
+     items:[
+      {n:6,id:"ID-20383",kind:"cu",title:"QR code scanner loads",
+       steps:["Open Invite → QR scanner"],
+       expected:"Camera view loads, no stuck loading. Scan a valid partner QR if possible.",
+       edge:"Deny camera permission first → graceful message, not a hang; re-grant and retry."},
+      {n:7,id:"ID-20381",kind:"cu",title:"Invite link opens the app",
+       steps:["Generate invite link, send to yourself, tap it"],
+       expected:"App opens to invite accept flow — no “Page Not Found” crash.",
+       edge:"Tap once with app already open, once from cold start."},
+      {n:8,id:"ID-20382",kind:"cu",title:"Invalid invite code shows an error",
+       steps:["Enter a made-up invite code"],
+       expected:"Clear error, no infinite spinner.",
+       edge:"Empty code; code with leading/trailing spaces."},
+      {n:9,id:"NEW",kind:"new",title:"Invite happy path (smoke)",
+       steps:["Run your usual invite method end-to-end as far as one device allows"],
+       expected:"Invite created and shareable. Partner-side outcomes get tagged Unverifiable, not failed.",
+       edge:null},
+    ]},
+    {part:"Regression sweep — Done fixes + impacted areas", rec:"Recording 2 · second half",
+     desc:"Done fixes smoke + impacted areas: the invite-link fix touched deep-link routing and the safe-area fix touched every screen, so adjacent surfaces get a glance while passing through.",
+     items:[
+      {n:10,id:"ID-20378",kind:"cu",title:"Dashboard banner button works",
+       steps:["Land on dashboard","Tap the main banner button"],
+       expected:"No permanent “Pending” loading state.",
+       edge:null},
+      {n:11,id:"ID-20379",kind:"cu",title:"Safe-area / bottom-cropping sweep",
+       steps:["Glance at the bottom of every screen you visit","Deliberately visit 2–3 content-heavy screens"],
+       expected:"No content cropped at the bottom, no missing safe-area padding.",
+       edge:null},
+      {n:12,id:"ID-20387",kind:"cu",title:"Log out / delete account modals render correctly",
+       steps:["Open Log Out modal, cancel","Open Delete Account modal, cancel"],
+       expected:"Borders present, buttons fully visible.",
+       edge:"Open each modal twice — first-open vs re-open rendering can differ."},
+      {n:13,id:"NEW",kind:"new",title:"Log out (smoke)",
+       steps:["Actually log out","Log back in"],
+       expected:"Returns to Get Started; no crash; login works again.",
+       edge:null},
+    ]},
+  ];
+
+  // Always: Figma, scope doc, estimates. Plus per-session extras when relevant.
+  const FILES = [
+    {type:"figma", name:"Box and Ring — app flows", href:"https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring"},
+    {type:"doc",   name:"Scope / spec (15 sections)", href:"https://docs.google.com/document/d/1g-nGQ4DpIAdM6rB1kmumH-GFGUpTYfnG1PNMv4EkWq4/edit"},
+    {type:"sheet", name:"Estimates", href:"https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754"},
+    {type:"clickup",name:"Box and Ring project", href:"#"},
+  ];
+
+  // Build notes: item statuses SNAPSHOT at time of test (ClickUp moves on later).
+  const BUILD_NOTES = {
+    build:"0.0.1 (2)", date:"13 Jul 2026",
+    features:[],
+    bugs:[
+      {id:"ID-20372", title:"Sign Up: Sign-up loop redirects to “Get Started” page and lacks verification screen", st:"rtt"},
+      {id:"ID-20373", title:"Login: Vague and unprofessional login error message", st:"rf"},
+      {id:"ID-20381", title:"Invite: Invite Link Crashes App with “Page Not Found” Error", st:"rtt"},
+      {id:"ID-20378", title:"Dashboard: Main banner button stuck in permanent “Pending” loading state", st:"done"},
+      {id:"ID-20382", title:"Invite: Infinite Loading Screen When Entering Invalid Invite Code", st:"done"},
+      {id:"ID-20387", title:"Log Out/Delete Account: Modal UI Layout Defects", st:"done"},
+      {id:"ID-20379", title:"Entire pages: content cropped at bottom / missing safe-area padding", st:"done"},
+      {id:"ID-20383", title:"Invite: QR Code Scanner Gets Stuck Loading", st:"rtt"},
+    ],
+  };
+  const ST_LABEL = {rtt:"Ready to test", rf:"Retest failed", done:"Done"};
+
+  const KEY = "qa-session-boxandring-0.0.1-2";
+  let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
+  if (typeof state !== "object" || state === null || Array.isArray(state)) state = {};
+  // custom additions made while testing
+  if (typeof state.__c !== "object" || state.__c === null || Array.isArray(state.__c)) state.__c = {};
+  if (!Array.isArray(state.__c.flows)) state.__c.flows = [];
+  if (typeof state.__c.extra !== "object" || state.__c.extra === null || Array.isArray(state.__c.extra)) state.__c.extra = {};
+  // plan-level edits + deletions (tombstones so plan items stay deleted across reloads)
+  if (typeof state.__m !== "object" || state.__m === null || Array.isArray(state.__m)) state.__m = {};
+  if (typeof state.__m.groups !== "object" || state.__m.groups === null) state.__m.groups = {};
+  if (!Array.isArray(state.__m.removedItems)) state.__m.removedItems = [];
+  if (!Array.isArray(state.__m.removedGroups)) state.__m.removedGroups = [];
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
+  const itemState = n => {
+    let s = state[n];
+    if (typeof s !== "object" || s === null || Array.isArray(s)) s = state[n] = {};
+    return s;
+  };
+
+  // Attachments live in IndexedDB (localStorage is too small for screenshots).
+  // Browser-local only: they don't sync between devices or into the artifact file.
+  let adb = null;
+  const adbReady = new Promise(res => {
+    try {
+      const rq = indexedDB.open("qa-attachments-v1", 1);
+      rq.onupgradeneeded = () => rq.result.createObjectStore("att", {keyPath:"id"});
+      rq.onsuccess = () => { adb = rq.result; res(); };
+      rq.onerror = () => res();
+    } catch(e){ res(); }
+  });
+  const attPut = rec => adbReady.then(() => adb && new Promise(r => {
+    const tx = adb.transaction("att","readwrite"); tx.objectStore("att").put(rec); tx.oncomplete = r; tx.onerror = r;
+  }));
+  const attDel = id => adbReady.then(() => adb && new Promise(r => {
+    const tx = adb.transaction("att","readwrite"); tx.objectStore("att").delete(id); tx.oncomplete = r; tx.onerror = r;
+  }));
+  const attList = n => adbReady.then(() => adb ? new Promise(r => {
+    const out = [];
+    const cur = adb.transaction("att").objectStore("att").openCursor();
+    cur.onsuccess = e => { const c = e.target.result; if (c){ if (c.value.n === n) out.push(c.value); c.continue(); } else r(out); };
+    cur.onerror = () => r(out);
+  }) : []);
+
+  // attachment preview modal
+  const attOverlay = document.getElementById("qa-att-overlay");
+  const attView = rec => {
+    const url = URL.createObjectURL(rec.blob);
+    document.getElementById("qa-att-name").textContent = rec.name;
+    document.getElementById("qa-att-body").innerHTML = rec.type.startsWith("video/")
+      ? `<video class="att-view" src="${url}" controls autoplay></video>`
+      : `<img class="att-view" src="${url}" alt="">`;
+    attOverlay.classList.add("open");
+  };
+  document.getElementById("qa-att-close").addEventListener("click", () => {
+    attOverlay.classList.remove("open");
+    document.getElementById("qa-att-body").innerHTML = "";
+  });
+  attOverlay.addEventListener("click", ev => { if (ev.target === attOverlay) { attOverlay.classList.remove("open"); document.getElementById("qa-att-body").innerHTML = ""; } });
+
+  // delete confirmation (used by test + flow deletes)
+  const confirmOverlay = document.getElementById("qa-confirm-overlay");
+  let confirmCb = null;
+  const confirmBox = (msg, onYes) => {
+    document.getElementById("qa-confirm-msg").textContent = msg;
+    confirmCb = onYes;
+    confirmOverlay.classList.add("open");
+    document.getElementById("qa-confirm-no").focus();
+  };
+  document.getElementById("qa-confirm-yes").addEventListener("click", () => {
+    confirmOverlay.classList.remove("open");
+    if (confirmCb) confirmCb();
+    confirmCb = null;
+  });
+  document.getElementById("qa-confirm-no").addEventListener("click", () => { confirmOverlay.classList.remove("open"); confirmCb = null; });
+  confirmOverlay.addEventListener("click", ev => { if (ev.target === confirmOverlay){ confirmOverlay.classList.remove("open"); confirmCb = null; } });
+
+  // Escapes for element content AND double-quoted attribute values.
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+  const CHEV = '<svg class="chev" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const BIN = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
+
+  const STATS = [["pass","✓","Pass"],["fail","✕","Fail"],["unsure","?","Unsure — check with senior QA / dev before filing"],["block","!","Blocked"],["skip","–","Skipped"]];
+  const PRIO_TIP = {P0:"P0 — critical", P1:"P1 — important", P2:"P2 — exists, not important", P3:"P3 — trivial"};
+
+  // Runtime group list. Plan groups keep their original PLAN index (planGi) so
+  // per-group extras/overrides stay stable even when groups are deleted.
+  const removedItems = new Set(state.__m.removedItems);
+  const removedGroups = new Set(state.__m.removedGroups);
+  // Runtime item from a stored def. Moved plan tests carry their full snapshot
+  // (id/kind/steps/expected/edge/flag) so they keep their identity in the new flow.
+  const addedRt = d => ({n:d.n, id:d.id||"ADDED", kind:d.kind||"added", title:d.title,
+    steps:d.steps||null, expected:d.expected||null, edge:d.edge||null, flag:d.flag,
+    added:true, spin:d.spin, copyOf:d.copyOf});
+  const GROUPS = [];
+  PLAN.forEach((g, gi) => {
+    if (removedGroups.has(gi)) return;
+    const items = g.items.filter(it => !removedItems.has(it.n));
+    // extras with an `after` anchor (spin-offs) slot in below their parent; the rest append
+    (state.__c.extra[gi]||[]).forEach(d => {
+      const obj = addedRt(d);
+      const idx = d.after !== undefined ? items.findIndex(x => x.n === d.after) : -1;
+      if (idx >= 0) items.splice(idx + 1, 0, obj); else items.push(obj);
+    });
+    GROUPS.push({part:g.part, rec:g.rec, desc:g.desc, custom:false, planGi:gi, items});
+  });
+  state.__c.flows.forEach(f => GROUPS.push({
+    part:f.title, rec:null, desc:f.desc||null, custom:true, def:f,
+    items:(f.items||[]).map(addedRt)
+  }));
+
+  const allN = () => { let m = 0; GROUPS.forEach(g => g.items.forEach(it => { if (it.n > m) m = it.n; })); state.__m.removedItems.forEach(n => { if (n > m) m = n; }); return m; };
+  const nextN = () => allN() + 1;
+
+  // effective field value: user edit wins over plan default
+  const fval = (it, key, def) => {
+    const f = (itemState(it.n).f)||{};
+    return (f[key] !== undefined && f[key] !== null) ? f[key] : (def !== undefined ? def : "");
+  };
+  const setF = (it, key, val, defStr) => {
+    const s = itemState(it.n);
+    if (typeof s.f !== "object" || s.f === null) s.f = {};
+    if (val === defStr) delete s.f[key]; else s.f[key] = val;
+    if (!Object.keys(s.f).length) delete s.f;
+    save();
+  };
+
+  // Compact click-to-edit field: one line showing content (or a dim hint);
+  // click opens a roomy textarea, blur collapses back to the line.
+  function fieldEl(it, key, label, defStr, opts){
+    const wrap = document.createElement("div");
+    wrap.className = "fline-wrap";
+    const renumStr = txt => txt.split("\n").map((l,i) => (i+1) + ". " + l.replace(/^\s*\d+[.)]\s*/, "")).join("\n");
+    const render = () => {
+      const val = fval(it, key, defStr);
+      const hint = (opts && opts.hint) || "click to add";
+      // numbered fields always DISPLAY numbered, even before their first edit
+      const shown = (opts && opts.numbered && val) ? renumStr(val) : val;
+      wrap.innerHTML = `<div class="fline" role="button" tabindex="0" aria-label="Edit ${esc(label)}">
+        <span class="flabel">${esc(label)}</span>
+        <span class="fval${val ? "" : " empty"}">${esc(shown || hint)}</span></div>`;
+      const line = wrap.firstElementChild;
+      const open = () => {
+        wrap.innerHTML = `<div class="fedit"><span class="flabel">${esc(label)}</span><textarea aria-label="${esc(label)}"></textarea></div>`;
+        const ta = wrap.querySelector("textarea");
+        ta.value = fval(it, key, defStr);
+        ta.addEventListener("input", () => {
+          setF(it, key, ta.value, defStr);
+          if (opts && opts.onchange) opts.onchange(ta.value);
+        });
+        ta.addEventListener("blur", render);
+        ta.addEventListener("keydown", e => { if (e.key === "Escape") ta.blur(); });
+        if (opts && opts.numbered){
+          const renumber = lines => lines.map((l,i) => (i+1) + ". " + l.replace(/^\s*\d+[.)]\s*/, ""));
+          if (!ta.value.trim()){
+            ta.value = "1. ";
+          } else {
+            const fixed = renumber(ta.value.split("\n")).join("\n");
+            if (fixed !== ta.value) ta.value = fixed;
+          }
+          ta.dispatchEvent(new Event("input"));
+          ta.addEventListener("keydown", e => {
+            if (e.key !== "Enter" && !(e.key === "Tab" && !e.shiftKey)) return;
+            e.preventDefault();
+            const before = ta.value.slice(0, ta.selectionStart);
+            const after = ta.value.slice(ta.selectionEnd);
+            const caretLine = before.split("\n").length;
+            const lines = renumber((before + "\n" + after).split("\n"));
+            ta.value = lines.join("\n");
+            let idx = 0;
+            for (let i = 0; i < caretLine; i++) idx += lines[i].length + 1;
+            idx += String(caretLine + 1).length + 2;
+            ta.setSelectionRange(idx, idx);
+            ta.dispatchEvent(new Event("input"));
+          });
+        }
+        ta.focus();
+        ta.setSelectionRange(ta.value.length, ta.value.length);
+      };
+      line.addEventListener("click", open);
+      line.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
+    };
+    render();
+    return wrap;
+  }
+
+  function itemEl(grp, it){
+    const st = itemState(it.n);
+    const el = document.createElement("div");
+    el.className = "item";
+    if (st.s) el.dataset.status = st.s;
+    const defSteps = (it.steps || []).join("\n");
+    el.innerHTML = `
+      <div class="row-line">
+        <button class="row-btn" type="button" aria-expanded="false">
+          ${CHEV}
+          <span class="inum">${it.n}</span>
+          <span class="idchip ${it.kind}">${esc(it.id)}</span>
+          <span class="ititle"><span class="t">${esc(fval(it,"title",it.title))}</span>${it.flag?`<span class="flag">${esc(it.flag)}</span>`:""}</span>
+        </button>
+        <span class="rowchips"></span>
+      </div>
+      <div class="detail"></div>`;
+
+    const rowLine = el.querySelector(".row-line");
+    const rowBtn = el.querySelector(".row-btn");
+    const rowChips = el.querySelector(".rowchips");
+    const titleSpan = el.querySelector(".ititle .t");
+    const detail = el.querySelector(".detail");
+
+    // bug-id + priority + attachment-count chips, LEFT of the result icons
+    let attCount = 0;
+    const renderChips = () => {
+      rowChips.innerHTML = "";
+      if (st.bug) {
+        const b = document.createElement("span");
+        b.className = "bugidchip"; b.textContent = st.bug; b.title = "Bug created from this test";
+        rowChips.appendChild(b);
+      }
+      if (st.p) {
+        const p = document.createElement("span");
+        p.className = "priochip " + st.p; p.textContent = st.p; p.title = PRIO_TIP[st.p] || st.p;
+        rowChips.appendChild(p);
+      }
+      if (attCount > 0) {
+        const a = document.createElement("span");
+        a.className = "att-count"; a.textContent = "📎 " + attCount; a.title = attCount + " attachment(s)";
+        rowChips.appendChild(a);
+      }
+      if (it.spin) {
+        const sp = document.createElement("span");
+        sp.className = "spinchip"; sp.textContent = "⑂ " + it.spin;
+        sp.title = "Spin-off bug found during test " + it.spin;
+        rowChips.appendChild(sp);
+      }
+      if (it.copyOf) {
+        const cp = document.createElement("span");
+        cp.className = "copychip"; cp.textContent = "⧉ " + it.copyOf;
+        cp.title = "Duplicate of test " + it.copyOf;
+        rowChips.appendChild(cp);
+      }
+    };
+    renderChips();
+
+    const statGrp = document.createElement("span");
+    statGrp.className = "statgrp";
+    STATS.forEach(([s,glyph,label])=>{
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "stat-btn"; b.dataset.s = s; b.textContent = glyph;
+      b.title = label; b.setAttribute("aria-label", `${label}: ${it.title}`);
+      b.setAttribute("aria-pressed", String(st.s === s));
+      b.addEventListener("click", () => {
+        const cur = st.s;
+        const next = cur === s ? null : s;
+        if (next) st.s = next; else delete st.s;
+        if (next) el.dataset.status = next; else el.removeAttribute("data-status");
+        statGrp.querySelectorAll(".stat-btn").forEach(sb =>
+          sb.setAttribute("aria-pressed", String(sb.dataset.s === next)));
+        save(); refresh();
+      });
+      statGrp.appendChild(b);
+    });
+    rowLine.appendChild(statGrp);
+
+    // duplicate: same field content, fresh outcome (no status/priority/attachments)
+    const dup = document.createElement("button");
+    dup.type = "button"; dup.className = "dup";
+    dup.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+    dup.title = "Duplicate this test";
+    dup.setAttribute("aria-label", `Duplicate test: ${it.title}`);
+    dup.addEventListener("click", () => {
+      const newN = nextN();
+      const def = {n:newN, title:`Copy of ${fval(it,"title",it.title)} - ${it.n}`, copyOf:it.n};
+      if (grp.custom){
+        const arr = (grp.def.items = grp.def.items || []);
+        const pi = arr.findIndex(d => d.n === it.n);
+        if (pi >= 0) arr.splice(pi + 1, 0, def); else arr.push(def);
+      } else {
+        def.after = it.n;
+        (state.__c.extra[grp.planGi] = state.__c.extra[grp.planGi] || []).push(def);
+      }
+      // clone all effective field content; the outcome starts clean
+      const cloned = {};
+      [["steps", (it.steps||[]).join("\n")], ["expected", it.expected||""],
+       ["actual", ""], ["edge", it.edge||""], ["notes2", String(st.n||"")]].forEach(([key, defStr]) => {
+        const v = fval(it, key, defStr);
+        if (v) cloned[key] = v;
+      });
+      if (Object.keys(cloned).length) state[newN] = { f: cloned };
+      const newIt = addedRt(def);
+      grp.items.splice(grp.items.indexOf(it) + 1, 0, newIt);
+      const newEl = itemEl(grp, newIt);
+      el.after(newEl);
+      newEl.classList.add("open");
+      newEl.querySelector(".row-btn").setAttribute("aria-expanded", "true");
+      save(); refresh();
+    });
+    rowLine.appendChild(dup);
+
+    // every test is deletable (bin icon, confirm first)
+    const rm = document.createElement("button");
+    rm.type = "button"; rm.className = "rm"; rm.innerHTML = BIN;
+    rm.title = "Delete this test"; rm.setAttribute("aria-label", `Delete test: ${it.title}`);
+    rm.addEventListener("click", () => {
+      confirmBox(`Delete test ${it.n} — “${fval(it,"title",it.title)}”? Its result, edits and notes go with it.`, () => {
+        if (it.added){
+          Object.values(state.__c.extra).forEach(arr => {
+            const i = arr.findIndex(d => d.n === it.n); if (i >= 0) arr.splice(i, 1);
+          });
+          state.__c.flows.forEach(f => {
+            const i = (f.items||[]).findIndex(d => d.n === it.n); if (i >= 0) f.items.splice(i, 1);
+          });
+        } else {
+          state.__m.removedItems.push(it.n);   // tombstone: stays deleted across reloads
+        }
+        delete state[it.n];
+        const i = grp.items.indexOf(it); if (i >= 0) grp.items.splice(i, 1);
+        el.remove(); save(); refresh();
+      });
+    });
+    rowLine.appendChild(rm);
+
+    // full editor: every field always present and editable
+    detail.appendChild(fieldEl(it, "title", "Title", it.title, {onchange:v => {
+      titleSpan.textContent = v || it.title;
+      if (it.added){
+        Object.values(state.__c.extra).forEach(arr => arr.forEach(d => { if (d.n === it.n) d.title = v; }));
+        state.__c.flows.forEach(f => (f.items||[]).forEach(d => { if (d.n === it.n) d.title = v; }));
+        save();
+      }
+    }}));
+    detail.appendChild(fieldEl(it, "steps", "Steps", defSteps, {numbered:true, hint:"Click to add — Enter or Tab starts the next numbered step."}));
+    detail.appendChild(fieldEl(it, "expected", "Expected", it.expected || "", {}));
+    detail.appendChild(fieldEl(it, "actual", "Actual", "", {hint:"What actually happened — filled by you or by the session recording."}));
+    detail.appendChild(fieldEl(it, "edge", "Edge", it.edge || "", {}));
+    detail.appendChild(fieldEl(it, "notes2", "Notes", String(st.n||""), {}));
+
+    // attachments: drop screenshots/clips anywhere on this test case, or click +
+    const attLine = document.createElement("div");
+    attLine.className = "att-line";
+    attLine.innerHTML = `<span class="flabel">Attach</span><div class="att-body"></div>`;
+    const attBody = attLine.querySelector(".att-body");
+    const fileInput = document.createElement("input");
+    fileInput.type = "file"; fileInput.accept = "image/*,video/*"; fileInput.multiple = true; fileInput.hidden = true;
+    attLine.appendChild(fileInput);
+
+    const renderAtts = () => attList(it.n).then(recs => {
+      attCount = recs.length; renderChips();
+      attBody.innerHTML = "";
+      recs.forEach(rec => {
+        const th = document.createElement("button");
+        th.type = "button"; th.className = "att-thumb"; th.title = rec.name;
+        const url = URL.createObjectURL(rec.blob);
+        th.innerHTML = rec.type.startsWith("video/")
+          ? `<video src="${url}" muted></video><button type="button" class="att-x" aria-label="Remove attachment">✕</button>`
+          : `<img src="${url}" alt="${esc(rec.name)}"><button type="button" class="att-x" aria-label="Remove attachment">✕</button>`;
+        th.addEventListener("click", ev => {
+          if (ev.target.classList.contains("att-x")) { attDel(rec.id).then(renderAtts); return; }
+          attView(rec);
+        });
+        attBody.appendChild(th);
+      });
+      const add = document.createElement("button");
+      add.type = "button"; add.className = "att-add"; add.textContent = "+";
+      add.title = "Add screenshot or clip (or drag files onto this test)";
+      add.addEventListener("click", () => fileInput.click());
+      attBody.appendChild(add);
+      if (!recs.length){
+        const hint = document.createElement("span");
+        hint.className = "att-empty"; hint.textContent = "drag a screenshot/clip onto this test, or click +";
+        attBody.appendChild(hint);
+      }
+    });
+    const storeFiles = files => {
+      const media = [...files].filter(f => /^(image|video)\//.test(f.type));
+      Promise.all(media.map(f => attPut({
+        id: it.n + "-" + Date.now() + "-" + Math.random().toString(36).slice(2),
+        n: it.n, name: f.name || "pasted", type: f.type, blob: f
+      }))).then(renderAtts);
+    };
+    fileInput.addEventListener("change", () => { storeFiles(fileInput.files); fileInput.value = ""; });
+    renderAtts();
+    detail.appendChild(attLine);
+
+    // whole test case is a drop target
+    el.addEventListener("dragover", e => {
+      if ([...e.dataTransfer.types].includes("Files")) { e.preventDefault(); el.classList.add("dropping"); }
+    });
+    el.addEventListener("dragleave", () => el.classList.remove("dropping"));
+    el.addEventListener("drop", e => {
+      if (![...e.dataTransfer.types].includes("Files")) return;
+      e.preventDefault(); el.classList.remove("dropping");
+      storeFiles(e.dataTransfer.files);
+      if (!el.classList.contains("open")) { el.classList.add("open"); rowBtn.setAttribute("aria-expanded","true"); }
+    });
+
+    // priority picker (only meaningful when the result is a bug)
+    const prow = document.createElement("div");
+    prow.className = "prio-row";
+    prow.innerHTML = `<span class="plabel">Bug priority</span>`;
+    ["P0","P1","P2","P3"].forEach(p => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "prio-btn " + p + (st.p === p ? " sel" : "");
+      b.textContent = p; b.title = PRIO_TIP[p];
+      b.setAttribute("aria-pressed", String(st.p === p));
+      b.addEventListener("click", () => {
+        st.p = (st.p === p) ? undefined : p;
+        if (!st.p) delete st.p;
+        prow.querySelectorAll(".prio-btn").forEach(pb => {
+          pb.classList.toggle("sel", pb.textContent === st.p);
+          pb.setAttribute("aria-pressed", String(pb.textContent === st.p));
+        });
+        renderChips(); save();
+      });
+      prow.appendChild(b);
+    });
+    const plegend = document.createElement("span");
+    plegend.className = "plabel"; plegend.style.marginLeft = "4px";
+    plegend.textContent = "P0 critical · P1 important · P2 exists · P3 trivial";
+    prow.appendChild(plegend);
+    detail.appendChild(prow);
+
+    // defect link: the ClickUp bug ID filed for this test (typed by Phill, or
+    // written back by the pipeline). Shows as the purple chip on the row.
+    const defWrap = document.createElement("div");
+    defWrap.className = "fline-wrap";
+    const renderDefect = () => {
+      const v = st.bug || "";
+      defWrap.innerHTML = `<div class="fline" role="button" tabindex="0" aria-label="Edit defect ID">
+        <span class="flabel">Defect</span>
+        <span class="fval${v ? "" : " empty"}">${v ? `<span class="bugidchip">${esc(v)}</span>bug filed in ClickUp — tracked` : "no bug filed — click to add the ClickUp bug ID (e.g. ID-20526)"}</span></div>`;
+      const line = defWrap.firstElementChild;
+      const open = () => {
+        defWrap.innerHTML = `<div class="fedit"><span class="flabel">Defect</span><input type="text" maxlength="40" placeholder="ID-20526" aria-label="ClickUp bug ID"></div>`;
+        const inp = defWrap.querySelector("input");
+        inp.value = st.bug || "";
+        inp.addEventListener("input", () => {
+          const val = inp.value.trim();
+          if (val) st.bug = val; else delete st.bug;
+          renderChips(); save();
+        });
+        inp.addEventListener("blur", renderDefect);
+        inp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === "Escape") inp.blur(); });
+        inp.focus();
+      };
+      line.addEventListener("click", open);
+      line.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
+    };
+    renderDefect();
+    detail.appendChild(defWrap);
+
+    const actRow = document.createElement("div");
+    actRow.className = "act-row";
+
+    // spin-off: the test passed, but you found a different bug on the way.
+    // Creates a new failed test right below this one, steps copied, lineage recorded.
+    const spinBtn = document.createElement("button");
+    spinBtn.type = "button"; spinBtn.className = "spin-btn";
+    spinBtn.textContent = "⑂ Spin-off bug";
+    spinBtn.title = "This test's verdict stands — file what you found as its own failed test below";
+    spinBtn.addEventListener("click", () => {
+      const newN = nextN();
+      const parentTitle = fval(it, "title", it.title);
+      const def = {n:newN, title:`Spin-off of test ${it.n}`, spin:it.n};
+      if (grp.custom){
+        const arr = (grp.def.items = grp.def.items || []);
+        const pi = arr.findIndex(d => d.n === it.n);
+        if (pi >= 0) arr.splice(pi + 1, 0, def); else arr.push(def);
+      } else {
+        def.after = it.n;
+        (state.__c.extra[grp.planGi] = state.__c.extra[grp.planGi] || []).push(def);
+      }
+      // clone the parent's full effective field data (edits included) — only the
+      // title and lineage note differ; adjust from there
+      const cloned = { notes2: `Spin-off — found during test ${it.n} (${parentTitle})` };
+      [["steps", (it.steps||[]).join("\n")], ["expected", it.expected||""],
+       ["actual", ""], ["edge", it.edge||""]].forEach(([key, defStr]) => {
+        const v = fval(it, key, defStr);
+        if (v) cloned[key] = v;
+      });
+      state[newN] = { s: "fail", f: cloned };
+      const newIt = addedRt(def);
+      grp.items.splice(grp.items.indexOf(it) + 1, 0, newIt);
+      const newEl = itemEl(grp, newIt);
+      el.after(newEl);
+      newEl.classList.add("open");
+      newEl.querySelector(".row-btn").setAttribute("aria-expanded", "true");
+      save(); refresh();
+    });
+    actRow.appendChild(spinBtn);
+
+    // move to another flow: keeps the number, ID chip, defaults, results,
+    // notes and attachments — only the flow changes. Persists via def snapshot.
+    const moveSel = document.createElement("select");
+    moveSel.className = "move-sel";
+    moveSel.setAttribute("aria-label", "Move this test to another flow");
+    const fillMove = () => {
+      moveSel.innerHTML = `<option value="">Move to flow…</option>` +
+        GROUPS.map((g, i) => g === grp ? "" : `<option value="${i}">${esc(g.part)}</option>`).join("");
+    };
+    fillMove();
+    moveSel.addEventListener("focus", fillMove);   // pick up flows added since render
+    moveSel.addEventListener("change", () => {
+      const target = GROUPS[+moveSel.value];
+      moveSel.value = "";
+      if (!target || target === grp) return;
+      // full snapshot so a moved plan test keeps id/kind/defaults in its new home
+      const def = {n:it.n, title:it.title, id:it.id, kind:it.kind,
+        flag:it.flag||undefined, steps:it.steps||undefined,
+        expected:it.expected||undefined, edge:it.edge||undefined, spin:it.spin||undefined};
+      // remove from source
+      if (it.added){
+        Object.values(state.__c.extra).forEach(arr => {
+          const i = arr.findIndex(d => d.n === it.n); if (i >= 0) arr.splice(i, 1);
+        });
+        state.__c.flows.forEach(f => {
+          const i = (f.items||[]).findIndex(d => d.n === it.n); if (i >= 0) f.items.splice(i, 1);
+        });
+      } else {
+        state.__m.removedItems.push(it.n);   // tombstone in the plan; def carries it forward
+      }
+      // add to target container
+      if (target.custom){ (target.def.items = target.def.items || []).push(def); }
+      else { (state.__c.extra[target.planGi] = state.__c.extra[target.planGi] || []).push(def); }
+      // runtime + DOM
+      const i = grp.items.indexOf(it); if (i >= 0) grp.items.splice(i, 1);
+      const newIt = addedRt(def);
+      target.items.push(newIt);
+      el.remove();
+      const targetG = [...root.querySelectorAll(".grp")].find(x => x.__grp === target);
+      if (targetG){
+        const body = targetG.querySelector(".grp-body");
+        body.insertBefore(itemEl(target, newIt), body.querySelector(".add-btn"));
+        targetG.classList.add("open");
+        targetG.querySelector(".grp-head").setAttribute("aria-expanded","true");
+      }
+      save(); refresh();
+    });
+    actRow.appendChild(moveSel);
+    detail.appendChild(actRow);
+
+    rowBtn.addEventListener("click", () => {
+      el.classList.toggle("open");
+      rowBtn.setAttribute("aria-expanded", el.classList.contains("open"));
+    });
+    return el;
+  }
+
+  // inline add form: swaps the trigger button for an input row
+  function addForm(trigger, placeholder, onAdd, flowStyle){
+    trigger.addEventListener("click", () => {
+      const form = document.createElement("div");
+      form.className = "add-form" + (flowStyle ? " flow" : "");
+      form.innerHTML = `<input type="text" placeholder="${esc(placeholder)}" maxlength="140">
+        <button type="button" class="ok">Add</button><button type="button" class="no">Cancel</button>`;
+      const input = form.querySelector("input");
+      const done = () => { form.replaceWith(trigger); };
+      form.querySelector(".no").addEventListener("click", done);
+      const submit = () => {
+        const v = input.value.trim();
+        done();               // restore the trigger button FIRST — onAdd may insert relative to it
+        if (v) onAdd(v);
+      };
+      form.querySelector(".ok").addEventListener("click", submit);
+      input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); if (e.key === "Escape") done(); });
+      trigger.replaceWith(form);
+      input.focus();
+    });
+  }
+
+  // contenteditable helper for plan-level text (purpose, flow names, flow descriptions)
+  function editableText(el, getVal, setVal){
+    el.textContent = getVal();
+    el.addEventListener("input", () => setVal(el.textContent));
+    el.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); el.blur(); } });
+  }
+
+  function groupEl(grp){
+    const g = document.createElement("div");
+    // fully-completed flows start collapsed; anything with work left starts open
+    const doneCount = grp.items.filter(it => (state[it.n]||{}).s).length;
+    const complete = grp.items.length > 0 && doneCount === grp.items.length;
+    g.className = complete ? "grp" : "grp open";
+    g.__grp = grp;
+    g.innerHTML = `
+      <button class="grp-head" type="button" aria-expanded="${complete ? "false" : "true"}">
+        ${CHEV}
+        <span class="grp-title editable" contenteditable="true" spellcheck="false"></span>
+        ${grp.rec?`<span class="grp-rec">${esc(grp.rec)}</span>`:""}
+        ${grp.custom?`<span class="grp-rec">added</span>`:""}
+        <span class="grp-sub" data-gsub></span>
+      </button>
+      <div class="grp-body"><p class="grp-desc editable" contenteditable="true" spellcheck="false"></p></div>`;
+    const body = g.querySelector(".grp-body");
+    const head = g.querySelector(".grp-head");
+
+    // flow delete (bin, confirm first)
+    const del = document.createElement("span");
+    del.className = "grp-del"; del.innerHTML = BIN;
+    del.setAttribute("role","button"); del.setAttribute("tabindex","0");
+    del.title = "Delete this flow"; del.setAttribute("aria-label", `Delete flow: ${grp.part}`);
+    const doDelete = ev => {
+      ev.stopPropagation();
+      confirmBox(`Delete flow “${grp.part}” and its ${grp.items.length} test(s)? Results and notes go with it.`, () => {
+        if (grp.custom){
+          const i = state.__c.flows.indexOf(grp.def); if (i >= 0) state.__c.flows.splice(i, 1);
+        } else {
+          state.__m.removedGroups.push(grp.planGi);   // tombstone
+          delete state.__c.extra[grp.planGi];
+          delete state.__m.groups[grp.planGi];
+        }
+        grp.items.forEach(it => delete state[it.n]);
+        const i = GROUPS.indexOf(grp); if (i >= 0) GROUPS.splice(i, 1);
+        g.remove(); save(); refresh();
+      });
+    };
+    del.addEventListener("click", doDelete);
+    del.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") doDelete(e); });
+    head.appendChild(del);
+
+    head.addEventListener("click", ev => {
+      if (ev.target.closest(".grp-title") || ev.target.closest(".grp-del")) return;
+      g.classList.toggle("open");
+      head.setAttribute("aria-expanded", g.classList.contains("open"));
+    });
+
+    const ovKey = grp.custom ? null : grp.planGi;
+    editableText(g.querySelector(".grp-title"),
+      () => {
+        if (grp.custom) return grp.def.title;
+        const ov = state.__m.groups[ovKey] || {};
+        return ov.part !== undefined ? ov.part : grp.part;
+      },
+      v => {
+        if (grp.custom){ grp.def.title = v; }
+        else {
+          state.__m.groups[ovKey] = state.__m.groups[ovKey] || {};
+          state.__m.groups[ovKey].part = v;
+        }
+        grp.part = v; save();
+      });
+    editableText(g.querySelector(".grp-desc"),
+      () => {
+        if (grp.custom) return grp.def.desc || "Describe this flow…";
+        const ov = state.__m.groups[ovKey] || {};
+        return ov.desc !== undefined ? ov.desc : (grp.desc || "Describe this flow…");
+      },
+      v => {
+        if (grp.custom){ grp.def.desc = v; }
+        else {
+          state.__m.groups[ovKey] = state.__m.groups[ovKey] || {};
+          state.__m.groups[ovKey].desc = v;
+        }
+        save();
+      });
+
+    grp.items.forEach(it => body.appendChild(itemEl(grp, it)));
+
+    const addBtn = document.createElement("button");
+    addBtn.type = "button"; addBtn.className = "add-btn"; addBtn.textContent = "+ Add test";
+    addForm(addBtn, "New test — what are you checking?", title => {
+      const def = {n: nextN(), title};
+      if (grp.custom){
+        (grp.def.items = grp.def.items || []).push(def);
+      } else {
+        (state.__c.extra[grp.planGi] = state.__c.extra[grp.planGi] || []).push(def);
+      }
+      const it = {n:def.n, id:"ADDED", kind:"added", title, added:true};
+      grp.items.push(it);
+      body.insertBefore(itemEl(grp, it), addBtn);
+      save(); refresh();
+    });
+    body.appendChild(addBtn);
+    return g;
+  }
+
+  GROUPS.forEach(grp => root.appendChild(groupEl(grp)));
+
+  addForm(document.getElementById("qa-add-flow"), "New flow — name the journey (e.g. “Fight flow — start a disagreement”)", title => {
+    const def = {title, items:[]};
+    state.__c.flows.push(def);
+    const grp = {part:title, rec:null, desc:null, custom:true, def, items:[]};
+    GROUPS.push(grp);
+    const g = groupEl(grp);
+    g.classList.add("open");                             // newly added flow opens for immediate use
+    g.querySelector(".grp-head").setAttribute("aria-expanded","true");
+    root.appendChild(g);
+    save(); refresh();
+  }, true);
+
+  // editable purpose
+  editableText(document.getElementById("qa-purpose"),
+    () => state.__m.purpose !== undefined ? state.__m.purpose : DEFAULT_PURPOSE,
+    v => { state.__m.purpose = v; save(); });
+
+  // test type + platform: MULTI-select pills in the sessions list AND the
+  // session detail, kept in sync. Types carry a one-line description each.
+  const TYPES = [
+    {v:"Sanity",      d:"Quick check that this build's changes actually work."},
+    {v:"Smoke",       d:"Shallow pass over core flows — does the app basically run?"},
+    {v:"Regression",  d:"Re-run existing tests around areas the build touched."},
+    {v:"Exploratory", d:"Unscripted probing of an area, hunting for surprises."},
+    {v:"System",      d:"Full end-to-end pass across the whole app."},
+    {v:"Acceptance",  d:"Final pre-client sign-off pass against the spec."},
+  ];
+  const PLATFORMS = [
+    {v:"iOS"}, {v:"Android"}, {v:"Web"},
+  ];
+  const MSELS = [];
+  const closeAllMsel = () => MSELS.forEach(m => m.el.classList.remove("open"));
+  document.addEventListener("click", ev => { if (!ev.target.closest(".msel")) closeAllMsel(); });
+
+  function msel(id, options, key, defArr, joiner){
+    const el = document.getElementById(id);
+    if (!el) return;
+    const current = () => {
+      let v = state.__m[key];
+      if (typeof v === "string") v = [v];              // migrate old single-value state
+      if (!Array.isArray(v) || !v.length) v = defArr.slice();
+      return v.filter(x => options.some(o => o.v === x)) .length ? v.filter(x => options.some(o => o.v === x)) : defArr.slice();
+    };
+    const joinAll = key === "platform" ? "All platforms" : null;
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "msel-btn";
+    btn.setAttribute("aria-haspopup","true"); btn.setAttribute("aria-expanded","false");
+    const pop = document.createElement("div");
+    pop.className = "msel-pop"; pop.setAttribute("role","group");
+    el.appendChild(btn); el.appendChild(pop);
+
+    const renderBtn = () => {
+      const cur = current();
+      btn.textContent = (joinAll && cur.length === options.length) ? joinAll : cur.join(joiner);
+    };
+    const renderPop = () => {
+      pop.innerHTML = "";
+      const cur = current();
+      options.forEach(o => {
+        const row = document.createElement("button");
+        row.type = "button"; row.className = "msel-row";
+        row.setAttribute("role","checkbox");
+        row.setAttribute("aria-checked", String(cur.includes(o.v)));
+        row.innerHTML = `<span class="msel-check">✓</span><span><span class="msel-name">${esc(o.v)}</span>${o.d?`<span class="msel-desc">${esc(o.d)}</span>`:""}</span>`;
+        row.addEventListener("click", ev => {
+          ev.stopPropagation();
+          let sel = current().slice();
+          if (sel.includes(o.v)){
+            if (sel.length === 1) return;              // keep at least one selected
+            sel = sel.filter(x => x !== o.v);
+          } else {
+            sel = options.map(x => x.v).filter(v => sel.includes(v) || v === o.v);  // keep canonical order
+          }
+          state.__m[key] = sel; save();
+          MSELS.filter(m => m.key === key).forEach(m => { m.renderBtn(); m.renderPop(); });
+        });
+        pop.appendChild(row);
+      });
+    };
+    btn.addEventListener("click", ev => {
+      ev.stopPropagation();
+      const wasOpen = el.classList.contains("open");
+      closeAllMsel();
+      if (!wasOpen){
+        renderPop();
+        el.classList.add("open");
+        const r = btn.getBoundingClientRect();          // fixed positioning escapes table overflow clipping
+        pop.style.top = (r.bottom + 6) + "px";
+        pop.style.left = Math.min(r.left, window.innerWidth - 340) + "px";
+      }
+      btn.setAttribute("aria-expanded", String(el.classList.contains("open")));
+    });
+    btn.addEventListener("keydown", ev => ev.stopPropagation());
+    renderBtn(); renderPop();
+    MSELS.push({el, key, renderBtn, renderPop});
+  }
+  msel("qa-type-list", TYPES, "type", ["Sanity"], " + ");
+  msel("qa-type-det",  TYPES, "type", ["Sanity"], " + ");
+  msel("qa-plat-list", PLATFORMS, "platform", ["iOS"], " · ");
+  msel("qa-plat-det",  PLATFORMS, "platform", ["iOS"], " · ");
+
+  function tally(){
+    const t = {pass:0,fail:0,unsure:0,block:0,skip:0,total:0};
+    GROUPS.forEach(g=>g.items.forEach(it=>{ t.total++; const s=(state[it.n]||{}).s; if(s && t[s]!==undefined) t[s]++; }));
+    t.done = t.pass+t.fail+t.unsure+t.block+t.skip;
+    return t;
+  }
+  function setBar(bar, t){
+    if (!bar || !t.total) return;
+    const pct = n => (100*n/t.total)+"%";
+    const [p,f,u,b,s] = bar.querySelectorAll("i");
+    p.style.width=pct(t.pass); f.style.width=pct(t.fail); u.style.width=pct(t.unsure);
+    b.style.width=pct(t.block); s.style.width=pct(t.skip);
+  }
+  function refresh(){
+    const t = tally();
+    setBar(document.getElementById("qa-sum-bar"), t);
+    setBar(document.getElementById("qa-list-bar"), t);
+    document.getElementById("qa-done-lbl").textContent = `${t.done} / ${t.total} tests complete`;
+    document.getElementById("qa-sum-counts").innerHTML =
+      `<span><span class="dot d-p"></span>${t.pass} pass</span>`+
+      `<span><span class="dot d-f"></span>${t.fail} fail</span>`+
+      `<span><span class="dot d-u2"></span>${t.unsure} unsure</span>`+
+      `<span><span class="dot d-b"></span>${t.block} blocked</span>`+
+      `<span><span class="dot d-s"></span>${t.skip} skipped</span>`;
+    document.getElementById("qa-list-bar-lbl").textContent = `${t.done} / ${t.total} done`;
+    const bugs = document.getElementById("qa-list-bugs");
+    bugs.textContent = t.fail;
+    bugs.classList.toggle("zero", t.fail===0);
+    // per-flow: coloured status counts + done/total
+    root.querySelectorAll(".grp").forEach(g=>{
+      const items = (g.__grp||{items:[]}).items;
+      const c = {pass:0,fail:0,unsure:0,block:0,skip:0};
+      items.forEach(it=>{ const s=(state[it.n]||{}).s; if(s && c[s]!==undefined) c[s]++; });
+      const done = c.pass+c.fail+c.unsure+c.block+c.skip;
+      g.querySelector("[data-gsub]").innerHTML =
+        (c.pass  ?`<span class="gp p" title="${c.pass} passed">${c.pass}</span>`:"")+
+        (c.fail  ?`<span class="gp f" title="${c.fail} failed">${c.fail}</span>`:"")+
+        (c.unsure?`<span class="gp u" title="${c.unsure} unsure">${c.unsure}</span>`:"")+
+        (c.block ?`<span class="gp b" title="${c.block} blocked">${c.block}</span>`:"")+
+        (c.skip  ?`<span class="gp s" title="${c.skip} skipped">${c.skip}</span>`:"")+
+        `<span class="gp-total">${done}/${items.length} completed</span>`;
+    });
+  }
+  refresh();
+
+  const filesEl = document.getElementById("qa-files");
+  document.getElementById("qa-files-cnt").textContent = FILES.length;
+  document.getElementById("qa-files-body").innerHTML = FILES.map(f =>
+    `<a class="fchip" href="${esc(f.href)}" target="_blank" rel="noopener"><span class="ftype">${esc(f.type)}</span><span class="fname">${esc(f.name)}</span></a>`
+  ).join("");
+  filesEl.querySelector(".files-head").addEventListener("click", () => {
+    filesEl.classList.toggle("open");
+    filesEl.querySelector(".files-head").setAttribute("aria-expanded", filesEl.classList.contains("open"));
+  });
+
+  // build notes: shared renderer for the inline toggle and the table popup
+  const bnHTML = () => {
+    const rows = (BUILD_NOTES.features.length ? BUILD_NOTES.features : []).concat(BUILD_NOTES.bugs)
+      .map(b => `<div class="bn-row"><span class="bn-id">${esc(b.id)}</span><span class="bn-title" title="${esc(b.title)}">${esc(b.title)}</span><span class="stchip ${esc(b.st)}">${esc(ST_LABEL[b.st]||b.st)}</span></div>`)
+      .join("");
+    const feats = BUILD_NOTES.features.length ? "" : `<p class="bn-note">Features in this build: none — bug-fix build.</p>`;
+    return rows + feats;
+  };
+  document.getElementById("qa-bnotes-body").innerHTML = bnHTML();
+  const bnotesEl = document.getElementById("qa-bnotes");
+  bnotesEl.querySelector(".files-head").addEventListener("click", () => {
+    bnotesEl.classList.toggle("open");
+    bnotesEl.querySelector(".files-head").setAttribute("aria-expanded", bnotesEl.classList.contains("open"));
+  });
+
+  const overlay = document.getElementById("qa-modal-overlay");
+  document.getElementById("qa-modal-body").innerHTML = bnHTML();
+  const closeModal = () => overlay.classList.remove("open");
+  document.getElementById("qa-build-link").addEventListener("click", ev => {
+    ev.stopPropagation();               // don't also open the session row
+    overlay.classList.add("open");
+    document.getElementById("qa-modal-close").focus();
+  });
+  document.getElementById("qa-modal-close").addEventListener("click", closeModal);
+  overlay.addEventListener("click", ev => { if (ev.target === overlay) closeModal(); });
+  document.addEventListener("keydown", ev => {
+    if (ev.key !== "Escape") return;
+    closeModal();
+    confirmOverlay.classList.remove("open"); confirmCb = null;
+    attOverlay.classList.remove("open");
+  });
+
+  // session data export / import (move ticks + edits between browsers)
+  const dataOverlay = document.getElementById("qa-data-overlay");
+  const dataText = document.getElementById("qa-data-text");
+  const dataMsg = document.getElementById("qa-data-msg");
+  document.getElementById("qa-data-btn").addEventListener("click", ev => {
+    ev.stopPropagation();
+    dataText.value = JSON.stringify(state);
+    dataMsg.textContent = "";
+    dataOverlay.classList.add("open");
+  });
+  document.getElementById("qa-data-close").addEventListener("click", () => dataOverlay.classList.remove("open"));
+  dataOverlay.addEventListener("click", ev => { if (ev.target === dataOverlay) dataOverlay.classList.remove("open"); });
+  document.getElementById("qa-data-copy").addEventListener("click", () => {
+    dataText.value = JSON.stringify(state);
+    dataText.select();
+    try { navigator.clipboard.writeText(dataText.value); dataMsg.textContent = "Copied to clipboard."; }
+    catch(e){ dataMsg.textContent = "Select all + copy manually."; }
+  });
+  document.getElementById("qa-data-apply").addEventListener("click", () => {
+    try {
+      const parsed = JSON.parse(dataText.value);
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new Error("not an object");
+      localStorage.setItem(KEY, JSON.stringify(parsed));
+      location.reload();
+    } catch(e){ dataMsg.textContent = "That doesn't look like a valid export — paste the full JSON."; }
+  });
+
+  const show = id => {
+    document.querySelectorAll("#qa-view-list, #qa-view-detail").forEach(v=>v.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    window.scrollTo({top:0});
+  };
+  const openRow = document.getElementById("qa-open-session");
+  openRow.addEventListener("click", ()=>show("qa-view-detail"));
+  openRow.addEventListener("keydown", e=>{ if(e.target===openRow && (e.key==="Enter"||e.key===" ")){e.preventDefault();show("qa-view-detail");} });
+  document.getElementById("qa-back").addEventListener("click", ()=>show("qa-view-list"));
 })();
 </script>
 </body>
