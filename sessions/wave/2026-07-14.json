@@ -1,0 +1,354 @@
+{
+ "__c": {
+  "flows": [
+   {
+    "title": "Recording A \u2014 Certificates",
+    "items": [
+     {
+      "n": 1,
+      "title": "Empty state \u2014 No Certificates Yet",
+      "id": "W-CERT-010"
+     },
+     {
+      "n": 2,
+      "title": "Upload a certificate via file upload",
+      "baseN": 23
+     },
+     {
+      "n": 3,
+      "title": "Save disabled until a file is attached",
+      "id": "W-CERT-011"
+     },
+     {
+      "n": 4,
+      "title": "Scan a certificate with the camera",
+      "baseN": 24
+     },
+     {
+      "n": 5,
+      "title": "Category folders present & colour-coded",
+      "id": "W-CERT-012"
+     },
+     {
+      "n": 6,
+      "title": "Multiple certificates in one category",
+      "baseN": 25
+     },
+     {
+      "n": 7,
+      "title": "Wallet-style presentation",
+      "baseN": 31
+     },
+     {
+      "n": 8,
+      "title": "Certificate detail screen",
+      "id": "W-CERT-013"
+     },
+     {
+      "n": 9,
+      "title": "Document viewer",
+      "baseN": 26
+     },
+     {
+      "n": 10,
+      "title": "QR verification opens in-app browser",
+      "id": "W-CERT-014"
+     },
+     {
+      "n": 11,
+      "title": "Search certificates",
+      "id": "W-CERT-015"
+     },
+     {
+      "n": 12,
+      "title": "Export a certificate",
+      "baseN": 29
+     },
+     {
+      "n": 13,
+      "title": "Print a certificate",
+      "baseN": 30
+     },
+     {
+      "n": 14,
+      "title": "Delete a certificate",
+      "baseN": 28
+     },
+     {
+      "n": 15,
+      "title": "View every uploaded document fully offline",
+      "baseN": 1
+     }
+    ]
+   },
+   {
+    "title": "Recording B \u2014 Subscription: signup \u2192 trial \u2192 gating",
+    "items": [
+     {
+      "n": 16,
+      "title": "iOS \u2014 subscription screen without dashboard flash",
+      "baseN": 49
+     },
+     {
+      "n": 17,
+      "title": "Paywall layout referee",
+      "id": "W-SUB-I09"
+     },
+     {
+      "n": 18,
+      "title": "Price consistency \u2014 paywall vs Apple Pay sheet",
+      "id": "W-SUB-I10"
+     },
+     {
+      "n": 19,
+      "title": "iOS \u2014 free trial start",
+      "baseN": 42
+     },
+     {
+      "n": 20,
+      "title": "Gating \u2014 full access during trial/active",
+      "baseN": 58
+     },
+     {
+      "n": 21,
+      "title": "iOS \u2014 restore purchases",
+      "baseN": 47
+     }
+    ]
+   },
+   {
+    "title": "Recording C \u2014 Subscription lifecycle (waits)",
+    "items": [
+     {
+      "n": 22,
+      "title": "iOS \u2014 trial auto-converts to paid",
+      "baseN": 43
+     },
+     {
+      "n": 23,
+      "title": "iOS \u2014 cancel during trial",
+      "baseN": 44
+     },
+     {
+      "n": 24,
+      "title": "iOS \u2014 cancel active subscription",
+      "baseN": 45
+     },
+     {
+      "n": 25,
+      "title": "iOS \u2014 switch plans monthly \u2194 yearly",
+      "baseN": 48
+     },
+     {
+      "n": 26,
+      "title": "iOS \u2014 subscription expires naturally",
+      "baseN": 46
+     }
+    ]
+   }
+  ],
+  "extra": {}
+ },
+ "__m": {
+  "groups": {},
+  "removedItems": [],
+  "removedGroups": [],
+  "type": [
+   "Exploratory"
+  ],
+  "platform": [
+   "iOS"
+  ],
+  "purpose": "Wave test session 14 Jul 2026 \u2014 Certificates + iOS Subscriptions (flow-based, iPhone 15 Pro / iOS 18.5). 26 items in 3 recordings; subscriptions split for sandbox timers. Narrate the item number before each test."
+ },
+ "__meta": {
+  "build": "",
+  "date": "14 Jul 2026",
+  "device": "iPhone 15 Pro",
+  "os": "iOS 18.5",
+  "tester": "Phill",
+  "recordings": "3 planned (A/B/C)"
+ },
+ "1": {
+  "f": {
+   "steps": "1. Fresh account (no certs)\n2. Open the Certificates tab",
+   "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile.",
+   "notes2": "new this session \u00b7 figma:certificates \u00b7 promote candidate \u00b7 W-CERT-010"
+  }
+ },
+ "2": {
+  "f": {
+   "steps": "1. Open Certificates\n2. Use the upload form to add a certificate file\n3. Assign it to a category/folder",
+   "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer.",
+   "notes2": "plan P1 (upload forms) \u00b7 spec \u00a71/\u00a73 \u00b7 W-CERT-001"
+  }
+ },
+ "3": {
+  "f": {
+   "steps": "1. Add Certificate \u2192 fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
+   "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled \u2014 narrate exactly.)",
+   "notes2": "new this session \u00b7 figma:certificates edge \u00b7 POSSIBLE BUG \u00b7 promote candidate \u00b7 W-CERT-011"
+  }
+ },
+ "4": {
+  "f": {
+   "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
+   "expected": "Scan captures legibly and saves as a document in the chosen folder.",
+   "notes2": "spec \u00a73 (scan/upload) \u00b7 NOTE: scanner integration is listed P2 in the plan \u2014 phase ambiguity, see thinness report \u00b7 W-CERT-002"
+  }
+ },
+ "5": {
+  "f": {
+   "steps": "1. On populated My Certificates, review the category folders",
+   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list.",
+   "notes2": "new this session \u00b7 figma:certificates design-referee \u00b7 promote candidate \u00b7 W-CERT-012"
+  }
+ },
+ "6": {
+  "f": {
+   "steps": "1. Add 3+ certificates to the same category",
+   "expected": "All entries listed and individually openable; count correct.",
+   "notes2": "plan P1 (multiple entries management) \u00b7 W-CERT-003"
+  }
+ },
+ "7": {
+  "f": {
+   "steps": "1. Browse the certificate wallet home",
+   "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred).",
+   "notes2": "spec \u00a73 \u00b7 design (Figma pass pending) \u00b7 W-CERT-009"
+  }
+ },
+ "8": {
+  "f": {
+   "steps": "1. Open a certificate card",
+   "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code.",
+   "notes2": "new this session \u00b7 figma:certificates \u00b7 promote candidate \u00b7 W-CERT-013"
+  }
+ },
+ "9": {
+  "f": {
+   "steps": "1. Open an uploaded multi-page certificate",
+   "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly.",
+   "notes2": "plan P1 (document viewer) \u00b7 W-CERT-004"
+  }
+ },
+ "10": {
+  "f": {
+   "steps": "1. On the detail screen, use the QR code / verification link",
+   "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent \u2014 mark Unverifiable if server unreachable.)",
+   "notes2": "new this session \u00b7 figma:certificates \u00b7 Unverifiable-likely \u00b7 promote candidate \u00b7 W-CERT-014"
+  }
+ },
+ "11": {
+  "f": {
+   "steps": "1. Use Search Certificates with a full term, then a partial term",
+   "expected": "Matching certificates surface; non-matches excluded; clear empty-result state.",
+   "notes2": "new this session \u00b7 figma:certificates \u00b7 promote candidate \u00b7 W-CERT-015"
+  }
+ },
+ "12": {
+  "f": {
+   "steps": "1. Open a certificate\n2. Use export/share",
+   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)",
+   "notes2": "spec \u00a71 (export/transact) \u00b7 W-CERT-007"
+  }
+ },
+ "13": {
+  "f": {
+   "steps": "1. Open a certificate\n2. Print via the OS print flow",
+   "expected": "Print preview correct; full document prints.",
+   "notes2": "spec \u00a71 (print in case something gets lost) \u00b7 W-CERT-008"
+  }
+ },
+ "14": {
+  "f": {
+   "steps": "1. Delete a certificate\n2. Check the folder and total counts",
+   "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it.",
+   "notes2": "kit:offline-sync #4 (delete exists) \u00b7 claude:edge for online case \u00b7 W-CERT-006"
+  }
+ },
+ "15": {
+  "f": {
+   "steps": "1. Precondition: several documents uploaded across different folders\n2. Enable airplane mode (zero connectivity)\n3. Force-quit the app, then cold-start it\n4. Open each folder and view every uploaded document",
+   "expected": "Every document opens and renders completely with zero connectivity, including after force-quit + cold start. STOP-SHIP if broken.",
+   "notes2": "INVARIANT \u00b7 spec \u00a71 (offline promise) \u00b7 kit:offline-sync \u00b7 W-INV-001"
+  }
+ },
+ "16": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Brand-new user: full signup (name, email verify, onboarding)",
+   "expected": "Subscription screen appears directly \u2014 NO flash of dashboard/certificates first.",
+   "notes2": "kit:subscriptions iOS TC-8 \u00b7 W-SUB-I08"
+  }
+ },
+ "17": {
+  "f": {
+   "steps": "1. On the paywall, review layout",
+   "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions.",
+   "notes2": "new this session \u00b7 figma:subscription design-referee \u00b7 promote candidate \u00b7 W-SUB-I09"
+  }
+ },
+ "18": {
+  "f": {
+   "steps": "1. From paywall tap Start 30 days trial\n2. Read the Apple Pay sheet amount\n3. Compare to the paywall's $5 / $50",
+   "expected": "Apple Pay sheet price matches the selected plan. (Figma showed the sheet reading '10 $' against a $50/yr paywall \u2014 verify live and narrate the exact figure.)",
+   "notes2": "new this session \u00b7 figma:subscription edge \u00b7 POSSIBLE BUG \u00b7 promote candidate \u00b7 W-SUB-I10"
+  }
+ },
+ "19": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Sign up as a new user, complete onboarding\n3. On the subscription screen tap 'Start 30 days trial'\n4. Confirm in the Apple payment sheet",
+   "expected": "Sheet shows 'Free Trial'; purchase succeeds; app navigates to dashboard.",
+   "notes2": "kit:subscriptions iOS TC-1 \u00b7 sandbox: 1mo\u22485min, 12 renewals max \u00b7 W-SUB-I01"
+  }
+ },
+ "20": {
+  "f": {
+   "steps": "1. With a trialing account, then an active one, use certificates + service records",
+   "expected": "All gated features fully usable in both states.",
+   "notes2": "plan P2 (subscription gating) \u00b7 kit quick reference \u00b7 W-SUB-G01"
+  }
+ },
+ "21": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe\n3. Sign out and back in (or reinstall)\n4. Tap 'Restore Purchases'",
+   "expected": "Subscription restored; access granted.",
+   "notes2": "kit:subscriptions iOS TC-6 \u00b7 W-SUB-I06"
+  }
+ },
+ "22": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Complete W-SUB-I01\n3. Wait for the trial period to lapse (~5 min sandbox)",
+   "expected": "Auto-renews to paid; full access retained; backend status trialing \u2192 active.",
+   "notes2": "kit:subscriptions iOS TC-2 \u00b7 W-SUB-I02"
+  }
+ },
+ "23": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Start a fresh trial\n3. Sandbox Account > Manage > Subscriptions \u2192 cancel",
+   "expected": "Access until trial end, then paywall redirect.",
+   "notes2": "kit:subscriptions iOS TC-3 \u00b7 W-SUB-I03"
+  }
+ },
+ "24": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe past trial\n3. Cancel via sandbox Manage Subscriptions\n4. Wait for period end (~5 min)",
+   "expected": "Access until period end, then paywall.",
+   "notes2": "kit:subscriptions iOS TC-4 \u00b7 W-SUB-I04"
+  }
+ },
+ "25": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe monthly\n3. Change to yearly via sandbox Manage Subscriptions",
+   "expected": "Plan changes at next renewal.",
+   "notes2": "kit:subscriptions iOS TC-7 \u00b7 W-SUB-I07"
+  }
+ },
+ "26": {
+  "f": {
+   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe and let it renew 12 times (~60 min)",
+   "expected": "Expires automatically after 12 renewals \u2192 paywall.",
+   "notes2": "kit:subscriptions iOS TC-5 \u00b7 W-SUB-I05"
+  }
+ }
+}

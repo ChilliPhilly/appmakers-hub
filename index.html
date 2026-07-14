@@ -3593,6 +3593,7 @@ QA &amp; Project Manager, AppMakers LA
     wireNewSession();
     if (openSid !== undefined) openSession(openSid);
     seedBaseline(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
+    seedSessions(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
   }
 
   // Auto-seed Session 0 from the repo (baselines/<pid>.json) when this browser's
@@ -3610,6 +3611,41 @@ QA &amp; Project Manager, AppMakers LA
             if (!data || !data.__c || !(data.__c.flows || []).length){ res(false); return; }
             try { localStorage.setItem(sessKey(pid, "0"), JSON.stringify(data)); } catch(e){ res(false); return; }
             res(true);
+          })
+          .catch(() => res(false));
+      } catch(e){ res(false); }
+    });
+  }
+
+  // Auto-seed BUILD sessions from the repo (sessions/<pid>/index.json manifest +
+  // sessions/<pid>/<sid>.json per session) — the qa-session skill's Phase 1 output.
+  // Same rule as seedBaseline: only add a session this browser doesn't already
+  // have; NEVER overwrite an existing local session (manual ticks/edits win).
+  function seedSessions(pid){
+    return new Promise(res => {
+      try {
+        fetch("sessions/" + encodeURIComponent(pid) + "/index.json", {cache: "no-store"})
+          .then(r => r.ok ? r.json() : null)
+          .then(manifest => {
+            if (!Array.isArray(manifest) || !manifest.length){ res(false); return; }
+            let idx = loadIdx(pid), changed = false;
+            const jobs = manifest.map(entry => {
+              const sid = String(entry.sid);
+              if (sid === "0") return Promise.resolve();      // baseline handled by seedBaseline
+              if (!idx.some(s => String(s.sid) === sid)){
+                idx.push({sid, date: entry.date || "", build: entry.build || "", label: entry.label || sid});
+                changed = true;
+              }
+              if (peekState(sessKey(pid, sid))) return Promise.resolve();   // has local data → leave it
+              return fetch("sessions/" + encodeURIComponent(pid) + "/" + encodeURIComponent(sid) + ".json", {cache: "no-store"})
+                .then(r => r.ok ? r.json() : null)
+                .then(data => {
+                  if (data && data.__c && (data.__c.flows || []).length){
+                    try { localStorage.setItem(sessKey(pid, sid), JSON.stringify(data)); changed = true; } catch(e){}
+                  }
+                }).catch(() => {});
+            });
+            Promise.all(jobs).then(() => { if (changed) saveIdx(pid, idx); res(changed); });
           })
           .catch(() => res(false));
       } catch(e){ res(false); }
