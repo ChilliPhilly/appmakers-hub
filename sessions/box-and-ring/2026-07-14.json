@@ -1,0 +1,419 @@
+{
+ "__c": {
+  "flows": [
+   {
+    "title": "User Flow 1 \u2014 Sign-up & OTP verification",
+    "desc": "Done when a new user can sign up end to end through the new OTP screen with no Get-Started loop (ID-20372), resend and expired codes behave, and login error states show clear messages. Fresh state; ~15 min.",
+    "items": [
+     {
+      "n": 1,
+      "title": "Login: User can sign up to their account with new credentials using email and password option",
+      "id": "Login-01-01"
+     },
+     {
+      "n": 2,
+      "title": "Login: Kill app on OTP verification screen, then relaunch",
+      "id": "Login-01-17"
+     },
+     {
+      "n": 3,
+      "title": "Login: Verification code resend button",
+      "id": "Login-01-08"
+     },
+     {
+      "n": 4,
+      "title": "Login: Verification code resend button - try and use old code",
+      "id": "Login-01-09"
+     },
+     {
+      "n": 5,
+      "title": "Login: User cannot sign up to a new account with existing credentials",
+      "id": "Login-01-03"
+     },
+     {
+      "n": 6,
+      "title": "Login: Login with wrong password for an existing account",
+      "id": "Login-01-14"
+     },
+     {
+      "n": 7,
+      "title": "Login: Login with empty fields",
+      "id": "Login-01-16"
+     },
+     {
+      "n": 8,
+      "title": "Login: Log in with Existing credentials",
+      "id": "Login-01-10"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 2 \u2014 Onboarding profile & relationship context",
+    "desc": "Done when a new user completes the avatar/identity step (name, gender, fighter identity), answers the relationship check-in questions, the answers survive a force-quit (Profile API, ID-20106/20112/20113), and back-navigation works. ~15 min, continues from Flow 1's fresh account.",
+    "items": [
+     {
+      "n": 9,
+      "title": "Onboarding: Complete avatar & identity step (name, gender, fighter identity)",
+      "id": "Onboard-01-01"
+     },
+     {
+      "n": 10,
+      "title": "Onboarding: Name field validation (empty, very long, emoji)",
+      "id": "Onboard-01-03"
+     },
+     {
+      "n": 11,
+      "title": "Onboarding: Back navigation through onboarding steps",
+      "id": "Onboard-01-06"
+     },
+     {
+      "n": 12,
+      "title": "Onboarding: Relationship context questions appear (duration, type, goals)",
+      "id": "Onboard-01-04"
+     },
+     {
+      "n": 13,
+      "title": "Onboarding: Multi-select questions allow selecting and deselecting several options",
+      "id": "Onboard-01-05"
+     },
+     {
+      "n": 14,
+      "title": "Onboarding: Relationship answers persist after force-quit",
+      "id": "Onboard-01-07"
+     },
+     {
+      "n": 15,
+      "title": "Onboarding: Profile saves to backend (persists after relaunch)",
+      "id": "Onboard-01-02"
+     },
+     {
+      "n": 16,
+      "title": "Onboarding: Screens match Figma (design referee)",
+      "id": "Onboard-01-08"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 3 \u2014 Shadow Boxing practice",
+    "desc": "Done when a solo user can pick a persona from the library, hold a coached practice conversation with AI whispers that are visibly private, and save, revisit and delete the transcript (ID-20114/20115); an exit control stays reachable throughout. ~20 min.",
+    "items": [
+     {
+      "n": 17,
+      "title": "Shadow Boxing: Entry point launches a practice round",
+      "id": "Shadow-01-01"
+     },
+     {
+      "n": 18,
+      "title": "Shadow Boxing: Persona library lists personas and one can be selected",
+      "id": "Shadow-01-02"
+     },
+     {
+      "n": 19,
+      "title": "Shadow Boxing: AI opponent responds in conversation turns",
+      "id": "Shadow-01-03"
+     },
+     {
+      "n": 20,
+      "title": "Shadow Boxing: Coaching whispers appear during user's turn and are visually distinct",
+      "id": "Shadow-01-04"
+     },
+     {
+      "n": 21,
+      "title": "Shadow Boxing: Emergency exit / leave is always reachable during practice",
+      "id": "Shadow-01-09"
+     },
+     {
+      "n": 22,
+      "title": "Shadow Boxing: Kill app mid-practice, relaunch",
+      "id": "Shadow-01-08"
+     },
+     {
+      "n": 23,
+      "title": "Shadow Boxing: Transcript saved when practice ends",
+      "id": "Shadow-01-05"
+     },
+     {
+      "n": 24,
+      "title": "Shadow Boxing: Revisit a saved transcript",
+      "id": "Shadow-01-06"
+     },
+     {
+      "n": 25,
+      "title": "Shadow Boxing: Delete a transcript (with confirmation)",
+      "id": "Shadow-01-07"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 4 \u2014 Partner invite",
+    "desc": "Done when every invite entry point works: share buttons visible on screen (ID-20385), the link opens the app without Page Not Found (ID-20381), invalid codes get a clear error, and the QR scanner loads without hanging (ID-20383/20384). ~10 min.",
+    "items": [
+     {
+      "n": 26,
+      "title": "Invite: Share buttons fully visible on screen",
+      "id": "Invite-01-06"
+     },
+     {
+      "n": 27,
+      "title": "Invite: Invite Your Partner button + Send invite with link",
+      "id": "Home-01-02"
+     },
+     {
+      "n": 28,
+      "title": "Invite: Opening an invite link does not crash (no Page Not Found)",
+      "id": "Invite-01-07"
+     },
+     {
+      "n": 29,
+      "title": "Invite: Enter an invalid invite code",
+      "id": "Invite-01-05"
+     },
+     {
+      "n": 30,
+      "title": "Invite: Invite Your Partner button + Scan code (QR)",
+      "id": "Home-01-03"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 5 \u2014 Couple Stats",
+    "desc": "Done when Couple Stats opens with the corrected logo and \"Spars\" header (ID-20399/20400) and its empty state respects the no-out-scoring invariant. ~5 min.",
+    "items": [
+     {
+      "n": 31,
+      "title": "Stats: Couple Stats shows correct logo and \"Spars\" header",
+      "id": "Stats-01-01"
+     },
+     {
+      "n": 32,
+      "title": "Stats: Couple Stats empty state and no partner-vs-partner scoring",
+      "id": "Stats-01-02"
+     }
+    ]
+   }
+  ]
+ },
+ "__m": {
+  "groups": {},
+  "removedItems": [],
+  "removedGroups": [],
+  "type": [
+   "Regression",
+   "New features"
+  ],
+  "platform": [
+   "iOS"
+  ],
+  "purpose": "Box and Ring \u2014 build 0.0.0 (8): verify Onboarding Flow 1 (avatar/identity, relationship context, Shadow Boxing) and regress the five fix areas (OTP sign-up loop, QR scanner, invite links, share-button visibility, Couple Stats naming). iPhone 15 Pro / iOS 18.5. Narrate the item number before each test."
+ },
+ "__meta": {
+  "build": "0.0.0 (8)",
+  "date": "14 Jul 2026",
+  "device": "iPhone 15 Pro",
+  "os": "iOS 18.5",
+  "tester": "Phill",
+  "recordings": "3 suggested (sign-up + onboarding / shadow boxing / invite + stats)"
+ },
+ "1": {
+  "f": {
+   "steps": "Precondition: N/A (fresh state \u2014 log out or reinstall).\nTest data: NEW email + Password: Passw0rd!\n1. Get Started \u2192 sign up with the new email and password\n2. Submit",
+   "expected": "User creates Account by entering their email and password, user get's verification message in email, uses it to finish log in set up",
+   "notes2": "RETEST of the old sign-up loop (ID-20372) \u2014 narrate if you get bounced back to Get Started at any point"
+  }
+ },
+ "2": {
+  "f": {
+   "steps": "Precondition: fresh sign-up in progress with a NEW email.\n1. Sign up with a new email + password\n2. Reach the OTP verification screen\n3. Force-quit the app\n4. Relaunch the app",
+   "expected": "App resumes to verification (or login) without looping back to \"Get Started\"; entering the emailed code still completes sign-up."
+  }
+ },
+ "3": {
+  "f": {
+   "steps": "1. User waits 30 seconds until a resend is available.\n2. User clicks on \"Didn't reveice a code? Resend\"\n3. User enters new code into account verification slot",
+   "expected": "User receives a new verification code to their email. This code can be entered into the app resulting in log in"
+  }
+ },
+ "4": {
+  "f": {
+   "steps": "Precondition: User must have received a verification code previously.\n1. User waits 30 seconds until a resend is available.\n2. User clicks on \"Didn't reveice a code? Resend\"\n3. User enters old code into account verification slot",
+   "expected": "User receives a new verification code to their email. The user entering the old code into verification received a notification \"invalid code\""
+  }
+ },
+ "5": {
+  "f": {
+   "steps": "Precondition: System already has user in system with same credentials (Email: phill@mightybyte.us / Password: Passw0rd!).\n1. Create a new account with email and password\n2. Exit out of App",
+   "expected": "User trying to create new account with existing credentials see's message that an account already exists and they should  log in rather than create a new account.",
+   "notes2": "Known bug from last session (status Bug) \u2014 narrate exact behaviour; don't re-file unless it changed"
+  }
+ },
+ "6": {
+  "f": {
+   "steps": "Precondition: an existing verified account.\n1. Go to the login screen\n2. Enter the existing email with a WRONG password\n3. Submit",
+   "expected": "Login rejected with a clear, friendly error message; no crash, no vague wording. Screenshot the exact message for the copy check."
+  }
+ },
+ "7": {
+  "f": {
+   "steps": "1. Go to the login screen\n2. Leave email and password empty\n3. Tap log in",
+   "expected": "Login blocked with clear field-level prompts; button disabled or a clear message; no crash."
+  }
+ },
+ "8": {
+  "f": {
+   "steps": "Precondition: existing verified credentials (Email: phill@mightybyte.us / Password: Passw0rd!).\n1. Log in to app with existing credentials",
+   "expected": "User is logged into app and taken to home screen / dashboard"
+  }
+ },
+ "9": {
+  "f": {
+   "steps": "Precondition: new account mid-onboarding.\n1. Sign up with a new account\n2. At the avatar/identity step enter a name, select gender, choose fighter identity\n3. Continue",
+   "expected": "Selections accepted; next onboarding step loads; no error."
+  }
+ },
+ "10": {
+  "f": {
+   "steps": "Test data: \"\" \u00b7 60-char string \u00b7 \"\ud83d\ude00\ud83d\udd25\"\n1. At the name field try to continue with it empty\n2. Enter a 60-character name and continue\n3. Enter emoji-only and continue",
+   "expected": "Empty is blocked with a clear message; long name is either cleanly limited or displayed without breaking layout; emoji does not crash or corrupt the display."
+  }
+ },
+ "11": {
+  "f": {
+   "steps": "1. At the identity step tap back\n2. At a relationship question tap back",
+   "expected": "Back returns to the previous step with earlier answers retained; no dead end.",
+   "notes2": "Back was broken in the last build (bug filed) \u2014 narrate current behaviour"
+  }
+ },
+ "12": {
+  "f": {
+   "steps": "1. Continue onboarding past the identity step\n2. Observe the relationship check-in step",
+   "expected": "Relationship questions are presented (duration, type, goal at minimum) in the AI-coach chat UI; user can answer and progress."
+  }
+ },
+ "13": {
+  "f": {
+   "steps": "1. On a select-all-that-apply question (e.g. goals or triggers) select 3 options\n2. Deselect 1\n3. Continue",
+   "expected": "Multiple selections allowed; deselect works; the saved state reflects the final choices."
+  }
+ },
+ "14": {
+  "f": {
+   "steps": "1. Answer 2 relationship questions\n2. Force-quit the app\n3. Relaunch",
+   "expected": "Onboarding resumes at or after the answered questions; answers are not lost."
+  }
+ },
+ "15": {
+  "f": {
+   "steps": "Precondition: identity step completed.\n1. Complete the identity step\n2. Force-quit the app\n3. Relaunch and log in",
+   "expected": "Name, gender and fighter identity are retained (not re-asked; visible in profile if a profile view exists).",
+   "notes2": "Backend save is unverifiable from the phone \u2014 persistence after relaunch is the proxy; narrate what's retained"
+  }
+ },
+ "16": {
+  "f": {
+   "steps": "1. Compare the identity + relationship screens against the Figma onboarding frames\n2. Check layout, typography, colors, button states",
+   "expected": "No obvious drift from the design; any mismatch noted with a screenshot.",
+   "notes2": "Figma walkthrough was skipped this session \u2014 open the Figma file side-by-side and compare manually"
+  }
+ },
+ "17": {
+  "f": {
+   "steps": "Precondition: logged in; no partner connection required.\n1. From the dashboard (or waiting-for-partner state) open Shadow Boxing / practice",
+   "expected": "Practice mode opens without a partner connected."
+  }
+ },
+ "18": {
+  "f": {
+   "steps": "1. Open the persona library\n2. Browse the personas\n3. Select one (e.g. husband/wife persona)",
+   "expected": "Library shows multiple personas with descriptions; selection is confirmed and used for the round."
+  }
+ },
+ "19": {
+  "f": {
+   "steps": "1. Start a practice round\n2. Send 2-3 messages",
+   "expected": "The persona replies in character within a reasonable time; the turn structure holds."
+  }
+ },
+ "20": {
+  "f": {
+   "steps": "1. During your turns, watch for AI coaching whispers",
+   "expected": "Whisper/coaching messages appear and are styled clearly differently from the persona conversation (private-channel styling)."
+  }
+ },
+ "21": {
+  "f": {
+   "steps": "1. During a round, look for an exit/leave/timeout affordance\n2. Use it",
+   "expected": "An exit control is visible throughout the practice round and works.",
+   "notes2": "Invariant \u2014 if there is NO visible exit during practice, that's a finding even though it's solo mode"
+  }
+ },
+ "22": {
+  "f": {
+   "steps": "1. Mid-round, force-quit the app\n2. Relaunch",
+   "expected": "Graceful resume or clean restart; no corrupt or blank state; the transcript is not half-broken."
+  }
+ },
+ "23": {
+  "f": {
+   "steps": "1. End the practice round\n2. Look for the saved transcript",
+   "expected": "A transcript of the session is saved and listed."
+  }
+ },
+ "24": {
+  "f": {
+   "steps": "Precondition: at least one saved transcript.\n1. Open the saved transcript",
+   "expected": "Full conversation is readable; narrate whether whispers are included or marked private."
+  }
+ },
+ "25": {
+  "f": {
+   "steps": "Precondition: at least one saved transcript.\n1. Delete the transcript\n2. Observe the confirmation dialog\n3. Check the list after deleting",
+   "expected": "A confirmation is asked; the transcript is gone after delete. Edge: after deleting the last transcript the empty state renders correctly."
+  }
+ },
+ "26": {
+  "f": {
+   "steps": "1. Open Invite Your Partner\n2. Observe the share options without scrolling",
+   "expected": "Share buttons are on screen (previously hidden below the viewport) and tappable."
+  }
+ },
+ "27": {
+  "f": {
+   "steps": "1. Click Invite your partner link\n2. Select \"Send Invite\"\n3. Select \"Share link\"\n4. Copy the generated link",
+   "expected": "A shareable invite link is generated and can be copied/shared via the native share sheet."
+  }
+ },
+ "28": {
+  "f": {
+   "steps": "Precondition: an invite link generated from the account.\n1. Copy the invite link\n2. Open it on the device (paste in Safari/Notes and tap) with the app installed, cold start\n3. Repeat with the app already running (warm)",
+   "expected": "The app opens to a sensible screen; no \"Page Not Found\" crash. Full pairing needs a second account; narrate what is visible.",
+   "notes2": "Full receiver-side pairing is unverifiable with one account \u2014 narrate what the app shows"
+  }
+ },
+ "29": {
+  "f": {
+   "steps": "1. Open the invite / enter-code screen\n2. Enter an invalid code (e.g. 000000)\n3. Submit",
+   "expected": "A clear error message appears promptly; no infinite loading."
+  }
+ },
+ "30": {
+  "f": {
+   "steps": "1. Open Invite Your Partner \u2192 Scan code\n2. Observe the scanner view\nEdge: deny camera permission first, then re-grant via Settings and retry.",
+   "expected": "Camera/scanner loads without getting stuck loading (ID-20383/20384); permission denial shows a graceful message, not a hang.",
+   "notes2": "Needs a real camera \u2014 if the device/BrowserStack blocks it, mark Blocked, not Fail"
+  }
+ },
+ "31": {
+  "f": {
+   "steps": "1. Open Couple Stats from the dashboard",
+   "expected": "Section header reads \"Spars\" (not \"Bouts\"); the logo asset renders correctly (not stretched or placeholder).",
+   "notes2": "Screenshot the header for the copy check"
+  }
+ },
+ "32": {
+  "f": {
+   "steps": "1. With no completed spars, open Couple Stats",
+   "expected": "A sensible empty state; nothing on any shared view frames one partner as beating the other."
+  }
+ },
+ "__seedV": 1
+}
