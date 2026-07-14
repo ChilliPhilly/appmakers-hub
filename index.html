@@ -3592,6 +3592,28 @@ QA &amp; Project Manager, AppMakers LA
     renderSessionRows();
     wireNewSession();
     if (openSid !== undefined) openSession(openSid);
+    seedBaseline(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
+  }
+
+  // Auto-seed Session 0 from the repo (baselines/<pid>.json) when this browser's
+  // catalog is empty — same same-origin fetch pattern as meetings.json, so every
+  // browser/profile gets a generated Baseline without manual import. Never
+  // overwrites an existing catalog; the ⇅ Data modal remains the manual path.
+  function seedBaseline(pid){
+    return new Promise(res => {
+      try {
+        const cur = peekState(sessKey(pid, "0"));
+        if (cur && cur.__c && (cur.__c.flows || []).length){ res(false); return; }
+        fetch("baselines/" + encodeURIComponent(pid) + ".json", {cache: "no-store"})
+          .then(r => r.ok ? r.json() : null)
+          .then(data => {
+            if (!data || !data.__c || !(data.__c.flows || []).length){ res(false); return; }
+            try { localStorage.setItem(sessKey(pid, "0"), JSON.stringify(data)); } catch(e){ res(false); return; }
+            res(true);
+          })
+          .catch(() => res(false));
+      } catch(e){ res(false); }
+    });
   }
 
   function sessTally(state){
