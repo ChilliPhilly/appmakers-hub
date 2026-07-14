@@ -174,8 +174,8 @@
  },
  "1": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Brand-new user: full signup (name, email verify, onboarding)",
-   "expected": "Subscription screen appears directly \u2014 NO flash of dashboard/certificates first.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a brand new user (fresh sandbox account)\n2. Complete the full signup flow (name, email verify, onboarding)",
+   "expected": "After onboarding, subscription screen appears directly \u2014 NO brief flash of the dashboard/certificates screen",
    "notes2": "kit:subscriptions iOS TC-8 \u00b7 W-SUB-I08"
   }
  },
@@ -195,8 +195,8 @@
  },
  "4": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Sign up as a new user, complete onboarding\n3. On the subscription screen tap 'Start 30 days trial'\n4. Confirm in the Apple payment sheet",
-   "expected": "Sheet shows 'Free Trial'; purchase succeeds; app navigates to dashboard.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
+   "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard",
    "notes2": "kit:subscriptions iOS TC-1 \u00b7 sandbox: 1mo\u22485min, 12 renewals max \u00b7 W-SUB-I01"
   }
  },
@@ -209,8 +209,8 @@
  },
  "6": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe\n3. Sign out and back in (or reinstall)\n4. Tap 'Restore Purchases'",
-   "expected": "Subscription restored; access granted.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
+   "expected": "Previous subscription is restored, user gets access",
    "notes2": "kit:subscriptions iOS TC-6 \u00b7 W-SUB-I06"
   }
  },
@@ -321,38 +321,38 @@
  },
  "22": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Complete W-SUB-I01\n3. Wait for the trial period to lapse (~5 min sandbox)",
-   "expected": "Auto-renews to paid; full access retained; backend status trialing \u2192 active.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
+   "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)",
    "notes2": "kit:subscriptions iOS TC-2 \u00b7 W-SUB-I02"
   }
  },
  "23": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Start a fresh trial\n3. Sandbox Account > Manage > Subscriptions \u2192 cancel",
-   "expected": "Access until trial end, then paywall redirect.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
+   "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall",
    "notes2": "kit:subscriptions iOS TC-3 \u00b7 W-SUB-I03"
   }
  },
  "24": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe past trial\n3. Cancel via sandbox Manage Subscriptions\n4. Wait for period end (~5 min)",
-   "expected": "Access until period end, then paywall.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
+   "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall",
    "notes2": "kit:subscriptions iOS TC-4 \u00b7 W-SUB-I04"
   }
  },
  "25": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe monthly\n3. Change to yearly via sandbox Manage Subscriptions",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
    "expected": "Plan changes at next renewal.",
    "notes2": "kit:subscriptions iOS TC-7 \u00b7 W-SUB-I07"
   }
  },
  "26": {
   "f": {
-   "steps": "1. Precondition: sandbox Apple account signed in (Settings > Developer > Sandbox Account); app via TestFlight\n2. Subscribe and let it renew 12 times (~60 min)",
-   "expected": "Expires automatically after 12 renewals \u2192 paywall.",
+   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
+   "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall",
    "notes2": "kit:subscriptions iOS TC-5 \u00b7 W-SUB-I05"
   }
  },
- "__seedV": 1
+ "__seedV": 2
 }
