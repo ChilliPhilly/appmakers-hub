@@ -408,6 +408,18 @@
 
   @media (max-width:820px){ .home-grid{grid-template-columns:1fr;} }
   /* ===== rich project cards + budget ===== */
+  .projcard-add{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    border:2px dashed var(--line);border-radius:14px;background:none;cursor:pointer;min-height:170px;
+    color:var(--muted);font:inherit;padding:20px;}
+  .projcard-add:hover{border-color:var(--accent);color:var(--accent);}
+  .pa-plus{font-size:2.1rem;line-height:1;font-weight:300;}
+  .pa-t{font-weight:650;font-size:.95rem;}
+  .pa-d{font-size:.76rem;color:var(--muted);text-align:center;max-width:230px;}
+  .projcard{position:relative;}
+  .projcard-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border:none;border-radius:7px;
+    background:none;color:var(--muted);cursor:pointer;font-size:12px;line-height:1;display:none;}
+  .projcard:hover .projcard-del{display:block;}
+  .projcard-del:hover{color:#cf3434;background:#fbebeb;}
   .proj-cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
   a.projcard{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
     border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;transition:transform .18s,border-color .18s,box-shadow .18s;}
@@ -2468,6 +2480,25 @@ QA &amp; Project Manager, AppMakers LA
     projects:'projects','box-and-ring':'projects','tools':'tools'};
   var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring',tools:'Tools'};
 
+  // User-created projects (the "+ New project" card on the Projects page).
+  // Each gets the full generic project page: stage stepper + Home (stats,
+  // tasks, budget, stages & epics, links, key dates, meetings).
+  var CUSTOMPROJ_KEY='appmakers-customproj-v1';
+  var customProjects=load(CUSTOMPROJ_KEY)||[];
+  function saveCustomProjects(){store(CUSTOMPROJ_KEY,customProjects);}
+  function isCustomProject(id){for(var i=0;i<customProjects.length;i++)if(customProjects[i].id===id)return true;return false;}
+  function registerProject(p){
+    PROJECTS.push({id:p.id,name:p.name,links:[],meetings:[],defaultStage:'R&D',defaultPhases:[]});
+    SECTION_TAB[p.id]='projects'; TITLES[p.id]=p.name;
+    var sec=document.createElement('section');sec.className='view';sec.id=p.id;
+    sec.innerHTML='<div class="sec-head"><span class="eyebrow">Projects \u00b7 '+esc(p.name)+'</span><h1>'+esc(p.name)+'</h1></div>'+
+      '<div class="pj-nav" id="pjnav-'+p.id+'"></div><div class="pj-view" id="pjhome-'+p.id+'"></div><div class="pj-view" id="pjstage-'+p.id+'"></div>';
+    var anchorSec=document.getElementById('box-and-ring');
+    anchorSec.parentNode.insertBefore(sec,anchorSec.nextSibling);
+    if(typeof views!=='undefined')views.push(sec);
+  }
+  customProjects.forEach(registerProject);
+
   function load(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
@@ -2704,7 +2735,7 @@ QA &amp; Project Manager, AppMakers LA
     [].slice.call(tabnav.querySelectorAll('a')).forEach(function(a){a.classList.toggle('active',a.getAttribute('data-tab')===tab);});
     document.title='AppMakers LA, '+(id==='home'?'Dashboard':TITLES[id]);
     if(id==='home')renderHome();
-    if(id==='box-and-ring')renderProject('box-and-ring');
+    if(proj(id))renderProject(id);
     if(id==='projects')renderProjectsList();
     if(id==='qa-resources')renderResources('qa');
     if(id==='pm-resources')renderResources('pm');
@@ -3092,8 +3123,34 @@ QA &amp; Project Manager, AppMakers LA
           '<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
           '<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
         '</div><span class="pc-open">Open project \u2192</span>';
+      if(isCustomProject(p.id)){
+        var del=document.createElement('button');del.type='button';del.className='projcard-del';del.innerHTML='\u2715';del.title='Delete this project';
+        del.onclick=function(ev){ev.preventDefault();ev.stopPropagation();
+          if(!confirm('Delete project "'+p.name+'"? Its tasks move to "No project". Stages, links and meetings are removed.'))return;
+          customProjects=customProjects.filter(function(c){return c.id!==p.id;});saveCustomProjects();
+          tstate.tasks.forEach(function(t){if(t.project===p.id)t.project=null;});saveTasks();
+          delete pstate[p.id];savePS();
+          for(var i=PROJECTS.length-1;i>=0;i--)if(PROJECTS[i].id===p.id)PROJECTS.splice(i,1);
+          delete SECTION_TAB[p.id];delete TITLES[p.id];
+          var sec=document.getElementById(p.id);
+          if(sec){var vi=views.indexOf(sec);if(vi>-1)views.splice(vi,1);sec.remove();}
+          renderProjectsList();renderHome();};
+        a.appendChild(del);
+      }
       host.appendChild(a);
     });
+    var add=document.createElement('button');add.type='button';add.className='projcard projcard-add';
+    add.innerHTML='<span class="pa-plus">+</span><span class="pa-t">New project</span><span class="pa-d">Creates a project page with stages, tasks, links, budget and meetings</span>';
+    add.onclick=function(){
+      var name=(prompt('Project name?')||'').trim(); if(!name)return;
+      var slug='p-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+      if(!slug||slug==='p-'){alert('That name needs at least one letter or number.');return;}
+      if(proj(slug)||document.getElementById(slug)){alert('A project with that name already exists.');return;}
+      var rec={id:slug,name:name};
+      customProjects.push(rec);saveCustomProjects();registerProject(rec);
+      location.hash='#'+slug;
+    };
+    host.appendChild(add);
   }
   function renderResList(host,track,kind,title,desc){
     var data=resState(track)[kind]; host.innerHTML='';
