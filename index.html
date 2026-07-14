@@ -3636,7 +3636,15 @@ QA &amp; Project Manager, AppMakers LA
                 idx.push({sid, date: entry.date || "", build: entry.build || "", label: entry.label || sid});
                 changed = true;
               }
-              if (peekState(sessKey(pid, sid))) return Promise.resolve();   // has local data → leave it
+              const local = peekState(sessKey(pid, sid));
+              if (local){
+                // Refresh a PRISTINE local copy (no ticks yet) when the repo version
+                // is newer — lets Phase-1 corrections propagate. Once results exist,
+                // manual edits win and we never overwrite.
+                const pristine = sessTally(local).done === 0;
+                const stale = (Number(local.__seedV) || 0) < (Number(entry.v) || 0);
+                if (!(pristine && stale)) return Promise.resolve();
+              }
               return fetch("sessions/" + encodeURIComponent(pid) + "/" + encodeURIComponent(sid) + ".json", {cache: "no-store"})
                 .then(r => r.ok ? r.json() : null)
                 .then(data => {

@@ -353,5 +353,6 @@
    "expected": "Expires automatically after 12 renewals \u2192 paywall.",
    "notes2": "kit:subscriptions iOS TC-5 \u00b7 W-SUB-I05"
   }
- }
+ },
+ "__seedV": 1
 }
