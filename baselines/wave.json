@@ -6,15 +6,18 @@
     "items": [
      {
       "n": 1,
-      "title": "View every uploaded document fully offline"
+      "title": "View every uploaded document fully offline",
+      "id": "W-INV-001"
      },
      {
       "n": 2,
-      "title": "Document integrity after upload"
+      "title": "Document integrity after upload",
+      "id": "W-INV-002"
      },
      {
       "n": 3,
-      "title": "App navigates offline without lockups"
+      "title": "App navigates offline without lockups",
+      "id": "W-INV-003"
      }
     ]
    },
@@ -23,79 +26,98 @@
     "items": [
      {
       "n": 4,
-      "title": "Welcome screen offers sign up and login"
+      "title": "Welcome screen offers sign up and login",
+      "id": "W-AUTH-001"
      },
      {
       "n": 5,
-      "title": "Create account \u2014 happy path"
+      "title": "Create account \u2014 happy path",
+      "id": "W-AUTH-002"
      },
      {
       "n": 6,
-      "title": "Middle name is optional"
+      "title": "Middle name is optional",
+      "id": "W-AUTH-003"
      },
      {
       "n": 7,
-      "title": "Create account \u2014 invalid email rejected"
+      "title": "Create account \u2014 invalid email rejected",
+      "id": "W-AUTH-004"
      },
      {
       "n": 8,
-      "title": "Create account \u2014 required fields empty"
+      "title": "Create account \u2014 required fields empty",
+      "id": "W-AUTH-005"
      },
      {
       "n": 9,
-      "title": "Nationality dropdown selection persists"
+      "title": "Nationality dropdown selection persists",
+      "id": "W-AUTH-006"
      },
      {
       "n": 10,
-      "title": "6-digit verification \u2014 correct code"
+      "title": "6-digit verification \u2014 correct code",
+      "id": "W-AUTH-007"
      },
      {
       "n": 11,
-      "title": "6-digit verification \u2014 wrong code rejected"
+      "title": "6-digit verification \u2014 wrong code rejected",
+      "id": "W-AUTH-008"
      },
      {
       "n": 12,
-      "title": "Sign in \u2014 happy path"
+      "title": "Sign in \u2014 happy path",
+      "id": "W-AUTH-009"
      },
      {
       "n": 13,
-      "title": "Sign in \u2014 wrong password"
+      "title": "Sign in \u2014 wrong password",
+      "id": "W-AUTH-010"
      },
      {
       "n": 14,
-      "title": "Forgot password flow"
+      "title": "Forgot password flow",
+      "id": "W-AUTH-011"
      },
      {
       "n": 15,
-      "title": "Google login"
+      "title": "Google login",
+      "id": "W-AUTH-012"
      },
      {
       "n": 16,
-      "title": "Apple login"
+      "title": "Apple login",
+      "id": "W-AUTH-013"
      },
      {
       "n": 17,
-      "title": "Social login cancelled mid-flow"
+      "title": "Social login cancelled mid-flow",
+      "id": "W-AUTH-014"
      },
      {
       "n": 18,
-      "title": "Rank selection \u2014 main categories"
+      "title": "Rank selection \u2014 main categories",
+      "id": "W-AUTH-015"
      },
      {
       "n": 19,
-      "title": "Rank selection \u2014 subcategories per category"
+      "title": "Rank selection \u2014 subcategories per category",
+      "id": "W-AUTH-016"
      },
      {
       "n": 20,
-      "title": "Vessel type \u2014 main categories and subcategories"
+      "title": "Vessel type \u2014 main categories and subcategories",
+      "id": "W-AUTH-017"
      },
      {
       "n": 21,
-      "title": "Onboarding completes into basic profile"
+      "title": "Onboarding completes into basic profile",
+      "id": "W-AUTH-018"
      },
      {
       "n": 22,
-      "title": "Kill app mid-onboarding"
+      "title": "Kill app mid-onboarding",
+      "id": "W-AUTH-019"
      }
     ]
    },
@@ -104,63 +126,78 @@
     "items": [
      {
       "n": 23,
-      "title": "Upload a certificate via file upload"
+      "title": "Upload a certificate via file upload",
+      "id": "W-CERT-001"
      },
      {
       "n": 24,
-      "title": "Scan a certificate with the camera"
+      "title": "Scan a certificate with the camera",
+      "id": "W-CERT-002"
      },
      {
       "n": 25,
-      "title": "Multiple certificates in one category"
+      "title": "Multiple certificates in one category",
+      "id": "W-CERT-003"
      },
      {
       "n": 26,
-      "title": "Document viewer"
+      "title": "Document viewer",
+      "id": "W-CERT-004"
      },
      {
       "n": 27,
-      "title": "Folders/categories navigation"
+      "title": "Folders/categories navigation",
+      "id": "W-CERT-005"
      },
      {
       "n": 28,
-      "title": "Delete a certificate"
+      "title": "Delete a certificate",
+      "id": "W-CERT-006"
      },
      {
       "n": 29,
-      "title": "Export a certificate"
+      "title": "Export a certificate",
+      "id": "W-CERT-007"
      },
      {
       "n": 30,
-      "title": "Print a certificate"
+      "title": "Print a certificate",
+      "id": "W-CERT-008"
      },
      {
       "n": 31,
-      "title": "Wallet-style presentation"
+      "title": "Wallet-style presentation",
+      "id": "W-CERT-009"
      },
      {
       "n": 32,
-      "title": "Empty state \u2014 No Certificates Yet"
+      "title": "Empty state \u2014 No Certificates Yet",
+      "id": "W-CERT-010"
      },
      {
       "n": 33,
-      "title": "Save disabled until a file is attached"
+      "title": "Save disabled until a file is attached",
+      "id": "W-CERT-011"
      },
      {
       "n": 34,
-      "title": "Category folders present & colour-coded"
+      "title": "Category folders present & colour-coded",
+      "id": "W-CERT-012"
      },
      {
       "n": 35,
-      "title": "Certificate detail screen"
+      "title": "Certificate detail screen",
+      "id": "W-CERT-013"
      },
      {
       "n": 36,
-      "title": "QR verification opens in-app browser"
+      "title": "QR verification opens in-app browser",
+      "id": "W-CERT-014"
      },
      {
       "n": 37,
-      "title": "Search certificates"
+      "title": "Search certificates",
+      "id": "W-CERT-015"
      }
     ]
    },
@@ -169,27 +206,33 @@
     "items": [
      {
       "n": 38,
-      "title": "Add a service record"
+      "title": "Add a service record",
+      "id": "W-SR-001"
      },
      {
       "n": 39,
-      "title": "Service record listing"
+      "title": "Service record listing",
+      "id": "W-SR-002"
      },
      {
       "n": 40,
-      "title": "Sea days calculation"
+      "title": "Sea days calculation",
+      "id": "W-SR-003"
      },
      {
       "n": 41,
-      "title": "Sea days \u2014 overlapping records"
+      "title": "Sea days \u2014 overlapping records",
+      "id": "W-SR-004"
      },
      {
       "n": 42,
-      "title": "Edit a service record recalculates"
+      "title": "Edit a service record recalculates",
+      "id": "W-SR-005"
      },
      {
       "n": 43,
-      "title": "Delete a service record"
+      "title": "Delete a service record",
+      "id": "W-SR-006"
      }
     ]
    },
@@ -198,19 +241,23 @@
     "items": [
      {
       "n": 44,
-      "title": "View and edit profile"
+      "title": "View and edit profile",
+      "id": "W-PROF-001"
      },
      {
       "n": 45,
-      "title": "Contact us page"
+      "title": "Contact us page",
+      "id": "W-PROF-002"
      },
      {
       "n": 46,
-      "title": "Legal pages accessible without subscription"
+      "title": "Legal pages accessible without subscription",
+      "id": "W-PROF-003"
      },
      {
       "n": 47,
-      "title": "Delete account flow"
+      "title": "Delete account flow",
+      "id": "W-PROF-004"
      }
     ]
    },
@@ -219,79 +266,98 @@
     "items": [
      {
       "n": 48,
-      "title": "iOS \u2014 free trial start"
+      "title": "iOS \u2014 free trial start",
+      "id": "W-SUB-I01"
      },
      {
       "n": 49,
-      "title": "iOS \u2014 trial auto-converts to paid"
+      "title": "iOS \u2014 trial auto-converts to paid",
+      "id": "W-SUB-I02"
      },
      {
       "n": 50,
-      "title": "iOS \u2014 cancel during trial"
+      "title": "iOS \u2014 cancel during trial",
+      "id": "W-SUB-I03"
      },
      {
       "n": 51,
-      "title": "iOS \u2014 cancel active subscription"
+      "title": "iOS \u2014 cancel active subscription",
+      "id": "W-SUB-I04"
      },
      {
       "n": 52,
-      "title": "iOS \u2014 subscription expires naturally"
+      "title": "iOS \u2014 subscription expires naturally",
+      "id": "W-SUB-I05"
      },
      {
       "n": 53,
-      "title": "iOS \u2014 restore purchases"
+      "title": "iOS \u2014 restore purchases",
+      "id": "W-SUB-I06"
      },
      {
       "n": 54,
-      "title": "iOS \u2014 switch plans monthly \u2194 yearly"
+      "title": "iOS \u2014 switch plans monthly \u2194 yearly",
+      "id": "W-SUB-I07"
      },
      {
       "n": 55,
-      "title": "iOS \u2014 subscription screen without dashboard flash"
+      "title": "iOS \u2014 subscription screen without dashboard flash",
+      "id": "W-SUB-I08"
      },
      {
       "n": 56,
-      "title": "Android \u2014 free trial start"
+      "title": "Android \u2014 free trial start",
+      "id": "W-SUB-A01"
      },
      {
       "n": 57,
-      "title": "Android \u2014 trial auto-converts to paid"
+      "title": "Android \u2014 trial auto-converts to paid",
+      "id": "W-SUB-A02"
      },
      {
       "n": 58,
-      "title": "Android \u2014 cancel during trial"
+      "title": "Android \u2014 cancel during trial",
+      "id": "W-SUB-A03"
      },
      {
       "n": 59,
-      "title": "Android \u2014 cancel active subscription"
+      "title": "Android \u2014 cancel active subscription",
+      "id": "W-SUB-A04"
      },
      {
       "n": 60,
-      "title": "Android \u2014 subscription expires naturally"
+      "title": "Android \u2014 subscription expires naturally",
+      "id": "W-SUB-A05"
      },
      {
       "n": 61,
-      "title": "Android \u2014 payment failure (declined card)"
+      "title": "Android \u2014 payment failure (declined card)",
+      "id": "W-SUB-A06"
      },
      {
       "n": 62,
-      "title": "Android \u2014 restore purchases"
+      "title": "Android \u2014 restore purchases",
+      "id": "W-SUB-A07"
      },
      {
       "n": 63,
-      "title": "Android \u2014 subscription screen without dashboard flash"
+      "title": "Android \u2014 subscription screen without dashboard flash",
+      "id": "W-SUB-A08"
      },
      {
       "n": 64,
-      "title": "Gating \u2014 full access during trial/active"
+      "title": "Gating \u2014 full access during trial/active",
+      "id": "W-SUB-G01"
      },
      {
       "n": 65,
-      "title": "Paywall layout referee"
+      "title": "Paywall layout referee",
+      "id": "W-SUB-I09"
      },
      {
       "n": 66,
-      "title": "Price consistency \u2014 paywall vs Apple Pay sheet"
+      "title": "Price consistency \u2014 paywall vs Apple Pay sheet",
+      "id": "W-SUB-I10"
      }
     ]
    },
@@ -300,43 +366,53 @@
     "items": [
      {
       "n": 67,
-      "title": "Offline create \u2192 sync"
+      "title": "Offline create \u2192 sync",
+      "id": "W-SYNC-001"
      },
      {
       "n": 68,
-      "title": "Offline edit \u2192 sync"
+      "title": "Offline edit \u2192 sync",
+      "id": "W-SYNC-002"
      },
      {
       "n": 69,
-      "title": "Offline delete \u2192 sync"
+      "title": "Offline delete \u2192 sync",
+      "id": "W-SYNC-003"
      },
      {
       "n": 70,
-      "title": "Offline certificate CRUD \u2192 sync"
+      "title": "Offline certificate CRUD \u2192 sync",
+      "id": "W-SYNC-004"
      },
      {
       "n": 71,
-      "title": "Offline profile update \u2192 sync"
+      "title": "Offline profile update \u2192 sync",
+      "id": "W-SYNC-005"
      },
      {
       "n": 72,
-      "title": "Both offline \u2014 different records, no conflict"
+      "title": "Both offline \u2014 different records, no conflict",
+      "id": "W-SYNC-006"
      },
      {
       "n": 73,
-      "title": "Both offline \u2014 same record (conflict)"
+      "title": "Both offline \u2014 same record (conflict)",
+      "id": "W-SYNC-007"
      },
      {
       "n": 74,
-      "title": "Extended offline \u2014 batch sync"
+      "title": "Extended offline \u2014 batch sync",
+      "id": "W-SYNC-008"
      },
      {
       "n": 75,
-      "title": "Connectivity flicker"
+      "title": "Connectivity flicker",
+      "id": "W-SYNC-009"
      },
      {
       "n": 76,
-      "title": "App kill while offline"
+      "title": "App kill while offline",
+      "id": "W-SYNC-010"
      }
     ]
    },
@@ -345,31 +421,38 @@
     "items": [
      {
       "n": 77,
-      "title": "Document search"
+      "title": "Document search",
+      "id": "W-ADV-001"
      },
      {
       "n": 78,
-      "title": "Auto data extraction from scan"
+      "title": "Auto data extraction from scan",
+      "id": "W-ADV-002"
      },
      {
       "n": 79,
-      "title": "Career dashboard \u2014 chronological records + filters"
+      "title": "Career dashboard \u2014 chronological records + filters",
+      "id": "W-ADV-003"
      },
      {
       "n": 80,
-      "title": "Set rank goal + progress bar"
+      "title": "Set rank goal + progress bar",
+      "id": "W-ADV-004"
      },
      {
       "n": 81,
-      "title": "Export career/service reports"
+      "title": "Export career/service reports",
+      "id": "W-ADV-005"
      },
      {
       "n": 82,
-      "title": "Push notification received"
+      "title": "Push notification received",
+      "id": "W-ADV-006"
      },
      {
       "n": 83,
-      "title": "Push permission denied"
+      "title": "Push permission denied",
+      "id": "W-ADV-007"
      }
     ]
    },
@@ -378,15 +461,18 @@
     "items": [
      {
       "n": 84,
-      "title": "Admin authentication"
+      "title": "Admin authentication",
+      "id": "W-ADMIN-001"
      },
      {
       "n": 85,
-      "title": "Users table"
+      "title": "Users table",
+      "id": "W-ADMIN-002"
      },
      {
       "n": 86,
-      "title": "User profile viewer"
+      "title": "User profile viewer",
+      "id": "W-ADMIN-003"
      }
     ]
    }
@@ -402,603 +488,517 @@
  "1": {
   "f": {
    "steps": "1. Precondition: several documents uploaded across different folders\n2. Enable airplane mode (zero connectivity)\n3. Force-quit the app, then cold-start it\n4. Open each folder and view every uploaded document",
-   "expected": "Every document opens and renders completely with zero connectivity, including after force-quit + cold start. STOP-SHIP if broken.",
-   "notes2": "INVARIANT \u00b7 spec \u00a71 (offline promise) \u00b7 kit:offline-sync \u00b7 W-INV-001"
+   "expected": "Every document opens and renders completely with zero connectivity, including after force-quit + cold start. STOP-SHIP if broken."
   }
  },
  "2": {
   "f": {
    "steps": "1. Precondition: a multi-page document uploaded to a chosen folder\n2. Reopen the document from its folder",
-   "expected": "Document is in the folder it was tagged to, all pages present, correct orientation, no corruption \u2014 exactly what was uploaded.",
-   "notes2": "INVARIANT \u00b7 spec \u00a71 \u00b7 W-INV-002"
+   "expected": "Document is in the folder it was tagged to, all pages present, correct orientation, no corruption \u2014 exactly what was uploaded."
   }
  },
  "3": {
   "f": {
    "steps": "1. Enable airplane mode\n2. Cold-start the app\n3. Navigate: dashboard \u2192 folders \u2192 viewer \u2192 profile",
-   "expected": "All primary navigation works offline; no crash, no infinite spinner, no dead screens.",
-   "notes2": "INVARIANT \u00b7 spec \u00a71 \u00b7 claude:edge \u00b7 W-INV-003"
+   "expected": "All primary navigation works offline; no crash, no infinite spinner, no dead screens."
   }
  },
  "4": {
   "f": {
    "steps": "1. Fresh install\n2. Launch the app",
-   "expected": "Welcome/Get Started screen shows with both Sign up and Log in options.",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-001"
+   "expected": "Welcome/Get Started screen shows with both Sign up and Log in options."
   }
  },
  "5": {
   "f": {
    "steps": "1. Tap Sign up\n2. Enter email, password, first name, last name; pick nationality from dropdown\n3. Submit",
-   "expected": "Account created; a 6-digit verification code is emailed; verification screen shows.",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-002"
+   "expected": "Account created; a 6-digit verification code is emailed; verification screen shows."
   }
  },
  "6": {
   "f": {
    "steps": "1. Create an account leaving middle name empty",
-   "expected": "Account creates without middle name; no validation error.",
-   "notes2": "spec \u00a73 (middle name optional) \u00b7 W-AUTH-003"
+   "expected": "Account creates without middle name; no validation error."
   }
  },
  "7": {
   "f": {
    "steps": "1. On sign up, enter 'not-an-email' as email\n2. Submit",
-   "expected": "Clear inline validation error; no code sent; no account created.",
-   "notes2": "claude:edge (negative) \u00b7 W-AUTH-004"
+   "expected": "Clear inline validation error; no code sent; no account created."
   }
  },
  "8": {
   "f": {
    "steps": "1. On sign up, leave email/password/first/last name empty in turn\n2. Attempt submit each time",
-   "expected": "Each required field flags a clear error; middle name never flags.",
-   "notes2": "claude:edge (negative) \u00b7 W-AUTH-005"
+   "expected": "Each required field flags a clear error; middle name never flags."
   }
  },
  "9": {
   "f": {
    "steps": "1. Pick a nationality during sign up\n2. Complete account creation\n3. Check profile",
-   "expected": "Chosen nationality is saved and shown on the profile.",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-006"
+   "expected": "Chosen nationality is saved and shown on the profile."
   }
  },
  "10": {
   "f": {
    "steps": "1. Complete sign up\n2. Enter the emailed 6-digit code",
-   "expected": "Verification succeeds; user proceeds to rank selection.",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-007"
+   "expected": "Verification succeeds; user proceeds to rank selection."
   }
  },
  "11": {
   "f": {
    "steps": "1. Complete sign up\n2. Enter an incorrect 6-digit code",
-   "expected": "Clear error; user can retry; no progress with a wrong code.",
-   "notes2": "claude:edge (negative) \u00b7 W-AUTH-008"
+   "expected": "Clear error; user can retry; no progress with a wrong code."
   }
  },
  "12": {
   "f": {
    "steps": "1. From Welcome, tap Log in\n2. Enter valid email + password",
-   "expected": "User lands in the app (dashboard/wallet).",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-009"
+   "expected": "User lands in the app (dashboard/wallet)."
   }
  },
  "13": {
   "f": {
    "steps": "1. Log in with a valid email but wrong password",
-   "expected": "Clear, professional error message; no crash; no access.",
-   "notes2": "claude:edge (negative) \u00b7 W-AUTH-010"
+   "expected": "Clear, professional error message; no crash; no access."
   }
  },
  "14": {
   "f": {
    "steps": "1. From Log in, tap Forgot password\n2. Enter account email\n3. Follow the reset flow end to end\n4. Sign in with the new password",
-   "expected": "Reset completes; old password stops working; new password signs in.",
-   "notes2": "spec \u00a73 (details thin \u2014 see thinness report) \u00b7 W-AUTH-011"
+   "expected": "Reset completes; old password stops working; new password signs in."
   }
  },
  "15": {
   "f": {
    "steps": "1. From Welcome, choose Google login\n2. Complete the Google flow with a test account",
-   "expected": "Account created/signed in via Google; onboarding continues normally.",
-   "notes2": "plan P1 (Google/Apple login) \u00b7 W-AUTH-012"
+   "expected": "Account created/signed in via Google; onboarding continues normally."
   }
  },
  "16": {
   "f": {
    "steps": "1. From Welcome, choose Apple login\n2. Complete Sign in with Apple",
-   "expected": "Account created/signed in via Apple; onboarding continues normally.",
-   "notes2": "plan P1 \u00b7 W-AUTH-013"
+   "expected": "Account created/signed in via Apple; onboarding continues normally."
   }
  },
  "17": {
   "f": {
    "steps": "1. Start Google or Apple login\n2. Cancel/dismiss the provider sheet mid-flow",
-   "expected": "App returns to Welcome gracefully; no crash, no half-created account.",
-   "notes2": "claude:edge \u00b7 W-AUTH-014"
+   "expected": "App returns to Welcome gracefully; no crash, no half-created account."
   }
  },
  "18": {
   "f": {
    "steps": "1. After verification, reach 'Choose your current rank'",
-   "expected": "Main categories shown: Officer, Rating, Galley/Hotel Department, Staff Crew, Technical Support & Roles.",
-   "notes2": "spec \u00a73 \u00b7 W-AUTH-015"
+   "expected": "Main categories shown: Officer, Rating, Galley/Hotel Department, Staff Crew, Technical Support & Roles."
   }
  },
  "19": {
   "f": {
    "steps": "1. Select each main category in turn",
-   "expected": "Subcategories match spec: Officer\u2192Deck/Chief Officer; Rating\u2192Engine/Motorman; Galley/Hotel\u2192Cook/Chef/Messman; Staff Crew\u2192DJ/Nanny/Photographer; Technical\u2192IT Officer/Plumber.",
-   "notes2": "spec \u00a73 (full rank list MISSING from spec \u2014 see thinness report) \u00b7 W-AUTH-016"
+   "expected": "Subcategories match spec: Officer\u2192Deck/Chief Officer; Rating\u2192Engine/Motorman; Galley/Hotel\u2192Cook/Chef/Messman; Staff Crew\u2192DJ/Nanny/Photographer; Technical\u2192IT Officer/Plumber."
   }
  },
  "20": {
   "f": {
    "steps": "1. After rank, reach 'Choose Your Vessel Type'\n2. Open Commercial Cargo Ships\n3. Open Tanker Ships",
-   "expected": "Commercial Cargo lists its 12 subtypes (Container \u2026 Log Carrier); Tanker lists Oil Tanker (+ any others built).",
-   "notes2": "spec \u00a73 (vessel list CUT OFF in spec \u2014 see thinness report) \u00b7 W-AUTH-017"
+   "expected": "Commercial Cargo lists its 12 subtypes (Container \u2026 Log Carrier); Tanker lists Oil Tanker (+ any others built)."
   }
  },
  "21": {
   "f": {
    "steps": "1. Complete rank + vessel selection",
-   "expected": "User reaches the app with a basic profile reflecting rank + vessel choices.",
-   "notes2": "plan P1 (onboarding: rank & vessel, basic profile) \u00b7 W-AUTH-018"
+   "expected": "User reaches the app with a basic profile reflecting rank + vessel choices."
   }
  },
  "22": {
   "f": {
    "steps": "1. During rank/vessel selection, force-kill the app\n2. Reopen",
-   "expected": "App resumes sensibly (back into onboarding or a defined restart point); no crash; no corrupt half-profile.",
-   "notes2": "claude:edge \u00b7 W-AUTH-019"
+   "expected": "App resumes sensibly (back into onboarding or a defined restart point); no crash; no corrupt half-profile."
   }
  },
  "23": {
   "f": {
    "steps": "1. Open Certificates\n2. Use the upload form to add a certificate file\n3. Assign it to a category/folder",
-   "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer.",
-   "notes2": "plan P1 (upload forms) \u00b7 spec \u00a71/\u00a73 \u00b7 W-CERT-001"
+   "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer."
   }
  },
  "24": {
   "f": {
    "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
-   "expected": "Scan captures legibly and saves as a document in the chosen folder.",
-   "notes2": "spec \u00a73 (scan/upload) \u00b7 NOTE: scanner integration is listed P2 in the plan \u2014 phase ambiguity, see thinness report \u00b7 W-CERT-002"
+   "expected": "Scan captures legibly and saves as a document in the chosen folder."
   }
  },
  "25": {
   "f": {
    "steps": "1. Add 3+ certificates to the same category",
-   "expected": "All entries listed and individually openable; count correct.",
-   "notes2": "plan P1 (multiple entries management) \u00b7 W-CERT-003"
+   "expected": "All entries listed and individually openable; count correct."
   }
  },
  "26": {
   "f": {
    "steps": "1. Open an uploaded multi-page certificate",
-   "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly.",
-   "notes2": "plan P1 (document viewer) \u00b7 W-CERT-004"
+   "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly."
   }
  },
  "27": {
   "f": {
    "steps": "1. Create/choose several categories\n2. Move between folders",
-   "expected": "Folder structure navigable; each doc is where it was tagged. (Folder create/rename/delete rules unspecified \u2014 see thinness report.)",
-   "notes2": "plan P1 (folders/categories) \u00b7 spec \u00a71 \u00b7 W-CERT-005"
+   "expected": "Folder structure navigable; each doc is where it was tagged. (Folder create/rename/delete rules unspecified \u2014 see thinness report.)"
   }
  },
  "28": {
   "f": {
    "steps": "1. Delete a certificate\n2. Check the folder and total counts",
-   "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it.",
-   "notes2": "kit:offline-sync #4 (delete exists) \u00b7 claude:edge for online case \u00b7 W-CERT-006"
+   "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it."
   }
  },
  "29": {
   "f": {
    "steps": "1. Open a certificate\n2. Use export/share",
-   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)",
-   "notes2": "spec \u00a71 (export/transact) \u00b7 W-CERT-007"
+   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)"
   }
  },
  "30": {
   "f": {
    "steps": "1. Open a certificate\n2. Print via the OS print flow",
-   "expected": "Print preview correct; full document prints.",
-   "notes2": "spec \u00a71 (print in case something gets lost) \u00b7 W-CERT-008"
+   "expected": "Print preview correct; full document prints."
   }
  },
  "31": {
   "f": {
    "steps": "1. Browse the certificate wallet home",
-   "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred).",
-   "notes2": "spec \u00a73 \u00b7 design (Figma pass pending) \u00b7 W-CERT-009"
+   "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred)."
   }
  },
  "32": {
   "f": {
    "steps": "1. Fresh account (no certs)\n2. Open the Certificates tab",
-   "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile.",
-   "notes2": "figma:certificates (empty state) \u00b7 W-CERT-010"
+   "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile."
   }
  },
  "33": {
   "f": {
    "steps": "1. Add Certificate \u2192 fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
-   "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled.)",
-   "notes2": "figma:certificates edge (save gating) \u00b7 POSSIBLE BUG \u00b7 W-CERT-011"
+   "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled.)"
   }
  },
  "34": {
   "f": {
    "steps": "1. On populated My Certificates, review the category folders",
-   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list.",
-   "notes2": "figma:certificates design-referee (5 categories) \u00b7 W-CERT-012"
+   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list."
   }
  },
  "35": {
   "f": {
    "steps": "1. Open a certificate card",
-   "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code.",
-   "notes2": "figma:certificates (detail screen) \u00b7 W-CERT-013"
+   "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code."
   }
  },
  "36": {
   "f": {
    "steps": "1. On the detail screen, use the QR code / verification link",
-   "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)",
-   "notes2": "figma:certificates (QR verification) \u00b7 backend-dependent \u00b7 W-CERT-014"
+   "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)"
   }
  },
  "37": {
   "f": {
    "steps": "1. Use Search Certificates with a full term, then a partial term",
-   "expected": "Matching certificates surface; non-matches excluded; clear empty-result state.",
-   "notes2": "figma:certificates (search) \u00b7 W-CERT-015"
+   "expected": "Matching certificates surface; non-matches excluded; clear empty-result state."
   }
  },
  "38": {
   "f": {
    "steps": "1. Open Service Records\n2. Add an entry (vessel, dates, role)",
-   "expected": "Record saves and appears in the listing.",
-   "notes2": "plan P1 (service record entry) \u00b7 W-SR-001"
+   "expected": "Record saves and appears in the listing."
   }
  },
  "39": {
   "f": {
    "steps": "1. Add several records with different dates",
-   "expected": "Listing shows all records, ordered sensibly (chronological).",
-   "notes2": "plan P1 (listing) \u00b7 plan P2 (chronological dashboard) \u00b7 W-SR-002"
+   "expected": "Listing shows all records, ordered sensibly (chronological)."
   }
  },
  "40": {
   "f": {
    "steps": "1. Add a record spanning a known date range\n2. Check the sea-days total",
-   "expected": "Sea days match the date range exactly (inclusive rules consistent).",
-   "notes2": "plan P1 (sea days calculation) \u00b7 W-SR-003"
+   "expected": "Sea days match the date range exactly (inclusive rules consistent)."
   }
  },
  "41": {
   "f": {
    "steps": "1. Add two records with overlapping date ranges\n2. Check the total",
-   "expected": "Total handles overlap per product rules without double-counting silently (verify + record actual behaviour).",
-   "notes2": "claude:edge (boundary) \u00b7 W-SR-004"
+   "expected": "Total handles overlap per product rules without double-counting silently (verify + record actual behaviour)."
   }
  },
  "42": {
   "f": {
    "steps": "1. Edit an existing record's dates",
-   "expected": "Changes save; listing and sea-days totals update correctly.",
-   "notes2": "plan P1 (edit) \u00b7 W-SR-005"
+   "expected": "Changes save; listing and sea-days totals update correctly."
   }
  },
  "43": {
   "f": {
    "steps": "1. Delete a record",
-   "expected": "Record removed; totals update; no orphan data.",
-   "notes2": "plan P1 (delete) \u00b7 W-SR-006"
+   "expected": "Record removed; totals update; no orphan data."
   }
  },
  "44": {
   "f": {
    "steps": "1. Open profile\n2. Change rank and vessel type\n3. Save",
-   "expected": "Edits persist and reflect across the app.",
-   "notes2": "plan P1 (profile management) \u00b7 kit:offline-sync #5 (profile fields) \u00b7 W-PROF-001"
+   "expected": "Edits persist and reflect across the app."
   }
  },
  "45": {
   "f": {
    "steps": "1. Open Contact us from settings",
-   "expected": "Page loads and the contact action works (form/email).",
-   "notes2": "plan P1 (contact us) \u00b7 W-PROF-002"
+   "expected": "Page loads and the contact action works (form/email)."
   }
  },
  "46": {
   "f": {
    "steps": "1. On an account with NO active subscription, open Terms, Privacy, Contact Us",
-   "expected": "All accessible without hitting the paywall.",
-   "notes2": "kit:subscriptions (quick reference) \u00b7 W-PROF-003"
+   "expected": "All accessible without hitting the paywall."
   }
  },
  "47": {
   "f": {
    "steps": "1. Settings \u2192 delete account\n2. Confirm\n3. Attempt to sign in again",
-   "expected": "Account deletes with clear confirmation; sign-in afterwards fails appropriately.",
-   "notes2": "plan P3 (account management) \u2014 Phase 3 \u00b7 W-PROF-004"
+   "expected": "Account deletes with clear confirmation; sign-in afterwards fails appropriately."
   }
  },
  "48": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
-   "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard",
-   "notes2": "kit:subscriptions iOS TC-1 \u00b7 sandbox: 1mo\u22485min, 12 renewals max \u00b7 W-SUB-I01"
+   "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard"
   }
  },
  "49": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
-   "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)",
-   "notes2": "kit:subscriptions iOS TC-2 \u00b7 W-SUB-I02"
+   "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)"
   }
  },
  "50": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
-   "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall",
-   "notes2": "kit:subscriptions iOS TC-3 \u00b7 W-SUB-I03"
+   "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall"
   }
  },
  "51": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
-   "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall",
-   "notes2": "kit:subscriptions iOS TC-4 \u00b7 W-SUB-I04"
+   "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall"
   }
  },
  "52": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
-   "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall",
-   "notes2": "kit:subscriptions iOS TC-5 \u00b7 W-SUB-I05"
+   "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall"
   }
  },
  "53": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
-   "expected": "Previous subscription is restored, user gets access",
-   "notes2": "kit:subscriptions iOS TC-6 \u00b7 W-SUB-I06"
+   "expected": "Previous subscription is restored, user gets access"
   }
  },
  "54": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
-   "expected": "Plan changes at next renewal.",
-   "notes2": "kit:subscriptions iOS TC-7 \u00b7 W-SUB-I07"
+   "expected": "Plan changes at next renewal."
   }
  },
  "55": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a brand new user (fresh sandbox account)\n2. Complete the full signup flow (name, email verify, onboarding)",
-   "expected": "After onboarding, subscription screen appears directly \u2014 NO brief flash of the dashboard/certificates screen",
-   "notes2": "kit:subscriptions iOS TC-8 \u00b7 W-SUB-I08"
+   "expected": "After onboarding, subscription screen appears directly \u2014 NO brief flash of the dashboard/certificates screen"
   }
  },
  "56": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Sign up as a new user, complete onboarding\n3. Tap 'Start 30 days trial'\n4. Select 'Test card, always approves', confirm",
-   "expected": "Sheet shows 'Free Trial'; success; dashboard; profile shows trialing.",
-   "notes2": "kit:subscriptions Android TC-1 \u00b7 test: trial\u22483min, 6 renewals max; unacknowledged purchases auto-refund at 3min \u00b7 W-SUB-A01"
+   "expected": "Sheet shows 'Free Trial'; success; dashboard; profile shows trialing."
   }
  },
  "57": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Complete W-SUB-A01\n3. Wait ~3 minutes",
-   "expected": "Converts to paid; status trialing \u2192 active; access retained.",
-   "notes2": "kit:subscriptions Android TC-2 \u00b7 W-SUB-A02"
+   "expected": "Converts to paid; status trialing \u2192 active; access retained."
   }
  },
  "58": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Start a fresh trial\n3. Play Store > Payments & subscriptions \u2192 cancel Wave",
-   "expected": "Access until trial end (~3 min), then paywall.",
-   "notes2": "kit:subscriptions Android TC-3 \u00b7 W-SUB-A03"
+   "expected": "Access until trial end (~3 min), then paywall."
   }
  },
  "59": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe past trial\n3. Cancel in Play Store\n4. Wait for period end (~5 min)",
-   "expected": "Access until period end, then paywall.",
-   "notes2": "kit:subscriptions Android TC-4 \u00b7 W-SUB-A04"
+   "expected": "Access until period end, then paywall."
   }
  },
  "60": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe; allow 6 renewals (~30 min)",
-   "expected": "Expires after 6 renewals \u2192 paywall.",
-   "notes2": "kit:subscriptions Android TC-5 \u00b7 W-SUB-A05"
+   "expected": "Expires after 6 renewals \u2192 paywall."
   }
  },
  "61": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe with approve card\n3. Switch to 'Test card, always declines' (Play Billing Lab) or resubscribe with it\n4. Wait for next renewal",
-   "expected": "Grace period first (brief access), then expiry if payment keeps failing; app shows error overlay, never crashes.",
-   "notes2": "kit:subscriptions Android TC-6 \u00b7 W-SUB-A06"
+   "expected": "Grace period first (brief access), then expiry if payment keeps failing; app shows error overlay, never crashes."
   }
  },
  "62": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe\n3. Sign out/in or reinstall\n4. Tap 'Restore Purchases'",
-   "expected": "Subscription restored; access granted.",
-   "notes2": "kit:subscriptions Android TC-7 \u00b7 W-SUB-A07"
+   "expected": "Subscription restored; access granted."
   }
  },
  "63": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Brand-new user: full signup",
-   "expected": "Subscription screen appears directly \u2014 NO dashboard flash.",
-   "notes2": "kit:subscriptions Android TC-8 \u00b7 W-SUB-A08"
+   "expected": "Subscription screen appears directly \u2014 NO dashboard flash."
   }
  },
  "64": {
   "f": {
    "steps": "1. With a trialing account, then an active one, use certificates + service records",
-   "expected": "All gated features fully usable in both states.",
-   "notes2": "plan P2 (subscription gating) \u00b7 kit quick reference \u00b7 W-SUB-G01"
+   "expected": "All gated features fully usable in both states."
   }
  },
  "65": {
   "f": {
    "steps": "1. On the paywall, review layout",
-   "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions.",
-   "notes2": "figma:subscription design-referee (paywall) \u00b7 W-SUB-I09"
+   "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions."
   }
  },
  "66": {
   "f": {
    "steps": "1. From paywall tap Start 30 days trial\n2. Read the Apple Pay sheet amount\n3. Compare to the paywall's $5 / $50",
-   "expected": "Apple Pay sheet price matches the selected plan. (Figma showed the sheet reading '10 $' against a $50/yr paywall.)",
-   "notes2": "figma:subscription edge (price) \u00b7 POSSIBLE BUG \u00b7 W-SUB-I10"
+   "expected": "Apple Pay sheet price matches the selected plan. (Figma showed the sheet reading '10 $' against a $50/yr paywall.)"
   }
  },
  "67": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A: airplane mode\n3. Device A: add a new Sea Service Record\n4. Verify it appears locally on A\n5. Device A back online",
-   "expected": "Record appears on Device B within a few seconds.",
-   "notes2": "kit:offline-sync #1 \u00b7 W-SYNC-001"
+   "expected": "Record appears on Device B within a few seconds."
   }
  },
  "68": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Edit an existing Service Record (e.g. vessel name)\n4. Device A back online",
-   "expected": "Updated record syncs to Device B.",
-   "notes2": "kit:offline-sync #2 \u00b7 W-SYNC-002"
+   "expected": "Updated record syncs to Device B."
   }
  },
  "69": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Delete a Service Record on A\n4. Verify it disappears locally on A\n5. Device A back online",
-   "expected": "Record disappears from Device B.",
-   "notes2": "kit:offline-sync #3 \u00b7 W-SYNC-003"
+   "expected": "Record disappears from Device B."
   }
  },
  "70": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Repeat scenarios 1\u20133 with Certificates (add, edit, delete) on Device A offline\n3. Bring A back online after each",
-   "expected": "Each certificate change syncs to Device B correctly.",
-   "notes2": "kit:offline-sync #4 \u00b7 W-SYNC-004"
+   "expected": "Each certificate change syncs to Device B correctly."
   }
  },
  "71": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Update profile (rank, vessel type, career goal)\n4. Device A back online",
-   "expected": "Device B shows the updated profile.",
-   "notes2": "kit:offline-sync #5 \u00b7 W-SYNC-005"
+   "expected": "Device B shows the updated profile."
   }
  },
  "72": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: edit Record X (vessel name)\n4. B: edit Record Y (different record)\n5. Bring both online",
-   "expected": "Both changes appear on both devices.",
-   "notes2": "kit:offline-sync #6 \u00b7 W-SYNC-006"
+   "expected": "Both changes appear on both devices."
   }
  },
  "73": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: Record X vessel name \u2192 'Ship Alpha'\n4. B: Record X vessel name \u2192 'Ship Beta'\n5. Bring both online",
-   "expected": "Both devices converge to the same value (last-write-wins).",
-   "notes2": "kit:offline-sync #7 \u00b7 conflict UX question in thinness report \u00b7 W-SYNC-007"
+   "expected": "Both devices converge to the same value (last-write-wins)."
   }
  },
  "74": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Make multiple changes: add 2 records, edit 1, delete 1\n4. Wait 5+ minutes\n5. Device A back online",
-   "expected": "All changes batch-sync to Device B.",
-   "notes2": "kit:offline-sync #8 \u00b7 W-SYNC-008"
+   "expected": "All changes batch-sync to Device B."
   }
  },
  "75": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Start adding a record on Device A\n3. Toggle airplane mode on/off rapidly mid-operation",
-   "expected": "No duplicate records, no data loss; Device B receives exactly one record.",
-   "notes2": "kit:offline-sync #9 \u00b7 W-SYNC-009"
+   "expected": "No duplicate records, no data loss; Device B receives exactly one record."
   }
  },
  "76": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Add a Service Record\n4. Force-kill the app, reopen (still offline)\n5. Verify the record persists locally\n6. Go online",
-   "expected": "Record persisted offline and syncs to Device B.",
-   "notes2": "kit:offline-sync #10 \u00b7 W-SYNC-010"
+   "expected": "Record persisted offline and syncs to Device B."
   }
  },
  "77": {
   "f": {
    "steps": "1. Upload certificates with distinct names\n2. Search by name/partial text",
-   "expected": "Matching documents found; non-matches excluded.",
-   "notes2": "plan P2 (document search) \u2014 spec detail thin \u00b7 W-ADV-001"
+   "expected": "Matching documents found; non-matches excluded."
   }
  },
  "78": {
   "f": {
    "steps": "1. Scan a certificate carrying an issue date, expiry date and certificate number",
-   "expected": "Issue date, expiration date and certificate number are extracted correctly into the entry's fields.",
-   "notes2": "plan P2 (auto extraction) \u00b7 accuracy is safety-relevant (wrong expiry = real-world risk) \u00b7 W-ADV-002"
+   "expected": "Issue date, expiration date and certificate number are extracted correctly into the entry's fields."
   }
  },
  "79": {
   "f": {
    "steps": "1. Open the career dashboard with several records\n2. Apply filters",
-   "expected": "Chronological listing correct; filters narrow correctly.",
-   "notes2": "plan P2 \u2014 spec detail thin \u00b7 W-ADV-003"
+   "expected": "Chronological listing correct; filters narrow correctly."
   }
  },
  "80": {
   "f": {
    "steps": "1. Set a rank goal\n2. Check the goal progress bar",
-   "expected": "Goal saved; progress bar reflects progress logic.",
-   "notes2": "plan P2 (user goals) \u2014 progress rules unspecified, see thinness report \u00b7 W-ADV-004"
+   "expected": "Goal saved; progress bar reflects progress logic."
   }
  },
  "81": {
   "f": {
    "steps": "1. Export a report from the dashboard",
-   "expected": "Report exports with correct data. (Format unspecified.)",
-   "notes2": "plan P2 (export reports) \u00b7 W-ADV-005"
+   "expected": "Report exports with correct data. (Format unspecified.)"
   }
  },
  "82": {
   "f": {
    "steps": "1. Enable notifications when prompted\n2. Trigger a notification event (per dev guidance)",
-   "expected": "Notification arrives and deep-links sensibly.",
-   "notes2": "plan P2 (push) \u2014 triggers unspecified \u00b7 W-ADV-006"
+   "expected": "Notification arrives and deep-links sensibly."
   }
  },
  "83": {
   "f": {
    "steps": "1. Deny the notification permission\n2. Use the app normally",
-   "expected": "No crash, no nagging loop; notification-dependent features degrade gracefully.",
-   "notes2": "claude:edge \u00b7 W-ADV-007"
+   "expected": "No crash, no nagging loop; notification-dependent features degrade gracefully."
   }
  },
  "84": {
   "f": {
    "steps": "1. Open the web admin\n2. Log in with admin credentials\n3. Try a non-admin account",
-   "expected": "Admin signs in; non-admin is rejected.",
-   "notes2": "plan P3 (admin auth) \u2014 NO spec/design yet, see thinness report \u00b7 W-ADMIN-001"
+   "expected": "Admin signs in; non-admin is rejected."
   }
  },
  "85": {
   "f": {
    "steps": "1. In admin, open the users table",
-   "expected": "Registered users listed with sensible columns.",
-   "notes2": "plan P3 \u2014 detail unspecified \u00b7 W-ADMIN-002"
+   "expected": "Registered users listed with sensible columns."
   }
  },
  "86": {
   "f": {
    "steps": "1. Open a user from the table",
-   "expected": "Profile viewer shows that user's details.",
-   "notes2": "plan P3 \u2014 detail unspecified \u00b7 W-ADMIN-003"
+   "expected": "Profile viewer shows that user's details."
   }
  }
 }
