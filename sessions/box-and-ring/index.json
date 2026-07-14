@@ -37,5 +37,18 @@
   "platform": [
    "iOS"
   ]
+ },
+ {
+  "sid": "0.0.1-9",
+  "date": "14 Jul 2026",
+  "build": "0.0.1 (9)",
+  "label": "iOS \u2014 Build 0.0.1 (9)",
+  "v": 1,
+  "type": [
+   "Regression"
+  ],
+  "platform": [
+   "iOS"
+  ]
  }
 ]
