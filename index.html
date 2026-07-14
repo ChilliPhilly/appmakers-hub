@@ -2362,6 +2362,83 @@ QA &amp; Project Manager, AppMakers LA
   </div>
   </section>
 
+  <!-- ============ WAVE ============ -->
+  <section class="view" id="wave">
+    <div class="sec-head">
+      <span class="eyebrow">Projects &middot; Wave</span>
+      <h1>Wave</h1>
+      <p class="desc">A document wallet for maritime professionals: a safe deposit box for the 60&ndash;70 certificates and licences a seafarer carries through their career. Scan, tag, store, retrieve, export and print &mdash; and critically, view everything <b>fully offline</b>. iOS + Android app with a simple web admin.</p>
+    </div>
+
+    <div class="pj-nav" id="pjnav-wave"></div>
+    <div class="pj-view" id="pjhome-wave"></div>
+
+    <div class="pj-view" id="pjrnd-wave">
+      <div class="note warn"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">The one invariant that outranks everything.</span> The app <b>must show every uploaded document with zero connectivity</b>. A seafarer mid-ocean or in a foreign port with no signal still needs to open, view and export their certificates. If offline viewing breaks, nothing else matters &mdash; test it first, adversarially, on every build.</div></div>
+
+      <div class="block">
+        <h3>What we're building</h3>
+        <p class="prose">A wallet app for mariners who travel the world and must carry their professional documents and licences everywhere. Certifications are extensive and critical: without the right valid papers a seafarer cannot trade, operate or work. Wave digitises that bundle into an electronic safe deposit box &mdash; store documents, retrieve them easily, export and transact with them, and reprint if the originals are lost. Users scan all their documentation and tag each item under a specific category / folder. The look and feel target is <b>Apple Wallet</b>, with scan/upload into folders.</p>
+      </div>
+
+      <div class="block">
+        <h3>Platforms</h3>
+        <dl class="kv">
+          <div><dt>Mobile app</dt><dd>iOS and Android &mdash; the core product.</dd></div>
+          <div><dt>Web admin</dt><dd>A simple admin panel (users table, profile viewer). Phase 3.</dd></div>
+        </dl>
+      </div>
+
+      <div class="block">
+        <h3>Core flows (from spec v1)</h3>
+        <dl class="kv">
+          <div><dt>Launch</dt><dd>Welcome / Get Started screen with Sign up or Log in.</dd></div>
+          <div><dt>Create account</dt><dd>Email, password, first name, middle name (optional), last name, nationality (dropdown), then a 6-digit email verification code.</dd></div>
+          <div><dt>Sign in</dt><dd>Email + password, with Forgot password.</dd></div>
+          <div><dt>Rank selection</dt><dd>&ldquo;Choose your current rank&rdquo; &mdash; main category then sub-category. Officer (Deck, Chief Officer), Rating (Engine, Motorman), Galley/Hotel (Cook, Chef, Messman), Staff Crew (DJ, Nanny, Photographer), Technical Support &amp; Roles (IT Officer, Plumber). Full rank list still to be supplied.</dd></div>
+          <div><dt>Vessel type</dt><dd>&ldquo;Choose your vessel type&rdquo; &mdash; main category then sub-category. Commercial Cargo (Container, Bulk Carrier, General Cargo, Reefer, Ro-Ro, Vehicle Carrier, Livestock, Heavy Lift, Barge/LASH, Multi-purpose, Timber, Log), Tanker (Oil Tanker, &hellip;). Full vessel list still to be supplied.</dd></div>
+        </dl>
+        <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Spec is partial.</span> The pasted spec v1 cuts off inside the vessel-type list and the full rank list is not yet included. Certificates, service records, career dashboard, goals and offline behaviour are described in the delivery plan below but need their own detailed spec sections before per-feature acceptance criteria can be pinned down.</div></div>
+      </div>
+
+      <div class="block">
+        <h3>Delivery plan &amp; budget</h3>
+        <p class="prose" style="margin-bottom:12px">Based on 612.5 engineering hours plus product &amp; QA overhead. Engineering 612.5 hrs &middot; Product 122.5 hrs &middot; QA 122.5 hrs &middot; <b>total 857.5 hrs &middot; ~$102,900</b>. Assuming ~160 hrs/month per full-time dev.</p>
+        <div class="scroller">
+          <table class="tbl">
+            <thead><tr><th>Phase</th><th>Scope</th><th>Budget</th><th>Timeline</th></tr></thead>
+            <tbody>
+              <tr><td><b>1 &mdash; Core</b></td><td>Project setup, DB schema, routes &amp; navigation, deployment; email/password + Google/Apple login, free-trial logic; onboarding (rank &amp; vessel, basic profile); certificates core (upload forms, categories, multiple entries, document viewer, folders); service records core (entry, listing, sea-days calculation, edit/delete); profile &amp; settings, contact us.</td><td>~$30,000</td><td>~1&ndash;1.25 mo</td></tr>
+              <tr><td><b>2 &mdash; Advanced</b></td><td>Monetization (subscriptions, in-app purchases, subscription gating); certificates advanced (document scanner, search, auto data extraction of issue/expiry/certificate number); career dashboard (chronological service records, goal progress, tracking, filters, export reports); user goals (rank goal); engagement (push notifications); service records data export.</td><td>~$60,000 (cumulative)</td><td>~2.5&ndash;3 mo total</td></tr>
+              <tr><td><b>3 &mdash; Offline &amp; hardening</b></td><td>Offline architecture (local storage, background sync, queue management, conflict resolution); admin panel (auth, users table, profile viewer, UI); account management (delete account flow); final production readiness (QA hardening, performance optimization, stable production deployment).</td><td>~$100,000 (cumulative)</td><td>~3.5&ndash;4 mo total</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note info"><svg fill="none"><use href="#i-folder"/></svg><div><span class="b">Note on sequencing.</span> Offline architecture is scheduled as a Phase 3 &ldquo;heavy lift&rdquo;, yet offline viewing is the product's headline promise. Worth confirming with the PM/dev whether at least read-only offline viewing needs to land earlier &mdash; it's the feature most likely to define whether the app is usable at sea. That's a product-risk flag to raise, not a bug.</div></div>
+      </div>
+
+      <div class="block">
+        <h3>Where QA will push hardest</h3>
+        <dl class="kv">
+          <div><dt>Offline everything</dt><dd>View, open, export, print with the network fully off, after a cold start, after force-quit, and after a sync. This is the invariant above.</dd></div>
+          <div><dt>Document integrity</dt><dd>Scanned/uploaded docs are stored, tagged to the right folder, retrievable, and exactly what was uploaded (no corruption, right pages, right orientation).</dd></div>
+          <div><dt>Auto-extraction accuracy</dt><dd>Issue date, expiry date and certificate number pulled from a scan must be right &mdash; a wrong expiry on a licence is a real-world safety/legal issue, not a cosmetic bug.</dd></div>
+          <div><dt>Sea-days calculation</dt><dd>Service-record maths feeds career progression; verify totals and edge cases (overlaps, edits, deletes).</dd></div>
+          <div><dt>Sync &amp; conflicts</dt><dd>Edit offline on one device, sync, confirm no data loss and sane conflict resolution.</dd></div>
+          <div><dt>Monetization gating</dt><dd>Free-trial and subscription gates open and close the right features; purchases restore correctly.</dd></div>
+        </dl>
+        <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Coming next.</span> A Wave QA playbook and the per-build <a href="#wave">Test sessions</a> board will be built once there's a testable build and the QA reference material is in. For now this R&amp;D summary is the shared source of truth.</div></div>
+      </div>
+    </div>
+
+    <div class="pj-view" id="pjqa-wave">
+      <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Test sessions will live here.</span> Once there's a build to test, paste the build notes (features, bugs with their ClickUp statuses) and a per-build test plan and session board is generated here &mdash; the same system Box and Ring uses: flows, results, evidence, defect links. Nothing to test yet.</div></div>
+    </div>
+
+    <div class="pj-view" id="pjstage-wave"></div>
+  </section>
+
+
   <!-- ============ TOOLS ============ -->
   <section class="view" id="tools">
     <div class="sec-head">
@@ -2467,7 +2544,12 @@ QA &amp; Project Manager, AppMakers LA
      links:[{label:'Figma',url:'https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring'},{label:'Estimates',url:'https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754'}],
      meetings:[],
      defaultStage:'Development / QA',
-     defaultPhases:['Phase 1: Foundation & pairing (wk 1 to 3)','Phase 2: Core fight loop, text (wk 3 to 7)','Phase 3: Whisper, scorecard & safety (wk 7 to 10)','Phase 4: Polish, insight & pilot ship (wk 10 to 14)']}
+     defaultPhases:['Phase 1: Foundation & pairing (wk 1 to 3)','Phase 2: Core fight loop, text (wk 3 to 7)','Phase 3: Whisper, scorecard & safety (wk 7 to 10)','Phase 4: Polish, insight & pilot ship (wk 10 to 14)']},
+    {id:'wave', name:'Wave',
+     links:[{label:'Figma',url:'https://www.figma.com/design/5nhUz0nm9RsojKl76izTXP/Wave-Mobile-App?node-id=10001-84065'}],
+     meetings:[],
+     defaultStage:'Development / QA',
+     defaultPhases:['Phase 1: Core infra, auth, onboarding, certificates, service records, profile (~1\u20131.25 mo \u00b7 ~$30k)','Phase 2: Monetization, advanced certs (scanner/OCR/search), career dashboard, goals, engagement (~2.5\u20133 mo \u00b7 ~$60k)','Phase 3: Offline architecture, admin panel, account management, production hardening (~3.5\u20134 mo \u00b7 ~$100k)']}
   ];
   function proj(id){for(var i=0;i<PROJECTS.length;i++)if(PROJECTS[i].id===id)return PROJECTS[i];return null;}
 
@@ -2477,8 +2559,8 @@ QA &amp; Project Manager, AppMakers LA
     people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
     qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-insights':'qa','qa-resources':'qa',
     pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-resources':'pm',
-    projects:'projects','box-and-ring':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring',tools:'Tools'};
+    projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
