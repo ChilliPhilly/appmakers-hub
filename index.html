@@ -1763,6 +1763,12 @@ QA &amp; Project Manager, AppMakers LA
         <div><dt>Slack huddles</dt><dd>Enable <b>AI notes</b> for huddles so you don't miss anything when someone huddles you.</dd></div>
       </dl>
     </div>
+
+    <div class="block">
+      <h3>App testing tips — sandbox payments</h3>
+      <p class="prose">Testing in-app purchases and subscriptions uses <b>sandbox / test accounts</b>, so <b>no real money is ever charged</b>. Quick reference for both stores:</p>
+      <div id="qa-app-tips-mount"></div>
+    </div>
   </section>
 
 <section class="view" id="qa-insights">
@@ -2990,6 +2996,7 @@ QA &amp; Project Manager, AppMakers LA
       });
       h+='</div>';nav.innerHTML=h;
       nav.querySelectorAll('[data-sub]').forEach(function(btn2){btn2.onclick=function(){pjView[id]=btn2.getAttribute('data-sub');renderProject(id);window.scrollTo(0,0);};});
+      if(window.makeTipsBtn){ nav.appendChild(window.makeTipsBtn('margin-left:auto;align-self:center')); }
     }
     var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id), qa=document.getElementById('pjqa-'+id);
     var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Acceptance Testing'&&!!tst), isDev=(sub==='Development / QA'&&!!qa);
@@ -3462,7 +3469,10 @@ QA &amp; Project Manager, AppMakers LA
   // one-time, idempotent: fold pre-existing single-session keys into the index
   function migrateIdx(pid){
     const idx = loadIdx(pid);
-    if (pid === "box-and-ring" && !idx.some(s => s.sid === "0.0.1-2") && peekState("qa-session-boxandring-0.0.1-2")){
+    // Durable self-heal: Box & Ring's original session is plan-coded (cfgForSession),
+    // so ensure its row ALWAYS exists even if local storage was wiped/reset. The plan,
+    // build notes and docs come from code; only per-item ticks are browser-local.
+    if (pid === "box-and-ring" && !idx.some(s => s.sid === "0.0.1-2")){
       idx.unshift({sid:"0.0.1-2", date:"13 Jul 2026", build:"0.0.1 (2)", label:"Sanity"});
       saveIdx(pid, idx);
     }
@@ -3739,6 +3749,10 @@ QA &amp; Project Manager, AppMakers LA
     initBoard(cfgForSession(pid, sid, extra));
     document.getElementById("qa-view-list").classList.remove("active");
     document.getElementById("qa-view-detail").classList.add("active");
+    try{ var _dt=document.querySelector("#qa-view-detail .detail-top");
+      if(_dt && window.makeTipsBtn && !_dt.querySelector(".__tipsbtn")){
+        var _tb=window.makeTipsBtn("margin-right:6px"); _tb.classList.add("__tipsbtn");
+        _dt.insertBefore(_tb, _dt.querySelector("#qa-back")); } }catch(e){}
     window.scrollTo({top:0});
   }
 
@@ -4728,6 +4742,64 @@ QA &amp; Project Manager, AppMakers LA
   // expose for the hub; mockup harness boots a chosen project below
   BOARD_HTML = document.getElementById("qa-board-tpl").innerHTML;
   window.__qaMount = (mountEl, pid, extra, openSid) => mountProject(mountEl, pid, extra, openSid);
+})();
+</script>
+
+<!-- Reusable App Testing Tips (iOS/Android sandbox payments) — used by QA Job, every project header, and every session -->
+<script>
+(function(){
+  const TIPS = {
+    apple: { label: "Tips for Apple (iOS) testing", items: [
+      "To start fresh: Settings → Developer → Sandbox Account → Manage → Clear Purchase History.",
+      "Each sandbox account has limited renewals (12 max). Create new sandbox accounts for fresh tests.",
+      "Renewal speed is configurable per sandbox account in App Store Connect (default is fastest).",
+      "No real money is charged — ever."
+    ]},
+    google: { label: "Tips for Google (Android) testing", items: [
+      "Always use “Test card, always approves” — never enter a real payment method.",
+      "Test subscriptions are visible in Google Play Store → Subscriptions on the device.",
+      "To start fresh: cancel the subscription, wait for it to expire, then resubscribe.",
+      "No real money is charged when your Gmail is in the license testers list."
+    ]}
+  };
+  window.__TESTING_TIPS = TIPS;
+  function esc(s){ return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+  function card(t){
+    return '<div style="flex:1 1 280px;min-width:250px;border:1px solid var(--line,#e6e6ee);border-radius:12px;padding:15px 17px;background:var(--card,#fff)">'
+      + '<h4 style="margin:0 0 10px;font-size:.92rem;color:var(--accent,#e11d63)">'+esc(t.label)+'</h4>'
+      + '<ul style="margin:0;padding-left:18px;line-height:1.5;font-size:.85rem;color:var(--ink,#2a2a34)">'
+      + t.items.map(i => '<li style="margin:0 0 7px">'+esc(i)+'</li>').join('') + '</ul></div>';
+  }
+  window.testingTipsHTML = () => '<div style="display:flex;flex-wrap:wrap;gap:13px">'+card(TIPS.apple)+card(TIPS.google)+'</div>';
+  window.openTestingTips = function(){
+    var ov=document.createElement('div');
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','App testing tips');
+    ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(18,18,28,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;overflow:auto';
+    var box=document.createElement('div');
+    box.style.cssText='background:var(--bg,#faf9fc);border-radius:16px;max-width:760px;width:100%;padding:20px 22px 26px;box-shadow:0 20px 60px rgba(0,0,0,.32)';
+    box.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">'
+      +'<h3 style="margin:0;font-size:1.1rem;color:var(--ink,#1a1a22)">App testing tips</h3>'
+      +'<button type="button" aria-label="Close" style="border:0;background:none;font-size:24px;line-height:1;cursor:pointer;color:var(--slate,#888)">×</button></div>'
+      +'<p style="margin:0 0 15px;font-size:.8rem;color:var(--slate,#77777f)">Sandbox / test payments only — no real money is ever charged.</p>'
+      + window.testingTipsHTML();
+    ov.appendChild(box);
+    function close(){ ov.remove(); document.removeEventListener('keydown',onEsc); }
+    function onEsc(e){ if(e.key==='Escape') close(); }
+    ov.addEventListener('click', e => { if(e.target===ov) close(); });
+    box.querySelector('button').addEventListener('click', close);
+    document.addEventListener('keydown', onEsc);
+    document.body.appendChild(ov);
+  };
+  window.makeTipsBtn = function(extraStyle){
+    var b=document.createElement('button');
+    b.type='button'; b.textContent='📱 Testing tips';
+    b.style.cssText='border:1px solid var(--line,#e6e6ee);background:var(--card,#fff);color:var(--accent,#e11d63);border-radius:8px;padding:5px 12px;font:inherit;font-size:.8rem;cursor:pointer;white-space:nowrap;'+(extraStyle||'');
+    b.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); window.openTestingTips(); });
+    return b;
+  };
+  // Populate the static "App testing tips" mount in the QA Job section
+  function mountQaTips(){ var m=document.getElementById('qa-app-tips-mount'); if(m && !m.__done){ m.innerHTML = window.testingTipsHTML(); m.__done=true; } }
+  if(document.readyState!=='loading') mountQaTips(); else document.addEventListener('DOMContentLoaded', mountQaTips);
 })();
 </script>
 </body>
