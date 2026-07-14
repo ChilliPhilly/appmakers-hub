@@ -1,0 +1,258 @@
+{
+ "__c": {
+  "flows": [
+   {
+    "title": "Sign up & Log in",
+    "items": [
+     {
+      "n": 1,
+      "title": "Login: User can sign up to their account with new credentials using email and password option",
+      "id": "Login-01-01"
+     },
+     {
+      "n": 2,
+      "title": "Login: User can sign up to their account with new credentials using \"continue with google button\".",
+      "id": "Login-01-02"
+     },
+     {
+      "n": 3,
+      "title": "Login: User cannot sign up to a new account with existing credentials",
+      "id": "Login-01-03"
+     },
+     {
+      "n": 4,
+      "title": "Login: User cannot sign up to a new account with invalid email",
+      "id": "Login-01-04"
+     },
+     {
+      "n": 5,
+      "title": "Login: User cannot sign up to an account with Password under 8 characters",
+      "id": "Login-01-05"
+     },
+     {
+      "n": 6,
+      "title": "Login: User cannot sign up to an account with Password too simple (no upercase letter)",
+      "id": "Login-01-06"
+     },
+     {
+      "n": 7,
+      "title": "Login: User cannot sign up to an account with Password too simple (no number)",
+      "id": "Login-01-07"
+     },
+     {
+      "n": 8,
+      "title": "Login: Verification code resend button",
+      "id": "Login-01-08"
+     },
+     {
+      "n": 9,
+      "title": "Login: Verification code resend button - try and use old code",
+      "id": "Login-01-09"
+     },
+     {
+      "n": 10,
+      "title": "Login: Log in with Existing credentials",
+      "id": "Login-01-10"
+     },
+     {
+      "n": 11,
+      "title": "Login: Log out",
+      "id": "Login-01-11"
+     },
+     {
+      "n": 12,
+      "title": "Login: Password reset",
+      "id": "Login-01-12"
+     },
+     {
+      "n": 13,
+      "title": "Login: Password reset - old password attempt",
+      "id": "Login-01-13"
+     }
+    ]
+   },
+   {
+    "title": "Home-01",
+    "items": [
+     {
+      "n": 14,
+      "title": "Invite Your Partner button + Send invite by email",
+      "id": "Home-01-01"
+     },
+     {
+      "n": 15,
+      "title": "Invite Your Partner button + Send invite with link",
+      "id": "Home-01-02"
+     },
+     {
+      "n": 16,
+      "title": "Invite Your Partner button + Scan code",
+      "id": "Home-01-03"
+     },
+     {
+      "n": 17,
+      "title": "Invite Your Partner button + Scan code",
+      "id": "Home-01-04"
+     }
+    ]
+   },
+   {
+    "title": "Delete-01",
+    "items": [
+     {
+      "n": 18,
+      "title": "Delete: Delete Account",
+      "id": "Delete-01-01"
+     },
+     {
+      "n": 19,
+      "title": "Delete: Deleted Account, new account with same credentials",
+      "id": "Delete-01-02"
+     }
+    ]
+   }
+  ],
+  "extra": {}
+ },
+ "__m": {
+  "type": [
+   "Regression"
+  ],
+  "platform": [
+   "Android"
+  ]
+ },
+ "__meta": {
+  "build": "0.0.1 (2)",
+  "device": "",
+  "os": "",
+  "date": "13 Jul 2026",
+  "tester": "Phill"
+ },
+ "__seedV": 1,
+ "1": {
+  "s": "pass",
+  "f": {
+   "expected": "User creates Account by entering their email and password, user get's verification message in email, uses it to finish log in set up",
+   "actual": "User creates Account by entering their email and password, user get's verification message in email, uses it to finish log in set up"
+  }
+ },
+ "2": {
+  "f": {
+   "expected": "User creates an account by clicking \"get started on the home screen and then clicking the \"continue with google\" button, \nUser is taken to home screen`",
+   "actual": "User creates an account by clicking \"get started on the home screen and then clicking the \"continue with google\" button, \nUser is taken to home screen`"
+  }
+ },
+ "3": {
+  "s": "fail",
+  "f": {
+   "steps": "1. Create a new account with email and password\n2. Exit out of App",
+   "expected": "User trying to create new account with existing credentials see's message that an account already exists and they should  log in rather than create a new account.",
+   "actual": "User progressed to verificatin screen, and is informed  that they will receive a verification code, this code doesn't arrive in the email - also doesn't arrive after pressing the button to resend verification"
+  }
+ },
+ "4": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User tries to sign up with an invalid email but with a valid password.",
+   "expected": "User receives a message saying \"Enter a valid email.\" and the box which contains that information turns red.",
+   "actual": "User receives a message saying \"Enter a valid email.\" and the box which contains that information turns red."
+  }
+ },
+ "5": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User tries to sign up with an invalid email but with a valid password - under 8 characters",
+   "expected": "User receives message saying \"password must have at least 8 characters\"",
+   "actual": "User receives message saying \"password must have at least 8 characters\""
+  }
+ },
+ "6": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User tries to sign up with an invalid email but with a valid password - no upercase characters",
+   "expected": "User receives message saying \"password must have at least 1 uppercase letter\"",
+   "actual": "User receives message saying \"password must have at least 1 uppercase letter\"",
+   "notes2": "Upon resend of Verification, the previous code (which did not work) remains, this should be deleted."
+  }
+ },
+ "7": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User tries to sign up with an invalid email but with a valid password - no numbers",
+   "expected": "User receives message saying \"password must have at least 1 number\"",
+   "actual": "User receives message saying \"password must have at least 1 number\"",
+   "notes2": "Password1 was accepted as a password."
+  }
+ },
+ "8": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User waits 30 seconds until a resend is available.\n2. User clicks on \"Didn't reveice a code? Resend\"\n3. User enters new code into account verification slot",
+   "expected": "User receives a new verification code to their email. This code can be entered into the app resulting in log in",
+   "actual": "User receives a new verification code to their email. This code can be entered into the app resulting in log in"
+  }
+ },
+ "9": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User waits 30 seconds until a resend is available.\n2. User clicks on \"Didn't reveice a code? Resend\"\n3. User enters old code into account verification slot",
+   "expected": "User receives a new verification code to their email. The user entering the old code into verification received a notification \"invalid code\"",
+   "actual": "User receives a new verification code to their email. The user entering the old code into verification received a notification \"invalid code\""
+  }
+ },
+ "10": {
+  "s": "pass",
+  "f": {
+   "steps": "Log in to app with existing credentials",
+   "expected": "User is logged into app and taken to home screen / dashboard",
+   "actual": "User is logged into app and taken to home screen / dashboard"
+  }
+ },
+ "11": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User navigates to settings\n2. User clicks logout\n3. User is notified of logging out and asked to confirm\n4. User logs out",
+   "expected": "User is logged out of app"
+  }
+ },
+ "12": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User navigates to log in screen\n2. User clicks \"forgot password\"\n3. User enters their email \n4. User enters validation code from email into app\n5. User enters new password into App to log in",
+   "expected": "User should have an updated password and able to log in only using the new password",
+   "actual": "User should have an updated password and able to log in only using the new password"
+  }
+ },
+ "13": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User navigates to log in screen\n2. User clicks \"forgot password\"\n3. User enters their email \n4. User enters validation code from email into app\n5. User enters old password into App to log in",
+   "expected": "User should have an updated password and not able to log in using the old password",
+   "actual": "User should have an updated password and not able to log in using the old password"
+  }
+ },
+ "14": {
+  "f": {
+   "steps": "1. Click Invite your partner link\n2. Select \"Send Invite\"\n3. Select Share link\"",
+   "expected": "User Receives link to sign up to Box and Ring App",
+   "notes2": "Not sure best way to test - need android phone or to get in test"
+  }
+ },
+ "18": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User clicks on Settings\n2. User selects \"delete accout\" \n3. User gets warning that their account and data will be deleted perminantly\n4. User Selects \"delete account\"\n5. User is transferred to Sign up screen",
+   "expected": "User's account is deleted from system",
+   "actual": "User's account is deleted from system"
+  }
+ },
+ "19": {
+  "s": "pass",
+  "f": {
+   "steps": "1. User deletes their account\n2. User creates a new account with same user details",
+   "expected": "User has a new account in system with same credentials",
+   "actual": "User has a new account in system with same credentials"
+  }
+ }
+}
