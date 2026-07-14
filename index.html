@@ -728,6 +728,8 @@
     --qa-shadow:0 1px 2px rgba(22,24,29,.05),0 4px 16px rgba(22,24,29,.05);
   }
 
+  /* Standalone-page shell only — dropped at hub integration (host supplies its own). */
+  body{background:var(--qa-bg);color:var(--qa-ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;line-height:1.5;font-size:15px}
 
   /* Everything below is scoped under .qa-sessions for safe embedding. */
   .qa-sessions{max-width:980px;margin:0 auto;padding:32px 24px 96px}
@@ -784,7 +786,21 @@
   .qa-sessions .bugchip.zero{color:var(--qa-ink-3);background:var(--qa-skip-soft)}
   .qa-sessions .example-tag{font-size:10.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3);border:1px solid var(--qa-line-strong);border-radius:6px;padding:1px 6px;margin-left:8px}
 
-  .qa-sessions .detail-top{display:flex;justify-content:flex-end;margin-bottom:16px}
+  .qa-sessions .detail-top{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:16px}
+  .qa-sessions .sess-lbl{margin-right:auto;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--qa-ink-3)}
+  .qa-sessions .sess0-tag{display:inline-block;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--qa-unsure);background:var(--qa-unsure-soft);border-radius:6px;padding:2px 7px}
+  .qa-sessions .sess-name{font-weight:600}
+  .qa-sessions .caselbl{font-size:12px;color:var(--qa-ink-2);font-variant-numeric:tabular-nums}
+  .qa-sessions .nsx-fields{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .qa-sessions .nsx-f{flex:1;min-width:200px;display:flex;align-items:center;gap:8px}
+  .qa-sessions .nsx-f input{flex:1;min-width:0;border:1px solid var(--qa-line-strong);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font:inherit;font-size:13px;padding:7px 10px}
+  .qa-sessions .clf-row{display:flex;gap:9px;padding:7px 9px;border-radius:8px;cursor:pointer;align-items:center;width:100%;background:none;border:none;text-align:left;color:var(--qa-ink);font-size:13px}
+  .qa-sessions .clf-row:hover{background:var(--qa-bg-soft)}
+  .qa-sessions .clf-row .msel-check{margin-top:0}
+  .qa-sessions .clf-row .cnt{margin-left:auto;color:var(--qa-ink-3);font-size:12px;font-variant-numeric:tabular-nums}
+  .qa-sessions .promote{border:1px dashed var(--qa-line-strong);background:none;color:var(--qa-ink-2);border-radius:8px;padding:4px 12px;font-size:12.5px;cursor:pointer}
+  .qa-sessions .promote:hover{color:var(--qa-pass);border-color:var(--qa-pass)}
+  .qa-sessions .promote:focus-visible{outline:2px solid var(--qa-accent);outline-offset:2px}
   .qa-sessions .back{border:1px solid var(--qa-line-strong);background:var(--qa-card);color:var(--qa-ink-2);border-radius:9px;padding:7px 13px;font-size:13.5px;cursor:pointer}
   .qa-sessions .summary{position:sticky;top:12px;z-index:5;background:var(--qa-card);border:1px solid var(--qa-line);border-radius:14px;box-shadow:var(--qa-shadow);padding:16px 20px;margin-bottom:22px}
   .qa-sessions .purpose{margin:0 0 12px;font-size:13px;color:var(--qa-ink-2);max-width:75ch;border-left:2px solid var(--qa-accent);padding-left:10px}
@@ -2387,29 +2403,14 @@ QA &amp; Project Manager, AppMakers LA
     <div class="card">
       <div class="card-head">
         <h2>Test sessions</h2>
-        <div style="display:flex;gap:8px">
-          <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import this session's ticks, edits and results (for moving between browsers)">⇅ Data</button>
-          <button class="btn-new" type="button" title="In the real hub this shows the prompt to paste to Claude for a plan">+ New test session</button>
-        </div>
+        <button class="btn-new" id="qa-new-session" type="button" title="Create a build session — clone flows from the Baseline">+ New test session</button>
       </div>
       <div class="table-scroll">
       <table>
         <thead>
-          <tr><th>Date</th><th>Build</th><th>Type</th><th>Platform</th><th>Progress</th><th>Bugs</th></tr>
+          <tr><th>Session</th><th>Date</th><th>Build</th><th>Type</th><th>Platform</th><th>Progress</th><th>Bugs</th></tr>
         </thead>
-        <tbody>
-          <tr class="sess" id="qa-open-session" tabindex="0" role="button" aria-label="Open this session">
-            <td class="tnum" id="qa-sess-date">—</td>
-            <td class="tnum"><button class="build-link" id="qa-build-link" type="button" title="View build notes + item statuses at time of test">set build</button></td>
-            <td><span class="msel" id="qa-type-list"></span></td>
-            <td><span class="msel plat" id="qa-plat-list"></span></td>
-            <td>
-              <div class="bar" id="qa-list-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
-              <div class="bar-lbl" id="qa-list-bar-lbl">0 / 0 done</div>
-            </td>
-            <td><span class="bugchip zero" id="qa-list-bugs">0</span></td>
-          </tr>
-        </tbody>
+        <tbody id="qa-sess-rows"></tbody>
       </table>
       </div>
     </div>
@@ -2418,6 +2419,8 @@ QA &amp; Project Manager, AppMakers LA
   <!-- ============ VIEW 2: session detail ============ -->
   <section class="qa-view" id="qa-view-detail">
     <div class="detail-top">
+      <span class="sess-lbl mono" id="qa-sess-lbl"></span>
+      <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import THIS session's data (moving between browsers, or importing a generated Baseline)">⇅ Data</button>
       <button class="back" id="qa-back" type="button">&larr; All sessions</button>
     </div>
 
@@ -2490,6 +2493,28 @@ QA &amp; Project Manager, AppMakers LA
         <span id="qa-data-msg" style="margin-right:auto;font-size:12px;color:var(--qa-ink-3);align-self:center"></span>
         <button class="btn-plain" id="qa-data-copy" type="button">Copy export</button>
         <button class="btn-danger" id="qa-data-apply" type="button">Apply import</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="qa-modal-overlay" id="qa-new-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="New test session">
+      <div class="qa-modal-head">
+        <span class="t">New test session</span>
+        <button class="x" id="qa-new-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="nsx-fields">
+        <label class="nsx-f"><span class="flabel">Build</span><input type="text" id="qa-new-build" placeholder="0.0.1 (3)" maxlength="40"></label>
+        <label class="nsx-f"><span class="flabel">Label</span><input type="text" id="qa-new-label" placeholder="Sanity — invite fixes" maxlength="60"></label>
+      </div>
+      <div class="sub-lbl" style="margin-top:12px">Clone flows from the Baseline (Session 0)</div>
+      <div id="qa-new-flows"></div>
+      <div class="confirm-actions">
+        <span id="qa-new-msg" style="margin-right:auto;font-size:12px;color:var(--qa-ink-3);align-self:center"></span>
+        <button class="btn-plain" id="qa-new-cancel" type="button">Cancel</button>
+        <button class="btn-danger" id="qa-new-create" type="button" style="background:var(--qa-accent)">Create session</button>
       </div>
     </div>
   </div>
@@ -2739,8 +2764,8 @@ QA &amp; Project Manager, AppMakers LA
       tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();scrim2.remove();renderAll();};
   }
   var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','qa-session-boxandring-0.0.1-2'];
-  function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^qa-session-/.test(k))out[k]=localStorage.getItem(k);}return JSON.stringify(out);}
-  function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session-/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
+  function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^qa-session/.test(k))out[k]=localStorage.getItem(k);}return JSON.stringify(out);}
+  function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
   var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
   function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
@@ -3409,15 +3434,67 @@ QA &amp; Project Manager, AppMakers LA
   };
   const ST_LABEL = {rtt:"Ready to test", rf:"Retest failed", done:"Done"};
 
-  // Per-project config. Box and Ring carries its seeded plan/build/docs and its
-  // original storage key; every other project starts empty with its own key.
-  function cfgForProject(pid, extra){
-    if (pid === "box-and-ring") return {projectId:pid, key:"qa-session-boxandring-0.0.1-2",
-      plan:BOX_PLAN, files:BOX_FILES, buildNotes:BOX_BUILD_NOTES, purpose:BOX_PURPOSE,
-      meta:{build:"0.0.1 (2)", device:"iPhone 15 Pro", os:"iOS 18.5", date:"13 Jul 2026", tester:"Phill", recordings:"2 planned", type:["Sanity"], platform:["iOS"]}};
-    return {projectId:pid, key:"qa-session-"+pid, plan:[], files:(extra&&extra.files)||[],
+  // ---- sessions layer ----
+  // Per project: an INDEX of build sessions (qa-sessions-idx-<pid>) plus one
+  // storage key per session. Session 0 (the Baseline) always exists implicitly:
+  // all Standby, excluded from build math, the catalog sessions clone from.
+  const idxKey = pid => "qa-sessions-idx-" + pid;
+  const loadIdx = pid => {
+    try { const v = JSON.parse(localStorage.getItem(idxKey(pid))); return Array.isArray(v) ? v : []; }
+    catch(e){ return []; }
+  };
+  const saveIdx = (pid, idx) => { try{ localStorage.setItem(idxKey(pid), JSON.stringify(idx)); }catch(e){} };
+  // multi-tab safety: background tabs reload when any session data changes elsewhere
+  window.addEventListener("storage", ev => {
+    if (document.hidden && ev.key &&
+        (ev.key.indexOf("qa-session") === 0 || ev.key.indexOf("qa-mockup") === 0)) location.reload();
+  });
+  const sessKey = (pid, sid) => {
+    // legacy keys keep their original names so existing data never moves
+    if (pid === "box-and-ring" && sid === "0.0.1-2") return "qa-session-boxandring-0.0.1-2";
+    if (sid === "legacy") return "qa-session-" + pid;
+    return "qa-session-" + pid + "-" + sid;
+  };
+  const peekState = key => {
+    try { const v = JSON.parse(localStorage.getItem(key)); return (typeof v === "object" && v && !Array.isArray(v)) ? v : null; }
+    catch(e){ return null; }
+  };
+  // one-time, idempotent: fold pre-existing single-session keys into the index
+  function migrateIdx(pid){
+    const idx = loadIdx(pid);
+    if (pid === "box-and-ring" && !idx.some(s => s.sid === "0.0.1-2") && peekState("qa-session-boxandring-0.0.1-2")){
+      idx.unshift({sid:"0.0.1-2", date:"13 Jul 2026", build:"0.0.1 (2)", label:"Sanity"});
+      saveIdx(pid, idx);
+    }
+    if (pid !== "box-and-ring" && !idx.some(s => s.sid === "legacy")){
+      const legacy = peekState("qa-session-" + pid);
+      if (legacy && Object.keys(legacy).some(k => !k.startsWith("__")|| (legacy.__c && (legacy.__c.flows||[]).length))){
+        idx.unshift({sid:"legacy", date:"", build:"", label:"earlier session"});
+        saveIdx(pid, idx);
+      }
+    }
+    return loadIdx(pid);
+  }
+
+  // Per-SESSION config. Box and Ring's original session keeps its seeded plan/
+  // build notes/docs; Session 0 and new sessions start from storage alone.
+  function cfgForSession(pid, sid, extra){
+    const base = {projectId:pid, sid:String(sid), key:sessKey(pid, sid),
+      plan:[], files:(extra && extra.files) || [],
       buildNotes:{build:"", date:"", features:[], bugs:[]}, purpose:"",
       meta:{build:"", device:"", os:"", date:"", tester:"", recordings:"", type:["Sanity"], platform:["iOS"]}};
+    if (pid === "box-and-ring"){
+      base.files = BOX_FILES;
+      if (sid === "0.0.1-2"){
+        base.plan = BOX_PLAN; base.buildNotes = BOX_BUILD_NOTES; base.purpose = BOX_PURPOSE;
+        base.meta = {build:"0.0.1 (2)", device:"iPhone 15 Pro", os:"iOS 18.5", date:"13 Jul 2026", tester:"Phill", recordings:"2 planned", type:["Sanity"], platform:["iOS"]};
+      }
+    }
+    if (String(sid) === "0"){
+      base.purpose = "Baseline (Session 0) — the catalog of all planned test cases. All Standby; " +
+                     "clone flows into a build session to execute. Never counts toward any build's results.";
+    }
+    return base;
   }
 
   // Shared attachment store (IndexedDB) — opened once for the whole page.
@@ -3503,15 +3580,165 @@ QA &amp; Project Manager, AppMakers LA
     confirmOverlay0.classList.remove("open"); confirmCb = null; attClose();
   });
 
-  // ---- the board factory: mounts one project's board into a container ----
-  function mountBoard(mountEl, cfg){
+  // ---- the board factory: mounts one project's SESSIONS board ----
+  let CURRENT = {pid:null, extra:null};
+  function mountProject(mountEl, pid, extra, openSid){
     if (!mountEl) return;
-    if (mountEl.dataset.proj === cfg.projectId && mountEl.firstChild) return; // already up
     document.querySelectorAll(".pjqa-mount").forEach(m => { if (m !== mountEl){ m.innerHTML = ""; m.dataset.proj = ""; } });
     mountEl.innerHTML = '<div class="qa-sessions">' + BOARD_HTML + '</div>';
-    mountEl.dataset.proj = cfg.projectId;
-    initBoard(cfg);
+    mountEl.dataset.proj = pid;
+    CURRENT = {pid, extra: extra || null, mountEl};
+    migrateIdx(pid);
+    renderSessionRows();
+    wireNewSession();
+    if (openSid !== undefined) openSession(openSid);
   }
+
+  function sessTally(state){
+    const t = {pass:0,fail:0,unsure:0,block:0,skip:0,total:0};
+    if (!state) return t;
+    const seen = new Set();
+    ((state.__c && state.__c.flows) || []).forEach(f => (f.items||[]).forEach(d => {
+      if (seen.has(d.n)) return; seen.add(d.n);
+      t.total++;
+      const s = (state[d.n]||{}).s; if (s && t[s] !== undefined) t[s]++;
+    }));
+    Object.values((state.__c && state.__c.extra) || {}).forEach(arr => (arr||[]).forEach(d => {
+      if (seen.has(d.n)) return; seen.add(d.n);
+      t.total++;
+      const s = (state[d.n]||{}).s; if (s && t[s] !== undefined) t[s]++;
+    }));
+    t.done = t.pass+t.fail+t.unsure+t.block+t.skip;
+    return t;
+  }
+  // plan-coded cases (Box & Ring's seeded session) aren't in __c — count via removedItems-aware plan length
+  function planTally(pid, sid, state){
+    const cfg = cfgForSession(pid, sid, CURRENT.extra);
+    const removed = new Set((state && state.__m && state.__m.removedItems) || []);
+    const t = {pass:0,fail:0,unsure:0,block:0,skip:0,total:0};
+    cfg.plan.forEach(g => g.items.forEach(it => {
+      if (removed.has(it.n)) return;
+      t.total++;
+      const s = (state && state[it.n] || {}).s; if (s && t[s] !== undefined) t[s]++;
+    }));
+    return t;
+  }
+
+  function renderSessionRows(){
+    const tbody = document.getElementById("qa-sess-rows");
+    if (!tbody || !CURRENT.pid) return;
+    tbody.innerHTML = "";
+    const pid = CURRENT.pid;
+    const rows = [{sid:"0", date:"", build:"", label:"Baseline", isZero:true}]
+      .concat(loadIdx(pid).map(s => ({...s, isZero:false})));
+    rows.forEach(r => {
+      const state = peekState(sessKey(pid, r.sid));
+      const meta = (state && state.__meta) || {};
+      const m = (state && state.__m) || {};
+      const type = Array.isArray(m.type) ? m.type.join(" + ") : (m.type || "—");
+      const plat = Array.isArray(m.platform) ? m.platform.join(" · ") : (m.platform || "—");
+      const tc = sessTally(state), tp = planTally(pid, r.sid, state);
+      const t = {pass:tc.pass+tp.pass, fail:tc.fail+tp.fail, unsure:tc.unsure+tp.unsure,
+                 block:tc.block+tp.block, skip:tc.skip+tp.skip, total:tc.total+tp.total};
+      t.done = t.pass+t.fail+t.unsure+t.block+t.skip;
+      const tr = document.createElement("tr");
+      tr.className = "sess"; tr.tabIndex = 0; tr.setAttribute("role","button");
+      tr.setAttribute("aria-label", "Open session " + (r.label || r.sid));
+      const pct = n => t.total ? (100*n/t.total) + "%" : "0%";
+      tr.innerHTML = r.isZero
+        ? `<td><span class="sess0-tag">Session 0</span> <span class="sess-name">Baseline</span></td>
+           <td class="tnum">—</td><td class="tnum">—</td><td>—</td><td>—</td>
+           <td><span class="caselbl">${t.total} case${t.total===1?"":"s"} in catalog · excluded from build results</span></td>
+           <td><span class="bugchip zero" title="The Baseline never counts bugs">—</span></td>`
+        : `<td><span class="sess-name">${esc0(r.label || r.sid)}</span></td>
+           <td class="tnum">${esc0(meta.date || r.date || "—")}</td>
+           <td class="tnum mono">${esc0(meta.build || r.build || "—")}</td>
+           <td>${esc0(type)}</td><td>${esc0(plat)}</td>
+           <td><div class="bar"><i class="p" style="width:${pct(t.pass)}"></i><i class="f" style="width:${pct(t.fail)}"></i><i class="u" style="width:${pct(t.unsure)}"></i><i class="b" style="width:${pct(t.block)}"></i><i class="s" style="width:${pct(t.skip)}"></i></div>
+            <div class="bar-lbl">${t.done} / ${t.total} done</div></td>
+           <td><span class="bugchip${t.fail? "":" zero"}" title="${t.fail} failed test(s)">${t.fail}</span></td>`;
+      const open = () => openSession(r.sid);
+      tr.addEventListener("click", open);
+      tr.addEventListener("keydown", e => { if (e.target===tr && (e.key==="Enter"||e.key===" ")){ e.preventDefault(); open(); } });
+      tbody.appendChild(tr);
+    });
+  }
+
+  function openSession(sid){
+    // fresh template so per-session DOM/listeners never leak between sessions
+    const {pid, extra, mountEl} = CURRENT;
+    mountEl.innerHTML = '<div class="qa-sessions">' + BOARD_HTML + '</div>';
+    renderSessionRows();
+    wireNewSession();
+    initBoard(cfgForSession(pid, sid, extra));
+    document.getElementById("qa-view-list").classList.remove("active");
+    document.getElementById("qa-view-detail").classList.add("active");
+    window.scrollTo({top:0});
+  }
+
+  function wireNewSession(){
+    const btn = document.getElementById("qa-new-session");
+    if (!btn) return;
+    btn.onclick = () => {
+      const {pid} = CURRENT;
+      const s0 = peekState(sessKey(pid, "0")) || {};
+      const flows = ((s0.__c && s0.__c.flows) || []);
+      const host = document.getElementById("qa-new-flows");
+      host.innerHTML = flows.length
+        ? flows.map((f,i) => `<button type="button" class="clf-row" role="checkbox" aria-checked="true" data-i="${i}">
+             <span class="msel-check">✓</span><span>${esc0(f.title)}</span><span class="cnt">${(f.items||[]).length} cases</span></button>`).join("")
+        : `<p class="bn-note">The Baseline is empty — the session starts blank (add flows inside, or import a generated Baseline into Session 0 first).</p>`;
+      host.querySelectorAll(".clf-row").forEach(row => row.addEventListener("click", () => {
+        row.setAttribute("aria-checked", String(row.getAttribute("aria-checked") !== "true"));
+      }));
+      document.getElementById("qa-new-build").value = "";
+      document.getElementById("qa-new-label").value = "";
+      document.getElementById("qa-new-msg").textContent = "";
+      document.getElementById("qa-new-overlay").classList.add("open");
+      document.getElementById("qa-new-build").focus();
+    };
+  }
+  (function wireNewModalOnce(){
+    const overlay = document.getElementById("qa-new-overlay");
+    const close = () => overlay.classList.remove("open");
+    document.getElementById("qa-new-close").onclick = close;
+    document.getElementById("qa-new-cancel").onclick = close;
+    overlay.addEventListener("click", ev => { if (ev.target === overlay) close(); });
+    document.getElementById("qa-new-create").onclick = () => {
+      const {pid} = CURRENT;
+      if (!pid) return;
+      const build = document.getElementById("qa-new-build").value.trim();
+      const label = document.getElementById("qa-new-label").value.trim() || build || "session";
+      const s0 = peekState(sessKey(pid, "0")) || {};
+      const flows = ((s0.__c && s0.__c.flows) || []);
+      const picked = [...document.querySelectorAll("#qa-new-flows .clf-row")]
+        .filter(r => r.getAttribute("aria-checked") === "true")
+        .map(r => flows[+r.dataset.i]).filter(Boolean);
+      // clone: renumber items; copy field overrides; titles keep Baseline IDs (lineage)
+      const state = {__c:{flows:[], extra:{}},
+                     __m:{groups:{}, removedItems:[], removedGroups:[]},
+                     __meta:{build, date:new Date().toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}};
+      let n = 0;
+      picked.forEach(f => {
+        const items = (f.items||[]).map(d => {
+          n++;
+          const src = s0[d.n] || {};
+          if (src.f && Object.keys(src.f).length) state[n] = {f: {...src.f}};
+          return {n, title:d.title, baseN:d.n};
+        });
+        state.__c.flows.push({title:f.title, items});
+      });
+      const sid = "s" + Date.now().toString(36);
+      try { localStorage.setItem(sessKey(pid, sid), JSON.stringify(state)); } catch(e){
+        document.getElementById("qa-new-msg").textContent = "Could not save (storage full?)"; return;
+      }
+      const idx = loadIdx(pid);
+      idx.push({sid, date: state.__meta.date, build, label});
+      saveIdx(pid, idx);
+      overlay.classList.remove("open");
+      openSession(sid);
+    };
+  })();
 
   function initBoard(cfg){
     const KEY = cfg.key, PLAN = cfg.plan, FILES = cfg.files, BUILD_NOTES = cfg.buildNotes, DEFAULT_PURPOSE = cfg.purpose, CFGMETA = cfg.meta;
@@ -3549,9 +3776,9 @@ QA &amp; Project Manager, AppMakers LA
   const removedGroups = new Set(state.__m.removedGroups);
   // Runtime item from a stored def. Moved plan tests carry their full snapshot
   // (id/kind/steps/expected/edge/flag) so they keep their identity in the new flow.
-  const addedRt = d => ({n:d.n, id:d.id||"ADDED", kind:d.kind||"added", title:d.title,
+  const addedRt = d => ({n:d.n, id:d.baseN?"BASE":(d.id||"ADDED"), kind:d.baseN?"wb":(d.kind||"added"), title:d.title,
     steps:d.steps||null, expected:d.expected||null, edge:d.edge||null, flag:d.flag,
-    added:true, spin:d.spin, copyOf:d.copyOf});
+    added:true, spin:d.spin, copyOf:d.copyOf, baseN:d.baseN});
   const GROUPS = [];
   PLAN.forEach((g, gi) => {
     if (removedGroups.has(gi)) return;
@@ -3704,7 +3931,7 @@ QA &amp; Project Manager, AppMakers LA
 
     const statGrp = document.createElement("span");
     statGrp.className = "statgrp";
-    STATS.forEach(([s,glyph,label])=>{
+    if (cfg.sid !== "0") STATS.forEach(([s,glyph,label])=>{
       const b = document.createElement("button");
       b.type = "button"; b.className = "stat-btn"; b.dataset.s = s; b.textContent = glyph;
       b.title = label; b.setAttribute("aria-label", `${label}: ${it.title}`);
@@ -3855,6 +4082,7 @@ QA &amp; Project Manager, AppMakers LA
     });
 
     // priority picker (only meaningful when the result is a bug)
+    if (cfg.sid !== "0") {
     const prow = document.createElement("div");
     prow.className = "prio-row";
     prow.innerHTML = `<span class="plabel">Bug priority</span>`;
@@ -3908,6 +4136,7 @@ QA &amp; Project Manager, AppMakers LA
     };
     renderDefect();
     detail.appendChild(defWrap);
+    }  // end sid!=="0" execution-only fields (priority + defect)
 
     const actRow = document.createElement("div");
     actRow.className = "act-row";
@@ -3947,7 +4176,7 @@ QA &amp; Project Manager, AppMakers LA
       newEl.querySelector(".row-btn").setAttribute("aria-expanded", "true");
       save(); refresh();
     });
-    actRow.appendChild(spinBtn);
+    if (cfg.sid !== "0") actRow.appendChild(spinBtn);
 
     // move to another flow: keeps the number, ID chip, defaults, results,
     // notes and attachments — only the flow changes. Persists via def snapshot.
@@ -3997,6 +4226,40 @@ QA &amp; Project Manager, AppMakers LA
       save(); refresh();
     });
     actRow.appendChild(moveSel);
+
+    // promote a session-authored case into the Baseline (Session 0 catalog)
+    if (cfg.sid !== "0" && it.added && !it.baseN){
+      const pro = document.createElement("button");
+      pro.type = "button"; pro.className = "promote";
+      pro.textContent = "→ Baseline";
+      pro.title = "Add this test to the project's Baseline catalog (Session 0)";
+      pro.addEventListener("click", () => {
+        confirmBox(`Add “${fval(it,"title",it.title)}” to the Baseline catalog?`, () => {
+          const zeroKey = sessKey(cfg.projectId, "0");
+          const s0 = peekState(zeroKey) || {};
+          if (typeof s0.__c !== "object" || s0.__c === null) s0.__c = {};
+          if (!Array.isArray(s0.__c.flows)) s0.__c.flows = [];
+          let maxN = 0;
+          s0.__c.flows.forEach(f => (f.items||[]).forEach(d => { if (d.n > maxN) maxN = d.n; }));
+          Object.keys(s0).forEach(k => { const kn = +k; if (kn && kn > maxN) maxN = kn; });
+          const flowTitle = grp.part;
+          let flow = s0.__c.flows.find(f => f.title === flowTitle);
+          if (!flow){ flow = {title:flowTitle, items:[]}; s0.__c.flows.push(flow); }
+          const newN = maxN + 1;
+          flow.items.push({n:newN, title:fval(it,"title",it.title)});
+          const f = {};
+          [["steps",(it.steps||[]).join("\n")],["expected",it.expected||""],["edge",it.edge||""]].forEach(([key,defStr]) => {
+            const v = fval(it, key, defStr); if (v) f[key] = v;
+          });
+          f.notes2 = ((fval(it,"notes2","") ? fval(it,"notes2","") + " · " : "") + "promoted:" + cfg.sid).trim();
+          s0[String(newN)] = {f};
+          try{ localStorage.setItem(zeroKey, JSON.stringify(s0)); }catch(e){}
+          pro.textContent = "✓ in Baseline"; pro.disabled = true;
+          renderSessionRows();
+        });
+      });
+      actRow.appendChild(pro);
+    }
     detail.appendChild(actRow);
 
     rowBtn.addEventListener("click", () => {
@@ -4232,9 +4495,8 @@ QA &amp; Project Manager, AppMakers LA
     renderBtn(); renderPop();
     MSELS.push({el, key, renderBtn, renderPop});
   }
-  msel("qa-type-list", TYPES, "type", ["Sanity"], " + ");
+  // type/platform edited in the session detail; the sessions table shows text
   msel("qa-type-det",  TYPES, "type", ["Sanity"], " + ");
-  msel("qa-plat-list", PLATFORMS, "platform", ["iOS"], " · ");
   msel("qa-plat-det",  PLATFORMS, "platform", ["iOS"], " · ");
 
   function tally(){
@@ -4253,21 +4515,20 @@ QA &amp; Project Manager, AppMakers LA
   function refresh(){
     const t = tally();
     setBar(document.getElementById("qa-sum-bar"), t);
-    setBar(document.getElementById("qa-list-bar"), t);
-    document.getElementById("qa-done-lbl").textContent = `${t.done} / ${t.total} tests complete`;
-    document.getElementById("qa-sum-counts").innerHTML =
-      `<span><span class="dot d-p"></span>${t.pass} pass</span>`+
-      `<span><span class="dot d-f"></span>${t.fail} fail</span>`+
-      `<span><span class="dot d-u2"></span>${t.unsure} unsure</span>`+
-      `<span><span class="dot d-b"></span>${t.block} blocked</span>`+
-      `<span><span class="dot d-s"></span>${t.skip} skipped</span>`;
-    document.getElementById("qa-list-bar-lbl").textContent = `${t.done} / ${t.total} done`;
-    const bugs = document.getElementById("qa-list-bugs");
-    let filed = 0;
-    GROUPS.forEach(g=>g.items.forEach(it=>{ if((state[it.n]||{}).bug) filed++; }));
-    bugs.textContent = t.fail;
-    bugs.title = t.fail + " failed test(s) \u00b7 " + filed + " filed in ClickUp";
-    bugs.classList.toggle("zero", t.fail===0);
+    if (cfg.sid === "0"){
+      // Baseline: a catalog, not a result \u2014 show size, not progress
+      document.getElementById("qa-done-lbl").textContent = `${t.total} case${t.total===1?"":"s"} in catalog`;
+      document.getElementById("qa-sum-counts").innerHTML =
+        `<span><span class="dot d-s"></span>all Standby \u2014 excluded from build results</span>`;
+    } else {
+      document.getElementById("qa-done-lbl").textContent = `${t.done} / ${t.total} tests complete`;
+      document.getElementById("qa-sum-counts").innerHTML =
+        `<span><span class="dot d-p"></span>${t.pass} pass</span>`+
+        `<span><span class="dot d-f"></span>${t.fail} fail</span>`+
+        `<span><span class="dot d-u2"></span>${t.unsure} unsure</span>`+
+        `<span><span class="dot d-b"></span>${t.block} blocked</span>`+
+        `<span><span class="dot d-s"></span>${t.skip} skipped</span>`;
+    }
     // per-flow: coloured status counts + done/total
     root.querySelectorAll(".grp").forEach(g=>{
       const items = (g.__grp||{items:[]}).items;
@@ -4310,21 +4571,29 @@ QA &amp; Project Manager, AppMakers LA
     bnotesEl.querySelector(".files-head").setAttribute("aria-expanded", bnotesEl.classList.contains("open"));
   });
 
-  // build notes: this board's build-link opens the shared modal, filled from
-  // this board's snapshot (empty projects simply have nothing filed yet).
+  // build notes modal content for THIS session (opened from the inline toggle's label)
   document.getElementById("qa-modal-body").innerHTML = bnHTML();
   document.getElementById("qa-modal-build").textContent = (BUILD_NOTES.build || CFGMETA.build || "no build set");
   document.getElementById("qa-modal-date").textContent = (BUILD_NOTES.date || "");
-  document.getElementById("qa-build-link").addEventListener("click", ev => {
-    ev.stopPropagation();               // don't also open the session row
-    bnOverlay0.classList.add("open");
-    document.getElementById("qa-modal-close").focus();
-  });
 
-  // data export / import via the shared modal, pointed at THIS board
+  // session label in the detail header
+  const lblEl = document.getElementById("qa-sess-lbl");
+  if (lblEl){
+    if (cfg.sid === "0") lblEl.innerHTML = '<span class="sess0-tag">Session 0</span> Baseline — catalog';
+    else {
+      const entry = loadIdx(cfg.projectId).find(s => s.sid === cfg.sid) || {};
+      lblEl.textContent = "Session · " + (entry.label || entry.build || cfg.sid);
+    }
+  }
+
+  // data export / import via the shared modal, pointed at THIS session
   CB.exportKey = KEY;
   CB.exportJSON = () => JSON.stringify(state);
-  CB.applyImport = parsed => { try{ localStorage.setItem(KEY, JSON.stringify(parsed)); }catch(e){} dataOverlay0.classList.remove("open"); initBoard(cfg); };
+  CB.applyImport = parsed => {
+    try{ localStorage.setItem(KEY, JSON.stringify(parsed)); }catch(e){}
+    dataOverlay0.classList.remove("open");
+    openSession(cfg.sid);
+  };
   document.getElementById("qa-data-btn").addEventListener("click", ev => {
     ev.stopPropagation();
     dataText0.value = JSON.stringify(state);
@@ -4332,15 +4601,12 @@ QA &amp; Project Manager, AppMakers LA
     dataOverlay0.classList.add("open");
   });
 
-  const show = id => {
-    document.querySelectorAll("#qa-view-list, #qa-view-detail").forEach(v=>v.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
+  document.getElementById("qa-back").addEventListener("click", () => {
+    renderSessionRows();   // pick up any ticks made in this session
+    document.getElementById("qa-view-detail").classList.remove("active");
+    document.getElementById("qa-view-list").classList.add("active");
     window.scrollTo({top:0});
-  };
-  const openRow = document.getElementById("qa-open-session");
-  openRow.addEventListener("click", ()=>show("qa-view-detail"));
-  openRow.addEventListener("keydown", e=>{ if(e.target===openRow && (e.key==="Enter"||e.key===" ")){e.preventDefault();show("qa-view-detail");} });
-  document.getElementById("qa-back").addEventListener("click", ()=>show("qa-view-list"));
+  });
 
   // fill the parameterized session meta from cfg defaults + saved edits, and
   // make the free-text fields editable (build, device, OS, date, tester, recordings)
@@ -4373,10 +4639,11 @@ QA &amp; Project Manager, AppMakers LA
     renderSessionRow();
   }
   function renderSessionRow(){
-    const t = tally();
+    // meta edits reflect in the sessions table + build-notes modal header
+    renderSessionRows();
     const mval = k => (state.__meta && state.__meta[k]) || CFGMETA[k] || "";
-    document.getElementById("qa-sess-date").textContent = mval("date") || "—";
-    document.getElementById("qa-build-link").textContent = mval("build") || "set build";
+    const mb = document.getElementById("qa-modal-build");
+    if (mb) mb.textContent = (BUILD_NOTES.build || mval("build") || "no build set");
   }
 
   applyMeta();
@@ -4394,7 +4661,7 @@ QA &amp; Project Manager, AppMakers LA
 
   // expose for the hub; mockup harness boots a chosen project below
   BOARD_HTML = document.getElementById("qa-board-tpl").innerHTML;
-  window.__qaMount = (mountEl, pid, extra) => mountBoard(mountEl, cfgForProject(pid, extra));
+  window.__qaMount = (mountEl, pid, extra, openSid) => mountProject(mountEl, pid, extra, openSid);
 })();
 </script>
 </body>
