@@ -3705,8 +3705,13 @@ QA &amp; Project Manager, AppMakers LA
     if (!tbody || !CURRENT.pid) return;
     tbody.innerHTML = "";
     const pid = CURRENT.pid;
+    // Newest sessions first (Baseline stays pinned at top). Prefer the session's
+    // date, fall back to an ISO-like sid; unparseable keys sort last but keep
+    // their relative order (stable sort).
+    const sessTime = s => { let d = Date.parse(s.date||""); if(isNaN(d)) d = Date.parse(s.sid||""); return isNaN(d) ? -Infinity : d; };
+    const idx = loadIdx(pid).slice().sort((a,b) => sessTime(b) - sessTime(a));
     const rows = [{sid:"0", date:"", build:"", label:"Baseline", isZero:true}]
-      .concat(loadIdx(pid).map(s => ({...s, isZero:false})));
+      .concat(idx.map(s => ({...s, isZero:false})));
     rows.forEach(r => {
       const state = peekState(sessKey(pid, r.sid));
       const meta = (state && state.__meta) || {};
