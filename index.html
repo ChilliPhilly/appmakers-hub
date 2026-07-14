@@ -790,6 +790,7 @@
   .qa-sessions .purpose{margin:0 0 12px;font-size:13px;color:var(--qa-ink-2);max-width:75ch;border-left:2px solid var(--qa-accent);padding-left:10px}
   .qa-sessions .editable{border-radius:6px;padding:1px 4px;margin:-1px -4px;cursor:text}
   .qa-sessions .editable:hover{background:var(--qa-bg-soft);box-shadow:inset 0 0 0 1px var(--qa-line-strong)}
+  .qa-sessions .editable.ph{color:var(--qa-ink-3);font-style:italic;font-weight:400}
   .qa-sessions .summary-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
   .qa-sessions .meta-chip{display:inline-flex;gap:6px;align-items:baseline;font-size:12.5px;color:var(--qa-ink-2);background:var(--qa-bg-soft);border:1px solid var(--qa-line);border-radius:8px;padding:4px 10px;white-space:nowrap}
   .qa-sessions .meta-chip b{color:var(--qa-ink);font-weight:600}
@@ -2183,104 +2184,7 @@ QA &amp; Project Manager, AppMakers LA
       </div>
     </div>
 
-    <div class="pj-view" id="pjqa-box-and-ring">
-<div class="qa-sessions">
-  <!-- ============ VIEW 1: sessions table ============ -->
-  <section class="qa-view active" id="qa-view-list">
-    <div class="card">
-      <div class="card-head">
-        <h2>Test sessions</h2>
-        <div style="display:flex;gap:8px">
-          <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import this session's ticks, edits and results (for moving between browsers)">⇅ Data</button>
-          <button class="btn-new" type="button" title="In the real hub this shows the prompt to paste to Claude for a plan">+ New test session</button>
-        </div>
-      </div>
-      <div class="table-scroll">
-      <table>
-        <thead>
-          <tr><th>Date</th><th>Build</th><th>Type</th><th>Platform</th><th>Progress</th><th>Bugs</th></tr>
-        </thead>
-        <tbody>
-          <tr class="sess" id="qa-open-session" tabindex="0" role="button" aria-label="Open session: sanity test build 0.0.1 (2)">
-            <td class="tnum">13 Jul 2026</td>
-            <td class="tnum"><button class="build-link" id="qa-build-link" type="button" title="View build notes + item statuses at time of test">0.0.1 (2)</button></td>
-            <td><span class="msel" id="qa-type-list"></span></td>
-            <td><span class="msel plat" id="qa-plat-list"></span></td>
-            <td>
-              <div class="bar" id="qa-list-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
-              <div class="bar-lbl" id="qa-list-bar-lbl">0 / 13 done</div>
-            </td>
-            <td><span class="bugchip zero" id="qa-list-bugs">0</span></td>
-          </tr>
-          <tr class="sess" style="opacity:.55;cursor:default" title="Illustrative only — shows the finished-session look">
-            <td class="tnum">6 Jul 2026<span class="example-tag">example</span></td>
-            <td class="mono tnum">0.0.1 (1)</td>
-            <td><span class="type-pill">Sanity</span></td>
-            <td>iOS · iPhone</td>
-            <td>
-              <div class="bar"><i class="p" style="width:70%"></i><i class="f" style="width:20%"></i><i class="b" style="width:10%"></i></div>
-              <div class="bar-lbl">10 / 10 done</div>
-            </td>
-            <td><span class="bugchip">2</span></td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ VIEW 2: session detail ============ -->
-  <section class="qa-view" id="qa-view-detail">
-    <div class="detail-top">
-      <button class="back" id="qa-back" type="button">&larr; All sessions</button>
-    </div>
-
-    <div class="summary">
-      <p class="purpose"><b>Purpose:</b> <span class="editable" id="qa-purpose" contenteditable="true" spellcheck="false"></span></p>
-      <div class="summary-top">
-        <span class="meta-chip"><b class="mono">0.0.1 (2)</b> build</span>
-        <span class="meta-chip">type <span class="msel" id="qa-type-det"></span></span>
-        <span class="meta-chip">platform <span class="msel plat" id="qa-plat-det"></span></span>
-        <span class="meta-chip">device <b>iPhone 15 Pro</b></span>
-        <span class="meta-chip">OS <b>iOS 18.5</b></span>
-        <span class="meta-chip"><b>13 Jul 2026</b></span>
-        <span class="meta-chip">tester <b>Phill</b></span>
-        <span class="meta-chip">recordings <b>2 planned</b></span>
-      </div>
-      <div class="summary-bar">
-        <span class="done-lbl" id="qa-done-lbl">0 / 13 tests complete</span>
-        <div class="bar" id="qa-sum-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
-        <div class="counts" id="qa-sum-counts"></div>
-      </div>
-    </div>
-
-    <div class="files" id="qa-files">
-      <button class="files-head" type="button" aria-expanded="false">
-        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="lbl">Project documents</span>
-        <span class="cnt" id="qa-files-cnt"></span>
-        <span class="hint">reference while testing</span>
-      </button>
-      <div class="files-body" id="qa-files-body"></div>
-    </div>
-
-    <div class="files" id="qa-bnotes">
-      <button class="files-head" type="button" aria-expanded="false">
-        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span class="lbl">Build notes</span>
-        <span class="cnt mono">0.0.1 (2)</span>
-        <span class="hint">item statuses at time of test</span>
-      </button>
-      <div class="files-body bn" id="qa-bnotes-body"></div>
-    </div>
-
-    <div id="qa-groups"></div>
-    <button class="add-btn flow" id="qa-add-flow" type="button">+ Add flow</button>
-  </section>
-</div>
-
-
-    </div>
+    <div class="pj-view pjqa-mount" id="pjqa-box-and-ring"></div>
     <div class="pj-view" id="pjstage-box-and-ring"></div>
     <div class="pj-view" id="pjrnd-box-and-ring">
 
@@ -2431,9 +2335,7 @@ QA &amp; Project Manager, AppMakers LA
       </div>
     </div>
 
-    <div class="pj-view" id="pjqa-wave">
-      <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Test sessions will live here.</span> Once there's a build to test, paste the build notes (features, bugs with their ClickUp statuses) and a per-build test plan and session board is generated here &mdash; the same system Box and Ring uses: flows, results, evidence, defect links. Nothing to test yet.</div></div>
-    </div>
+    <div class="pj-view pjqa-mount" id="pjqa-wave"></div>
 
     <div class="pj-view" id="pjstage-wave"></div>
   </section>
@@ -2478,6 +2380,90 @@ QA &amp; Project Manager, AppMakers LA
     <span class="mono">A living doc · last updated 9 Jul 2026</span>
   </div>
 </footer>
+
+<template id="qa-board-tpl">
+  <!-- ============ VIEW 1: sessions table ============ -->
+  <section class="qa-view active" id="qa-view-list">
+    <div class="card">
+      <div class="card-head">
+        <h2>Test sessions</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import this session's ticks, edits and results (for moving between browsers)">⇅ Data</button>
+          <button class="btn-new" type="button" title="In the real hub this shows the prompt to paste to Claude for a plan">+ New test session</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Build</th><th>Type</th><th>Platform</th><th>Progress</th><th>Bugs</th></tr>
+        </thead>
+        <tbody>
+          <tr class="sess" id="qa-open-session" tabindex="0" role="button" aria-label="Open this session">
+            <td class="tnum" id="qa-sess-date">—</td>
+            <td class="tnum"><button class="build-link" id="qa-build-link" type="button" title="View build notes + item statuses at time of test">set build</button></td>
+            <td><span class="msel" id="qa-type-list"></span></td>
+            <td><span class="msel plat" id="qa-plat-list"></span></td>
+            <td>
+              <div class="bar" id="qa-list-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
+              <div class="bar-lbl" id="qa-list-bar-lbl">0 / 0 done</div>
+            </td>
+            <td><span class="bugchip zero" id="qa-list-bugs">0</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 2: session detail ============ -->
+  <section class="qa-view" id="qa-view-detail">
+    <div class="detail-top">
+      <button class="back" id="qa-back" type="button">&larr; All sessions</button>
+    </div>
+
+    <div class="summary">
+      <p class="purpose"><b>Purpose:</b> <span class="editable" id="qa-purpose" contenteditable="true" spellcheck="false"></span></p>
+      <div class="summary-top">
+        <span class="meta-chip"><b class="mono editable" id="qa-m-build" contenteditable="true" spellcheck="false"></b> build</span>
+        <span class="meta-chip">type <span class="msel" id="qa-type-det"></span></span>
+        <span class="meta-chip">platform <span class="msel plat" id="qa-plat-det"></span></span>
+        <span class="meta-chip">device <b class="editable" id="qa-m-device" contenteditable="true" spellcheck="false"></b></span>
+        <span class="meta-chip">OS <b class="editable" id="qa-m-os" contenteditable="true" spellcheck="false"></b></span>
+        <span class="meta-chip"><b class="editable" id="qa-m-date" contenteditable="true" spellcheck="false"></b></span>
+        <span class="meta-chip">tester <b class="editable" id="qa-m-tester" contenteditable="true" spellcheck="false"></b></span>
+        <span class="meta-chip">recordings <b class="editable" id="qa-m-recordings" contenteditable="true" spellcheck="false"></b></span>
+      </div>
+      <div class="summary-bar">
+        <span class="done-lbl" id="qa-done-lbl">0 / 0 tests complete</span>
+        <div class="bar" id="qa-sum-bar"><i class="p"></i><i class="f"></i><i class="u"></i><i class="b"></i><i class="s"></i></div>
+        <div class="counts" id="qa-sum-counts"></div>
+      </div>
+    </div>
+
+    <div class="files" id="qa-files">
+      <button class="files-head" type="button" aria-expanded="false">
+        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Project documents</span>
+        <span class="cnt" id="qa-files-cnt"></span>
+        <span class="hint">reference while testing</span>
+      </button>
+      <div class="files-body" id="qa-files-body"></div>
+    </div>
+
+    <div class="files" id="qa-bnotes">
+      <button class="files-head" type="button" aria-expanded="false">
+        <svg class="chev" width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="lbl">Build notes</span>
+        <span class="cnt mono" id="qa-bn-lbl">—</span>
+        <span class="hint">item statuses at time of test</span>
+      </button>
+      <div class="files-body bn" id="qa-bnotes-body"></div>
+    </div>
+
+    <div id="qa-groups"></div>
+    <button class="add-btn flow" id="qa-add-flow" type="button">+ Add flow</button>
+  </section>
+</template>
 
 <div class="qa-modal-overlay" id="qa-att-overlay">
   <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
@@ -2524,12 +2510,12 @@ QA &amp; Project Manager, AppMakers LA
 
 <div class="qa-modal-overlay" id="qa-modal-overlay">
   <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
-    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Build notes 0.0.1 (2)">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Build notes">
       <div class="qa-modal-head">
-        <span class="t">Build notes — <span class="mono">0.0.1 (2)</span></span>
+        <span class="t">Build notes — <span class="mono" id="qa-modal-build">—</span></span>
         <button class="x" id="qa-modal-close" type="button" aria-label="Close">✕</button>
       </div>
-      <div class="sub-lbl">Item statuses at time of test · 13 Jul 2026</div>
+      <div class="sub-lbl">Item statuses at time of test · <span id="qa-modal-date"></span></div>
       <div id="qa-modal-body"></div>
     </div>
   </div>
@@ -2574,7 +2560,7 @@ QA &amp; Project Manager, AppMakers LA
     SECTION_TAB[p.id]='projects'; TITLES[p.id]=p.name;
     var sec=document.createElement('section');sec.className='view';sec.id=p.id;
     sec.innerHTML='<div class="sec-head"><span class="eyebrow">Projects \u00b7 '+esc(p.name)+'</span><h1>'+esc(p.name)+'</h1></div>'+
-      '<div class="pj-nav" id="pjnav-'+p.id+'"></div><div class="pj-view" id="pjhome-'+p.id+'"></div><div class="pj-view" id="pjstage-'+p.id+'"></div>';
+      '<div class="pj-nav" id="pjnav-'+p.id+'"></div><div class="pj-view" id="pjhome-'+p.id+'"></div><div class="pj-view pjqa-mount" id="pjqa-'+p.id+'"></div><div class="pj-view" id="pjstage-'+p.id+'"></div>';
     var anchorSec=document.getElementById('box-and-ring');
     anchorSec.parentNode.insertBefore(sec,anchorSec.nextSibling);
     if(typeof views!=='undefined')views.push(sec);
@@ -2753,8 +2739,8 @@ QA &amp; Project Manager, AppMakers LA
       tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();scrim2.remove();renderAll();};
   }
   var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','qa-session-boxandring-0.0.1-2'];
-  function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return JSON.stringify(out);}
-  function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1){localStorage.setItem(k,obj[k]);n++;}}return n;}
+  function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^qa-session-/.test(k))out[k]=localStorage.getItem(k);}return JSON.stringify(out);}
+  function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session-/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
   var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
   function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
@@ -2990,7 +2976,7 @@ QA &amp; Project Manager, AppMakers LA
     if(isHome)renderPJHome(id);
     else if(isRnd)renderStageBar(id,rnd,'R&D');
     else if(isTest)renderStageBar(id,tst,'Acceptance Testing');
-    else if(isDev){/* Test sessions view renders itself; the stepper shows the stage */}
+    else if(isDev){ if(window.__qaMount){ var _lnk=(projState(id).links||[]).map(function(l){return {type:'link',name:l.label,href:l.url};}); window.__qaMount(qa,id,{files:_lnk}); } }
     else renderPJStage(id,sub);
   }
   function renderStageBar(id,container,stageName){
@@ -3329,13 +3315,9 @@ QA &amp; Project Manager, AppMakers LA
 </script>
 <script>
 (function(){
-  const root = document.getElementById("qa-groups");
-  if (!root || root.dataset.init) return;   // double-run guard
-  root.dataset.init = "1";
+  const BOX_PURPOSE = "verify the three Ready-to-Test fixes in this build (sign-up loop, invite link crash, QR scanner) by walking the two user flows they sit on, and smoke the four Done fixes plus adjacent areas.";
 
-  const DEFAULT_PURPOSE = "verify the three Ready-to-Test fixes in this build (sign-up loop, invite link crash, QR scanner) by walking the two user flows they sit on, and smoke the four Done fixes plus adjacent areas.";
-
-  const PLAN = [
+  const BOX_PLAN = [
     {part:"Flow 1 — New user: sign-up to dashboard", rec:"Recording 1",
      desc:"The account-creation journey end to end. Carries this build's sign-up loop fix (ID-20372) plus three known problem branches, each tested at its natural point in the walk.",
      items:[
@@ -3403,7 +3385,7 @@ QA &amp; Project Manager, AppMakers LA
   ];
 
   // Always: Figma, scope doc, estimates. Plus per-session extras when relevant.
-  const FILES = [
+  const BOX_FILES = [
     {type:"figma", name:"Box and Ring — app flows", href:"https://www.figma.com/design/k6RkTAaDSkfTFk6OMpQuIt/Box---Ring"},
     {type:"doc",   name:"Scope / spec (15 sections)", href:"https://docs.google.com/document/d/1g-nGQ4DpIAdM6rB1kmumH-GFGUpTYfnG1PNMv4EkWq4/edit"},
     {type:"sheet", name:"Estimates", href:"https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754"},
@@ -3411,7 +3393,7 @@ QA &amp; Project Manager, AppMakers LA
   ];
 
   // Build notes: item statuses SNAPSHOT at time of test (ClickUp moves on later).
-  const BUILD_NOTES = {
+  const BOX_BUILD_NOTES = {
     build:"0.0.1 (2)", date:"13 Jul 2026",
     features:[],
     bugs:[
@@ -3427,33 +3409,18 @@ QA &amp; Project Manager, AppMakers LA
   };
   const ST_LABEL = {rtt:"Ready to test", rf:"Retest failed", done:"Done"};
 
-  const KEY = "qa-session-boxandring-0.0.1-2";
-  let state = {};
-  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
-  if (typeof state !== "object" || state === null || Array.isArray(state)) state = {};
-  // custom additions made while testing
-  if (typeof state.__c !== "object" || state.__c === null || Array.isArray(state.__c)) state.__c = {};
-  if (!Array.isArray(state.__c.flows)) state.__c.flows = [];
-  if (typeof state.__c.extra !== "object" || state.__c.extra === null || Array.isArray(state.__c.extra)) state.__c.extra = {};
-  // plan-level edits + deletions (tombstones so plan items stay deleted across reloads)
-  if (typeof state.__m !== "object" || state.__m === null || Array.isArray(state.__m)) state.__m = {};
-  if (typeof state.__m.groups !== "object" || state.__m.groups === null) state.__m.groups = {};
-  if (!Array.isArray(state.__m.removedItems)) state.__m.removedItems = [];
-  if (!Array.isArray(state.__m.removedGroups)) state.__m.removedGroups = [];
-  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
-  // multi-tab safety: each tab snapshots state at load; when another tab saves,
-  // refresh this tab as soon as it's in the background so it never shows stale data
-  window.addEventListener("storage", ev => {
-    if (ev.key === KEY && document.hidden) location.reload();
-  });
-  const itemState = n => {
-    let s = state[n];
-    if (typeof s !== "object" || s === null || Array.isArray(s)) s = state[n] = {};
-    return s;
-  };
+  // Per-project config. Box and Ring carries its seeded plan/build/docs and its
+  // original storage key; every other project starts empty with its own key.
+  function cfgForProject(pid, extra){
+    if (pid === "box-and-ring") return {projectId:pid, key:"qa-session-boxandring-0.0.1-2",
+      plan:BOX_PLAN, files:BOX_FILES, buildNotes:BOX_BUILD_NOTES, purpose:BOX_PURPOSE,
+      meta:{build:"0.0.1 (2)", device:"iPhone 15 Pro", os:"iOS 18.5", date:"13 Jul 2026", tester:"Phill", recordings:"2 planned", type:["Sanity"], platform:["iOS"]}};
+    return {projectId:pid, key:"qa-session-"+pid, plan:[], files:(extra&&extra.files)||[],
+      buildNotes:{build:"", date:"", features:[], bugs:[]}, purpose:"",
+      meta:{build:"", device:"", os:"", date:"", tester:"", recordings:"", type:["Sanity"], platform:["iOS"]}};
+  }
 
-  // Attachments live in IndexedDB (localStorage is too small for screenshots).
-  // Browser-local only: they don't sync between devices or into the artifact file.
+  // Shared attachment store (IndexedDB) — opened once for the whole page.
   let adb = null;
   const adbReady = new Promise(res => {
     try {
@@ -3469,45 +3436,104 @@ QA &amp; Project Manager, AppMakers LA
   const attDel = id => adbReady.then(() => adb && new Promise(r => {
     const tx = adb.transaction("att","readwrite"); tx.objectStore("att").delete(id); tx.oncomplete = r; tx.onerror = r;
   }));
-  const attList = n => adbReady.then(() => adb ? new Promise(r => {
+  // attachments are namespaced per storage key so projects never collide
+  const attList = akey => adbReady.then(() => adb ? new Promise(r => {
     const out = [];
     const cur = adb.transaction("att").objectStore("att").openCursor();
-    cur.onsuccess = e => { const c = e.target.result; if (c){ if (c.value.n === n) out.push(c.value); c.continue(); } else r(out); };
+    cur.onsuccess = e => { const c = e.target.result; if (c){ if (c.value.akey === akey) out.push(c.value); c.continue(); } else r(out); };
     cur.onerror = () => r(out);
   }) : []);
 
-  // attachment preview modal
-  const attOverlay = document.getElementById("qa-att-overlay");
+  // The currently-mounted board exposes what the shared modals need.
+  const CB = {};
+  const esc0 = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+
+  // ---- shared modals, wired once ----
+  const attOverlay0 = document.getElementById("qa-att-overlay");
   const attView = rec => {
     const url = URL.createObjectURL(rec.blob);
     document.getElementById("qa-att-name").textContent = rec.name;
     document.getElementById("qa-att-body").innerHTML = rec.type.startsWith("video/")
       ? `<video class="att-view" src="${url}" controls autoplay></video>`
       : `<img class="att-view" src="${url}" alt="">`;
-    attOverlay.classList.add("open");
+    attOverlay0.classList.add("open");
   };
-  document.getElementById("qa-att-close").addEventListener("click", () => {
-    attOverlay.classList.remove("open");
-    document.getElementById("qa-att-body").innerHTML = "";
-  });
-  attOverlay.addEventListener("click", ev => { if (ev.target === attOverlay) { attOverlay.classList.remove("open"); document.getElementById("qa-att-body").innerHTML = ""; } });
+  const attClose = () => { attOverlay0.classList.remove("open"); document.getElementById("qa-att-body").innerHTML = ""; };
+  document.getElementById("qa-att-close").onclick = attClose;
+  attOverlay0.onclick = ev => { if (ev.target === attOverlay0) attClose(); };
 
-  // delete confirmation (used by test + flow deletes)
-  const confirmOverlay = document.getElementById("qa-confirm-overlay");
+  const confirmOverlay0 = document.getElementById("qa-confirm-overlay");
   let confirmCb = null;
   const confirmBox = (msg, onYes) => {
     document.getElementById("qa-confirm-msg").textContent = msg;
-    confirmCb = onYes;
-    confirmOverlay.classList.add("open");
+    confirmCb = onYes; confirmOverlay0.classList.add("open");
     document.getElementById("qa-confirm-no").focus();
   };
-  document.getElementById("qa-confirm-yes").addEventListener("click", () => {
-    confirmOverlay.classList.remove("open");
-    if (confirmCb) confirmCb();
-    confirmCb = null;
+  document.getElementById("qa-confirm-yes").onclick = () => { confirmOverlay0.classList.remove("open"); if (confirmCb) confirmCb(); confirmCb = null; };
+  document.getElementById("qa-confirm-no").onclick = () => { confirmOverlay0.classList.remove("open"); confirmCb = null; };
+  confirmOverlay0.onclick = ev => { if (ev.target === confirmOverlay0){ confirmOverlay0.classList.remove("open"); confirmCb = null; } };
+
+  const bnOverlay0 = document.getElementById("qa-modal-overlay");
+  const closeBn = () => bnOverlay0.classList.remove("open");
+  document.getElementById("qa-modal-close").onclick = closeBn;
+  bnOverlay0.onclick = ev => { if (ev.target === bnOverlay0) closeBn(); };
+
+  const dataOverlay0 = document.getElementById("qa-data-overlay");
+  const dataText0 = document.getElementById("qa-data-text");
+  const dataMsg0 = document.getElementById("qa-data-msg");
+  document.getElementById("qa-data-close").onclick = () => dataOverlay0.classList.remove("open");
+  dataOverlay0.onclick = ev => { if (ev.target === dataOverlay0) dataOverlay0.classList.remove("open"); };
+  document.getElementById("qa-data-copy").onclick = () => {
+    dataText0.value = CB.exportJSON ? CB.exportJSON() : "";
+    dataText0.select();
+    try { navigator.clipboard.writeText(dataText0.value); dataMsg0.textContent = "Copied to clipboard."; }
+    catch(e){ dataMsg0.textContent = "Select all + copy manually."; }
+  };
+  document.getElementById("qa-data-apply").onclick = () => {
+    try {
+      const parsed = JSON.parse(dataText0.value);
+      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new Error("bad");
+      if (CB.applyImport) CB.applyImport(parsed);
+    } catch(e){ dataMsg0.textContent = "That doesn't look like a valid export — paste the full JSON."; }
+  };
+
+  document.addEventListener("keydown", ev => {
+    if (ev.key !== "Escape") return;
+    closeBn(); dataOverlay0.classList.remove("open");
+    confirmOverlay0.classList.remove("open"); confirmCb = null; attClose();
   });
-  document.getElementById("qa-confirm-no").addEventListener("click", () => { confirmOverlay.classList.remove("open"); confirmCb = null; });
-  confirmOverlay.addEventListener("click", ev => { if (ev.target === confirmOverlay){ confirmOverlay.classList.remove("open"); confirmCb = null; } });
+
+  // ---- the board factory: mounts one project's board into a container ----
+  function mountBoard(mountEl, cfg){
+    if (!mountEl) return;
+    if (mountEl.dataset.proj === cfg.projectId && mountEl.firstChild) return; // already up
+    document.querySelectorAll(".pjqa-mount").forEach(m => { if (m !== mountEl){ m.innerHTML = ""; m.dataset.proj = ""; } });
+    mountEl.innerHTML = '<div class="qa-sessions">' + BOARD_HTML + '</div>';
+    mountEl.dataset.proj = cfg.projectId;
+    initBoard(cfg);
+  }
+
+  function initBoard(cfg){
+    const KEY = cfg.key, PLAN = cfg.plan, FILES = cfg.files, BUILD_NOTES = cfg.buildNotes, DEFAULT_PURPOSE = cfg.purpose, CFGMETA = cfg.meta;
+    const root = document.getElementById("qa-groups");
+    let state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e){ state = {}; }
+  if (typeof state !== "object" || state === null || Array.isArray(state)) state = {};
+  // custom additions made while testing
+  if (typeof state.__c !== "object" || state.__c === null || Array.isArray(state.__c)) state.__c = {};
+  if (!Array.isArray(state.__c.flows)) state.__c.flows = [];
+  if (typeof state.__c.extra !== "object" || state.__c.extra === null || Array.isArray(state.__c.extra)) state.__c.extra = {};
+  // plan-level edits + deletions (tombstones so plan items stay deleted across reloads)
+  if (typeof state.__m !== "object" || state.__m === null || Array.isArray(state.__m)) state.__m = {};
+  if (typeof state.__m.groups !== "object" || state.__m.groups === null) state.__m.groups = {};
+  if (!Array.isArray(state.__m.removedItems)) state.__m.removedItems = [];
+  if (!Array.isArray(state.__m.removedGroups)) state.__m.removedGroups = [];
+  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
+  const itemState = n => {
+    let s = state[n];
+    if (typeof s !== "object" || s === null || Array.isArray(s)) s = state[n] = {};
+    return s;
+  };
 
   // Escapes for element content AND double-quoted attribute values.
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
@@ -3778,7 +3804,7 @@ QA &amp; Project Manager, AppMakers LA
     fileInput.type = "file"; fileInput.accept = "image/*,video/*"; fileInput.multiple = true; fileInput.hidden = true;
     attLine.appendChild(fileInput);
 
-    const renderAtts = () => attList(it.n).then(recs => {
+    const renderAtts = () => attList(KEY + "::" + it.n).then(recs => {
       attCount = recs.length; renderChips();
       attBody.innerHTML = "";
       recs.forEach(rec => {
@@ -3808,8 +3834,8 @@ QA &amp; Project Manager, AppMakers LA
     const storeFiles = files => {
       const media = [...files].filter(f => /^(image|video)\//.test(f.type));
       Promise.all(media.map(f => attPut({
-        id: it.n + "-" + Date.now() + "-" + Math.random().toString(36).slice(2),
-        n: it.n, name: f.name || "pasted", type: f.type, blob: f
+        id: cfg.projectId + "-" + it.n + "-" + Date.now() + "-" + Math.random().toString(36).slice(2),
+        akey: KEY + "::" + it.n, name: f.name || "pasted", type: f.type, blob: f
       }))).then(renderAtts);
     };
     fileInput.addEventListener("change", () => { storeFiles(fileInput.files); fileInput.value = ""; });
@@ -4284,48 +4310,26 @@ QA &amp; Project Manager, AppMakers LA
     bnotesEl.querySelector(".files-head").setAttribute("aria-expanded", bnotesEl.classList.contains("open"));
   });
 
-  const overlay = document.getElementById("qa-modal-overlay");
+  // build notes: this board's build-link opens the shared modal, filled from
+  // this board's snapshot (empty projects simply have nothing filed yet).
   document.getElementById("qa-modal-body").innerHTML = bnHTML();
-  const closeModal = () => overlay.classList.remove("open");
+  document.getElementById("qa-modal-build").textContent = (BUILD_NOTES.build || CFGMETA.build || "no build set");
+  document.getElementById("qa-modal-date").textContent = (BUILD_NOTES.date || "");
   document.getElementById("qa-build-link").addEventListener("click", ev => {
     ev.stopPropagation();               // don't also open the session row
-    overlay.classList.add("open");
+    bnOverlay0.classList.add("open");
     document.getElementById("qa-modal-close").focus();
   });
-  document.getElementById("qa-modal-close").addEventListener("click", closeModal);
-  overlay.addEventListener("click", ev => { if (ev.target === overlay) closeModal(); });
-  document.addEventListener("keydown", ev => {
-    if (ev.key !== "Escape") return;
-    closeModal();
-    confirmOverlay.classList.remove("open"); confirmCb = null;
-    attOverlay.classList.remove("open");
-  });
 
-  // session data export / import (move ticks + edits between browsers)
-  const dataOverlay = document.getElementById("qa-data-overlay");
-  const dataText = document.getElementById("qa-data-text");
-  const dataMsg = document.getElementById("qa-data-msg");
+  // data export / import via the shared modal, pointed at THIS board
+  CB.exportKey = KEY;
+  CB.exportJSON = () => JSON.stringify(state);
+  CB.applyImport = parsed => { try{ localStorage.setItem(KEY, JSON.stringify(parsed)); }catch(e){} dataOverlay0.classList.remove("open"); initBoard(cfg); };
   document.getElementById("qa-data-btn").addEventListener("click", ev => {
     ev.stopPropagation();
-    dataText.value = JSON.stringify(state);
-    dataMsg.textContent = "";
-    dataOverlay.classList.add("open");
-  });
-  document.getElementById("qa-data-close").addEventListener("click", () => dataOverlay.classList.remove("open"));
-  dataOverlay.addEventListener("click", ev => { if (ev.target === dataOverlay) dataOverlay.classList.remove("open"); });
-  document.getElementById("qa-data-copy").addEventListener("click", () => {
-    dataText.value = JSON.stringify(state);
-    dataText.select();
-    try { navigator.clipboard.writeText(dataText.value); dataMsg.textContent = "Copied to clipboard."; }
-    catch(e){ dataMsg.textContent = "Select all + copy manually."; }
-  });
-  document.getElementById("qa-data-apply").addEventListener("click", () => {
-    try {
-      const parsed = JSON.parse(dataText.value);
-      if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new Error("not an object");
-      localStorage.setItem(KEY, JSON.stringify(parsed));
-      location.reload();
-    } catch(e){ dataMsg.textContent = "That doesn't look like a valid export — paste the full JSON."; }
+    dataText0.value = JSON.stringify(state);
+    dataMsg0.textContent = "";
+    dataOverlay0.classList.add("open");
   });
 
   const show = id => {
@@ -4337,6 +4341,60 @@ QA &amp; Project Manager, AppMakers LA
   openRow.addEventListener("click", ()=>show("qa-view-detail"));
   openRow.addEventListener("keydown", e=>{ if(e.target===openRow && (e.key==="Enter"||e.key===" ")){e.preventDefault();show("qa-view-detail");} });
   document.getElementById("qa-back").addEventListener("click", ()=>show("qa-view-list"));
+
+  // fill the parameterized session meta from cfg defaults + saved edits, and
+  // make the free-text fields editable (build, device, OS, date, tester, recordings)
+  function applyMeta(){
+    if (typeof state.__meta !== "object" || state.__meta === null) state.__meta = {};
+    const mval = k => (state.__meta[k] !== undefined && state.__meta[k] !== "") ? state.__meta[k] : (CFGMETA[k] || "");
+    const setEd = (id, k, ph) => {
+      const el = document.getElementById(id); if (!el) return;
+      const v = mval(k);
+      el.textContent = v || "";
+      el.classList.toggle("ph", !v);
+      if (!v) el.textContent = ph;
+      el.onfocus = () => { if (!mval(k)) el.textContent = ""; el.classList.remove("ph"); };
+      el.onblur = () => {
+        const t = el.textContent.trim();
+        state.__meta[k] = t; save();
+        el.textContent = t || ph; el.classList.toggle("ph", !t);
+        renderSessionRow();
+        document.getElementById("qa-modal-build").textContent = (BUILD_NOTES.build || mval("build") || "no build set");
+      };
+      el.onkeydown = e => { if (e.key === "Enter"){ e.preventDefault(); el.blur(); } };
+    };
+    setEd("qa-m-build", "build", "set build");
+    setEd("qa-m-device", "device", "device");
+    setEd("qa-m-os", "os", "OS");
+    setEd("qa-m-date", "date", "date");
+    setEd("qa-m-tester", "tester", "tester");
+    setEd("qa-m-recordings", "recordings", "recordings");
+    document.getElementById("qa-bn-lbl").textContent = mval("build") || "—";
+    renderSessionRow();
+  }
+  function renderSessionRow(){
+    const t = tally();
+    const mval = k => (state.__meta && state.__meta[k]) || CFGMETA[k] || "";
+    document.getElementById("qa-sess-date").textContent = mval("date") || "—";
+    document.getElementById("qa-build-link").textContent = mval("build") || "set build";
+  }
+
+  applyMeta();
+  }  // end initBoard
+
+  // === board markup template (injected per project by mountBoard) ===
+  let BOARD_HTML = "";
+
+  // page-scope cross-frame bridge (read-only export on request)
+  window.addEventListener("message", ev => {
+    if (ev.data && ev.data.type === "qa-session-request" && ev.source && CB.exportKey){
+      ev.source.postMessage({type:"qa-session-export", key: CB.exportKey, data: localStorage.getItem(CB.exportKey)}, "*");
+    }
+  });
+
+  // expose for the hub; mockup harness boots a chosen project below
+  BOARD_HTML = document.getElementById("qa-board-tpl").innerHTML;
+  window.__qaMount = (mountEl, pid, extra) => mountBoard(mountEl, cfgForProject(pid, extra));
 })();
 </script>
 </body>
