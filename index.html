@@ -3642,9 +3642,18 @@ QA &amp; Project Manager, AppMakers LA
             const jobs = manifest.map(entry => {
               const sid = String(entry.sid);
               if (sid === "0") return Promise.resolve();      // baseline handled by seedBaseline
-              if (!idx.some(s => String(s.sid) === sid)){
+              const existing = idx.find(s => String(s.sid) === sid);
+              if (!existing){
                 idx.push({sid, date: entry.date || "", build: entry.build || "", label: entry.label || sid});
                 changed = true;
+              } else {
+                // Reconcile display metadata (label/build/date) from the manifest —
+                // lets relabels/re-dates propagate. Touches only the index entry,
+                // never the session's result state, so ticks are never affected.
+                const nl = entry.label || sid, nb = entry.build || "", nd = entry.date || "";
+                if (existing.label !== nl || existing.build !== nb || existing.date !== nd){
+                  existing.label = nl; existing.build = nb; existing.date = nd; changed = true;
+                }
               }
               const local = peekState(sessKey(pid, sid));
               if (local){
@@ -3733,7 +3742,7 @@ QA &amp; Project Manager, AppMakers LA
            <td><span class="bugchip zero" title="The Baseline never counts bugs">—</span></td>`
         : `<td><span class="sess-name">${esc0(r.label || r.sid)}</span></td>
            <td class="tnum">${esc0(meta.date || r.date || "—")}</td>
-           <td class="tnum mono">${esc0(meta.build || r.build || "—")}</td>
+           <td class="tnum mono">${esc0(r.build || meta.build || "—")}</td>
            <td>${esc0(type)}</td><td>${esc0(plat)}</td>
            <td><div class="bar"><i class="p" style="width:${pct(t.pass)}"></i><i class="f" style="width:${pct(t.fail)}"></i><i class="u" style="width:${pct(t.unsure)}"></i><i class="b" style="width:${pct(t.block)}"></i><i class="s" style="width:${pct(t.skip)}"></i></div>
             <div class="bar-lbl">${t.done} / ${t.total} done</div></td>
