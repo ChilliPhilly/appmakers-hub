@@ -3490,7 +3490,16 @@ QA &amp; Project Manager, AppMakers LA
   // edit the same session concurrently, the later save wins the blob).
   const SYNC_KEY = "qa-sync-cfg";
   const SYNC_URL_DEFAULT = "https://qa-hub-sync.phillipcocks-7e3.workers.dev";
-  const syncCfg = () => { try{ return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }catch(e){ return {}; } };
+  // Pilot default token — baked in so EVERY browser syncs with zero setup. This is
+  // deliberately a low-value gate, NOT a secret: it ships in this public page, so
+  // anyone reading source can find it. Harden later by rotating it and entering a
+  // private token per browser (the Sync panel overrides these defaults), or by
+  // putting the hub behind Cloudflare Access. A browser's saved config always wins.
+  const SYNC_TOKEN_DEFAULT = "ea5eb0ebbe7f4baf7eadf78108bcaea3";
+  const syncCfg = () => {
+    let c = {}; try{ c = JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }catch(e){ c = {}; }
+    return { url: c.url || SYNC_URL_DEFAULT, token: c.token || SYNC_TOKEN_DEFAULT };
+  };
   const syncOn = () => { const c = syncCfg(); return !!(c.url && c.token); };
   const syncBase = () => (syncCfg().url || "").replace(/\/+$/,"");
   function syncPush(pid, sid, state){
@@ -3521,6 +3530,31 @@ QA &amp; Project Manager, AppMakers LA
         }catch(e){}
       }
     }catch(e){ return false; }
+    return changed;
+  }
+  // Two-way reconcile on open: pull server-newer sessions into this browser, then
+  // push up any local session the server lacks or that is locally newer — this
+  // uploads pre-existing local results the first time sync is on.
+  async function syncReconcile(pid){
+    if(!syncOn() || !pid) return false;
+    const changed = await syncPull(pid);
+    try{
+      const c = syncCfg();
+      const r = await fetch(syncBase()+"/index/"+encodeURIComponent(pid), {headers:{"X-QA-Token":c.token}});
+      const sids = r.ok ? await r.json() : [];
+      const serverSet = new Set((Array.isArray(sids)?sids:[]).map(String));
+      for(const s of loadIdx(pid)){
+        const sid = String(s.sid); if(sid==="0") continue;
+        const local = peekState(sessKey(pid, sid)); if(!local) continue;
+        let ss = 0;
+        if(serverSet.has(sid)){
+          try{ const sr = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {headers:{"X-QA-Token":c.token}});
+            if(sr.ok){ const j = await sr.json(); ss = (j && +j.__savedAt) || 0; } }catch(e){}
+        }
+        const ls = (+local.__savedAt) || 0;
+        if(!serverSet.has(sid) || ls >= ss) syncPush(pid, sid, local);
+      }
+    }catch(e){}
     return changed;
   }
   // Settings panel: enter/verify the Worker URL + token (per browser).
@@ -3724,9 +3758,12 @@ QA &amp; Project Manager, AppMakers LA
     wireSync();
     if (openSid !== undefined) openSession(openSid);
     seedBaseline(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
-    seedSessions(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
-    // Pull the latest results from the backend (if sync is configured for this browser).
-    syncPull(pid).then(changed => { if (changed && CURRENT.pid === pid) renderSessionRows(); });
+    seedSessions(pid).then(seeded => {
+      if (seeded && CURRENT.pid === pid) renderSessionRows();
+      // Reconcile with the backend AFTER repo sessions are in the index, so a
+      // first-ever load still uploads pre-existing local results and pulls server ones.
+      syncReconcile(pid).then(changed => { if (changed && CURRENT.pid === pid) renderSessionRows(); });
+    });
   }
 
   // Auto-seed Session 0 from the repo (baselines/<pid>.json) when this browser's
