@@ -204,10 +204,10 @@
   "platform": [
    "iOS"
   ],
-  "purpose": "Box and Ring \u2014 build 0.0.0 (8): verify Onboarding Flow 1 (avatar/identity, relationship context, Shadow Boxing) and regress the five fix areas (OTP sign-up loop, QR scanner, invite links, share-button visibility, Couple Stats naming). iPhone 15 Pro / iOS 18.5. Narrate the item number before each test."
+  "purpose": "Box and Ring \u2014 build 0.0.1 (9): verify Onboarding Flow 1 (avatar/identity, relationship context, Shadow Boxing) and regress the five fix areas (OTP sign-up loop, QR scanner, invite links, share-button visibility, Couple Stats naming). iPhone 15 Pro / iOS 18.5. Narrate the item number before each test."
  },
  "__meta": {
-  "build": "0.0.0 (8)",
+  "build": "0.0.1 (9)",
   "date": "14 Jul 2026",
   "device": "iPhone 15 Pro",
   "os": "iOS 18.5",
@@ -415,5 +415,5 @@
    "expected": "A sensible empty state; nothing on any shared view frames one partner as beating the other."
   }
  },
- "__seedV": 1
+ "__seedV": 2
 }
