@@ -2421,7 +2421,10 @@ QA &amp; Project Manager, AppMakers LA
     <div class="card">
       <div class="card-head">
         <h2>Test sessions</h2>
-        <button class="btn-new" id="qa-new-session" type="button" title="Create a build session — clone flows from the Baseline">+ New test session</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn-new" id="qa-sync-btn" type="button" style="background:#eef;color:#334;" title="Set up result backup / sync">⇅ Sync</button>
+          <button class="btn-new" id="qa-new-session" type="button" title="Create a build session — clone flows from the Baseline">+ New test session</button>
+        </div>
       </div>
       <div class="table-scroll">
       <table>
@@ -3478,6 +3481,111 @@ QA &amp; Project Manager, AppMakers LA
     try { const v = JSON.parse(localStorage.getItem(key)); return (typeof v === "object" && v && !Array.isArray(v)) ? v : null; }
     catch(e){ return null; }
   };
+
+  // ---- Result sync (Cloudflare Worker backend; optional, per-browser config) ----
+  // Config lives in THIS browser's localStorage (Worker URL + write token), never
+  // in the repo or page source. When set, every result save pushes to the Worker
+  // and each project open pulls the latest. Last-write-wins by __savedAt at
+  // whole-session granularity (fine for one tester per session; if two devices
+  // edit the same session concurrently, the later save wins the blob).
+  const SYNC_KEY = "qa-sync-cfg";
+  const SYNC_URL_DEFAULT = "https://qa-hub-sync.phillipcocks-7e3.workers.dev";
+  const syncCfg = () => { try{ return JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }catch(e){ return {}; } };
+  const syncOn = () => { const c = syncCfg(); return !!(c.url && c.token); };
+  const syncBase = () => (syncCfg().url || "").replace(/\/+$/,"");
+  function syncPush(pid, sid, state){
+    const c = syncCfg(); if(!(c.url && c.token) || !pid || sid==null || sid==="0") return;
+    try{
+      fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {
+        method:"PUT", headers:{"Content-Type":"application/json","X-QA-Token":c.token},
+        body: JSON.stringify(state)
+      }).catch(()=>{});
+    }catch(e){}
+  }
+  async function syncPull(pid){
+    const c = syncCfg(); if(!(c.url && c.token) || !pid) return false;
+    let changed = false;
+    try{
+      const idxRes = await fetch(syncBase()+"/index/"+encodeURIComponent(pid), {headers:{"X-QA-Token":c.token}});
+      if(!idxRes.ok) return false;
+      const sids = await idxRes.json();
+      for(const sid of (Array.isArray(sids)?sids:[])){
+        try{
+          const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {headers:{"X-QA-Token":c.token}});
+          if(!r.ok) continue;
+          const server = await r.json();
+          if(!server || typeof server!=="object" || Array.isArray(server)) continue;
+          const key = sessKey(pid, sid), local = peekState(key);
+          const ls = (local && +local.__savedAt) || 0, ss = (+server.__savedAt) || 0;
+          if(!local || ss > ls){ try{ localStorage.setItem(key, JSON.stringify(server)); changed = true; }catch(e){} }
+        }catch(e){}
+      }
+    }catch(e){ return false; }
+    return changed;
+  }
+  // Settings panel: enter/verify the Worker URL + token (per browser).
+  function wireSync(){
+    const btn = document.getElementById("qa-sync-btn");
+    if (!btn) return;
+    btn.textContent = syncOn() ? "⇅ Sync ✓" : "⇅ Sync";
+    btn.title = syncOn() ? "Result backup is on — click to manage" : "Set up result backup / sync";
+    btn.onclick = openSyncSettings;
+  }
+  function openSyncSettings(){
+    const cur = syncCfg();
+    const wrap = document.createElement("div");
+    wrap.style.cssText = "position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px;";
+    wrap.innerHTML = `<div style="background:var(--card,#fff);color:var(--ink,#111);max-width:520px;width:100%;border-radius:14px;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);font:inherit;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <strong style="font-size:16px;">Result backup &amp; sync</strong>
+          <button data-x type="button" aria-label="Close" style="border:0;background:none;font-size:20px;cursor:pointer;color:inherit;">✕</button>
+        </div>
+        <p style="font-size:13px;line-height:1.5;opacity:.8;margin:0 0 14px;">Saves your test results to a backend so they survive a browser wipe and sync across devices. The token is kept only in this browser, never in the site's code.</p>
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Worker URL</label>
+        <input data-url type="text" value="${(cur.url||SYNC_URL_DEFAULT).replace(/"/g,'&quot;')}" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ccc;border-radius:8px;margin-bottom:12px;font:inherit;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Write token</label>
+        <input data-token type="password" value="${(cur.token||'').replace(/"/g,'&quot;')}" placeholder="paste the token" style="width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid #ccc;border-radius:8px;margin-bottom:12px;font:inherit;">
+        <div data-status style="font-size:13px;min-height:20px;margin-bottom:12px;"></div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;">
+          <button data-test type="button" class="btn-new" style="background:#eef;color:#334;">Test connection</button>
+          <button data-save type="button" class="btn-new">Save</button>
+        </div>
+      </div>`;
+    document.body.appendChild(wrap);
+    const $ = s => wrap.querySelector(s);
+    const close = () => wrap.remove();
+    wrap.addEventListener("click", e => { if (e.target === wrap) close(); });
+    $("[data-x]").onclick = close;
+    const status = (msg, ok) => { const s = $("[data-status]"); s.textContent = msg; s.style.color = ok===true?"#0a7d3b":ok===false?"#b3261e":"inherit"; };
+    $("[data-test]").onclick = async () => {
+      const url = $("[data-url]").value.trim().replace(/\/+$/,""), token = $("[data-token]").value.trim();
+      status("Testing…");
+      try{
+        const h = await fetch(url+"/health"); if(!h.ok) throw new Error("health "+h.status);
+        const r = await fetch(url+"/index/"+encodeURIComponent(CURRENT.pid||"box-and-ring"), {headers:{"X-QA-Token":token}});
+        if(r.status===401){ status("Reachable, but the token is wrong (401).", false); return; }
+        if(!r.ok) throw new Error("index "+r.status);
+        status("Connected. Token accepted.", true);
+      }catch(e){ status("Could not reach the Worker: "+e.message, false); }
+    };
+    $("[data-save]").onclick = async () => {
+      const url = $("[data-url]").value.trim().replace(/\/+$/,""), token = $("[data-token]").value.trim();
+      if(!url || !token){ status("Enter both the URL and token.", false); return; }
+      try{ localStorage.setItem(SYNC_KEY, JSON.stringify({url, token})); }catch(e){}
+      wireSync();
+      status("Saved. Pulling your results…", true);
+      const pid = CURRENT.pid;
+      // push any local sessions up first (so nothing local is lost), then pull.
+      try{
+        loadIdx(pid).forEach(s => { const st = peekState(sessKey(pid, s.sid)); if(st) syncPush(pid, s.sid, st); });
+      }catch(e){}
+      await syncPull(pid);
+      renderSessionRows();
+      status("Done — results backed up and synced.", true);
+      setTimeout(close, 900);
+    };
+  }
+
   // one-time, idempotent: fold pre-existing single-session keys into the index
   function migrateIdx(pid){
     const idx = loadIdx(pid);
@@ -3613,9 +3721,12 @@ QA &amp; Project Manager, AppMakers LA
     migrateIdx(pid);
     renderSessionRows();
     wireNewSession();
+    wireSync();
     if (openSid !== undefined) openSession(openSid);
     seedBaseline(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
     seedSessions(pid).then(seeded => { if (seeded && CURRENT.pid === pid) renderSessionRows(); });
+    // Pull the latest results from the backend (if sync is configured for this browser).
+    syncPull(pid).then(changed => { if (changed && CURRENT.pid === pid) renderSessionRows(); });
   }
 
   // Auto-seed Session 0 from the repo (baselines/<pid>.json) when this browser's
@@ -3839,9 +3950,11 @@ QA &amp; Project Manager, AppMakers LA
   function openSession(sid){
     // fresh template so per-session DOM/listeners never leak between sessions
     const {pid, extra, mountEl} = CURRENT;
+    CURRENT.sid = sid;   // so save() knows which session to sync
     mountEl.innerHTML = '<div class="qa-sessions">' + BOARD_HTML + '</div>';
     renderSessionRows();
     wireNewSession();
+    wireSync();
     initBoard(cfgForSession(pid, sid, extra));
     document.getElementById("qa-view-list").classList.remove("active");
     document.getElementById("qa-view-detail").classList.add("active");
@@ -3931,7 +4044,7 @@ QA &amp; Project Manager, AppMakers LA
   if (typeof state.__m.groups !== "object" || state.__m.groups === null) state.__m.groups = {};
   if (!Array.isArray(state.__m.removedItems)) state.__m.removedItems = [];
   if (!Array.isArray(state.__m.removedGroups)) state.__m.removedGroups = [];
-  const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} };
+  const save = () => { state.__savedAt = Date.now(); try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} syncPush(CURRENT.pid, CURRENT.sid, state); };
   const itemState = n => {
     let s = state[n];
     if (typeof s !== "object" || s === null || Array.isArray(s)) s = state[n] = {};

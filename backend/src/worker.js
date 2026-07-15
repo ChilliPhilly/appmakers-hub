@@ -14,7 +14,7 @@
 
 const cors = (origin) => ({
   "Access-Control-Allow-Origin": origin || "*",
-  "Access-Control-Allow-Methods": "GET,PUT,OPTIONS",
+  "Access-Control-Allow-Methods": "GET,PUT,DELETE,OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type,X-QA-Token",
   "Access-Control-Max-Age": "86400",
   "Vary": "Origin",
@@ -59,6 +59,13 @@ export default {
           const cur = await env.QA_STATE.get(ik);
           if (cur) { try { idx = JSON.parse(cur); } catch (e) {} }
           if (!idx.includes(parts[2])) { idx.push(parts[2]); await env.QA_STATE.put(ik, JSON.stringify(idx)); }
+          return json({ ok: true });
+        }
+        if (req.method === "DELETE") {
+          await env.QA_STATE.delete(key);
+          const ik = "idx:" + parts[1];
+          const cur = await env.QA_STATE.get(ik);
+          if (cur) { try { const idx = JSON.parse(cur).filter(s => s !== parts[2]); await env.QA_STATE.put(ik, JSON.stringify(idx)); } catch (e) {} }
           return json({ ok: true });
         }
       }
