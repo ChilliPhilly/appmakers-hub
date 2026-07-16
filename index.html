@@ -3180,7 +3180,7 @@ QA &amp; Project Manager, AppMakers LA
         row.appendChild(pf2);
       }
       if(cr.note){var nn=document.createElement('span');nn.className='hmuted';nn.style.fontSize='.78rem';nn.textContent=cr.note;row.appendChild(nn);}
-      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);savePS();renderProject(id);}));
+      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();syncPushProject(id);renderProject(id);}));
       cl.appendChild(row);
     });
     if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below (it stays in this browser).';cl.appendChild(ce);}
@@ -3191,7 +3191,7 @@ QA &amp; Project Manager, AppMakers LA
     var ci3=document.createElement('input');ci3.className='tr-input';ci3.type='password';ci3.placeholder='Password (optional)';ci3.autocomplete='new-password';
     var cbt=document.createElement('button');cbt.className='tr-addbtn';cbt.type='submit';cbt.textContent='+';
     cf.appendChild(ci1);cf.appendChild(ci2);cf.appendChild(ci3);cf.appendChild(cbt);
-    cf.onsubmit=function(e){e.preventDefault();var lab=ci1.value.trim(),u=ci2.value.trim(),p=ci3.value;if(!lab||(!u&&!p))return;if(!ps.creds)ps.creds=[];ps.creds.push({label:lab,user:u,pass:p});savePS();renderProject(id);};
+    cf.onsubmit=function(e){e.preventDefault();var lab=ci1.value.trim(),u=ci2.value.trim(),p=ci3.value;if(!lab||(!u&&!p))return;if(!ps.creds)ps.creds=[];ps.creds.push({label:lab,user:u,pass:p});ps.credsAt=Date.now();savePS();syncPushProject(id);renderProject(id);};
     cb.appendChild(cf);host.appendChild(cb);
 
     /* --- Key dates --- */
@@ -3561,6 +3561,7 @@ QA &amp; Project Manager, AppMakers LA
       if(!idxRes.ok) return false;
       const sids = await idxRes.json();
       for(const sid of (Array.isArray(sids)?sids:[])){
+        if(String(sid).startsWith("__")) continue;   // reserved project-meta blobs (e.g. __project) are not sessions
         try{
           const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {headers:{"X-QA-Token":c.token}});
           if(!r.ok) continue;
@@ -3577,9 +3578,36 @@ QA &amp; Project Manager, AppMakers LA
   // Two-way reconcile on open: pull server-newer sessions into this browser, then
   // push up any local session the server lacks or that is locally newer — this
   // uploads pre-existing local results the first time sync is on.
+  // Project-meta sync (currently: Test credentials). Stored under a reserved sid
+  // "__project" so it rides the same generic KV — anyone with the hub token can
+  // read it, so LOW-RISK sandbox creds only. Last-write-wins on the whole list.
+  function syncPushProject(pid){
+    const c = syncCfg(); if(!(c.url && c.token) || !pid) return;
+    const ps = projState(pid);
+    const blob = {creds: ps.creds || [], __savedAt: ps.credsAt || Date.now()};
+    try{
+      fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {
+        method:"PUT", headers:{"Content-Type":"application/json","X-QA-Token":c.token},
+        body: JSON.stringify(blob)
+      }).catch(()=>{});
+    }catch(e){}
+  }
+  async function syncPullProject(pid){
+    const c = syncCfg(); if(!(c.url && c.token) || !pid) return false;
+    try{
+      const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {headers:{"X-QA-Token":c.token}});
+      if(!r.ok) return false;
+      const server = await r.json();
+      if(!server || typeof server!=="object" || Array.isArray(server) || !Array.isArray(server.creds)) return false;
+      const ps = projState(pid), ss = (+server.__savedAt)||0, ls = (+ps.credsAt)||0;
+      if(ss > ls){ ps.creds = server.creds; ps.credsAt = ss; savePS(); return true; }
+    }catch(e){}
+    return false;
+  }
   async function syncReconcile(pid){
     if(!syncOn() || !pid) return false;
     const changed = await syncPull(pid);
+    syncPullProject(pid);   // also pull project-meta (creds) on reconcile
     try{
       const c = syncCfg();
       const r = await fetch(syncBase()+"/index/"+encodeURIComponent(pid), {headers:{"X-QA-Token":c.token}});
