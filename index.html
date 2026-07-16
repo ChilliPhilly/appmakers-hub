@@ -3025,7 +3025,14 @@ QA &amp; Project Manager, AppMakers LA
     if(tst)tst.style.display=isTest?'':'none';
     if(qa)qa.style.display=isDev?'':'none';
     if(stg)stg.style.display=(!isHome&&!isRnd&&!isTest&&!isDev)?'':'none';
-    if(isHome)renderPJHome(id);
+    if(isHome){renderPJHome(id);
+      // pull project-meta (Test credentials) from the sync, throttled to once/30s per project
+      window.__credPull=window.__credPull||{};var _np=Date.now();
+      if(typeof syncPullProject==="function" && (!window.__credPull[id] || _np-window.__credPull[id]>30000)){
+        window.__credPull[id]=_np;
+        syncPullProject(id).then(function(ch){ if(ch && location.hash.slice(1)===id) renderPJHome(id); });
+      }
+    }
     else if(isRnd)renderStageBar(id,rnd,'R&D');
     else if(isTest)renderStageBar(id,tst,'Acceptance Testing');
     else if(isDev){ if(window.__qaMount){ var _lnk=(projState(id).links||[]).map(function(l){return {type:'link',name:l.label,href:l.url};}); window.__qaMount(qa,id,{files:_lnk}); } }
@@ -3157,9 +3164,9 @@ QA &amp; Project Manager, AppMakers LA
     lf.onsubmit=function(e){e.preventDefault();var lab=li1.value.trim(),url=li2.value.trim();if(!lab||!url)return;if(!ps.links)ps.links=[];ps.links.push({label:lab,url:url});savePS();renderProject(id);};
     lb.appendChild(lf);host.appendChild(lb);
 
-    /* --- Test credentials (LOCAL ONLY — never committed/published) --- */
+    /* --- Test credentials (synced via Worker; low-risk creds only) --- */
     var cb=block('Test credentials');
-    cb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Sandbox / test logins for this project. Stored <b>only in this browser</b> — never pushed or published. Low-risk test creds only, not production secrets.</p>');
+    cb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Sandbox / test logins for this project. <b>Synced across your devices</b> via the shared backend, so anyone with the hub link can read them. <b>Low-risk sandbox/test creds only</b> — never production or personal logins.</p>');
     var cl=document.createElement('div');
     (ps.creds||[]).forEach(function(cr,idx){
       var row=document.createElement('div');row.className='credrow';
@@ -3183,7 +3190,7 @@ QA &amp; Project Manager, AppMakers LA
       row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();syncPushProject(id);renderProject(id);}));
       cl.appendChild(row);
     });
-    if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below (it stays in this browser).';cl.appendChild(ce);}
+    if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below — it syncs to your devices.';cl.appendChild(ce);}
     cb.appendChild(cl);
     var cf=document.createElement('form');cf.className='linkadd';
     var ci1=document.createElement('input');ci1.className='tr-input';ci1.placeholder='Label (e.g. Wave Sandbox Apple ID)';
