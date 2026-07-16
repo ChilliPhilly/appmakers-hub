@@ -278,6 +278,11 @@
     border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer;}
   .tr-links{display:flex;flex-wrap:wrap;gap:6px;}
   .tr-links:empty{display:none;}
+  .credrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 0;border-bottom:1px solid var(--line-soft);}
+  .cred-label{font-weight:600;min-width:150px;}
+  .cred-field{display:inline-flex;align-items:center;gap:6px;}
+  .cred-field .k{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
+  .cred-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;color:var(--ink);}
   .tr-links a{font-size:.72rem;text-decoration:none;padding:4px 10px;border-radius:99px;
     border:1px solid #F5D3DF;color:var(--accent-ink);background:var(--accent-wash);}
   .tr-links a:hover{border-color:var(--accent);}
@@ -2789,7 +2794,7 @@ QA &amp; Project Manager, AppMakers LA
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
   var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
-  function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];return pstate[id];}
+  function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];if(!pstate[id].creds)pstate[id].creds=[];return pstate[id];}
   function savePS(){store(PKEY,pstate);}
   var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
   if(!resData.pm)resData.pm={docs:[],examples:[{label:'Kickoff call examples',url:'https://docs.google.com/document/d/1XsLIrVnYsZGOjGE78WTNCjQGK7HT6vFgW7F5Ykb1kiY/edit'}]};
@@ -3151,6 +3156,43 @@ QA &amp; Project Manager, AppMakers LA
     lf.appendChild(li1);lf.appendChild(li2);lf.appendChild(lbt);
     lf.onsubmit=function(e){e.preventDefault();var lab=li1.value.trim(),url=li2.value.trim();if(!lab||!url)return;if(!ps.links)ps.links=[];ps.links.push({label:lab,url:url});savePS();renderProject(id);};
     lb.appendChild(lf);host.appendChild(lb);
+
+    /* --- Test credentials (LOCAL ONLY — never committed/published) --- */
+    var cb=block('Test credentials');
+    cb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Sandbox / test logins for this project. Stored <b>only in this browser</b> — never pushed or published. Low-risk test creds only, not production secrets.</p>');
+    var cl=document.createElement('div');
+    (ps.creds||[]).forEach(function(cr,idx){
+      var row=document.createElement('div');row.className='credrow';
+      var lab=document.createElement('span');lab.className='cred-label';lab.textContent=cr.label||'';row.appendChild(lab);
+      if(cr.user){
+        var uf=document.createElement('span');uf.className='cred-field';
+        uf.insertAdjacentHTML('beforeend','<span class="k">user</span>');
+        var uv=document.createElement('span');uv.className='cred-val';uv.textContent=cr.user;uf.appendChild(uv);
+        uf.appendChild(btn('Copy','Copy username',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.user);}));
+        row.appendChild(uf);
+      }
+      if(cr.pass){
+        var pf2=document.createElement('span');pf2.className='cred-field';
+        pf2.insertAdjacentHTML('beforeend','<span class="k">pass</span>');
+        var pv=document.createElement('span');pv.className='cred-val';var shown=false;pv.textContent='••••••••';pf2.appendChild(pv);
+        pf2.appendChild(btn('Show','Show / hide password',function(){shown=!shown;pv.textContent=shown?cr.pass:'••••••••';}));
+        pf2.appendChild(btn('Copy','Copy password',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.pass);}));
+        row.appendChild(pf2);
+      }
+      if(cr.note){var nn=document.createElement('span');nn.className='hmuted';nn.style.fontSize='.78rem';nn.textContent=cr.note;row.appendChild(nn);}
+      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);savePS();renderProject(id);}));
+      cl.appendChild(row);
+    });
+    if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below (it stays in this browser).';cl.appendChild(ce);}
+    cb.appendChild(cl);
+    var cf=document.createElement('form');cf.className='linkadd';
+    var ci1=document.createElement('input');ci1.className='tr-input';ci1.placeholder='Label (e.g. Wave Sandbox Apple ID)';
+    var ci2=document.createElement('input');ci2.className='tr-input';ci2.placeholder='Username / email';ci2.autocomplete='off';
+    var ci3=document.createElement('input');ci3.className='tr-input';ci3.type='password';ci3.placeholder='Password (optional)';ci3.autocomplete='new-password';
+    var cbt=document.createElement('button');cbt.className='tr-addbtn';cbt.type='submit';cbt.textContent='+';
+    cf.appendChild(ci1);cf.appendChild(ci2);cf.appendChild(ci3);cf.appendChild(cbt);
+    cf.onsubmit=function(e){e.preventDefault();var lab=ci1.value.trim(),u=ci2.value.trim(),p=ci3.value;if(!lab||(!u&&!p))return;if(!ps.creds)ps.creds=[];ps.creds.push({label:lab,user:u,pass:p});savePS();renderProject(id);};
+    cb.appendChild(cf);host.appendChild(cb);
 
     /* --- Key dates --- */
     var db=block('Key dates &amp; deadlines');var dl=document.createElement('div');
