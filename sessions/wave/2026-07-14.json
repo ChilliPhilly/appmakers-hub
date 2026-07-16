@@ -8,38 +8,68 @@
      {
       "n": 1,
       "title": "Subscriptions: subscription screen without dashboard flash",
-      "baseN": 55,
-      "id": "W-SUB-I08"
+      "id": "W-SUB-I08",
+      "baseN": 55
      },
      {
       "n": 2,
       "title": "Subscriptions: Paywall layout referee",
-      "baseN": 65,
-      "id": "W-SUB-I09"
+      "id": "W-SUB-I09",
+      "baseN": 65
      },
      {
       "n": 3,
       "title": "Subscriptions: Price consistency \u2014 paywall vs Apple Pay sheet",
-      "baseN": 66,
-      "id": "W-SUB-I10"
+      "id": "W-SUB-I10",
+      "baseN": 66
      },
      {
       "n": 4,
-      "title": "Subscriptions: free trial start",
-      "baseN": 48,
-      "id": "W-SUB-I01"
+      "title": "Subscriptions: legal & support pages reachable without a subscription",
+      "id": "W-SUB-I11",
+      "baseN": 67
      },
      {
       "n": 5,
-      "title": "Subscriptions: Gating \u2014 full access during trial/active",
-      "baseN": 64,
-      "id": "W-SUB-G01"
+      "title": "Subscriptions: free trial start",
+      "id": "W-SUB-I01",
+      "baseN": 48
      },
      {
       "n": 6,
+      "title": "Subscriptions: cancel/dismiss the Apple payment sheet mid-purchase",
+      "id": "W-SUB-I13",
+      "baseN": 69
+     },
+     {
+      "n": 7,
+      "title": "Subscriptions: payment failure surfaces an error, no crash",
+      "id": "W-SUB-I12",
+      "baseN": 68
+     },
+     {
+      "n": 8,
+      "title": "Subscriptions: purchase under lost/poor connectivity",
+      "id": "W-SUB-I16",
+      "baseN": 72
+     },
+     {
+      "n": 9,
+      "title": "Subscriptions: returning user is not offered a second free trial",
+      "id": "W-SUB-I14",
+      "baseN": 70
+     },
+     {
+      "n": 10,
+      "title": "Subscriptions: Gating \u2014 full access during trial/active",
+      "id": "W-SUB-G01",
+      "baseN": 64
+     },
+     {
+      "n": 11,
       "title": "Subscriptions: restore purchases",
-      "baseN": 53,
-      "id": "W-SUB-I06"
+      "id": "W-SUB-I06",
+      "baseN": 53
      }
     ]
    },
@@ -48,94 +78,94 @@
     "desc": "Done when a seafarer can add certificates (upload + scan), organise them into the five categories, and view / search / export / print / delete them \u2014 and view every stored document FULLY OFFLINE after force-quit + cold start (stop-ship). ~15 min continuous.",
     "items": [
      {
-      "n": 7,
-      "title": "Certificates: Empty state \u2014 No Certificates Yet",
-      "baseN": 32,
-      "id": "W-CERT-010"
-     },
-     {
-      "n": 8,
-      "title": "Certificates: Upload a certificate via file upload",
-      "baseN": 23,
-      "id": "W-CERT-001"
-     },
-     {
-      "n": 9,
-      "title": "Certificates: Save disabled until a file is attached",
-      "baseN": 33,
-      "id": "W-CERT-011"
-     },
-     {
-      "n": 10,
-      "title": "Certificates: Scan a certificate with the camera",
-      "baseN": 24,
-      "id": "W-CERT-002"
-     },
-     {
-      "n": 11,
-      "title": "Certificates: Category folders present & colour-coded",
-      "baseN": 34,
-      "id": "W-CERT-012"
-     },
-     {
       "n": 12,
-      "title": "Certificates: Multiple certificates in one category",
-      "baseN": 25,
-      "id": "W-CERT-003"
+      "title": "Certificates: Empty state \u2014 No Certificates Yet",
+      "id": "W-CERT-010",
+      "baseN": 32
      },
      {
       "n": 13,
-      "title": "Certificates: Wallet-style presentation",
-      "baseN": 31,
-      "id": "W-CERT-009"
+      "title": "Certificates: Upload a certificate via file upload",
+      "id": "W-CERT-001",
+      "baseN": 23
      },
      {
       "n": 14,
-      "title": "Certificates: Certificate detail screen",
-      "baseN": 35,
-      "id": "W-CERT-013"
+      "title": "Certificates: Save disabled until a file is attached",
+      "id": "W-CERT-011",
+      "baseN": 33
      },
      {
       "n": 15,
-      "title": "Certificates: Document viewer",
-      "baseN": 26,
-      "id": "W-CERT-004"
+      "title": "Certificates: Scan a certificate with the camera",
+      "id": "W-CERT-002",
+      "baseN": 24
      },
      {
       "n": 16,
-      "title": "Certificates: QR verification opens in-app browser",
-      "baseN": 36,
-      "id": "W-CERT-014"
+      "title": "Certificates: Category folders present & colour-coded",
+      "id": "W-CERT-012",
+      "baseN": 34
      },
      {
       "n": 17,
-      "title": "Certificates: Search certificates",
-      "baseN": 37,
-      "id": "W-CERT-015"
+      "title": "Certificates: Multiple certificates in one category",
+      "id": "W-CERT-003",
+      "baseN": 25
      },
      {
       "n": 18,
-      "title": "Certificates: Export a certificate",
-      "baseN": 29,
-      "id": "W-CERT-007"
+      "title": "Certificates: Wallet-style presentation",
+      "id": "W-CERT-009",
+      "baseN": 31
      },
      {
       "n": 19,
-      "title": "Certificates: Print a certificate",
-      "baseN": 30,
-      "id": "W-CERT-008"
+      "title": "Certificates: Certificate detail screen",
+      "id": "W-CERT-013",
+      "baseN": 35
      },
      {
       "n": 20,
-      "title": "Certificates: Delete a certificate",
-      "baseN": 28,
-      "id": "W-CERT-006"
+      "title": "Certificates: Document viewer",
+      "id": "W-CERT-004",
+      "baseN": 26
      },
      {
       "n": 21,
+      "title": "Certificates: QR verification opens in-app browser",
+      "id": "W-CERT-014",
+      "baseN": 36
+     },
+     {
+      "n": 22,
+      "title": "Certificates: Search certificates",
+      "id": "W-CERT-015",
+      "baseN": 37
+     },
+     {
+      "n": 23,
+      "title": "Certificates: Export a certificate",
+      "id": "W-CERT-007",
+      "baseN": 29
+     },
+     {
+      "n": 24,
+      "title": "Certificates: Print a certificate",
+      "id": "W-CERT-008",
+      "baseN": 30
+     },
+     {
+      "n": 25,
+      "title": "Certificates: Delete a certificate",
+      "id": "W-CERT-006",
+      "baseN": 28
+     },
+     {
+      "n": 26,
       "title": "Core: View every uploaded document fully offline",
-      "baseN": 1,
-      "id": "W-INV-001"
+      "id": "W-INV-001",
+      "baseN": 1
      }
     ]
    },
@@ -144,39 +174,44 @@
     "desc": "Done when subscription state transitions are correct \u2014 trial auto-converts to paid, cancellations keep access until period end then drop to the paywall, plan switches apply at next renewal, and natural expiry ends at the paywall. Sandbox timers: ~60\u201390 min with waits; record separately, pausing between items is fine.",
     "items": [
      {
-      "n": 22,
+      "n": 27,
       "title": "Subscriptions: trial auto-converts to paid",
-      "baseN": 49,
-      "id": "W-SUB-I02"
+      "id": "W-SUB-I02",
+      "baseN": 49
      },
      {
-      "n": 23,
+      "n": 28,
       "title": "Subscriptions: cancel during trial",
-      "baseN": 50,
-      "id": "W-SUB-I03"
+      "id": "W-SUB-I03",
+      "baseN": 50
      },
      {
-      "n": 24,
+      "n": 29,
       "title": "Subscriptions: cancel active subscription",
-      "baseN": 51,
-      "id": "W-SUB-I04"
+      "id": "W-SUB-I04",
+      "baseN": 51
      },
      {
-      "n": 25,
+      "n": 30,
       "title": "Subscriptions: switch plans monthly \u2194 yearly",
-      "baseN": 54,
-      "id": "W-SUB-I07"
+      "id": "W-SUB-I07",
+      "baseN": 54
      },
      {
-      "n": 26,
+      "n": 31,
       "title": "Subscriptions: subscription expires naturally",
-      "baseN": 52,
-      "id": "W-SUB-I05"
+      "id": "W-SUB-I05",
+      "baseN": 52
+     },
+     {
+      "n": 32,
+      "title": "Subscriptions: re-subscribe from the paywall after expiry/cancellation",
+      "id": "W-SUB-I15",
+      "baseN": 71
      }
     ]
    }
-  ],
-  "extra": {}
+  ]
  },
  "__m": {
   "groups": {},
@@ -219,147 +254,183 @@
  },
  "4": {
   "f": {
+   "steps": "1. Precondition: fresh sandbox account, signed out of any Wave subscription; app on the paywall / subscription screen (not subscribed)\n2. From the paywall, open Terms of Use\n3. Go back, open Privacy Policy\n4. Go back, open Contact Us / support\n5. Return to the paywall",
+   "expected": "Terms, Privacy Policy and Contact Us all open and render fully WITHOUT an active subscription; navigation back to the paywall works each time; no crash and no forced purchase to view them."
+  }
+ },
+ "5": {
+  "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
    "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard"
   }
  },
- "5": {
+ "6": {
+  "f": {
+   "steps": "1. Precondition: fresh sandbox account on the paywall, not subscribed\n2. Tap Start 30 days trial / Subscribe to bring up the Apple payment sheet\n3. Dismiss the sheet (tap Cancel / swipe down) before confirming",
+   "expected": "App returns to the paywall with NO subscription started and NO access granted; no crash, no stuck spinner; the CTA is tappable again for a fresh attempt."
+  }
+ },
+ "7": {
+  "f": {
+   "steps": "1. Precondition: sandbox account configured to fail/decline the purchase (or trigger a failed transaction in the sandbox)\n2. On the paywall tap Start 30 days trial / Subscribe\n3. Proceed through the Apple payment sheet so the transaction fails\n4. Observe the app after the failure",
+   "expected": "App shows a clear error overlay/message (e.g. purchase could not be completed) and does NOT crash; user is NOT granted access; user is returned to the paywall and can retry. No entitlement is written for a failed purchase."
+  }
+ },
+ "8": {
+  "f": {
+   "steps": "1. Precondition: fresh sandbox account on the paywall\n2. Tap Start 30 days trial / Subscribe\n3. Drop connectivity (airplane mode) at the moment of confirming the Apple sheet, then restore connectivity a few seconds later\n4. Observe how the app resolves the pending/deferred purchase",
+   "expected": "App handles the interruption gracefully \u2014 either completes once connectivity returns or shows a retry/error, never a crash or infinite spinner; access is granted exactly once (no duplicate entitlement, no double-charge) and state is consistent after reconnect."
+  }
+ },
+ "9": {
+  "f": {
+   "steps": "1. Precondition: a sandbox Apple ID that has ALREADY consumed the 30-day trial once (trial used / expired)\n2. Sign up / reach the paywall again on that Apple ID\n3. Inspect the CTA and the Apple payment sheet",
+   "expected": "No second free trial is offered on an Apple ID that already used one \u2014 the paywall/CTA and Apple sheet show the paid price (no Free Trial label), matching Apple's one-trial-per-Apple-ID rule. Purchasing charges the paid plan with no trial."
+  }
+ },
+ "10": {
   "f": {
    "steps": "1. With a trialing account, then an active one, use certificates + service records",
    "expected": "All gated features fully usable in both states."
   }
  },
- "6": {
+ "11": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
    "expected": "Previous subscription is restored, user gets access"
   }
  },
- "7": {
+ "12": {
   "f": {
    "steps": "1. Fresh account (no certs)\n2. Open the Certificates tab",
    "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile."
   }
  },
- "8": {
+ "13": {
   "f": {
    "steps": "1. Open Certificates\n2. Use the upload form to add a certificate file\n3. Assign it to a category/folder",
    "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer."
   }
  },
- "9": {
+ "14": {
   "f": {
    "steps": "1. Add Certificate \u2192 fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
    "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled.)",
    "notes2": "Figma showed Save staying disabled with all text fields filled \u2014 confirm whether a file attachment is required."
   }
  },
- "10": {
+ "15": {
   "f": {
    "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
    "expected": "Scan captures legibly and saves as a document in the chosen folder.",
    "notes2": "Scanner is a later-phase feature \u2014 if it's not in this build, mark Skipped/Blocked, not Fail."
   }
  },
- "11": {
+ "16": {
   "f": {
    "steps": "1. On populated My Certificates, review the category folders",
    "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list."
   }
  },
- "12": {
+ "17": {
   "f": {
    "steps": "1. Add 3+ certificates to the same category",
    "expected": "All entries listed and individually openable; count correct."
   }
  },
- "13": {
+ "18": {
   "f": {
    "steps": "1. Browse the certificate wallet home",
    "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred).",
    "notes2": "Card border colour + 'Active' badge encode validity \u2014 exact mapping unconfirmed; record what you see."
   }
  },
- "14": {
+ "19": {
   "f": {
    "steps": "1. Open a certificate card",
    "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code."
   }
  },
- "15": {
+ "20": {
   "f": {
    "steps": "1. Open an uploaded multi-page certificate",
    "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly."
   }
  },
- "16": {
+ "21": {
   "f": {
    "steps": "1. On the detail screen, use the QR code / verification link",
    "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)",
    "notes2": "Result depends on the backend \u2014 if the server can't be reached, mark Unverifiable."
   }
  },
- "17": {
+ "22": {
   "f": {
    "steps": "1. Use Search Certificates with a full term, then a partial term",
    "expected": "Matching certificates surface; non-matches excluded; clear empty-result state."
   }
  },
- "18": {
+ "23": {
   "f": {
    "steps": "1. Open a certificate\n2. Use export/share",
    "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)"
   }
  },
- "19": {
+ "24": {
   "f": {
    "steps": "1. Open a certificate\n2. Print via the OS print flow",
    "expected": "Print preview correct; full document prints."
   }
  },
- "20": {
+ "25": {
   "f": {
    "steps": "1. Delete a certificate\n2. Check the folder and total counts",
    "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it."
   }
  },
- "21": {
+ "26": {
   "f": {
    "steps": "1. Precondition: several documents uploaded across different folders\n2. Enable airplane mode (zero connectivity)\n3. Force-quit the app, then cold-start it\n4. Open each folder and view every uploaded document",
    "expected": "Every document opens and renders completely with zero connectivity, including after force-quit + cold start. STOP-SHIP if broken.",
    "notes2": "STOP-SHIP if any document fails to open fully offline (incl. after force-quit + cold start)."
   }
  },
- "22": {
+ "27": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
    "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)",
    "notes2": "Backend trialing\u2192active flip isn't visible on the phone \u2014 narrate the app's behaviour; mark Unverifiable."
   }
  },
- "23": {
+ "28": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
    "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall"
   }
  },
- "24": {
+ "29": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
    "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall"
   }
  },
- "25": {
+ "30": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
    "expected": "Plan changes at next renewal."
   }
  },
- "26": {
+ "31": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
    "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall"
   }
  },
- "__seedV": 4
+ "32": {
+  "f": {
+   "steps": "1. Precondition: account that has lost access (post TC-4 cancel or TC-5 natural expiry), sitting on the paywall\n2. Tap Subscribe and confirm a new subscription in the Apple sheet\n3. Complete the purchase",
+   "expected": "New subscription is created, access is restored, and the app returns to the dashboard with full access; backend status returns to active for the new period. No duplicate/overlapping entitlement."
+  }
+ },
+ "__seedV": 5
 }

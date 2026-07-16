@@ -358,6 +358,36 @@
       "n": 66,
       "title": "Price consistency \u2014 paywall vs Apple Pay sheet",
       "id": "W-SUB-I10"
+     },
+     {
+      "n": 67,
+      "title": "iOS \u2014 legal & support pages reachable without a subscription",
+      "id": "W-SUB-I11"
+     },
+     {
+      "n": 68,
+      "title": "iOS \u2014 payment failure surfaces an error, no crash",
+      "id": "W-SUB-I12"
+     },
+     {
+      "n": 69,
+      "title": "iOS \u2014 cancel/dismiss the Apple payment sheet mid-purchase",
+      "id": "W-SUB-I13"
+     },
+     {
+      "n": 70,
+      "title": "iOS \u2014 returning user is not offered a second free trial",
+      "id": "W-SUB-I14"
+     },
+     {
+      "n": 71,
+      "title": "iOS \u2014 re-subscribe from the paywall after expiry/cancellation",
+      "id": "W-SUB-I15"
+     },
+     {
+      "n": 72,
+      "title": "iOS \u2014 purchase under lost/poor connectivity",
+      "id": "W-SUB-I16"
      }
     ]
    },
@@ -365,52 +395,52 @@
     "title": "Offline-First Sync (two devices)",
     "items": [
      {
-      "n": 67,
+      "n": 73,
       "title": "Offline create \u2192 sync",
       "id": "W-SYNC-001"
      },
      {
-      "n": 68,
+      "n": 74,
       "title": "Offline edit \u2192 sync",
       "id": "W-SYNC-002"
      },
      {
-      "n": 69,
+      "n": 75,
       "title": "Offline delete \u2192 sync",
       "id": "W-SYNC-003"
      },
      {
-      "n": 70,
+      "n": 76,
       "title": "Offline certificate CRUD \u2192 sync",
       "id": "W-SYNC-004"
      },
      {
-      "n": 71,
+      "n": 77,
       "title": "Offline profile update \u2192 sync",
       "id": "W-SYNC-005"
      },
      {
-      "n": 72,
+      "n": 78,
       "title": "Both offline \u2014 different records, no conflict",
       "id": "W-SYNC-006"
      },
      {
-      "n": 73,
+      "n": 79,
       "title": "Both offline \u2014 same record (conflict)",
       "id": "W-SYNC-007"
      },
      {
-      "n": 74,
+      "n": 80,
       "title": "Extended offline \u2014 batch sync",
       "id": "W-SYNC-008"
      },
      {
-      "n": 75,
+      "n": 81,
       "title": "Connectivity flicker",
       "id": "W-SYNC-009"
      },
      {
-      "n": 76,
+      "n": 82,
       "title": "App kill while offline",
       "id": "W-SYNC-010"
      }
@@ -420,37 +450,37 @@
     "title": "Phase 2 \u2014 Advanced",
     "items": [
      {
-      "n": 77,
+      "n": 83,
       "title": "Document search",
       "id": "W-ADV-001"
      },
      {
-      "n": 78,
+      "n": 84,
       "title": "Auto data extraction from scan",
       "id": "W-ADV-002"
      },
      {
-      "n": 79,
+      "n": 85,
       "title": "Career dashboard \u2014 chronological records + filters",
       "id": "W-ADV-003"
      },
      {
-      "n": 80,
+      "n": 86,
       "title": "Set rank goal + progress bar",
       "id": "W-ADV-004"
      },
      {
-      "n": 81,
+      "n": 87,
       "title": "Export career/service reports",
       "id": "W-ADV-005"
      },
      {
-      "n": 82,
+      "n": 88,
       "title": "Push notification received",
       "id": "W-ADV-006"
      },
      {
-      "n": 83,
+      "n": 89,
       "title": "Push permission denied",
       "id": "W-ADV-007"
      }
@@ -460,17 +490,17 @@
     "title": "Phase 3 \u2014 Admin Panel (web)",
     "items": [
      {
-      "n": 84,
+      "n": 90,
       "title": "Admin authentication",
       "id": "W-ADMIN-001"
      },
      {
-      "n": 85,
+      "n": 91,
       "title": "Users table",
       "id": "W-ADMIN-002"
      },
      {
-      "n": 86,
+      "n": 92,
       "title": "User profile viewer",
       "id": "W-ADMIN-003"
      }
@@ -883,119 +913,155 @@
  },
  "67": {
   "f": {
+   "steps": "1. Precondition: fresh sandbox account, signed out of any Wave subscription; app on the paywall / subscription screen (not subscribed)\n2. From the paywall, open Terms of Use\n3. Go back, open Privacy Policy\n4. Go back, open Contact Us / support\n5. Return to the paywall",
+   "expected": "Terms, Privacy Policy and Contact Us all open and render fully WITHOUT an active subscription; navigation back to the paywall works each time; no crash and no forced purchase to view them."
+  }
+ },
+ "68": {
+  "f": {
+   "steps": "1. Precondition: sandbox account configured to fail/decline the purchase (or trigger a failed transaction in the sandbox)\n2. On the paywall tap Start 30 days trial / Subscribe\n3. Proceed through the Apple payment sheet so the transaction fails\n4. Observe the app after the failure",
+   "expected": "App shows a clear error overlay/message (e.g. purchase could not be completed) and does NOT crash; user is NOT granted access; user is returned to the paywall and can retry. No entitlement is written for a failed purchase."
+  }
+ },
+ "69": {
+  "f": {
+   "steps": "1. Precondition: fresh sandbox account on the paywall, not subscribed\n2. Tap Start 30 days trial / Subscribe to bring up the Apple payment sheet\n3. Dismiss the sheet (tap Cancel / swipe down) before confirming",
+   "expected": "App returns to the paywall with NO subscription started and NO access granted; no crash, no stuck spinner; the CTA is tappable again for a fresh attempt."
+  }
+ },
+ "70": {
+  "f": {
+   "steps": "1. Precondition: a sandbox Apple ID that has ALREADY consumed the 30-day trial once (trial used / expired)\n2. Sign up / reach the paywall again on that Apple ID\n3. Inspect the CTA and the Apple payment sheet",
+   "expected": "No second free trial is offered on an Apple ID that already used one \u2014 the paywall/CTA and Apple sheet show the paid price (no Free Trial label), matching Apple's one-trial-per-Apple-ID rule. Purchasing charges the paid plan with no trial."
+  }
+ },
+ "71": {
+  "f": {
+   "steps": "1. Precondition: account that has lost access (post TC-4 cancel or TC-5 natural expiry), sitting on the paywall\n2. Tap Subscribe and confirm a new subscription in the Apple sheet\n3. Complete the purchase",
+   "expected": "New subscription is created, access is restored, and the app returns to the dashboard with full access; backend status returns to active for the new period. No duplicate/overlapping entitlement."
+  }
+ },
+ "72": {
+  "f": {
+   "steps": "1. Precondition: fresh sandbox account on the paywall\n2. Tap Start 30 days trial / Subscribe\n3. Drop connectivity (airplane mode) at the moment of confirming the Apple sheet, then restore connectivity a few seconds later\n4. Observe how the app resolves the pending/deferred purchase",
+   "expected": "App handles the interruption gracefully \u2014 either completes once connectivity returns or shows a retry/error, never a crash or infinite spinner; access is granted exactly once (no duplicate entitlement, no double-charge) and state is consistent after reconnect."
+  }
+ },
+ "73": {
+  "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A: airplane mode\n3. Device A: add a new Sea Service Record\n4. Verify it appears locally on A\n5. Device A back online",
    "expected": "Record appears on Device B within a few seconds."
   }
  },
- "68": {
+ "74": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Edit an existing Service Record (e.g. vessel name)\n4. Device A back online",
    "expected": "Updated record syncs to Device B."
   }
  },
- "69": {
+ "75": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Delete a Service Record on A\n4. Verify it disappears locally on A\n5. Device A back online",
    "expected": "Record disappears from Device B."
   }
  },
- "70": {
+ "76": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Repeat scenarios 1\u20133 with Certificates (add, edit, delete) on Device A offline\n3. Bring A back online after each",
    "expected": "Each certificate change syncs to Device B correctly."
   }
  },
- "71": {
+ "77": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Update profile (rank, vessel type, career goal)\n4. Device A back online",
    "expected": "Device B shows the updated profile."
   }
  },
- "72": {
+ "78": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: edit Record X (vessel name)\n4. B: edit Record Y (different record)\n5. Bring both online",
    "expected": "Both changes appear on both devices."
   }
  },
- "73": {
+ "79": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: Record X vessel name \u2192 'Ship Alpha'\n4. B: Record X vessel name \u2192 'Ship Beta'\n5. Bring both online",
    "expected": "Both devices converge to the same value (last-write-wins)."
   }
  },
- "74": {
+ "80": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Make multiple changes: add 2 records, edit 1, delete 1\n4. Wait 5+ minutes\n5. Device A back online",
    "expected": "All changes batch-sync to Device B."
   }
  },
- "75": {
+ "81": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Start adding a record on Device A\n3. Toggle airplane mode on/off rapidly mid-operation",
    "expected": "No duplicate records, no data loss; Device B receives exactly one record."
   }
  },
- "76": {
+ "82": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Add a Service Record\n4. Force-kill the app, reopen (still offline)\n5. Verify the record persists locally\n6. Go online",
    "expected": "Record persisted offline and syncs to Device B."
   }
  },
- "77": {
+ "83": {
   "f": {
    "steps": "1. Upload certificates with distinct names\n2. Search by name/partial text",
    "expected": "Matching documents found; non-matches excluded."
   }
  },
- "78": {
+ "84": {
   "f": {
    "steps": "1. Scan a certificate carrying an issue date, expiry date and certificate number",
    "expected": "Issue date, expiration date and certificate number are extracted correctly into the entry's fields."
   }
  },
- "79": {
+ "85": {
   "f": {
    "steps": "1. Open the career dashboard with several records\n2. Apply filters",
    "expected": "Chronological listing correct; filters narrow correctly."
   }
  },
- "80": {
+ "86": {
   "f": {
    "steps": "1. Set a rank goal\n2. Check the goal progress bar",
    "expected": "Goal saved; progress bar reflects progress logic."
   }
  },
- "81": {
+ "87": {
   "f": {
    "steps": "1. Export a report from the dashboard",
    "expected": "Report exports with correct data. (Format unspecified.)"
   }
  },
- "82": {
+ "88": {
   "f": {
    "steps": "1. Enable notifications when prompted\n2. Trigger a notification event (per dev guidance)",
    "expected": "Notification arrives and deep-links sensibly."
   }
  },
- "83": {
+ "89": {
   "f": {
    "steps": "1. Deny the notification permission\n2. Use the app normally",
    "expected": "No crash, no nagging loop; notification-dependent features degrade gracefully."
   }
  },
- "84": {
+ "90": {
   "f": {
    "steps": "1. Open the web admin\n2. Log in with admin credentials\n3. Try a non-admin account",
    "expected": "Admin signs in; non-admin is rejected."
   }
  },
- "85": {
+ "91": {
   "f": {
    "steps": "1. In admin, open the users table",
    "expected": "Registered users listed with sensible columns."
   }
  },
- "86": {
+ "92": {
   "f": {
    "steps": "1. Open a user from the table",
    "expected": "Profile viewer shows that user's details."

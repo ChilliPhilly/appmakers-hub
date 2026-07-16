@@ -4,9 +4,9 @@
   "date": "14 Jul 2026",
   "build": "",
   "label": "Certificates + iOS Subs",
-  "v": 4,
+  "v": 5,
   "type": [
-   "Exploratory"
+   "exploratory,system"
   ],
   "platform": [
    "iOS"
