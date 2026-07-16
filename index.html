@@ -18,7 +18,7 @@
     2) Add ONE panel: copy a <section class="view" id="your-id"> block at the
        bottom of <main>. The id MUST match the tile href.
     3) That's it. Routing, back button and breadcrumb pick it up automatically.
-  Last content update: 9 Jul 2026 (added "QA insights from Carlos" module to the QA course).
+  Last content update: 16 Jul 2026 (added "Maintenance plans" module to the PM course, with the AML Maintenance Plans PDF embedded).
 -->
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
@@ -1970,6 +1970,11 @@ QA &amp; Project Manager, AppMakers LA
         <h3>Reading &amp; writing specs</h3><p>How specs are built, and a template for your own.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
+      <a class="tile" href="#pm-maintenance">
+        <span class="ico"><svg><use href="#i-cal"/></svg></span>
+        <h3>Maintenance plans</h3><p>Selling and running the post-launch retainer, from Aaron.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
       <a class="tile" href="#pm-resources">
         <span class="ico"><svg><use href="#i-folder"/></svg></span>
         <h3>PM resources</h3><p>Key docs, tools and templates for the PM role.</p>
@@ -2100,6 +2105,78 @@ QA &amp; Project Manager, AppMakers LA
 <span class="lbl">Non-functional:</span> performance, security, privacy, accessibility
 <span class="lbl">Out of scope:</span> what this is NOT / deferred
 <span class="lbl">Open questions:</span> unknown → owner</div>
+    </div>
+  </section>
+
+  <!-- ============ PM MAINTENANCE PLANS ============ -->
+  <section class="view" id="pm-maintenance">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · Maintenance plans</span>
+      <h1>Maintenance plans</h1>
+      <p class="desc">How to explain, sell and run the post-launch maintenance retainer. Straight from Aaron, with the source doc at the bottom.</p>
+    </div>
+
+    <div class="block">
+      <h3>What maintenance is</h3>
+      <p class="prose">Maintenance is a <b>subscription, not R&amp;D credits</b>. Clients pay for <b>responsiveness and continuity</b>, not a pool of hours they can later reclaim. There is no credit roll-back if they "didn't use it much."</p>
+    </div>
+
+    <div class="block">
+      <h3>How to position it to clients</h3>
+      <ul class="plain">
+        <li>It's an <b>industry-standard retainer</b> for an existing production app.</li>
+        <li>It keeps the <b>original team familiar with the codebase</b> involved, so there's no onboarding delay.</li>
+        <li>The key benefit is <b>speed and priority</b>: the team is expected to respond within an agreed timeframe, often 1 to 2 business days depending on the arrangement.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>What it covers</h3>
+      <ul class="plain">
+        <li>Bug fixes</li>
+        <li>Minor tweaks / feature adjustments</li>
+        <li>Content updates</li>
+        <li>Keeping the app smooth and supported over time</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>If the client doesn't want maintenance</h3>
+      <p class="prose">That's okay. Explain that they can work a la carte / ad hoc, but:</p>
+      <ul class="plain">
+        <li>They'll go into a <b>queue</b>.</li>
+        <li>Fathom / AppMakers <b>can't guarantee who</b> will handle it.</li>
+        <li>And <b>can't guarantee when</b> it will be addressed.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>When it makes sense financially</h3>
+      <p class="prose">Aaron's rough rule of thumb: the retainer works when it's about <b>10 to 30% of the client's monthly recurring revenue</b>. His example: if a client makes $10k/month, a $2.5k/month retainer can make sense.</p>
+    </div>
+
+    <div class="block">
+      <h3>What it's for operationally</h3>
+      <dl class="kv">
+        <div><dt>Covered by maintenance</dt><dd>Small ongoing changes, without needing a whole new R&amp;D cycle.</dd></div>
+        <div><dt>New R&amp;D instead</dt><dd>If the client wants something new and substantial, that likely becomes new R&amp;D.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Who should sell it</h3>
+      <p class="prose" style="margin-bottom:12px">Aaron said it usually feels more natural coming from the <b>PM who already owns the relationship</b>. He's happy to join calls if needed, but it's usually better if the PM explains it. The pitch, in three lines:</p>
+      <div class="tmpl">"We've delivered V2 / the current work."
+"Maintenance is how we continue supporting you."
+"It keeps the team available and responsive."</div>
+    </div>
+
+    <div class="note warn"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Overages and extra work.</span> If the logged work goes well beyond the retainer, flag it to <b>Aaron or Dan</b>. They decide case by case whether to invoice overages, absorb some cost, or move the client to a higher tier.</div></div>
+
+    <div class="block">
+      <h3>The source doc</h3>
+      <p class="prose" style="margin-bottom:12px">The full AML Maintenance Plans doc, viewable here. <a href="docs/aml-maintenance-plans.pdf" target="_blank" rel="noopener">Open in a new tab →</a></p>
+      <iframe src="docs/aml-maintenance-plans.pdf" title="AML Maintenance Plans PDF" style="width:100%;height:70vh;min-height:480px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;"></iframe>
     </div>
   </section>
 
@@ -2645,9 +2722,9 @@ QA &amp; Project Manager, AppMakers LA
     time:'onboarding',billing:'onboarding',dashboards:'onboarding','makers-app':'onboarding',
     people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
     qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-sandbox':'qa','qa-insights':'qa','qa-resources':'qa',
-    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-resources':'pm',
+    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
     projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
@@ -2672,7 +2749,7 @@ QA &amp; Project Manager, AppMakers LA
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function nid(){return 't'+Math.random().toString(36).slice(2,9);}
-  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-resources']};
+  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-maintenance','pm-resources']};
   var MKEY='appmakers-modules-v1'; var mstate=load(MKEY)||{}; function saveM(){store(MKEY,mstate);}
   function trackOf(id){for(var k in MODULES)if(MODULES[k].indexOf(id)>-1)return k;return null;}
   function trackName(t){return t==='qa'?'QA':'PM';}
