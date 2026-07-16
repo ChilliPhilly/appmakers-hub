@@ -278,11 +278,17 @@
     border-radius:8px;background:var(--paper);color:var(--ink);cursor:pointer;}
   .tr-links{display:flex;flex-wrap:wrap;gap:6px;}
   .tr-links:empty{display:none;}
-  .credrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:8px 0;border-bottom:1px solid var(--line-soft);}
-  .cred-label{font-weight:600;min-width:150px;}
-  .cred-field{display:inline-flex;align-items:center;gap:6px;}
-  .cred-field .k{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;}
-  .cred-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;color:var(--ink);}
+  .credrow{padding:10px 0;border-bottom:1px solid var(--line-soft);}
+  .cred-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;}
+  .cred-label{font-weight:600;}
+  .cred-rm{border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;line-height:1;padding:0 4px;}
+  .cred-rm:hover{color:var(--accent);}
+  .cred-fields{display:flex;flex-wrap:wrap;gap:8px 12px;}
+  .cred-field{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:5px 9px;}
+  .cred-field .k{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+  .cred-val{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem;color:var(--ink);word-break:break-all;}
+  .credbtn{font-size:.7rem;padding:2px 8px;border:1px solid var(--line);border-radius:6px;background:var(--card,#fff);color:var(--ink);cursor:pointer;white-space:nowrap;}
+  .credbtn:hover{border-color:var(--accent);color:var(--accent);}
   .tr-links a{font-size:.72rem;text-decoration:none;padding:4px 10px;border-radius:99px;
     border:1px solid #F5D3DF;color:var(--accent-ink);background:var(--accent-wash);}
   .tr-links a:hover{border-color:var(--accent);}
@@ -3169,26 +3175,30 @@ QA &amp; Project Manager, AppMakers LA
     var cb=block('Test credentials');
     cb.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">Sandbox / test logins for this project. <b>Synced across your devices</b> via the shared backend, so anyone with the hub link can read them. <b>Low-risk sandbox/test creds only</b> — never production or personal logins.</p>');
     var cl=document.createElement('div');
+    function credbtn(txt,title,fn){var b=document.createElement('button');b.type='button';b.className='credbtn';b.textContent=txt;b.title=title;b.onclick=fn;return b;}
     (ps.creds||[]).forEach(function(cr,idx){
       var row=document.createElement('div');row.className='credrow';
-      var lab=document.createElement('span');lab.className='cred-label';lab.textContent=cr.label||'';row.appendChild(lab);
+      var head=document.createElement('div');head.className='cred-head';
+      var lab=document.createElement('span');lab.className='cred-label';lab.textContent=cr.label||'';head.appendChild(lab);
+      var rm=document.createElement('button');rm.type='button';rm.className='cred-rm';rm.textContent='×';rm.title='Remove credential';
+      rm.onclick=function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();if(window.syncPushProject)window.syncPushProject(id);renderProject(id);};
+      head.appendChild(rm);row.appendChild(head);
+      var fields=document.createElement('div');fields.className='cred-fields';
       if(cr.user){
-        var uf=document.createElement('span');uf.className='cred-field';
-        uf.insertAdjacentHTML('beforeend','<span class="k">user</span>');
+        var uf=document.createElement('div');uf.className='cred-field';uf.innerHTML='<span class="k">user</span>';
         var uv=document.createElement('span');uv.className='cred-val';uv.textContent=cr.user;uf.appendChild(uv);
-        uf.appendChild(btn('Copy','Copy username',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.user);}));
-        row.appendChild(uf);
+        uf.appendChild(credbtn('Copy','Copy username',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.user);}));
+        fields.appendChild(uf);
       }
       if(cr.pass){
-        var pf2=document.createElement('span');pf2.className='cred-field';
-        pf2.insertAdjacentHTML('beforeend','<span class="k">pass</span>');
+        var pf2=document.createElement('div');pf2.className='cred-field';pf2.innerHTML='<span class="k">pass</span>';
         var pv=document.createElement('span');pv.className='cred-val';var shown=false;pv.textContent='••••••••';pf2.appendChild(pv);
-        pf2.appendChild(btn('Show','Show / hide password',function(){shown=!shown;pv.textContent=shown?cr.pass:'••••••••';}));
-        pf2.appendChild(btn('Copy','Copy password',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.pass);}));
-        row.appendChild(pf2);
+        pf2.appendChild(credbtn('Show','Show / hide password',function(){shown=!shown;pv.textContent=shown?cr.pass:'••••••••';this.textContent=shown?'Hide':'Show';}));
+        pf2.appendChild(credbtn('Copy','Copy password',function(){if(navigator.clipboard)navigator.clipboard.writeText(cr.pass);}));
+        fields.appendChild(pf2);
       }
-      if(cr.note){var nn=document.createElement('span');nn.className='hmuted';nn.style.fontSize='.78rem';nn.textContent=cr.note;row.appendChild(nn);}
-      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();if(window.syncPushProject)window.syncPushProject(id);renderProject(id);}));
+      row.appendChild(fields);
+      if(cr.note){var nn=document.createElement('div');nn.className='hmuted';nn.style.fontSize='.78rem';nn.style.marginTop='4px';nn.textContent=cr.note;row.appendChild(nn);}
       cl.appendChild(row);
     });
     if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below — it syncs to your devices.';cl.appendChild(ce);}
