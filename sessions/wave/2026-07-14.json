@@ -2,9 +2,14 @@
  "__c": {
   "flows": [
    {
-    "title": "User Flow 1 \u2014 Subscription sign-up & trial",
-    "desc": "Done when a brand-new user can sign up, reach the paywall with NO dashboard flash, start the 30-day free trial and gain full access \u2014 and the paywall layout and Apple Pay price match the design. Fresh sandbox account; ~10 min continuous.",
+    "title": "User Flow 1 — Subscription sign-up & trial",
+    "desc": "Done when a brand-new user can sign up, reach the paywall with NO dashboard flash, start the 30-day free trial and gain full access — and the paywall layout and Apple Pay price match the design. Fresh sandbox account; ~10 min continuous.",
     "items": [
+     {
+      "n": 33,
+      "title": "Setup (read first): TestFlight + sandbox sign-in",
+      "id": "SETUP"
+     },
      {
       "n": 1,
       "title": "Subscriptions: subscription screen without dashboard flash",
@@ -19,7 +24,7 @@
      },
      {
       "n": 3,
-      "title": "Subscriptions: Price consistency \u2014 paywall vs Apple Pay sheet",
+      "title": "Subscriptions: Price consistency — paywall vs Apple Pay sheet",
       "id": "W-SUB-I10",
       "baseN": 66
      },
@@ -61,7 +66,7 @@
      },
      {
       "n": 10,
-      "title": "Subscriptions: Gating \u2014 full access during trial/active",
+      "title": "Subscriptions: Gating — full access during trial/active",
       "id": "W-SUB-G01",
       "baseN": 64
      },
@@ -74,12 +79,12 @@
     ]
    },
    {
-    "title": "User Flow 2 \u2014 Certificates",
-    "desc": "Done when a seafarer can add certificates (upload + scan), organise them into the five categories, and view / search / export / print / delete them \u2014 and view every stored document FULLY OFFLINE after force-quit + cold start (stop-ship). ~15 min continuous.",
+    "title": "User Flow 2 — Certificates",
+    "desc": "Done when a seafarer can add certificates (upload + scan), organise them into the five categories, and view / search / export / print / delete them — and view every stored document FULLY OFFLINE after force-quit + cold start (stop-ship). ~15 min continuous.",
     "items": [
      {
       "n": 12,
-      "title": "Certificates: Empty state \u2014 No Certificates Yet",
+      "title": "Certificates: Empty state — No Certificates Yet",
       "id": "W-CERT-010",
       "baseN": 32
      },
@@ -170,8 +175,8 @@
     ]
    },
    {
-    "title": "User Flow 3 \u2014 Subscription lifecycle",
-    "desc": "Done when subscription state transitions are correct \u2014 trial auto-converts to paid, cancellations keep access until period end then drop to the paywall, plan switches apply at next renewal, and natural expiry ends at the paywall. Sandbox timers: ~60\u201390 min with waits; record separately, pausing between items is fine.",
+    "title": "User Flow 3 — Subscription lifecycle",
+    "desc": "Done when subscription state transitions are correct — trial auto-converts to paid, cancellations keep access until period end then drop to the paywall, plan switches apply at next renewal, and natural expiry ends at the paywall. Sandbox timers: ~60–90 min with waits; record separately, pausing between items is fine.",
     "items": [
      {
       "n": 27,
@@ -193,7 +198,7 @@
      },
      {
       "n": 30,
-      "title": "Subscriptions: switch plans monthly \u2194 yearly",
+      "title": "Subscriptions: switch plans monthly ↔ yearly",
       "id": "W-SUB-I07",
       "baseN": 54
      },
@@ -223,7 +228,7 @@
   "platform": [
    "iOS"
   ],
-  "purpose": "Wave \u2014 Certificates + iOS Subscriptions (flow-based, iPhone 15 Pro / iOS 18.5). Three user-journey flows, sign-up first. Narrate the item number before each test."
+  "purpose": "Wave — Certificates + iOS Subscriptions (flow-based, iPhone 15 Pro / iOS 18.5). Three user-journey flows, sign-up first. Read the Setup card at the top of Flow 1 before you start. Narrate the item number before each test."
  },
  "__meta": {
   "build": "",
@@ -233,71 +238,88 @@
   "tester": "Phill",
   "recordings": "3 (sign-up / certificates / lifecycle)"
  },
+ "33": {
+  "f": {
+   "steps": "This is a checklist, not a test. Tick it Pass once you are set up.\n1. Install TestFlight from the App Store, open the Wave invite, install Wave. Every TestFlight build uses Apple's SANDBOX billing, so no real money is ever charged.\n2. You have a sandbox Apple account from the dev team. It is an App Store test identity, NOT your Wave app login and NOT your real Apple ID.\n3. Do not sign it into the Wave app, and do not sign out of your real Apple ID. Activate it one of two ways (below).\n4. Way A, works even with no Developer menu: open Wave, start a subscription, and when the Apple payment sheet slides up it asks you to sign in. Enter the sandbox email and password THERE. Use this if Settings > Developer is missing.\n5. Way B, needs the Developer menu: Settings > Developer > Sandbox Apple Account, then sign in. That row only appears after a TestFlight build is installed or the phone has connected to Xcode. To pin it on: Settings > Privacy & Security > Developer Mode > On.\n6. Sandbox runs on a fast clock: monthly renews about every 5 min, yearly about every hour, auto-renewing up to 12 times then it expires. Free trials are accelerated the same way, so a 30-day trial ends in about 5 min.",
+   "expected": "Set up correctly when: the Apple payment sheet shows the SANDBOX account email (not your real Apple ID) and a Sandbox / Free Trial label. To watch a renewal fire (you cannot see the countdown): keep the app open across the ~5 min boundary and confirm access holds, force-quit and reopen to refresh the state, and/or watch the backend flip from trialing to active. Ask the dev which backend is used (e.g. RevenueCat or Wave's own admin) and for read access; Apple also emails a receipt to the sandbox address on each renewal.",
+   "notes2": "Only tests 28, 29 and 30 (cancel during trial, cancel active, switch plans) plus Clear Purchase History need the Developer menu. Every other test works with the payment-sheet sign-in from step 4."
+  }
+ },
  "1": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a brand new user (fresh sandbox account)\n2. Complete the full signup flow (name, email verify, onboarding)",
-   "expected": "After onboarding, subscription screen appears directly \u2014 NO brief flash of the dashboard/certificates screen"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing). Sign into the SANDBOX Apple account when the Apple payment sheet appears (see the Setup card). No Developer menu needed.\n1. Sign up as a brand new user (fresh sandbox account)\n2. Complete the full signup flow (name, email verify, onboarding)",
+   "expected": "After onboarding, subscription screen appears directly — NO brief flash of the dashboard/certificates screen",
+   "notes2": "Dev menu: not needed. Sign into the sandbox account at the Apple payment sheet."
   }
  },
  "2": {
   "f": {
    "steps": "1. On the paywall, review layout",
-   "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions."
+   "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions.",
+   "notes2": "Dev menu: not needed (no purchase in this test)."
   }
  },
  "3": {
   "f": {
    "steps": "1. From paywall tap Start 30 days trial\n2. Read the Apple Pay sheet amount\n3. Compare to the paywall's $5 / $50",
    "expected": "Apple Pay sheet price matches the selected plan. (Figma showed the sheet reading '10 $' against a $50/yr paywall.)",
-   "notes2": "Figma showed the Apple Pay sheet as '10 $' vs a $50/yr paywall \u2014 record the exact figure."
+   "notes2": "Figma showed the Apple Pay sheet as '10 $' vs a $50/yr paywall — record the exact figure. Dev menu: not needed; sign in at the payment sheet."
   }
  },
  "4": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account, signed out of any Wave subscription; app on the paywall / subscription screen (not subscribed)\n2. From the paywall, open Terms of Use\n3. Go back, open Privacy Policy\n4. Go back, open Contact Us / support\n5. Return to the paywall",
-   "expected": "Terms, Privacy Policy and Contact Us all open and render fully WITHOUT an active subscription; navigation back to the paywall works each time; no crash and no forced purchase to view them."
+   "expected": "Terms, Privacy Policy and Contact Us all open and render fully WITHOUT an active subscription; navigation back to the paywall works each time; no crash and no forced purchase to view them.",
+   "notes2": "Dev menu: not needed (no purchase in this test)."
   }
  },
  "5": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
-   "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing). Sign into the SANDBOX Apple account when the Apple payment sheet appears (see the Setup card). No Developer menu needed.\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
+   "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard",
+   "notes2": "Dev menu: not needed. Sign into the sandbox account at the Apple payment sheet."
   }
  },
  "6": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account on the paywall, not subscribed\n2. Tap Start 30 days trial / Subscribe to bring up the Apple payment sheet\n3. Dismiss the sheet (tap Cancel / swipe down) before confirming",
-   "expected": "App returns to the paywall with NO subscription started and NO access granted; no crash, no stuck spinner; the CTA is tappable again for a fresh attempt."
+   "expected": "App returns to the paywall with NO subscription started and NO access granted; no crash, no stuck spinner; the CTA is tappable again for a fresh attempt.",
+   "notes2": "Dev menu: not needed. Sign into the sandbox account at the Apple payment sheet."
   }
  },
  "7": {
   "f": {
    "steps": "1. Precondition: sandbox account configured to fail/decline the purchase (or trigger a failed transaction in the sandbox)\n2. On the paywall tap Start 30 days trial / Subscribe\n3. Proceed through the Apple payment sheet so the transaction fails\n4. Observe the app after the failure",
-   "expected": "App shows a clear error overlay/message (e.g. purchase could not be completed) and does NOT crash; user is NOT granted access; user is returned to the paywall and can retry. No entitlement is written for a failed purchase."
+   "expected": "App shows a clear error overlay/message (e.g. purchase could not be completed) and does NOT crash; user is NOT granted access; user is returned to the paywall and can retry. No entitlement is written for a failed purchase.",
+   "notes2": "Dev menu: not needed on the phone, but the dev must configure the sandbox tester to decline (or trigger a StoreKit failure) so the purchase fails."
   }
  },
  "8": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account on the paywall\n2. Tap Start 30 days trial / Subscribe\n3. Drop connectivity (airplane mode) at the moment of confirming the Apple sheet, then restore connectivity a few seconds later\n4. Observe how the app resolves the pending/deferred purchase",
-   "expected": "App handles the interruption gracefully \u2014 either completes once connectivity returns or shows a retry/error, never a crash or infinite spinner; access is granted exactly once (no duplicate entitlement, no double-charge) and state is consistent after reconnect."
+   "expected": "App handles the interruption gracefully — either completes once connectivity returns or shows a retry/error, never a crash or infinite spinner; access is granted exactly once (no duplicate entitlement, no double-charge) and state is consistent after reconnect.",
+   "notes2": "Dev menu: not needed. Sign into the sandbox account at the Apple payment sheet."
   }
  },
  "9": {
   "f": {
    "steps": "1. Precondition: a sandbox Apple ID that has ALREADY consumed the 30-day trial once (trial used / expired)\n2. Sign up / reach the paywall again on that Apple ID\n3. Inspect the CTA and the Apple payment sheet",
-   "expected": "No second free trial is offered on an Apple ID that already used one \u2014 the paywall/CTA and Apple sheet show the paid price (no Free Trial label), matching Apple's one-trial-per-Apple-ID rule. Purchasing charges the paid plan with no trial."
+   "expected": "No second free trial is offered on an Apple ID that already used one — the paywall/CTA and Apple sheet show the paid price (no Free Trial label), matching Apple's one-trial-per-Apple-ID rule. Purchasing charges the paid plan with no trial.",
+   "notes2": "Dev menu: not needed. Reuse a sandbox Apple ID that already used its one trial. Clear Purchase History does NOT reset Apple's one-trial-per-ID rule."
   }
  },
  "10": {
   "f": {
    "steps": "1. With a trialing account, then an active one, use certificates + service records",
-   "expected": "All gated features fully usable in both states."
+   "expected": "All gated features fully usable in both states.",
+   "notes2": "Dev menu: not needed."
   }
  },
  "11": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
-   "expected": "Previous subscription is restored, user gets access"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing). Sign into the SANDBOX Apple account when the Apple payment sheet appears (see the Setup card). No Developer menu needed.\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
+   "expected": "Previous subscription is restored, user gets access",
+   "notes2": "Dev menu: not needed. Sign into the sandbox account at the payment sheet, then Restore Purchases."
   }
  },
  "12": {
@@ -314,22 +336,22 @@
  },
  "14": {
   "f": {
-   "steps": "1. Add Certificate \u2192 fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
+   "steps": "1. Add Certificate → fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
    "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled.)",
-   "notes2": "Figma showed Save staying disabled with all text fields filled \u2014 confirm whether a file attachment is required."
+   "notes2": "Figma showed Save staying disabled with all text fields filled — confirm whether a file attachment is required."
   }
  },
  "15": {
   "f": {
    "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
    "expected": "Scan captures legibly and saves as a document in the chosen folder.",
-   "notes2": "Scanner is a later-phase feature \u2014 if it's not in this build, mark Skipped/Blocked, not Fail."
+   "notes2": "Scanner is a later-phase feature — if it's not in this build, mark Skipped/Blocked, not Fail."
   }
  },
  "16": {
   "f": {
    "steps": "1. On populated My Certificates, review the category folders",
-   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list."
+   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other — colour-coded, each opening its own list."
   }
  },
  "17": {
@@ -342,7 +364,7 @@
   "f": {
    "steps": "1. Browse the certificate wallet home",
    "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred).",
-   "notes2": "Card border colour + 'Active' badge encode validity \u2014 exact mapping unconfirmed; record what you see."
+   "notes2": "Card border colour + 'Active' badge encode validity — exact mapping unconfirmed; record what you see."
   }
  },
  "19": {
@@ -361,7 +383,7 @@
   "f": {
    "steps": "1. On the detail screen, use the QR code / verification link",
    "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)",
-   "notes2": "Result depends on the backend \u2014 if the server can't be reached, mark Unverifiable."
+   "notes2": "Result depends on the backend — if the server can't be reached, mark Unverifiable."
   }
  },
  "22": {
@@ -373,7 +395,7 @@
  "23": {
   "f": {
    "steps": "1. Open a certificate\n2. Use export/share",
-   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)"
+   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified — see thinness report.)"
   }
  },
  "24": {
@@ -397,40 +419,45 @@
  },
  "27": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing); signed into the SANDBOX Apple account (see the Setup card). No Developer menu needed.\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
    "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)",
-   "notes2": "Backend trialing\u2192active flip isn't visible on the phone \u2014 narrate the app's behaviour; mark Unverifiable."
+   "notes2": "Backend trialing→active flip isn't visible on the phone — narrate the app's behaviour; mark Unverifiable. Dev menu: not needed. Just wait ~5 min after the trial starts; force-quit and reopen to refresh state."
   }
  },
  "28": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
-   "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing); signed into the SANDBOX Apple account (see the Setup card).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
+   "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall",
+   "notes2": "Dev menu: NEEDED for the cancel step (Settings > Developer > Sandbox Account > Manage > Subscriptions). If that menu is missing: turn on Settings > Privacy & Security > Developer Mode (connect the phone to Xcode once to reveal it), or use the Manage link in Apple's sandbox receipt email."
   }
  },
  "29": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
-   "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing); signed into the SANDBOX Apple account (see the Setup card).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
+   "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall",
+   "notes2": "Dev menu: NEEDED for the cancel step (Settings > Developer > Sandbox Account > Manage > Subscriptions). If that menu is missing: turn on Settings > Privacy & Security > Developer Mode (connect the phone to Xcode once to reveal it), or use the Manage link in Apple's sandbox receipt email."
   }
  },
  "30": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
-   "expected": "Plan changes at next renewal."
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing); signed into the SANDBOX Apple account (see the Setup card).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
+   "expected": "Plan changes at next renewal.",
+   "notes2": "Dev menu: NEEDED for the switch step (Settings > Developer > Sandbox Account > Manage > Subscriptions). If that menu is missing: turn on Settings > Privacy & Security > Developer Mode (connect the phone to Xcode once to reveal it), or use the Manage link in Apple's sandbox receipt email."
   }
  },
  "31": {
   "f": {
-   "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
-   "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall"
+   "steps": "Precondition: Wave installed via TestFlight (sandbox billing); signed into the SANDBOX Apple account (see the Setup card). No Developer menu needed.\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
+   "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall",
+   "notes2": "Dev menu: not needed. Subscribe, then leave the app; it auto-renews about every 5 min up to 12 times (about an hour) then expires to the paywall."
   }
  },
  "32": {
   "f": {
    "steps": "1. Precondition: account that has lost access (post TC-4 cancel or TC-5 natural expiry), sitting on the paywall\n2. Tap Subscribe and confirm a new subscription in the Apple sheet\n3. Complete the purchase",
-   "expected": "New subscription is created, access is restored, and the app returns to the dashboard with full access; backend status returns to active for the new period. No duplicate/overlapping entitlement."
+   "expected": "New subscription is created, access is restored, and the app returns to the dashboard with full access; backend status returns to active for the new period. No duplicate/overlapping entitlement.",
+   "notes2": "Dev menu: not needed. Re-subscribe from the paywall at the Apple payment sheet."
   }
  },
- "__seedV": 5
+ "__seedV": 6
 }
