@@ -2796,6 +2796,7 @@ QA &amp; Project Manager, AppMakers LA
   var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
   function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];if(!pstate[id].creds)pstate[id].creds=[];return pstate[id];}
   function savePS(){store(PKEY,pstate);}
+  window.__projState=projState; window.__savePS=savePS;   // bridge to the sync <script> block
   var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
   if(!resData.pm)resData.pm={docs:[],examples:[{label:'Kickoff call examples',url:'https://docs.google.com/document/d/1XsLIrVnYsZGOjGE78WTNCjQGK7HT6vFgW7F5Ykb1kiY/edit'}]};
   function resState(t){if(!resData[t])resData[t]={docs:[],examples:[]};if(!resData[t].docs)resData[t].docs=[];if(!resData[t].examples)resData[t].examples=[];if(!resData[t].templates)resData[t].templates=[];return resData[t];}
@@ -3028,9 +3029,9 @@ QA &amp; Project Manager, AppMakers LA
     if(isHome){renderPJHome(id);
       // pull project-meta (Test credentials) from the sync, throttled to once/30s per project
       window.__credPull=window.__credPull||{};var _np=Date.now();
-      if(typeof syncPullProject==="function" && (!window.__credPull[id] || _np-window.__credPull[id]>30000)){
+      if(window.syncPullProject && (!window.__credPull[id] || _np-window.__credPull[id]>30000)){
         window.__credPull[id]=_np;
-        syncPullProject(id).then(function(ch){ if(ch && location.hash.slice(1)===id) renderPJHome(id); });
+        window.syncPullProject(id).then(function(ch){ if(ch && location.hash.slice(1)===id) renderPJHome(id); });
       }
     }
     else if(isRnd)renderStageBar(id,rnd,'R&D');
@@ -3187,7 +3188,7 @@ QA &amp; Project Manager, AppMakers LA
         row.appendChild(pf2);
       }
       if(cr.note){var nn=document.createElement('span');nn.className='hmuted';nn.style.fontSize='.78rem';nn.textContent=cr.note;row.appendChild(nn);}
-      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();syncPushProject(id);renderProject(id);}));
+      row.appendChild(btn('×','Remove credential',function(){ps.creds.splice(idx,1);ps.credsAt=Date.now();savePS();if(window.syncPushProject)window.syncPushProject(id);renderProject(id);}));
       cl.appendChild(row);
     });
     if(!(ps.creds||[]).length){var ce=document.createElement('p');ce.className='hmuted';ce.textContent='No test credentials yet. Add one below — it syncs to your devices.';cl.appendChild(ce);}
@@ -3198,7 +3199,7 @@ QA &amp; Project Manager, AppMakers LA
     var ci3=document.createElement('input');ci3.className='tr-input';ci3.type='password';ci3.placeholder='Password (optional)';ci3.autocomplete='new-password';
     var cbt=document.createElement('button');cbt.className='tr-addbtn';cbt.type='submit';cbt.textContent='+';
     cf.appendChild(ci1);cf.appendChild(ci2);cf.appendChild(ci3);cf.appendChild(cbt);
-    cf.onsubmit=function(e){e.preventDefault();var lab=ci1.value.trim(),u=ci2.value.trim(),p=ci3.value;if(!lab||(!u&&!p))return;if(!ps.creds)ps.creds=[];ps.creds.push({label:lab,user:u,pass:p});ps.credsAt=Date.now();savePS();syncPushProject(id);renderProject(id);};
+    cf.onsubmit=function(e){e.preventDefault();var lab=ci1.value.trim(),u=ci2.value.trim(),p=ci3.value;if(!lab||(!u&&!p))return;if(!ps.creds)ps.creds=[];ps.creds.push({label:lab,user:u,pass:p});ps.credsAt=Date.now();savePS();if(window.syncPushProject)window.syncPushProject(id);renderProject(id);};
     cb.appendChild(cf);host.appendChild(cb);
 
     /* --- Key dates --- */
@@ -3589,8 +3590,8 @@ QA &amp; Project Manager, AppMakers LA
   // "__project" so it rides the same generic KV — anyone with the hub token can
   // read it, so LOW-RISK sandbox creds only. Last-write-wins on the whole list.
   function syncPushProject(pid){
-    const c = syncCfg(); if(!(c.url && c.token) || !pid) return;
-    const ps = projState(pid);
+    const c = syncCfg(); if(!(c.url && c.token) || !pid || !window.__projState) return;
+    const ps = window.__projState(pid);
     const blob = {creds: ps.creds || [], __savedAt: ps.credsAt || Date.now()};
     try{
       fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {
@@ -3600,17 +3601,19 @@ QA &amp; Project Manager, AppMakers LA
     }catch(e){}
   }
   async function syncPullProject(pid){
-    const c = syncCfg(); if(!(c.url && c.token) || !pid) return false;
+    const c = syncCfg(); if(!(c.url && c.token) || !pid || !window.__projState) return false;
     try{
       const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {headers:{"X-QA-Token":c.token}});
       if(!r.ok) return false;
       const server = await r.json();
       if(!server || typeof server!=="object" || Array.isArray(server) || !Array.isArray(server.creds)) return false;
-      const ps = projState(pid), ss = (+server.__savedAt)||0, ls = (+ps.credsAt)||0;
-      if(ss > ls){ ps.creds = server.creds; ps.credsAt = ss; savePS(); return true; }
+      const ps = window.__projState(pid), ss = (+server.__savedAt)||0, ls = (+ps.credsAt)||0;
+      if(ss > ls){ ps.creds = server.creds; ps.credsAt = ss; window.__savePS(); return true; }
     }catch(e){}
     return false;
   }
+  // bridge to the other <script> scope (where renderPJHome lives), same as window.__qaMount
+  window.syncPushProject = syncPushProject; window.syncPullProject = syncPullProject;
   async function syncReconcile(pid){
     if(!syncOn() || !pid) return false;
     const changed = await syncPull(pid);
