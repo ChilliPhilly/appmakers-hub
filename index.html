@@ -1549,6 +1549,11 @@ QA &amp; Project Manager, AppMakers LA
         <h3>Test devices &amp; tools</h3><p>TestFlight, Android/APK, BrowserStack, JAM.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
+      <a class="tile" href="#qa-sandbox">
+        <span class="ico"><svg><use href="#i-box"/></svg></span>
+        <h3>Sandbox testing</h3><p>Test in-app purchases &amp; subscriptions with no real charge — full iOS setup.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
       <a class="tile" href="#qa-insights">
         <span class="ico"><svg><use href="#i-flow"/></svg></span>
         <h3>QA insights from Carlos</h3><p>A working QA's habits: explore first, sanity vs regression, priority feel.</p>
@@ -1791,6 +1796,45 @@ QA &amp; Project Manager, AppMakers LA
       <h3>App testing tips — sandbox payments</h3>
       <p class="prose">Testing in-app purchases and subscriptions uses <b>sandbox / test accounts</b>, so <b>no real money is ever charged</b>. Quick reference for both stores:</p>
       <div id="qa-app-tips-mount"></div>
+    </div>
+  </section>
+
+<section class="view" id="qa-sandbox">
+    <div class="sec-head">
+      <span class="eyebrow">QA Job &middot; Sandbox testing</span>
+      <h1>Sandbox testing &mdash; in-app purchases &amp; subscriptions</h1>
+      <p class="desc">How to test paid features and subscriptions safely. <b>No real money is ever charged.</b> Includes the full one-time iOS setup so you can clear purchase history and control renewal speed.</p>
+    </div>
+
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">TestFlight vs dev build &mdash; read first.</span> The sandbox-tester flow below (with <b>Clear Purchase History</b>) needs a <b>dev-signed build</b> (Xcode / Ad-Hoc). <b>TestFlight builds use your real Apple ID and their purchase history can&rsquo;t be cleared.</b> To reset a TestFlight subscription instead: cancel it in <b>Settings &rarr; [your name] &rarr; Subscriptions</b> and let it lapse, or ask the dev for a dev-signed build.</div></div>
+
+    <div class="block">
+      <h3>Quick reference</h3>
+      <div id="qa-sandbox-tips-mount"></div>
+    </div>
+
+    <div class="block">
+      <h3>iOS &mdash; full setup (dev-signed build)</h3>
+      <p class="prose">One-time setup to run true sandbox purchases you can reset. Do these in order &mdash; Developer Mode only appears after the phone has been connected to Xcode.</p>
+      <dl class="kv">
+        <div><dt>1. Install Xcode</dt><dd>Mac App Store &rarr; search <b>Xcode</b> &rarr; Install (~10&ndash;15 GB). Open it once, accept the licence, let it install extra components. Xcode &rarr; Settings &rarr; Accounts &rarr; add your Apple ID.</dd></div>
+        <div><dt>2. Create a sandbox tester</dt><dd>App Store Connect &rarr; <b>Users and Access &rarr; Sandbox &rarr; Test Accounts &rarr; +</b>. Use a unique email that isn&rsquo;t already an Apple ID (a <code>+alias</code> works). Don&rsquo;t sign it into iCloud. No access? Ask the dev/Sheer for credentials.</dd></div>
+        <div><dt>3. Connect the iPhone</dt><dd>Plug in via cable &rarr; on the phone tap <b>Trust This Computer</b> &rarr; passcode. In Xcode: <b>Window &rarr; Devices and Simulators</b> &rarr; wait for &ldquo;preparing device for development&rdquo; to finish.</dd></div>
+        <div><dt>4. Enable Developer Mode</dt><dd>Settings &rarr; <b>Privacy &amp; Security &rarr; Developer Mode &rarr; On</b> &rarr; restart &rarr; confirm. (Only appears after step 3.)</dd></div>
+        <div><dt>5. Install the dev-signed build</dt><dd>From a <b>.ipa</b>: Xcode &rarr; Devices and Simulators &rarr; your iPhone &rarr; <b>Installed Apps &rarr; +</b> &rarr; pick the file. From the <b>project</b>: open it, pick your iPhone, set a Team in Signing &amp; Capabilities, press <b>&#9654; Run</b>. Must be development/Ad-Hoc, <b>not TestFlight</b>.</dd></div>
+        <div><dt>6. Sign into the sandbox account</dt><dd>Settings &rarr; <b>Developer</b> &rarr; scroll to <b>Sandbox Apple Account &rarr; Sign In</b> &rarr; enter the sandbox tester (not your real Apple ID).</dd></div>
+        <div><dt>7. Run the purchase</dt><dd>Open the app &rarr; paywall &rarr; <b>Subscribe/Buy</b> &rarr; the sheet shows <b>[Environment: Sandbox]</b> &rarr; confirm. No real charge; renewals run on an accelerated clock.</dd></div>
+        <div><dt>8. Reset between runs</dt><dd><b>Clear purchase history:</b> Settings &rarr; Developer &rarr; Sandbox Apple Account &rarr; <b>Manage &rarr; Clear Purchase History</b> (or App Store Connect &rarr; Sandbox &rarr; tester). <b>Renewal speed:</b> App Store Connect &rarr; Sandbox &rarr; tester (default fastest). Each tester allows ~12 renewals then auto-expires &mdash; make a new one for a clean slate.</dd></div>
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Troubleshooting</h3>
+      <dl class="kv">
+        <div><dt>No &ldquo;Developer&rdquo; in Settings</dt><dd>Developer Mode isn&rsquo;t on yet &mdash; do step 3 (connect to Xcode) then step 4. The toggle won&rsquo;t appear from a TestFlight-only install.</dd></div>
+        <div><dt>No &ldquo;Sandbox Apple Account&rdquo; section</dt><dd>It appears under Settings &rarr; Developer once Developer Mode is on. If purchases still use your real ID, you&rsquo;re on a TestFlight build &mdash; get a dev-signed one.</dd></div>
+        <div><dt>Purchase silently fails</dt><dd>Check: dev-signed build, signed into the <b>sandbox</b> account (not real ID), and the IAP products are approved / &ldquo;Ready to Submit&rdquo; in App Store Connect.</dd></div>
+      </dl>
     </div>
   </section>
 
@@ -2600,10 +2644,10 @@ QA &amp; Project Manager, AppMakers LA
     onboarding:'onboarding','ob-sequence':'onboarding',habits:'onboarding',rules:'onboarding',
     time:'onboarding',billing:'onboarding',dashboards:'onboarding','makers-app':'onboarding',
     people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
-    qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-insights':'qa','qa-resources':'qa',
+    qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-sandbox':'qa','qa-insights':'qa','qa-resources':'qa',
     pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-resources':'pm',
     projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
@@ -2628,7 +2672,7 @@ QA &amp; Project Manager, AppMakers LA
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function nid(){return 't'+Math.random().toString(36).slice(2,9);}
-  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-resources']};
+  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-resources']};
   var MKEY='appmakers-modules-v1'; var mstate=load(MKEY)||{}; function saveM(){store(MKEY,mstate);}
   function trackOf(id){for(var k in MODULES)if(MODULES[k].indexOf(id)>-1)return k;return null;}
   function trackName(t){return t==='qa'?'QA':'PM';}
@@ -5086,7 +5130,8 @@ QA &amp; Project Manager, AppMakers LA
 (function(){
   const TIPS = {
     apple: { label: "Tips for Apple (iOS) testing", items: [
-      "To start fresh: Settings → Developer → Sandbox Account → Manage → Clear Purchase History.",
+      "To start fresh: Settings → Developer → Sandbox Apple Account → Manage → Clear Purchase History.",
+      "Needs a DEV-SIGNED build: Settings → Developer only appears once Developer Mode is on. TestFlight builds use your real Apple ID and can't be cleared — see the Sandbox testing card for the full setup.",
       "Each sandbox account has limited renewals (12 max). Create new sandbox accounts for fresh tests.",
       "Renewal speed is configurable per sandbox account in App Store Connect (default is fastest).",
       "No real money is charged — ever."
@@ -5134,7 +5179,7 @@ QA &amp; Project Manager, AppMakers LA
     return b;
   };
   // Populate the static "App testing tips" mount in the QA Job section
-  function mountQaTips(){ var m=document.getElementById('qa-app-tips-mount'); if(m && !m.__done){ m.innerHTML = window.testingTipsHTML(); m.__done=true; } }
+  function mountQaTips(){ ['qa-app-tips-mount','qa-sandbox-tips-mount'].forEach(function(id){ var m=document.getElementById(id); if(m && !m.__done){ m.innerHTML = window.testingTipsHTML(); m.__done=true; } }); }
   if(document.readyState!=='loading') mountQaTips(); else document.addEventListener('DOMContentLoaded', mountQaTips);
 })();
 </script>
