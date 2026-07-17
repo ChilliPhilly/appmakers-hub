@@ -1,0 +1,600 @@
+{
+ "__c": {
+  "flows": [
+   {
+    "title": "User Flow 1 \u2014 Schedule a spar: check-in, topic & goal",
+    "desc": "Done when an initiator can open the scheduling wizard, complete the emotional check-in, pick a topic (preset or free-text Other), set a goal and add a private note, with required-field gating and back/kill-app all behaving. Fresh state; ~8 min.",
+    "items": [
+     {
+      "n": 1,
+      "title": "Schedule: Entry point '+ Schedule a Match' launches the scheduling wizard",
+      "id": "Schedule-01-01"
+     },
+     {
+      "n": 2,
+      "title": "Schedule: Emotional check-in \u2014 select an emotion and continue",
+      "id": "Schedule-01-02"
+     },
+     {
+      "n": 3,
+      "title": "Schedule: Emotional check-in is required before continuing",
+      "id": "Schedule-01-03"
+     },
+     {
+      "n": 4,
+      "title": "Schedule: Topic \u2014 pick a preset topic and continue",
+      "id": "Schedule-01-04"
+     },
+     {
+      "n": 5,
+      "title": "Schedule: Topic \u2014 'Other' free-text topic is accepted",
+      "id": "Schedule-01-05"
+     },
+     {
+      "n": 6,
+      "title": "Schedule: Topic \u2014 'Other' selected but text left empty is blocked",
+      "id": "Schedule-01-06"
+     },
+     {
+      "n": 7,
+      "title": "Schedule: Topic \u2014 'Other' text handles long / emoji / special characters",
+      "id": "Schedule-01-07"
+     },
+     {
+      "n": 8,
+      "title": "Schedule: Topic is required before continuing",
+      "id": "Schedule-01-08"
+     },
+     {
+      "n": 9,
+      "title": "Schedule: Goal \u2014 select a goal and continue",
+      "id": "Schedule-01-09"
+     },
+     {
+      "n": 10,
+      "title": "Schedule: Goal is required before continuing",
+      "id": "Schedule-01-10"
+     },
+     {
+      "n": 11,
+      "title": "Schedule: Private note \u2014 add a note only I can see",
+      "id": "Schedule-01-11"
+     },
+     {
+      "n": 12,
+      "title": "Schedule: Private note is optional (empty allowed)",
+      "id": "Schedule-01-12"
+     },
+     {
+      "n": 13,
+      "title": "Schedule: Back-navigation through the wizard retains earlier answers",
+      "id": "Schedule-01-13"
+     },
+     {
+      "n": 14,
+      "title": "Schedule: Kill app mid-wizard, relaunch",
+      "id": "Schedule-01-14"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 2 \u2014 Set the time (Now vs Scheduled)",
+    "desc": "Done when 'Now' and 'Set A Time' both work, the date/time wheel pickers set the exact value chosen (AM/PM correct), a spar cannot be scheduled in the past or with no time, and the value shown matches the picker end-to-end (no day-shift). ~6 min.",
+    "items": [
+     {
+      "n": 15,
+      "title": "Time: 'Now' \u2014 start a spar immediately",
+      "id": "Time-01-01"
+     },
+     {
+      "n": 16,
+      "title": "Time: 'Set A Time' reveals date & time fields and gates Continue",
+      "id": "Time-01-02"
+     },
+     {
+      "n": 17,
+      "title": "Time: Set a future date via the wheel picker",
+      "id": "Time-01-03"
+     },
+     {
+      "n": 18,
+      "title": "Time: Set a time via the wheel picker (AM/PM correct)",
+      "id": "Time-01-04"
+     },
+     {
+      "n": 19,
+      "title": "Time: Continue blocked when 'Set A Time' chosen but date/time unset",
+      "id": "Time-01-05"
+     },
+     {
+      "n": 20,
+      "title": "Time: Scheduling in the PAST is rejected",
+      "id": "Time-01-06"
+     },
+     {
+      "n": 21,
+      "title": "Time: Schedule for the near future (~2 minutes ahead) for the reminder test",
+      "id": "Time-01-07"
+     },
+     {
+      "n": 22,
+      "title": "Time: Far-future date across the year boundary",
+      "id": "Time-01-08"
+     },
+     {
+      "n": 23,
+      "title": "Time: Toggling Now <-> Set A Time keeps state consistent",
+      "id": "Time-01-09"
+     },
+     {
+      "n": 24,
+      "title": "Time: Date/time display matches the picker end-to-end (no day-shift)",
+      "id": "Time-01-10"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 3 \u2014 Review & invite to the ring",
+    "desc": "Done when Review shows the exact topic/goal/time entered, edits before inviting stick, INVITE TO RING produces the 'Invited to the Ring' confirmation with no duplicate on double-tap, offline is handled, and the new spar appears in Upcoming Spars with the count incremented. ~6 min.",
+    "items": [
+     {
+      "n": 25,
+      "title": "Review: Review shows the entered Topic, Goal and Time accurately",
+      "id": "Review-01-01"
+     },
+     {
+      "n": 26,
+      "title": "Review: Edit a value before inviting",
+      "id": "Review-01-02"
+     },
+     {
+      "n": 27,
+      "title": "Review: Invite to Ring produces the 'Invited to the Ring' confirmation",
+      "id": "Review-01-03"
+     },
+     {
+      "n": 28,
+      "title": "Review: Private note is not exposed as a shared field on Review",
+      "id": "Review-01-04"
+     },
+     {
+      "n": 29,
+      "title": "Review: Double-tap INVITE TO RING creates no duplicate spar",
+      "id": "Review-01-05"
+     },
+     {
+      "n": 30,
+      "title": "Review: Connectivity loss on invite is handled gracefully",
+      "id": "Review-01-06"
+     },
+     {
+      "n": 31,
+      "title": "Review: New scheduled spar appears in Upcoming Spars with correct details + count",
+      "id": "Review-01-07"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 4 \u2014 Partner receives & responds",
+    "desc": "Done when the partner gets the 'Lets get in the ring' push, it deep-links to a challenge showing the correct time/topic/goal, the initiator's private note is NOWHERE on the partner side, and Accept ASAP / Accept Scheduled / Decline each complete correctly. Needs a 2nd device \u2014 narrate. ~8 min.",
+    "items": [
+     {
+      "n": 32,
+      "title": "Respond: Push notification for a new challenge arrives and deep-links",
+      "id": "Respond-01-01"
+     },
+     {
+      "n": 33,
+      "title": "Respond: Challenge screen shows the initiator's Time, Topic and Goal correctly",
+      "id": "Respond-01-02"
+     },
+     {
+      "n": 34,
+      "title": "Respond: Initiator's PRIVATE NOTE is not visible to the partner (invariant)",
+      "id": "Respond-01-03"
+     },
+     {
+      "n": 35,
+      "title": "Respond: Accept ASAP -> partner's own check-in -> START FIGHT",
+      "id": "Respond-01-04"
+     },
+     {
+      "n": 36,
+      "title": "Respond: Accept Scheduled -> confirm proposed time -> 'SPAR SCHEDULED'",
+      "id": "Respond-01-05"
+     },
+     {
+      "n": 37,
+      "title": "Respond: Decline the challenge",
+      "id": "Respond-01-06"
+     },
+     {
+      "n": 38,
+      "title": "Respond: Notifications permission denied on the partner device",
+      "id": "Respond-01-07"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 5 \u2014 Scheduled spar lifecycle & reminders",
+    "desc": "Done when a reminder push fires ahead of a scheduled spar, an upcoming spar can be opened / cancelled / resumed, safety controls and the no-out-scoring invariant hold inside a spar, and same-time clashes are handled sanely. ~7 min.",
+    "items": [
+     {
+      "n": 39,
+      "title": "Match: Reminder notification fires before a scheduled spar",
+      "id": "Match-01-01"
+     },
+     {
+      "n": 40,
+      "title": "Match: Open an upcoming spar from the dashboard",
+      "id": "Match-01-02"
+     },
+     {
+      "n": 41,
+      "title": "Match: Cancel / reschedule an upcoming spar",
+      "id": "Match-01-03"
+     },
+     {
+      "n": 42,
+      "title": "Match: Resume a live / paused spar from the dashboard",
+      "id": "Match-01-04"
+     },
+     {
+      "n": 43,
+      "title": "Match: Safety controls are reachable inside a spar (invariant)",
+      "id": "Match-01-05"
+     },
+     {
+      "n": 44,
+      "title": "Match: No out-scoring on any shared spar / stats view (invariant)",
+      "id": "Match-01-06"
+     },
+     {
+      "n": 45,
+      "title": "Match: Two upcoming spars at the same time (clash handling)",
+      "id": "Match-01-07"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 6 \u2014 Regression: Shadow Boxing chat",
+    "desc": "Done when the Shadow Boxing chat opens scrolled to the newest message, stays anchored to the latest message when the keyboard opens, and the new chat interface renders correctly with whispers still visually private. ~4 min.",
+    "items": [
+     {
+      "n": 46,
+      "title": "Shadow Boxing: Chat jumps to the bottom (newest message) on load",
+      "id": "Shadow-01-10"
+     },
+     {
+      "n": 47,
+      "title": "Shadow Boxing: Chat stays anchored to the latest message when the keyboard opens",
+      "id": "Shadow-01-11"
+     },
+     {
+      "n": 48,
+      "title": "Shadow Boxing: New Shadow Boxing chat interface renders correctly (design referee)",
+      "id": "Shadow-01-12"
+     }
+    ]
+   }
+  ]
+ },
+ "__m": {
+  "groups": {},
+  "removedItems": [],
+  "removedGroups": [],
+  "type": [
+   "System",
+   "New features",
+   "Regression"
+  ],
+  "platform": [
+   "iOS"
+  ],
+  "purpose": "Box and Ring \u2014 build 0.0.1 (11): deep verification of Fight Scheduling (initiator wizard: emotional check-in -> topic/goal -> private note -> Now/Set-A-Time -> Review -> Invite to Ring), the partner response side (push -> Accept ASAP / Accept Scheduled / Decline), reminders & scheduled-spar lifecycle, plus a regression on the Shadow Boxing chat scroll/interface fix. iPhone 15 Pro / iOS 18.5. Narrate the item number before each test."
+ },
+ "__meta": {
+  "build": "0.0.1 (11)",
+  "date": "17 Jul 2026",
+  "device": "iPhone 15 Pro",
+  "os": "iOS 18.5",
+  "tester": "Phill",
+  "recordings": "3 suggested (Flow 1-3 initiator / Flow 4 partner on 2nd device / Flow 5-6 lifecycle + Shadow regression)"
+ },
+ "1": {
+  "f": {
+   "steps": "Precondition: Logged in, on the Home dashboard, at least one partner connected.\n1. On Home, tap '+ Schedule a Match' on the SPAR With Love card.\n2. Return and tap the centre '+' in the bottom nav.",
+   "expected": "The scheduling wizard opens at the first step ('How do you feel right now?'). Both the card button and the bottom-nav '+' reach the same flow."
+  }
+ },
+ "2": {
+  "f": {
+   "steps": "Precondition: Wizard open at 'How do you feel right now?'.\nTest data: Frustrated\n1. Tap an emotion (e.g. Frustrated) on the dial.\n2. Tap CONTINUE.",
+   "expected": "The chosen emotion is visibly highlighted; only one emotion is selected at a time; CONTINUE advances to 'What's the fight about?'."
+  }
+ },
+ "3": {
+  "f": {
+   "steps": "Precondition: Wizard open at 'How do you feel right now?', nothing selected.\n1. Without selecting any emotion, tap CONTINUE.",
+   "expected": "Cannot advance with no emotion selected (button disabled or a clear prompt); no crash. Advancing with no selection is a finding."
+  }
+ },
+ "4": {
+  "f": {
+   "steps": "Precondition: At 'What's the fight about?'.\nTest data: Money\n1. Select a preset topic (e.g. Money).\n2. Tap CONTINUE.",
+   "expected": "Topic is highlighted; wizard advances to 'What's your goal for this conversation?'."
+  }
+ },
+ "5": {
+  "f": {
+   "steps": "Precondition: At 'What's the fight about?'.\nTest data: Other Topic = 'Planning a Trip'\n1. Select 'Other'.\n2. Type a custom topic into the Other Topic field.\n3. Tap CONTINUE.",
+   "expected": "The typed topic is accepted and used as the spar topic (it appears verbatim on the Review screen later)."
+  }
+ },
+ "6": {
+  "f": {
+   "steps": "Precondition: At 'What's the fight about?'.\nTest data: Other Topic = '' (blank)\n1. Select 'Other'.\n2. Leave the Other Topic field blank.\n3. Tap CONTINUE.",
+   "expected": "Blocked with a clear prompt (or a sensible default) \u2014 a spar must NOT be created with a blank topic. Proceeding blank is a finding."
+  }
+ },
+ "7": {
+  "f": {
+   "steps": "Precondition: At 'What's the fight about?'.\nTest data: 200-char string; then emoji-only; then <script> & 'quotes'\n1. Select 'Other'.\n2. Enter a 200-char string and continue.\n3. Repeat with emoji-only.\n4. Repeat with special characters.",
+   "expected": "No crash; text is cleanly limited or wraps without breaking layout; the value renders correctly on Review and (later) on the partner's challenge screen."
+  }
+ },
+ "8": {
+  "f": {
+   "steps": "Precondition: At 'What's the fight about?', nothing selected.\n1. Without selecting any topic, tap CONTINUE.",
+   "expected": "Cannot advance with no topic; clear prompt; no crash."
+  }
+ },
+ "9": {
+  "f": {
+   "steps": "Precondition: At 'What's your goal for this conversation?'.\nTest data: To be heard and understood\n1. Select a goal.\n2. Tap CONTINUE.",
+   "expected": "Goal is highlighted; wizard advances to the time step ('When do you want to step into the ring?')."
+  }
+ },
+ "10": {
+  "f": {
+   "steps": "Precondition: At 'What's your goal for this conversation?', nothing selected.\n1. Without selecting a goal, tap CONTINUE.",
+   "expected": "Cannot advance with no goal; clear prompt; no crash."
+  }
+ },
+ "11": {
+  "f": {
+   "steps": "Precondition: In the wizard where the private note field appears (topic/goal step).\nTest data: Note = 'Remember to stay calm and not bring up last week'\n1. Enter text into the private note field.\n2. Continue toward Review.",
+   "expected": "The note is captured for the author and labelled private/one-sided. It must never surface on the partner's side (verified in Respond-01-03).",
+   "notes2": "STOP-SHIP if this note ever shows to the partner \u2014 verify on the 2nd device in Flow 4"
+  }
+ },
+ "12": {
+  "f": {
+   "steps": "Precondition: In the wizard at the private note field.\nTest data: Note = '' (blank)\n1. Leave the private note blank.\n2. Continue.",
+   "expected": "Wizard proceeds with an empty note; the private note is not mandatory; no crash."
+  }
+ },
+ "13": {
+  "f": {
+   "steps": "Precondition: Advanced to the goal step with an emotion + topic already chosen.\n1. From the goal step tap back to the topic step, then back to the emotion step.\n2. Move forward again through the steps.",
+   "expected": "Back returns to the previous step with earlier selections intact; no dead-end and no jump-forward. (The onboarding back-button bug must not recur here.)",
+   "notes2": "Onboarding had a back-button bug last build \u2014 narrate exact back behaviour here"
+  }
+ },
+ "14": {
+  "f": {
+   "steps": "Precondition: At the goal step of a fresh scheduling wizard.\n1. Force-quit the app mid-wizard.\n2. Relaunch.",
+   "expected": "Graceful resume, or a clean restart to the dashboard; no half-created spar in Upcoming; no crash or blank state."
+  }
+ },
+ "15": {
+  "f": {
+   "steps": "Precondition: At 'When do you want to step into the ring?'.\n1. Select 'Now'.\n2. Tap CONTINUE.",
+   "expected": "No date/time picker is required; the flow proceeds (to Review/Invite, or straight into a live spar per design). Narrate what 'Now' actually does.",
+   "notes2": "Narrate whether 'Now' starts a live spar or just schedules for immediately"
+  }
+ },
+ "16": {
+  "f": {
+   "steps": "Precondition: At 'When do you want to step into the ring?'.\n1. Select 'Set A Time'.\n2. Observe the Date and Time fields.",
+   "expected": "Date and Time fields appear (placeholders MM/DD/YYYY and 00:00); CONTINUE stays gated until both are set."
+  }
+ },
+ "17": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected.\nTest data: A clearly future date (e.g. 20 Jul 2026)\n1. Tap the Date field.\n2. Spin the wheel to a future date.\n3. Tap DONE.",
+   "expected": "The chosen date populates the Date field exactly as picked; the picker dismisses cleanly."
+  }
+ },
+ "18": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected, date set.\nTest data: 8:00 PM\n1. Tap the Time field.\n2. Set 8:00 PM.\n3. Tap DONE.",
+   "expected": "The Time field shows 8:00 PM (not 8:00 AM); AM/PM is respected."
+  }
+ },
+ "19": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected, fields on placeholders.\n1. Leave Date/Time on their placeholders.\n2. Tap CONTINUE.",
+   "expected": "Blocked with a prompt; a spar cannot be invited with no time."
+  }
+ },
+ "20": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected.\nTest data: Yesterday's date; and a time earlier than now today\n1. Pick a past date on the wheel (note the wheel's DEFAULT value \u2014 the design showed 17 Sep 2021).\n2. Also try a time earlier than the current time on today's date.\n3. Tap CONTINUE / INVITE.",
+   "expected": "Past date/time is rejected with a clear message, or the picker disallows past values. A spar scheduled in the past is a bug. The picker must not DEFAULT to a past date.",
+   "notes2": "KEY: the design's date wheel defaulted to 17 Sep 2021 \u2014 confirm the real default and that past dates are blocked"
+  }
+ },
+ "21": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected.\nTest data: ~2 minutes from the current time\n1. Set the date to today and the time to ~2 minutes from now.\n2. Continue and complete the invite.",
+   "expected": "Accepted; this spar is used to verify reminders/notifications fire near the time (Match-01-01). Narrate the exact time set.",
+   "notes2": "Narrate the exact minute set so the reminder timing can be checked"
+  }
+ },
+ "22": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected.\nTest data: 1 Jan of next year\n1. Pick a far-future date crossing into next year.\n2. Continue.",
+   "expected": "Accepted and displayed correctly (no year rollover or format bug)."
+  }
+ },
+ "23": {
+  "f": {
+   "steps": "Precondition: At the time step.\n1. Select 'Set A Time' and set a date/time.\n2. Switch to 'Now'.\n3. Switch back to 'Set A Time'.",
+   "expected": "State stays consistent; a previously set time is either retained or cleanly cleared (no stale/ghost value); CONTINUE gating stays correct."
+  }
+ },
+ "24": {
+  "f": {
+   "steps": "Precondition: 'Set A Time' selected.\nTest data: 17 May 2026, 8:00 PM\n1. Set a specific date and time.\n2. Read the field value, then the Review screen value.",
+   "expected": "The date format is consistent and unambiguous field-to-Review; no off-by-one day shift (timezone) between the field and Review.",
+   "notes2": "Screenshot the field and the Review time \u2014 compare for any day/timezone shift"
+  }
+ },
+ "25": {
+  "f": {
+   "steps": "Precondition: Completed the wizard with known values.\nTest data: Topic 'Planning a Trip', Goal 'To be heard and understood', Time 15 Jun 8:00 PM\n1. Reach 'Review Match Details'.\n2. Read Topic, Goal and Time.",
+   "expected": "Topic, Goal and Time on Review exactly match what was entered in the earlier steps."
+  }
+ },
+ "26": {
+  "f": {
+   "steps": "Precondition: On 'Review Match Details'.\nTest data: Change topic or time\n1. From Review, go back and change the topic (or time).\n2. Return to Review.",
+   "expected": "The changed value is reflected on Review; no stale data from the previous choice."
+  }
+ },
+ "27": {
+  "f": {
+   "steps": "Precondition: On 'Review Match Details'.\n1. Tap INVITE TO RING.",
+   "expected": "The 'Invited to the Ring \u2014 Your partner has been notified and can respond when they're ready' screen shows; DONE returns to the dashboard. (Partner-notified is unverifiable from one device \u2014 narrate.)"
+  }
+ },
+ "28": {
+  "f": {
+   "steps": "Precondition: On Review with a private note set.\n1. Inspect the Review screen for the private note.",
+   "expected": "If the note appears at all it is clearly marked private/one-sided; it is never presented as a shared field the partner would see."
+  }
+ },
+ "29": {
+  "f": {
+   "steps": "Precondition: On 'Review Match Details'.\n1. Rapidly double-tap INVITE TO RING.",
+   "expected": "Exactly one invite/spar is created; no duplicate appears in Upcoming Spars; the button disables after the first tap."
+  }
+ },
+ "30": {
+  "f": {
+   "steps": "Precondition: On 'Review Match Details'.\nTest data: Airplane mode ON\n1. Enable Airplane mode.\n2. Tap INVITE TO RING.\n3. Re-enable the network.",
+   "expected": "Graceful failure with a retry/queued message; no silent success and no crash; re-enabling the network lets the invite complete or be retried."
+  }
+ },
+ "31": {
+  "f": {
+   "steps": "Precondition: A spar was just invited.\n1. Return to Home.\n2. Check the Upcoming Spars list and its count.",
+   "expected": "The new spar is listed with the correct topic and time; the 'Upcoming Spars (N)' count increments by one."
+  }
+ },
+ "32": {
+  "f": {
+   "steps": "Precondition: A spar was invited to a partner on a 2nd device with notifications enabled.\n1. On the partner device, watch for the lock-screen/banner push.\n2. Tap the push.",
+   "expected": "The push reads 'Lets get in the ring! Open to respond now'; tapping it deep-links to the 'LETS GET IN THE RING' challenge screen."
+  }
+ },
+ "33": {
+  "f": {
+   "steps": "Precondition: On the partner's 'LETS GET IN THE RING' screen.\n1. Read the details on the challenge screen.",
+   "expected": "The date/time, Topic and Goal match exactly what the initiator set (e.g. 15 June 8:00 PM, Planning a Trip, To be heard and understood)."
+  }
+ },
+ "34": {
+  "f": {
+   "steps": "Precondition: On the partner's challenge screen and every following partner screen.\nTest data: Initiator set a private note in Flow 1\n1. Inspect the challenge screen and all partner-side screens for the initiator's private note.",
+   "expected": "The initiator's private note appears NOWHERE on the partner side. Any leak is a STOP-SHIP P0.",
+   "notes2": "STOP-SHIP: a leaked private note is a P0 \u2014 check every partner screen"
+  }
+ },
+ "35": {
+  "f": {
+   "steps": "Precondition: On the partner's challenge screen.\nTest data: Accept ASAP\n1. Select 'Accept ASAP' (start now or a short delay).\n2. Tap CONTINUE.\n3. Partner picks their own goal, then their own emotion.\n4. Tap START FIGHT.",
+   "expected": "The Accept ASAP path leads through the partner's OWN goal + emotional check-in to START FIGHT and a live spar begins. The partner's answers are their own (they do not overwrite the initiator's)."
+  }
+ },
+ "36": {
+  "f": {
+   "steps": "Precondition: On the partner's challenge screen.\nTest data: Accept Scheduled\n1. Select 'Accept Scheduled' (confirm the proposed time).\n2. Complete the partner's goal + emotion steps.\n3. Reach the confirmation.",
+   "expected": "The 'SPAR SCHEDULED \u2014 Your bout has been scheduled' confirmation shows; DONE returns home. The spar is locked for the proposed time on both sides."
+  }
+ },
+ "37": {
+  "f": {
+   "steps": "Precondition: On the partner's challenge screen.\nTest data: Decline\n1. Select 'Decline'.\n2. Tap CONTINUE.",
+   "expected": "The challenge is declined; the partner is not forced into a spar; the initiator is notified of the decline (unverifiable on one device \u2014 narrate); the spar leaves the pending/upcoming state appropriately."
+  }
+ },
+ "38": {
+  "f": {
+   "steps": "Precondition: Partner device has notifications denied for Box and Ring.\n1. With notifications denied, invite a spar to that partner.\n2. Open the app on the partner device.",
+   "expected": "The challenge still surfaces in-app (dashboard/Upcoming) even with no push; the app degrades gracefully and ideally prompts to enable notifications. A challenge must not be lost with no way to find it."
+  }
+ },
+ "39": {
+  "f": {
+   "steps": "Precondition: A spar scheduled ~2 min out (Time-01-07) with notifications enabled.\n1. Wait for the reminder to fire ahead of the scheduled time.\n2. Tap the reminder.",
+   "expected": "A reminder push arrives before the scheduled time; tapping it opens the spar/challenge."
+  }
+ },
+ "40": {
+  "f": {
+   "steps": "Precondition: At least one item under Upcoming Spars.\n1. On Home, tap an item in 'Upcoming Spars'.",
+   "expected": "It opens the spar's detail (topic/goal/time and status: awaiting partner / accepted) with the available actions (start when due / cancel / reschedule if designed)."
+  }
+ },
+ "41": {
+  "f": {
+   "steps": "Precondition: An upcoming spar is open.\n1. Attempt to cancel the upcoming spar.\n2. Attempt to reschedule it (if available).",
+   "expected": "Cancel removes it from Upcoming (and notifies the partner if applicable); the count decrements; reschedule updates the time everywhere. If neither action exists, note it as a gap."
+  }
+ },
+ "42": {
+  "f": {
+   "steps": "Precondition: An Active/Paused spar shown (e.g. 'YOU vs JAMES \u2014 LIVE 12 min').\n1. Tap RESUME FIGHT on the Active & Paused Spars card.",
+   "expected": "It returns into the live spar at the right state; the LIVE timer and the last message are consistent."
+  }
+ },
+ "43": {
+  "f": {
+   "steps": "Precondition: In a live spar (via Accept ASAP or Resume).\n1. Enter a live spar.\n2. Look for the exit/timeout control across the spar screens.",
+   "expected": "An emergency exit and a timeout affordance are visible and reachable at all times during the spar."
+  }
+ },
+ "44": {
+  "f": {
+   "steps": "Precondition: On shared spar/summary/Couple Stats views.\n1. Inspect shared spar summary and Couple Stats views.",
+   "expected": "Nothing frames one partner as beating the other; Couple Stats shows shared metrics only."
+  }
+ },
+ "45": {
+  "f": {
+   "steps": "Precondition: Able to schedule two spars.\nTest data: Two spars both at Today 8:00 PM\n1. Schedule two spars for the same date/time.",
+   "expected": "Both are handled sanely (allowed with clear listing, or a conflict warning); reminders for both behave; no crash or overwrite. (The dashboard already shows two 'Today, 8:00 PM' upcoming spars.)"
+  }
+ },
+ "46": {
+  "f": {
+   "steps": "Precondition: A Shadow Boxing conversation with enough messages to scroll.\n1. Open (or start and populate) a Shadow Boxing chat with several messages.\n2. Leave and reopen it.",
+   "expected": "On load the chat is scrolled to the latest message (bottom), not stuck at the top."
+  }
+ },
+ "47": {
+  "f": {
+   "steps": "Precondition: In a Shadow Boxing chat scrolled to the bottom.\n1. Tap the input to open the keyboard.",
+   "expected": "The view stays anchored to the latest messages; the last message is not pushed up or hidden behind the keyboard."
+  }
+ },
+ "48": {
+  "f": {
+   "steps": "Precondition: In a Shadow Boxing chat.\n1. Inspect the new chat interface against the design/screenshots.",
+   "expected": "The new interface renders correctly (layout, message bubbles, input bar, whisper styling); whispers stay visually distinct/private (invariant); no leftover old-UI artifacts."
+  }
+ },
+ "__seedV": 1
+}
