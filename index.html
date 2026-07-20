@@ -1952,7 +1952,7 @@ QA &amp; Project Manager, AppMakers LA
     <div class="grid">
       <a class="tile" href="#pm-overview">
         <span class="ico"><svg><use href="#i-users"/></svg></span>
-        <h3>What a PM owns</h3><p>The shape of the role and the rhythm of a project.</p>
+        <h3>The PM process</h3><p>Every stage from sales handoff to ship, grouped by phase, with a card for each.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
       <a class="tile" href="#pm-running">
@@ -1991,26 +1991,64 @@ QA &amp; Project Manager, AppMakers LA
   <!-- ============ PM OVERVIEW ============ -->
   <section class="view" id="pm-overview">
     <div class="sec-head">
-      <span class="eyebrow">PM Job · What a PM owns</span>
-      <h1>What a PM owns</h1>
-      <p class="desc">Seeded from what we know so far. It fills out as you shadow PMs and take on your own projects.</p>
+      <span class="eyebrow">PM Job \u00b7 Process map</span>
+      <h1>The PM process, end to end</h1>
+      <p class="desc">The full arc a PM owns, grouped into phases. In the real project the steps are separate; in practice several run together, so the stage cards below consolidate the ones you do at the same time. Each stage links to its card as we build them out.</p>
     </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> The order is the order of work. Steps marked <b>(to confirm)</b> are inferred from the existing project lifecycle and need your sign-off. <b>Budget and hours</b> is not a step, it runs across every phase, see <a href="#pm-budgets">Budgets</a>.</div></div>
     <div class="block">
-      <h3>The shape of the role</h3>
-      <p class="prose">A PM owns a project end to end: the client relationship, the kickoff, getting estimates from developers, scheduling the work, running sprints, watching the budget and hours, and getting it shipped. At AppMakers you QA first, then grow into this, so a lot of it clicks once you have seen a few projects from the QA seat.</p>
-    </div>
-    <div class="block">
-      <h3>The rhythm of a project</h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 1</span> R&amp;D</h3>
+      <p class="prose">Turn a signed client into approved designs without burning budget. This is the front half of the project and where most PM judgment lives.</p>
       <ol class="steps">
-        <li>Get assigned and <b>onboard</b> to the project (designs, specs, estimates).</li>
-        <li>Run the <b>kickoff</b> off the client's questionnaire.</li>
-        <li>Get <b>estimates</b> from the developers; these set the hours you are held to.</li>
-        <li><b>Schedule</b> the work into sprints/builds and direct the developers.</li>
-        <li>Keep the <b>client updated</b>, manage scope, and watch the <b>budget</b>.</li>
-        <li><b>Ship</b>, then follow up.</li>
+        <li><b>Sales handoff</b> the project comes to you from Aaron's sales call. It is the only context you start with.</li>
+        <li><b>R&amp;D prep</b> research the company, the client, their industry and their competitors, and read the sales call, before you speak to them.</li>
+        <li><b><a href="#pm-kickoff">Kickoff call</a></b> ask prepared, specific questions to remove ambiguity. Recorded in Fathom. One call usually, two or three if the project is complex.</li>
+        <li><b><a href="#specs">Spec creation</a></b> write the spec from the kickoff transcript, section by section, then check hard for anything the AI invented or missed.</li>
+        <li><b>Design direction</b> the designer builds only the first 3 to 4 screens.</li>
+        <li><b>Design direction check-in</b> the client confirms colours, theme and direction before anything else is built. If they dislike it you have only 4 screens to redo, not the whole app.</li>
+        <li><b>Design build</b> the designer builds every screen from the spec.</li>
+        <li><b>Internal design review</b> you review the designs against the spec. The gate before the client sees anything. Miss a flow here and the estimate is wrong.</li>
+        <li><b>Client design review</b> present the designs, get approval, handle out-of-scope items and upsells, and walk the client through budget status.</li>
       </ol>
     </div>
-    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Grows as you learn.</span> Add what you pick up shadowing PMs here. The <a href="#specs">specs</a> and <a href="#pm-budgets">budgets</a> pages already cover two big PM muscles.</div></div>
+    <div class="block">
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 2</span> Estimates</h3>
+      <p class="prose">Turn the approved designs into the hours you will be held to. Everything is estimated from the designs, so the designs must be right first.</p>
+      <ol class="steps">
+        <li><b>Handover to dev team</b> hand the approved designs to the developers to estimate against.</li>
+        <li><b>Lean and normal estimates built</b> the developers build the estimates from the designs. These set the budget and the hours you manage the project against.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 3</span> Development &amp; sprints</h3>
+      <p class="prose">Direct the build. Schedule the work, run sprints and keep developers moving.</p>
+      <ol class="steps">
+        <li><b><a href="#pm-running">Schedule and direct</a></b> break the work into sprints and builds and direct the developers through the build and test loop.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 4</span> Testing <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <p class="prose">QA the build against the spec and acceptance criteria before it ships.</p>
+      <ol class="steps">
+        <li><b><a href="#qa-workflow">QA the build</a></b> test each build against the spec and acceptance criteria, log bugs, and drive them to closed. This is the seat you start from at AppMakers.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 5</span> Ship &amp; close <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <p class="prose">Get it live, then close the loop with the client.</p>
+      <ol class="steps">
+        <li><b>Ship</b> release the finished build.</li>
+        <li><b>Client review</b> the liaison requests a client review once the project is closed.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 6</span> Maintenance <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <p class="prose">Ongoing support and change requests after ship.</p>
+      <ol class="steps">
+        <li><b><a href="#pm-maintenance">Maintain</a></b> handle maintenance work and change requests under the maintenance plan.</li>
+      </ol>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">The rule under all of it.</span> Specs come from the client, designs come from the specs, and estimates, the build and the budget all come from the designs. Every stage is only as correct as the one before it. That is why the internal design review matters: "if this gets approved, this gets built."</div></div>
   </section>
 
   <!-- ============ PM RUNNING ============ -->
@@ -2785,7 +2823,7 @@ Always begin your first response with:
     qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-sandbox':'qa','qa-insights':'qa','qa-resources':'qa',
     pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm','pm-kickoff':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
     projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours','pm-kickoff':'Kickoff call to specs',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'The PM process','pm-running':'Running a project','pm-budgets':'Budgets & hours','pm-kickoff':'Kickoff call to specs',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
