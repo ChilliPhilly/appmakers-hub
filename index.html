@@ -1995,24 +1995,24 @@ QA &amp; Project Manager, AppMakers LA
       <h1>The PM process, end to end</h1>
       <p class="desc">The full arc a PM owns, grouped into phases. In the real project the steps are separate; in practice several run together, so the stage cards below consolidate the ones you do at the same time. Each stage links to its card as we build them out.</p>
     </div>
-    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> The order is the order of work. Steps marked <b>(to confirm)</b> are inferred from the existing project lifecycle and need your sign-off. <b>Budget and hours</b> is not a step, it runs across every phase, see <a href="#pm-budgets">Budgets</a>.</div></div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> The order is the order of work. Steps marked <b>(to confirm)</b> are inferred from the existing project lifecycle and need your sign-off. The hours on each phase are the <b>expected work hours</b> for that stage; the detail and how you log them lives in each stage's card. They are indicative and conservative (Labi's, for a small project) and vary a lot by client.</div></div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 1</span> R&amp;D</h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 1</span> R&amp;D <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">about 4 to 5h</span></h3>
       <p class="prose">Turn a signed client into approved designs without burning budget. This is the front half of the project and where most PM judgment lives.</p>
       <ol class="steps">
         <li><b>Sales handoff</b> the project comes to you from Aaron's sales call. It is the only context you start with.</li>
         <li><b>R&amp;D prep</b> research the company, the client, their industry and their competitors, and read the sales call, before you speak to them.</li>
         <li><b><a href="#pm-kickoff">Kickoff call</a></b> ask prepared, specific questions to remove ambiguity. Recorded in Fathom. One call usually, two or three if the project is complex.</li>
-        <li><b><a href="#specs">Spec creation</a></b> write the spec from the kickoff transcript, section by section, then check hard for anything the AI invented or missed.</li>
+        <li><b><a href="#specs">Spec creation</a></b> write the spec from the kickoff transcript, section by section, then check hard for anything the AI invented or missed. <span style="color:var(--muted)">(kickoff + spec, about 3 to 4h combined)</span></li>
         <li><b>Design direction</b> the designer builds only the first 3 to 4 screens.</li>
         <li><b>Design direction check-in</b> the client confirms colours, theme and direction before anything else is built. If they dislike it you have only 4 screens to redo, not the whole app.</li>
         <li><b>Design build</b> the designer builds every screen from the spec.</li>
-        <li><b>Internal design review</b> you review the designs against the spec. The gate before the client sees anything. Miss a flow here and the estimate is wrong.</li>
+        <li><b>Internal design review</b> you review the designs against the spec. The gate before the client sees anything. Miss a flow here and the estimate is wrong. <span style="color:var(--muted)">(about 1h)</span></li>
         <li><b>Client design review</b> present the designs, get approval, handle out-of-scope items and upsells, and walk the client through budget status.</li>
       </ol>
     </div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 2</span> Estimates</h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 2</span> Estimates <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">hours to capture</span></h3>
       <p class="prose">Turn the approved designs into the hours you will be held to. Everything is estimated from the designs, so the designs must be right first.</p>
       <ol class="steps">
         <li><b>Handover to dev team</b> hand the approved designs to the developers to estimate against.</li>
@@ -2020,21 +2020,21 @@ QA &amp; Project Manager, AppMakers LA
       </ol>
     </div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 3</span> Development &amp; sprints</h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 3</span> Development &amp; sprints <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">hours to capture</span></h3>
       <p class="prose">Direct the build. Schedule the work, run sprints and keep developers moving.</p>
       <ol class="steps">
         <li><b><a href="#pm-running">Schedule and direct</a></b> break the work into sprints and builds and direct the developers through the build and test loop.</li>
       </ol>
     </div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 4</span> Testing <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 4</span> Testing <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span> <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">hours to capture</span></h3>
       <p class="prose">QA the build against the spec and acceptance criteria before it ships.</p>
       <ol class="steps">
         <li><b><a href="#qa-workflow">QA the build</a></b> test each build against the spec and acceptance criteria, log bugs, and drive them to closed. This is the seat you start from at AppMakers.</li>
       </ol>
     </div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 5</span> Ship &amp; close <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 5</span> Ship &amp; close <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span> <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">hours to capture</span></h3>
       <p class="prose">Get it live, then close the loop with the client.</p>
       <ol class="steps">
         <li><b>Ship</b> release the finished build.</li>
@@ -2042,7 +2042,7 @@ QA &amp; Project Manager, AppMakers LA
       </ol>
     </div>
     <div class="block">
-      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 6</span> Maintenance <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span></h3>
+      <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 6</span> Maintenance <span style="font:500 12px/1 var(--font);color:var(--muted)">(to confirm)</span> <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">hours to capture</span></h3>
       <p class="prose">Ongoing support and change requests after ship.</p>
       <ol class="steps">
         <li><b><a href="#pm-maintenance">Maintain</a></b> handle maintenance work and change requests under the maintenance plan.</li>
