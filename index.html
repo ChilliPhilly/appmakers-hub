@@ -1965,6 +1965,11 @@ QA &amp; Project Manager, AppMakers LA
         <h3>Budgets &amp; hours</h3><p>Keeping a project inside its estimated hours.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
+      <a class="tile" href="#pm-kickoff">
+        <span class="ico"><svg><use href="#i-video"/></svg></span>
+        <h3>Kickoff call to specs</h3><p>Turn a client kickoff transcript into an MVP spec, section by section.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
       <a class="tile" href="#specs">
         <span class="ico"><svg><use href="#i-spec"/></svg></span>
         <h3>Reading &amp; writing specs</h3><p>How specs are built, and a template for your own.</p>
@@ -2050,7 +2055,63 @@ QA &amp; Project Manager, AppMakers LA
     </div>
   </section>
 
-<section class="view" id="specs">
+<!-- ============ PM KICKOFF TO SPECS ============ -->
+  <section class="view" id="pm-kickoff">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job \u00b7 Kickoff call to specs</span>
+      <h1>Kickoff call to specs</h1>
+      <p class="desc">The repeatable way the team turns a client kickoff or discovery call into an MVP spec: feed the transcript to an LLM with the prompt below and approve it section by section. Feeds straight into <a href="#specs">Reading &amp; writing specs</a>.</p>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Where the transcript comes from.</span> Kickoff calls are recorded in <b>Fathom</b>. Grab the transcript from the meeting (or its Fathom link on the <a href="#projects">project page</a>), then paste it after this prompt. This is Labi's R&amp;D Assistant prompt, kept close to verbatim so output stays consistent across the team.</div></div>
+    <div class="block">
+      <h3>How to use it</h3>
+      <ol class="steps">
+        <li>Open the kickoff call in Fathom and copy the full <b>transcript</b>.</li>
+        <li>Start a fresh LLM chat, paste the <b>prompt</b> below, then paste the transcript.</li>
+        <li>It returns <b>one section at a time</b> and waits for approval. Review each, answer its follow-up questions, then tell it to continue.</li>
+        <li>When every section is approved, say <b>"go ahead"</b> for the full document.</li>
+        <li>Sanity-check it against <a href="#specs">what a good spec contains</a>, then turn the gaps into <a href="#testcases">test cases</a> and questions for the client.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>What it produces</h3>
+      <dl class="kv">
+        <div><dt>Overview</dt><dd>What the product is, in short.</dd></div>
+        <div><dt>Core Features</dt><dd>Bullet list of the MVP features.</dd></div>
+        <div><dt>Core Features &amp; Screens</dt><dd>Each feature mapped to the screens that deliver it.</dd></div>
+        <div><dt>Branding Guidelines</dt><dd>Any brand direction pulled from the call.</dd></div>
+        <div><dt>Future Features</dt><dd>Explicitly parked as Post-MVP.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>The prompt (copy this)</h3>
+      <p class="prose" style="margin-bottom:12px">Paste this verbatim, then the transcript underneath it.</p>
+      <div class="tmpl">You are "R&amp;D Assistant," a product R&amp;D strategist working for Labinot Krasniqi. Your job is to turn raw client transcripts into structured R&amp;D documents for MVP development.
+Work in small steps, finish one section at a time and ask Labinot for approval before continuing. Ask follow-up questions if anything in the transcript is unclear or requires assumptions.
+When Labinot pastes a transcript, analyze it carefully and extract only product-relevant information. Ignore chit-chat, small talk, and vague ideas.
+Use this structure:
+
+Overview
+Core Features (bullet list)
+Core Features &amp; Screens
+Branding Guidelines
+Future Features, Post MVP
+
+Rules:
+
+Always ask for approval before moving to the next section
+Ask follow-up questions when transcript details are vague
+Be fast but precise, you are evaluated on clarity and accuracy
+Use short, crisp sentences and bullet points throughout
+Never output the full document unless Labinot says "go ahead"
+
+Always begin your first response with:
+"Here's the first section: [OVERVIEW], let me know when to continue or if you'd like changes."</div>
+    </div>
+    <div class="example"><span class="xl">Real-world example</span><p>Take a Box and Ring kickoff or the QA &amp; ClickUp intro from Fathom, paste this prompt then the transcript, and it hands you Overview first and waits. You approve, it moves to Core Features, and so on, so you catch gaps while they are cheap to fix.</p></div>
+  </section>
+
+  <section class="view" id="specs">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Reading &amp; writing specs</span>
       <h1>Reading &amp; writing specs</h1>
@@ -2722,9 +2783,9 @@ QA &amp; Project Manager, AppMakers LA
     time:'onboarding',billing:'onboarding',dashboards:'onboarding','makers-app':'onboarding',
     people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
     qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-sandbox':'qa','qa-insights':'qa','qa-resources':'qa',
-    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
+    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm','pm-kickoff':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
     projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'What a PM owns','pm-running':'Running a project','pm-budgets':'Budgets & hours','pm-kickoff':'Kickoff call to specs',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
@@ -2749,7 +2810,7 @@ QA &amp; Project Manager, AppMakers LA
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function nid(){return 't'+Math.random().toString(36).slice(2,9);}
-  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','specs','pm-maintenance','pm-resources']};
+  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','pm-kickoff','specs','pm-maintenance','pm-resources']};
   var MKEY='appmakers-modules-v1'; var mstate=load(MKEY)||{}; function saveM(){store(MKEY,mstate);}
   function trackOf(id){for(var k in MODULES)if(MODULES[k].indexOf(id)>-1)return k;return null;}
   function trackName(t){return t==='qa'?'QA':'PM';}
