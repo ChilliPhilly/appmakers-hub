@@ -1079,6 +1079,25 @@
   .mf-btn.is-done{background:var(--good-wash);border-color:#C8E4D3;color:var(--good);}
   .mf-next{margin-left:auto;font-weight:600;font-size:.9rem;color:var(--accent-ink);text-decoration:none;}
   .mf-next:hover{text-decoration:underline;}
+
+  /* ---- inline edit mode ---- */
+  .topbar .edittoggle{margin-left:auto;}
+  .topbar .edittoggle ~ .tasktoggle{margin-left:10px;}
+  .topbar .edittoggle.on{background:var(--accent-wash);border-color:var(--accent);}
+  body.editing [contenteditable="true"]{outline:1px dashed rgba(225,29,95,.35);outline-offset:3px;border-radius:4px;cursor:text;}
+  body.editing [contenteditable="true"]:hover{outline-color:rgba(225,29,95,.65);}
+  body.editing [contenteditable="true"]:focus{outline:2px solid var(--accent);background:#FFF9FB;}
+  .edit-hint{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;z-index:80;display:none;
+    align-items:center;gap:12px;background:#26272B;color:#F4F4F5;padding:10px 18px;border-radius:14px;
+    font-size:.85rem;box-shadow:0 8px 30px rgba(23,28,38,.28);max-width:92vw;flex-wrap:wrap;}
+  .edit-hint b{color:#fff;}
+  .edit-hint .eh-reset{font:600 .78rem var(--sans);color:#F4F4F5;background:transparent;
+    border:1px solid rgba(255,255,255,.35);border-radius:99px;padding:4px 11px;cursor:pointer;}
+  .edit-hint .eh-reset:hover{border-color:#fff;}
+  .edit-hint .eh-count{color:#A1A1AA;font-family:var(--mono);font-size:.72rem;}
+  .edit-reset{display:block;font:600 .72rem var(--sans);color:var(--accent-ink);background:var(--accent-wash);
+    border:1px solid transparent;border-radius:99px;padding:4px 11px;cursor:pointer;margin-top:12px;width:max-content;}
+  .edit-reset:hover{border-color:var(--accent);}
 </style>
 
 <!-- icon sprite -->
@@ -3278,7 +3297,7 @@ Always begin your first response with:
     del.onclick=function(){var ids={};doomedNow().forEach(function(t){ids[t.id]=1;});
       tstate.tasks=tstate.tasks.filter(function(t){return !ids[t.id];});saveTasks();scrim2.remove();renderAll();};
   }
-  var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','qa-session-boxandring-0.0.1-2'];
+  var DATA_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','qa-session-boxandring-0.0.1-2','appmakers-edits-v1'];
   function exportData(){var out={};DATA_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(/^qa-session/.test(k))out[k]=localStorage.getItem(k);}return JSON.stringify(out);}
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
@@ -5620,6 +5639,104 @@ Always begin your first response with:
   // Populate the static "App testing tips" mount in the QA Job section
   function mountQaTips(){ ['qa-app-tips-mount','qa-sandbox-tips-mount'].forEach(function(id){ var m=document.getElementById(id); if(m && !m.__done){ m.innerHTML = window.testingTipsHTML(); m.__done=true; } }); }
   if(document.readyState!=='loading') mountQaTips(); else document.addEventListener('DOMContentLoaded', mountQaTips);
+})();
+</script>
+<script>
+(function(){
+  var EKEY='appmakers-edits-v1';
+  function loadE(){try{return JSON.parse(localStorage.getItem(EKEY))||{};}catch(e){return {};}}
+  var edits=loadE();
+  function saveE(){localStorage.setItem(EKEY,JSON.stringify(edits));}
+  function hsh(x){var v=5381,i=x.length;while(i)v=((v*33)^x.charCodeAt(--i))>>>0;return v.toString(36);}
+  var EXCL_SECS={'home':1,'projects':1,'box-and-ring':1,'wave':1};
+  var SKIP='.module-foot,.track-prog,.example.todo,label,.taskrail,#trPanel,#toolsList,#homeTasks,#projectsList,.tprog,[data-noedit],[data-checklist]';
+  var SEL='h1,h2,h3,p,li,dt,dd,.gate > div,.tmpl';
+  var pristine=new Map(),keyOf=new Map(),els=[];
+  document.querySelectorAll('section.view').forEach(function(sec){
+    if(!sec.id||EXCL_SECS[sec.id])return;
+    var counts={};
+    sec.querySelectorAll(SEL).forEach(function(el){
+      if(el.closest(SKIP))return;
+      if(el.querySelector('input,button,select,textarea'))return;
+      var p=el.parentElement;
+      while(p&&p!==sec){if(keyOf.has(p))return;p=p.parentElement;}
+      var base=sec.id+'|'+hsh(el.innerHTML);
+      counts[base]=(counts[base]||0)+1;
+      var key=base+'|'+counts[base];
+      pristine.set(el,el.innerHTML);keyOf.set(el,key);els.push(el);
+      if(edits[key]!=null&&edits[key]!==el.innerHTML)el.innerHTML=edits[key];
+    });
+  });
+  function totalEdits(){var n=0;for(var k in edits)n++;return n;}
+  function secEdits(id){var n=0;for(var k in edits)if(k.indexOf(id+'|')===0)n++;return n;}
+  function commit(el){
+    var key=keyOf.get(el);if(!key)return;
+    var cur=el.innerHTML;
+    if(cur===pristine.get(el)){if(edits[key]!=null){delete edits[key];saveE();}}
+    else if(edits[key]!==cur){edits[key]=cur;saveE();}
+  }
+  function saveAll(){els.forEach(commit);updateHint();}
+  var btn=document.createElement('button');
+  btn.type='button';btn.className='tasktoggle edittoggle';btn.id='edittoggle';
+  btn.setAttribute('aria-label','Toggle edit mode');
+  btn.innerHTML='<svg><use href="#i-note"/></svg><span>Edit</span>';
+  var tt=document.getElementById('tasktoggle');
+  tt.parentNode.insertBefore(btn,tt);
+  var hint=document.createElement('div');hint.className='edit-hint';
+  hint.innerHTML='<b>Edit mode.</b> Click any text to change it. Edits save in this browser; ask Claude to bake them into the hub for every device. <button type="button" class="eh-reset">Reset all</button><span class="eh-count"></span>';
+  document.body.appendChild(hint);
+  function updateHint(){var n=totalEdits();hint.querySelector('.eh-count').textContent=n?(n+' edited field'+(n>1?'s':'')):'no edits yet';}
+  function renderResets(){
+    document.querySelectorAll('section.view .sec-head').forEach(function(sh){
+      var sec=sh.closest('section');var old=sh.querySelector('.edit-reset');if(old)old.remove();
+      if(!document.body.classList.contains('editing'))return;
+      var n=secEdits(sec.id);if(!n)return;
+      var b=document.createElement('button');b.type='button';b.className='edit-reset';
+      b.textContent='Reset edits on this card ('+n+')';
+      b.onclick=function(){
+        if(!confirm('Reset '+n+' edited field(s) on this card back to the original?'))return;
+        for(var k in edits)if(k.indexOf(sec.id+'|')===0)delete edits[k];
+        saveE();
+        els.forEach(function(el){var key=keyOf.get(el);if(key&&key.indexOf(sec.id+'|')===0)el.innerHTML=pristine.get(el);});
+        renderResets();updateHint();
+      };
+      sh.appendChild(b);
+    });
+  }
+  function setEditing(on){
+    els.forEach(function(el){
+      if(on){el.setAttribute('contenteditable','true');el.spellcheck=false;}
+      else{el.removeAttribute('contenteditable');}
+    });
+    document.body.classList.toggle('editing',on);
+    btn.classList.toggle('on',on);
+    btn.querySelector('span').textContent=on?'Done':'Edit';
+    hint.style.display=on?'flex':'none';
+    if(!on)saveAll();
+    renderResets();updateHint();
+  }
+  btn.onclick=function(){setEditing(!document.body.classList.contains('editing'));};
+  hint.querySelector('.eh-reset').onclick=function(){
+    var n=totalEdits();if(!n)return;
+    if(!confirm('Reset ALL '+n+' edited fields across the hub?'))return;
+    edits={};saveE();
+    els.forEach(function(el){el.innerHTML=pristine.get(el);});
+    renderResets();updateHint();
+  };
+  document.addEventListener('blur',function(e){
+    if(document.body.classList.contains('editing')&&keyOf.has(e.target)){commit(e.target);renderResets();updateHint();}
+  },true);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&document.body.classList.contains('editing')&&keyOf.has(document.activeElement))document.activeElement.blur();
+  });
+  document.addEventListener('click',function(e){
+    if(!document.body.classList.contains('editing'))return;
+    var a=e.target.closest('a');
+    if(a&&a.closest('.content'))e.preventDefault();
+  },true);
+  window.addEventListener('beforeunload',function(){
+    if(document.body.classList.contains('editing'))saveAll();
+  });
 })();
 </script>
 </body>
