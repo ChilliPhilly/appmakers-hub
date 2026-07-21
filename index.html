@@ -1067,6 +1067,18 @@
   .area-h h2{font-family:var(--display);font-size:1.02rem;font-weight:600;white-space:nowrap;}
   .area-h .a-row::after{content:"";flex:1;height:1px;background:var(--line);}
   .area-h p{color:var(--muted);font-size:.85rem;margin-top:4px;}
+
+  .gate .g-hrs{margin-left:auto;flex:0 0 auto;font-family:var(--mono);font-size:.72rem;
+    color:var(--muted);white-space:nowrap;padding-top:4px;}
+  .module-foot{display:flex;align-items:center;gap:14px;margin:26px 0 8px;padding-top:18px;
+    border-top:1px solid var(--line);max-width:880px;}
+  .mf-btn{font:600 .85rem var(--sans);color:var(--ink);background:var(--card);border:1px solid var(--line);
+    border-radius:99px;padding:9px 16px;cursor:pointer;box-shadow:var(--shadow);
+    transition:border-color .15s ease,background .15s ease;}
+  .mf-btn:hover{border-color:var(--accent);}
+  .mf-btn.is-done{background:var(--good-wash);border-color:#C8E4D3;color:var(--good);}
+  .mf-next{margin-left:auto;font-weight:600;font-size:.9rem;color:var(--accent-ink);text-decoration:none;}
+  .mf-next:hover{text-decoration:underline;}
 </style>
 
 <!-- icon sprite -->
@@ -2072,7 +2084,7 @@ QA &amp; Project Manager, AppMakers LA
       <h1>The PM process, end to end</h1>
       <p class="desc">The full arc a PM owns, grouped into phases. In the real project the steps are separate; in practice several run together, so the stage cards below consolidate the ones you do at the same time. Each stage links to its card as we build them out.</p>
     </div>
-    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> The order is the order of work. Steps marked <b>(to confirm)</b> are inferred from the existing project lifecycle and need your sign-off. The hours on each phase are the <b>expected work hours</b> for that stage; the detail and how you log them lives in each stage's card. They are indicative and conservative (Labi's, for a small project) and vary a lot by client.</div></div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">How to read this.</span> The order is the order of work. Steps marked <b>(to confirm)</b> are inferred from the existing project lifecycle and need your sign-off. The hours on each phase are <b>how much time you can take</b> for that stage. They are indicative and conservative (Labi's, for a small project) and vary a lot by client.</div></div>
     <div class="block">
       <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 1</span> R&amp;D <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">about 4 to 5h</span></h3>
       <p class="prose">Turn a signed client into approved designs without burning budget. This is the front half of the project and where most PM judgment lives.</p>
@@ -2190,10 +2202,6 @@ QA &amp; Project Manager, AppMakers LA
       </ol>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>You can walk into the kickoff call with a prepared list of specific questions, grounded in the sales call, the company, the industry and the competitors. Next: <a href="#pm-kickoff">Kickoff call to specs</a>.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose">Hours to capture. Log what prep actually takes on your first projects and record it here.</p>
-    </div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> Where does the handoff arrive (ClickUp project, Fathom recording of the sales call, notes)? Who schedules the kickoff call? Where should prep research and draft questions live?</div></div>
   </section>
 
@@ -2204,7 +2212,7 @@ QA &amp; Project Manager, AppMakers LA
       <h1>Kickoff call to specs</h1>
       <p class="desc">Two jobs in one motion: run the kickoff call, then turn its transcript into an approved spec. The spec is what the designer builds from, so a missed or invented feature here is a wrong estimate later.</p>
     </div>
-    <div class="gate start"><span class="g-lbl">Start when</span><div><a href="#pm-handoff">R&amp;D prep</a> is done: you have specific, researched questions ready for the client.</div></div>
+    <div class="gate start"><span class="g-lbl">Start when</span><div><a href="#pm-handoff">R&amp;D prep</a> is done: you have specific, researched questions ready for the client.</div><span class="g-hrs">Allow about 3 to 4h</span></div>
     <div class="block tasks">
       <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
@@ -2261,10 +2269,6 @@ Always begin your first response with:
       </ol>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>Every section is approved, checked against what the client actually said, and the spec is ready for the designer. Next: <a href="#pm-design-direction">Designs: direction to build</a>.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose">Kickoff call plus spec creation together: <b>about 3 to 4 hours</b>. Conservative on purpose; budgets are tight and R&amp;D does not bill like development does.</p>
-    </div>
     <div class="example"><span class="xl">Real-world example</span><p>Labi ran an old client kickoff transcript through the prompt live. The Overview and Core Features came back clean, but the screens section invented "fast authentication". He caught it by asking "where did you get this from?" against the transcript. That question, per claim, is the review.</p></div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> Is there a standard client kickoff questionnaire or form, and how does it relate to the live call? Who normally attends, and how long does a kickoff usually run?</div></div>
   </section>
@@ -2353,10 +2357,6 @@ Always begin your first response with:
       <p class="prose">Where information is missing (pricing, some copy), the designer uses templates. They are modular and get finalised before development, so do not block the build on them; flag them as questions for the client design review call.</p>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>Every screen is built from the spec and in Figma. Next: <a href="#pm-design-review">Internal design review</a>.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose">Hours to capture. Most of this stage is the designer's clock, not yours, but watch it: designers can burn hours, and Labi keeps R&amp;D lean so projects reach development, where the real billing happens.</p>
-    </div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> Who assigns the designer and how? Is the direction check-in a live call or an async Figma share? Does the PM send it or the designer?</div></div>
   </section>
 
@@ -2367,7 +2367,7 @@ Always begin your first response with:
       <h1>Internal design review</h1>
       <p class="desc">The gate before the client ever sees the designs. "If this gets approved, this gets built. The estimations are from this. One missed flow, and you're over budget." Expect about an hour, done in three passes.</p>
     </div>
-    <div class="gate start"><span class="g-lbl">Start when</span><div>The designer tells you the full build is ready in Figma.</div></div>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>The designer tells you the full build is ready in Figma.</div><span class="g-hrs">Allow about 1h, plus a second pass</span></div>
     <div class="block tasks">
       <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
@@ -2424,10 +2424,6 @@ Always begin your first response with:
       </ol>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>Every comment is actioned or answered, no unclassified out-of-scope items remain, and the flows checklist passes end to end. Then book the <a href="#pm-client-review">client design review</a>.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose"><b>About 1 hour</b>, deliberately conservative; budget for the possibility of a second pass after the designer's changes. Log it against the project.</p>
-    </div>
     <div class="example"><span class="xl">Real-world example</span><p>On Glitter-verse the designer added a "Discover Effects" screen full of effects. The spec said two to three effect combinations, total. Labi's call: 100% out of scope, but it makes sense as a feature, so instead of deleting it he holds it for the client call as a modular, optional scope-in. Spot it, classify it, turn it into a removal or an upsell. That single catch is the job.</p></div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Coming later.</span> A reusable per-project design-review checklist feature is planned for the hub once all PM phases are captured, so these passes become tickable lists.</div></div>
   </section>
@@ -2450,10 +2446,6 @@ Always begin your first response with:
       </ol>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>The client signs off the designs. The project moves to <a href="#pm-estimates">Estimates</a>.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose">Hours to capture.</p>
-    </div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Deliberately thin.</span> Labi is preparing a list of videos of him presenting designs and upselling, and you will attend the live Glitter-verse client call. This card gets fleshed out from those, not from guesses.</div></div>
   </section>
 
@@ -2473,10 +2465,6 @@ Always begin your first response with:
       </ol>
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>The estimates are built and the client approves them; Aaron sends the contract and first invoice, and development can be scheduled.</div></div>
-    <div class="block">
-      <h3>Expected hours</h3>
-      <p class="prose">Hours to capture.</p>
-    </div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To capture.</span> The difference between a lean and a normal estimate, who builds them, what the PM does while they are being built, and what happens when the estimate exceeds the client's budget. This card fills out when the process is walked in real life.</div></div>
   </section>
 
@@ -3767,7 +3755,7 @@ Always begin your first response with:
   function renderTraining(){['qa','pm'].forEach(function(t){var st=trackStats(t),pct=st.total?Math.round(st.done/st.total*100):0;
     var pe=document.querySelector('[data-trainpct="'+t+'"]');if(pe)pe.textContent=(pct===100)?'Complete \u2713':pct+'%';
     var fe=document.querySelector('[data-trainfill="'+t+'"]');if(fe){fe.style.width=pct+'%';fe.className=(pct===100)?'full':'';}});}
-  function injectExamples(){for(var t in MODULES){MODULES[t].forEach(function(id){if(id.indexOf('resources')>-1)return;
+  function injectExamples(){for(var t in MODULES){if(t==='pm')continue;MODULES[t].forEach(function(id){if(id.indexOf('resources')>-1)return;
     var sec=document.getElementById(id);if(!sec||sec.querySelector('.example'))return;
     var ex=document.createElement('div');ex.className='example todo';
     ex.innerHTML='<span class="xl">Real-world example</span><p>Space to drop a real example from your projects as you hit one. Ask to have it added here.</p>';
