@@ -1955,32 +1955,52 @@ QA &amp; Project Manager, AppMakers LA
         <h3>The PM process</h3><p>Every stage from sales handoff to ship, grouped by phase, with a card for each.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <a class="tile" href="#pm-running">
-        <span class="ico"><svg><use href="#i-flow"/></svg></span>
-        <h3>Running a project</h3><p>Kickoff, estimates, sprints, delivery, client comms.</p>
+      <a class="tile" href="#pm-handoff">
+        <span class="ico"><svg><use href="#i-doc"/></svg></span>
+        <h3>Handoff &amp; R&amp;D prep</h3><p>What you receive from sales and the research you do before speaking to the client.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <a class="tile" href="#pm-budgets">
-        <span class="ico"><svg><use href="#i-chart"/></svg></span>
-        <h3>Budgets &amp; hours</h3><p>Keeping a project inside its estimated hours.</p>
-        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
-      </a>
-      <a class="tile" href="#pm-kickoff">
+<a class="tile" href="#pm-kickoff">
         <span class="ico"><svg><use href="#i-video"/></svg></span>
         <h3>Kickoff call to specs</h3><p>Turn a client kickoff transcript into an MVP spec, section by section.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <a class="tile" href="#specs">
+<a class="tile" href="#specs">
         <span class="ico"><svg><use href="#i-spec"/></svg></span>
         <h3>Reading &amp; writing specs</h3><p>How specs are built, and a template for your own.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <a class="tile" href="#pm-maintenance">
+      <a class="tile" href="#pm-design-direction">
+        <span class="ico"><svg><use href="#i-app"/></svg></span>
+        <h3>Designs: direction to build</h3><p>First screens, client direction check-in, then the full design build.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#pm-design-review">
+        <span class="ico"><svg><use href="#i-check"/></svg></span>
+        <h3>Internal design review</h3><p>The gate before the client sees anything. Scan, confirm flows, then nitpick.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+      <a class="tile" href="#pm-client-review">
+        <span class="ico"><svg><use href="#i-users"/></svg></span>
+        <h3>Client design review</h3><p>Present the designs, handle scope and upsells, cover budget status.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+<a class="tile" href="#pm-running">
+        <span class="ico"><svg><use href="#i-flow"/></svg></span>
+        <h3>Running a project</h3><p>Kickoff, estimates, sprints, delivery, client comms.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+<a class="tile" href="#pm-budgets">
+        <span class="ico"><svg><use href="#i-chart"/></svg></span>
+        <h3>Budgets &amp; hours</h3><p>Keeping a project inside its estimated hours.</p>
+        <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
+      </a>
+<a class="tile" href="#pm-maintenance">
         <span class="ico"><svg><use href="#i-cal"/></svg></span>
         <h3>Maintenance plans</h3><p>Selling and running the post-launch retainer, from Aaron.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <a class="tile" href="#pm-resources">
+<a class="tile" href="#pm-resources">
         <span class="ico"><svg><use href="#i-folder"/></svg></span>
         <h3>PM resources</h3><p>Key docs, tools and templates for the PM role.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
@@ -1991,7 +2011,7 @@ QA &amp; Project Manager, AppMakers LA
   <!-- ============ PM OVERVIEW ============ -->
   <section class="view" id="pm-overview">
     <div class="sec-head">
-      <span class="eyebrow">PM Job \u00b7 Process map</span>
+      <span class="eyebrow">PM Job · Process map</span>
       <h1>The PM process, end to end</h1>
       <p class="desc">The full arc a PM owns, grouped into phases. In the real project the steps are separate; in practice several run together, so the stage cards below consolidate the ones you do at the same time. Each stage links to its card as we build them out.</p>
     </div>
@@ -2000,15 +2020,15 @@ QA &amp; Project Manager, AppMakers LA
       <h3 style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span style="display:inline-block;font:600 11px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-weak,rgba(225,29,95,.09));padding:5px 9px;border-radius:999px;vertical-align:middle">Phase 1</span> R&amp;D <span style="margin-left:auto;font:600 12px/1 var(--font);color:var(--muted);white-space:nowrap">about 4 to 5h</span></h3>
       <p class="prose">Turn a signed client into approved designs without burning budget. This is the front half of the project and where most PM judgment lives.</p>
       <ol class="steps">
-        <li><b>Sales handoff</b> the project comes to you from Aaron's sales call. It is the only context you start with.</li>
-        <li><b>R&amp;D prep</b> research the company, the client, their industry and their competitors, and read the sales call, before you speak to them.</li>
+        <li><b><a href="#pm-handoff">Sales handoff</a></b> the project comes to you from Aaron's sales call. It is the only context you start with.</li>
+        <li><b><a href="#pm-handoff">R&amp;D prep</a></b> research the company, the client, their industry and their competitors, and read the sales call, before you speak to them.</li>
         <li><b><a href="#pm-kickoff">Kickoff call</a></b> ask prepared, specific questions to remove ambiguity. Recorded in Fathom. One call usually, two or three if the project is complex.</li>
         <li><b><a href="#specs">Spec creation</a></b> write the spec from the kickoff transcript, section by section, then check hard for anything the AI invented or missed. <span style="color:var(--muted)">(kickoff + spec, about 3 to 4h combined)</span></li>
-        <li><b>Design direction</b> the designer builds only the first 3 to 4 screens.</li>
-        <li><b>Design direction check-in</b> the client confirms colours, theme and direction before anything else is built. If they dislike it you have only 4 screens to redo, not the whole app.</li>
-        <li><b>Design build</b> the designer builds every screen from the spec.</li>
-        <li><b>Internal design review</b> you review the designs against the spec. The gate before the client sees anything. Miss a flow here and the estimate is wrong. <span style="color:var(--muted)">(about 1h)</span></li>
-        <li><b>Client design review</b> present the designs, get approval, handle out-of-scope items and upsells, and walk the client through budget status.</li>
+        <li><b><a href="#pm-design-direction">Design direction</a></b> the designer builds only the first 3 to 4 screens.</li>
+        <li><b><a href="#pm-design-direction">Design direction check-in</a></b> the client confirms colours, theme and direction before anything else is built. If they dislike it you have only 4 screens to redo, not the whole app.</li>
+        <li><b><a href="#pm-design-direction">Design build</a></b> the designer builds every screen from the spec.</li>
+        <li><b><a href="#pm-design-review">Internal design review</a></b> you review the designs against the spec. The gate before the client sees anything. Miss a flow here and the estimate is wrong. <span style="color:var(--muted)">(about 1h)</span></li>
+        <li><b><a href="#pm-client-review">Client design review</a></b> present the designs, get approval, handle out-of-scope items and upsells, and walk the client through budget status.</li>
       </ol>
     </div>
     <div class="block">
@@ -2093,14 +2113,58 @@ QA &amp; Project Manager, AppMakers LA
     </div>
   </section>
 
+  <!-- ============ PM HANDOFF & R&D PREP ============ -->
+  <section class="view" id="pm-handoff">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · R&amp;D · Steps 1 and 2</span>
+      <h1>Handoff &amp; R&amp;D prep</h1>
+      <p class="desc">These two steps run together: the project lands on you, and you prepare before ever speaking to the client. The quality of your prep sets the quality of everything downstream.</p>
+    </div>
+    <div class="block">
+      <h3>Step 1 · Sales handoff</h3>
+      <p class="prose">The project reaches you after Aaron's sales call with the client. That call is the <b>only context you start with</b>, so read it and what was discussed before doing anything else.</p>
+    </div>
+    <div class="block">
+      <h3>Step 2 · R&amp;D prep</h3>
+      <p class="prose">Before the kickoff call, prepare so your questions are sharp:</p>
+      <ol class="steps">
+        <li>Research the <b>company</b>.</li>
+        <li>Research the <b>client</b>, the person you will actually work with.</li>
+        <li>Re-check the <b>sales call</b> and what was discussed.</li>
+        <li>Research the <b>industry</b> they want to build in.</li>
+        <li>Look at their <b>competitors</b>.</li>
+        <li>Draft <b>specific questions</b> from all of it, ready for the kickoff.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Why prep matters</h3>
+      <p class="prose">Your prepared questions generate the kickoff transcript, and that transcript generates the spec. Weak prep means vague questions, a thin transcript, and a spec full of gaps that surface later as budget problems. See <a href="#pm-kickoff">Kickoff call to specs</a> for what happens next.</p>
+    </div>
+    <div class="block">
+      <h3>Expected hours</h3>
+      <p class="prose">Hours to capture. Not quantified on the call; log what prep actually takes on your first projects and record it here.</p>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> What exactly is handed over and where do you find it (ClickUp project, Fathom recording of Aaron's call, notes)? Is there a formal handoff moment, or do you pick the project up when assigned? Where should prep research and draft questions live?</div></div>
+  </section>
+
 <!-- ============ PM KICKOFF TO SPECS ============ -->
   <section class="view" id="pm-kickoff">
     <div class="sec-head">
-      <span class="eyebrow">PM Job \u00b7 Kickoff call to specs</span>
+      <span class="eyebrow">PM Job · Kickoff call to specs</span>
       <h1>Kickoff call to specs</h1>
       <p class="desc">The repeatable way the team turns a client kickoff or discovery call into an MVP spec: feed the transcript to an LLM with the prompt below and approve it section by section. Feeds straight into <a href="#specs">Reading &amp; writing specs</a>.</p>
     </div>
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Where the transcript comes from.</span> Kickoff calls are recorded in <b>Fathom</b>. Grab the transcript from the meeting (or its Fathom link on the <a href="#projects">project page</a>), then paste it after this prompt. This is Labi's R&amp;D Assistant prompt, kept close to verbatim so output stays consistent across the team.</div></div>
+    <div class="block">
+      <h3>Running the kickoff call (step 3)</h3>
+      <ol class="steps">
+        <li>Walk in prepared: your questions come from <a href="#pm-handoff">R&amp;D prep</a>, built from the company, the client, the industry, the competitors and the sales call.</li>
+        <li>Ask <b>as specifically as possible</b>. Labi's rule: specific questions now minimise misconceptions later, with the client and with your future self.</li>
+        <li>Make sure the call is <b>recorded in Fathom</b>. The transcript is the raw material for the spec.</li>
+        <li>One call is usually enough to write the spec. A complex project may need <b>two or three</b>.</li>
+        <li>If the client goes out of scope mid-call, never say no. Say <b>"great idea, I'll note it as a future feature"</b>. It lands in Future Features and becomes a paid phase-two conversation near project end.</li>
+      </ol>
+    </div>
     <div class="block">
       <h3>How to use it</h3>
       <ol class="steps">
@@ -2120,6 +2184,19 @@ QA &amp; Project Manager, AppMakers LA
         <div><dt>Branding Guidelines</dt><dd>Any brand direction pulled from the call.</dd></div>
         <div><dt>Future Features</dt><dd>Explicitly parked as Post-MVP.</dd></div>
       </dl>
+    </div>
+    <div class="block">
+      <h3>Checking what the AI gives you (step 4)</h3>
+      <ol class="steps">
+        <li><b>Review every section before continuing.</b> Never let it dump the whole document; nobody properly reviews a three-page doc. Section by section is how you actually catch mistakes.</li>
+        <li><b>Hunt hallucinations.</b> Labi's live example: the AI invented "fast authentication", a vague feature the client never asked for. A made-up feature or a missed feature both cost you: the client either complains or asks for it, and the estimate is wrong either way.</li>
+        <li>Know the shapes: the <b>Overview</b> covers what you are building, immediate objectives, the primary product goal, MVP direction and product principles. <b>Core Features &amp; Screens</b> breaks each screen into purpose, core elements and notes so the designer can build from it. Everything is <b>MVP-oriented</b>.</li>
+        <li><b>Match the tool to the client.</b> Simple builds go through the prompt; a genuinely complex project may still be written by hand. Labi finds ChatGPT stronger for planning and documents, Claude stronger for building. Use what works for you.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Expected hours</h3>
+      <p class="prose">Kickoff call plus spec creation together: <b>about 3 to 4 hours</b>. Conservative on purpose; budgets are tight and R&amp;D does not bill like development does.</p>
     </div>
     <div class="block">
       <h3>The prompt (copy this)</h3>
@@ -2147,6 +2224,7 @@ Always begin your first response with:
 "Here's the first section: [OVERVIEW], let me know when to continue or if you'd like changes."</div>
     </div>
     <div class="example"><span class="xl">Real-world example</span><p>Take a Box and Ring kickoff or the QA &amp; ClickUp intro from Fathom, paste this prompt then the transcript, and it hands you Overview first and waits. You approve, it moves to Core Features, and so on, so you catch gaps while they are cheap to fix.</p></div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> Is there a standard client kickoff questionnaire or form, and how does it relate to the live call? Who normally attends, and how long does a kickoff usually run?</div></div>
   </section>
 
   <section class="view" id="specs">
@@ -2208,6 +2286,147 @@ Always begin your first response with:
   </section>
 
   <!-- ============ PM MAINTENANCE PLANS ============ -->
+  <!-- ============ PM DESIGNS: DIRECTION TO BUILD ============ -->
+  <section class="view" id="pm-design-direction">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · R&amp;D · Steps 5 to 7</span>
+      <h1>Designs: direction to build</h1>
+      <p class="desc">Three steps that run as one motion: establish direction cheaply, get the client to confirm it, then build everything. The whole point is that direction gets approved before real design budget is spent.</p>
+    </div>
+    <div class="block">
+      <h3>Step 5 · Design direction</h3>
+      <p class="prose">The designer builds only the <b>first 3 to 4 screens</b> (the onboarding screens, not even as far as sign-up) to establish <b>design, colours and overall direction</b>.</p>
+      <p class="prose"><b>Why:</b> it is a budget safeguard. If the client dislikes the direction, you have only 4 screens worth of work to change, not the whole app.</p>
+    </div>
+    <div class="block">
+      <h3>Step 6 · Direction check-in with the client</h3>
+      <p class="prose">Share those first screens with the client and get <b>explicit sign-off on colours, theme and direction</b> before anything else is built. Only after approval does the designer continue.</p>
+    </div>
+    <div class="block">
+      <h3>Step 7 · Design build</h3>
+      <p class="prose">With direction approved, the designer builds <b>every screen from the spec</b>. The standard the build is held to: everything in the design must <b>mirror the spec</b>. If it is in the spec it must be in the design; if the spec does not answer it, you flag it and ask the client once designs are shared.</p>
+      <p class="prose"><b>Placeholders are fine.</b> Where information is missing (pricing, some text), the designer uses templates. They are modular and get finalised before development, so do not block on them, flag them for the client call.</p>
+    </div>
+    <div class="block">
+      <h3>Expected hours</h3>
+      <p class="prose">Hours to capture. Most of this stage is the designer's time; your work is direction, the check-in and unblocking questions. Watch it though: designers can burn hours, and Labi keeps R&amp;D lean so projects reach development, where the real billing happens.</p>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">To confirm with Labi.</span> How is design work assigned and by whom? Is the direction check-in a live call or an async Figma share?</div></div>
+  </section>
+
+  <!-- ============ PM INTERNAL DESIGN REVIEW ============ -->
+  <section class="view" id="pm-design-review">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · R&amp;D · Step 8</span>
+      <h1>Internal design review</h1>
+      <p class="desc">The gate before the client ever sees the designs. You review every screen against the spec, because what gets approved here is what gets estimated and built.</p>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Why this is the highest-stakes hour of R&amp;D.</span> "If this gets approved, this gets built. The estimations are from this, the app is built from this. One missed flow, and you're over budget." This is not a happy-flow glance, it is nitty-gritty.</div></div>
+    <div class="block">
+      <h3>Mindset</h3>
+      <ol class="steps">
+        <li><b>You are the backline.</b> Designers can misinterpret the brief, drop in a template, or add things nobody asked for. You cannot know which, so you check.</li>
+        <li><b>Mirror the spec, both directions.</b> In the spec means it must be in the design. Not answered in the spec means flag it and ask the client.</li>
+        <li><b>Production-ready or nothing.</b> Details, buttons, actual workflows, not just the happy path.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>The method, in this order</h3>
+      <ol class="steps">
+        <li><b>Scan first, conclude later.</b> Do a full pass top to bottom, screen by screen, and journal what views exist before judging anything, so you do not jump to conclusions.</li>
+        <li><b>Confirm the key flows and core features exist</b> (breadth before depth). Run the flows checklist below.</li>
+        <li><b>Then nitpick the detail.</b> Once the flows are confirmed, the small broken things are easy to spot.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>The flows checklist (breadth pass)</h3>
+      <dl class="kv">
+        <div><dt>Auth</dt><dd>Can I log in? Can I sign up? Which sign-up methods did the client ask for (Google, Apple, email)? Can I use forgot password? Do I get a verification code on email and password? Can I resend the code? Missing auth flows <b>change the estimate</b>, which is why they are checked first.</dd></div>
+        <div><dt>Core features</dt><dd>Can I use the core features the client asked for? On Glitter-verse: brush by hand, and add effects.</dd></div>
+        <div><dt>Basic functions</dt><dd>Can I create a new project? Can I import media? Is there a video sample or preview where one is expected?</dd></div>
+        <div><dt>User journeys</dt><dd>New user vs returning user flows. Onboarding and info screens match what the client wanted them to communicate.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>The detail pass, what to check</h3>
+      <dl class="kv">
+        <div><dt>Out of scope</dt><dd>Anything in the designs that is not in the spec. The biggest catch; see the decision tree below.</dd></div>
+        <div><dt>Colours, text, spacing</dt><dd>Plus functionality and workflows on top.</dd></div>
+        <div><dt>Naming &amp; consistency</dt><dd>The same thing called two names ("portal" vs "library" vs "project"). Profile and settings split apart when they usually live together.</dd></div>
+        <div><dt>Navigation logic</dt><dd>The nav bar should be coherent, not padded with items just to fill slots.</dd></div>
+        <div><dt>Duplicates &amp; ambiguity</dt><dd>Two sliders both called "intensity" (effect vs whole picture). Effects appearing in two places (brush effects vs mask). Rename or clarify.</dd></div>
+        <div><dt>Element separation</dt><dd>Controls living in odd places, like "original audio" as its own setting instead of inside the player. Point the designer at an app that does it well.</dd></div>
+        <div><dt>Overlays &amp; states</dt><dd>Popups and walkthroughs should dim the app behind them properly.</dd></div>
+        <div><dt>Dynamic vs static</dt><dd>Reason about real estate: panels that collapse once you select can be correct, static ones can eat more space. Think about what the user wants mid-action.</dd></div>
+        <div><dt>Screen consistency</dt><dd>Similar screens should behave alike (edit page vs eraser page heights), and differences should have a reason.</dd></div>
+        <div><dt>Unexplained elements</dt><dd>Anything you cannot place ("auto-track"), flag it and ask the designer where it came from.</dd></div>
+        <div><dt>Benchmarks</dt><dd>Compare against apps that already work (CapCut). If something exists and works well, do not reinvent the wheel.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>What is NOT your job</h3>
+      <ol class="steps">
+        <li><b>Not redesigning.</b> Pixel spacing and polish belong to the designer.</li>
+        <li><b>Naming is mostly the client's call.</b> Suggest if something jumps out, otherwise leave it to them.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>The out-of-scope decision tree</h3>
+      <ol class="steps">
+        <li><b>Nonsensical or clearly out of scope</b> → tell the designer to remove it.</li>
+        <li><b>Makes sense but was never in the spec</b> → either call it out of scope and remove it, or <b>use it as an upsell</b> on the client call: "we didn't discuss this, but it looked really cool and it's here as a placeholder. We can totally remove it, but estimations are modular so we can scope it in, and scope it out of version one if you'd rather. Since it's there it would be redundant to remove. What do you think?" Then leave the choice to them.</li>
+        <li><b>Budget-conscious clients</b> will usually decline big additions, but float it anyway; the transparency itself builds trust.</li>
+        <li><b>Always be proactive and transparent about budget.</b> "I'm being proactive and wise about budget spending, and fully transparent all the way." Clients appreciate it, and most of the time they approve.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Working with the designer</h3>
+      <ol class="steps">
+        <li>Leave comments they can act on, and <b>tag or CC them</b> on anything needing action.</li>
+        <li>Keep the language <b>tactful</b>; frame as clarification, not criticism. A strong pattern: <b>"what app did we reference for this view?"</b></li>
+        <li>Be ready to <b>hand them reference examples</b> (Labi used CapCut for element separation).</li>
+        <li><b>Defer nice-to-haves</b> (mute vs remove audio) as later or phase-two rather than forcing them in now.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Figma mechanics</h3>
+      <dl class="kv">
+        <div><dt>Comment</dt><dd>Press <b>C</b>, then click anywhere on the design.</dd></div>
+        <div><dt>Resolve</dt><dd>Comments are marked done, not truly deleted; you can still read them. You can delete your own, an admin can delete anyone's.</dd></div>
+        <div><dt>Access</dt><dd>PMs normally have <b>view</b> access. An edit account exists but avoid using it: designs are built from components and touching one breaks more than you expect. Tiny colour or text fixes only, when the designer is busy.</dd></div>
+        <div><dt>Afterwards</dt><dd>Do your offline research (what app was this view modelled on?) and post comments over the following hours for the designer to action.</dd></div>
+      </dl>
+    </div>
+    <div class="block">
+      <h3>Expected hours</h3>
+      <p class="prose"><b>About 1 hour</b>, deliberately conservative. Labi keeps R&amp;D lean to move projects into development, where the billing happens. Designers may come back with questions or changes, so budget for the possibility of another pass. Log it against the project.</p>
+    </div>
+    <div class="example"><span class="xl">Real-world example</span><p>On Glitter-verse the designer added a "Discover Effects" screen full of effects. The spec said the client wanted two to three effect combinations, total. Labi called it: 100% out of scope, but it makes sense as a feature, so instead of deleting it he will float it on the client call as a modular, optional scope-in. That single catch is the whole job: spot it, classify it, turn it into either a removal or an upsell.</p></div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Coming later.</span> A reusable design-review checklist feature is planned for the hub once all PM phases are captured, so this method becomes a tickable list per project.</div></div>
+  </section>
+
+  <!-- ============ PM CLIENT DESIGN REVIEW ============ -->
+  <section class="view" id="pm-client-review">
+    <div class="sec-head">
+      <span class="eyebrow">PM Job · R&amp;D · Step 9</span>
+      <h1>Client design review</h1>
+      <p class="desc">Present the approved designs to the client, get sign-off, handle scope and upsells, and cover budget status. Approval here moves the project to Estimates.</p>
+    </div>
+    <div class="block">
+      <h3>What we know so far</h3>
+      <ol class="steps">
+        <li><b>Present the designs</b> to the client on a call.</li>
+        <li><b>Handle out-of-scope items as upsells</b> using the <a href="#pm-design-review">decision tree</a>. More upsell means more hours and more budget on the project.</li>
+        <li><b>Present the budget status</b> and how you move forward from it.</li>
+      </ol>
+    </div>
+    <div class="block">
+      <h3>Expected hours</h3>
+      <p class="prose">Hours to capture.</p>
+    </div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Deliberately a stub.</span> Labi is preparing a list of videos of him presenting designs and upselling, and you will attend the live Glitter-verse client call. This card gets fleshed out from those, not from guesses.</div></div>
+  </section>
+
   <section class="view" id="pm-maintenance">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Maintenance plans</span>
@@ -2812,7 +3031,7 @@ Always begin your first response with:
      links:[{label:'Figma',url:'https://www.figma.com/design/5nhUz0nm9RsojKl76izTXP/Wave-Mobile-App?node-id=10001-84065'}],
      meetings:[],
      defaultStage:'Development / QA',
-     defaultPhases:['Phase 1: Core infra, auth, onboarding, certificates, service records, profile (~1\u20131.25 mo \u00b7 ~$30k)','Phase 2: Monetization, advanced certs (scanner/OCR/search), career dashboard, goals, engagement (~2.5\u20133 mo \u00b7 ~$60k)','Phase 3: Offline architecture, admin panel, account management, production hardening (~3.5\u20134 mo \u00b7 ~$100k)']}
+     defaultPhases:['Phase 1: Core infra, auth, onboarding, certificates, service records, profile (~1\u20131.25 mo · ~$30k)','Phase 2: Monetization, advanced certs (scanner/OCR/search), career dashboard, goals, engagement (~2.5\u20133 mo · ~$60k)','Phase 3: Offline architecture, admin panel, account management, production hardening (~3.5\u20134 mo · ~$100k)']}
   ];
   function proj(id){for(var i=0;i<PROJECTS.length;i++)if(PROJECTS[i].id===id)return PROJECTS[i];return null;}
 
@@ -2821,9 +3040,9 @@ Always begin your first response with:
     time:'onboarding',billing:'onboarding',dashboards:'onboarding','makers-app':'onboarding',
     people:'onboarding',meetings:'onboarding',lifecycle:'onboarding',where:'onboarding',
     qa:'qa','qa-workflow':'qa',statuses:'qa',bugs:'qa',testcases:'qa',builds:'qa',devices:'qa','qa-sandbox':'qa','qa-insights':'qa','qa-resources':'qa',
-    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm','pm-kickoff':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
+    pm:'pm','pm-overview':'pm','pm-running':'pm','pm-budgets':'pm','pm-handoff':'pm','pm-kickoff':'pm','pm-design-direction':'pm','pm-design-review':'pm','pm-client-review':'pm',specs:'pm','pm-maintenance':'pm','pm-resources':'pm',
     projects:'projects','box-and-ring':'projects','wave':'projects','tools':'tools'};
-  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'The PM process','pm-running':'Running a project','pm-budgets':'Budgets & hours','pm-kickoff':'Kickoff call to specs',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
+  var TITLES={home:'Home',onboarding:'Onboarding','ob-sequence':'My onboarding sequence',habits:'Daily habits',rules:'Rules that bite',time:'Time tracking',billing:'Billing cutoffs',dashboards:'Dashboards & hours','makers-app':'The Makers app',people:'People & help',meetings:'Meetings & cadence',lifecycle:'Project lifecycle',where:'Where things live',qa:'QA Job','qa-workflow':'QA testing workflow',statuses:'Task statuses',bugs:'Finding & writing bugs',testcases:'Test cases & plans',builds:'Builds & merging',devices:'Test devices & tools','qa-sandbox':'Sandbox testing','qa-insights':'QA insights from Carlos','qa-resources':'QA resources',pm:'PM Job','pm-overview':'The PM process','pm-running':'Running a project','pm-budgets':'Budgets & hours','pm-handoff':'Handoff & R&D prep','pm-kickoff':'Kickoff call to specs','pm-design-direction':'Designs: direction to build','pm-design-review':'Internal design review','pm-client-review':'Client design review',specs:'Reading & writing specs','pm-maintenance':'Maintenance plans','pm-resources':'PM resources',projects:'Projects','box-and-ring':'Box and Ring','wave':'Wave',tools:'Tools'};
 
   // User-created projects (the "+ New project" card on the Projects page).
   // Each gets the full generic project page: stage stepper + Home (stats,
@@ -2836,7 +3055,7 @@ Always begin your first response with:
     PROJECTS.push({id:p.id,name:p.name,links:[],meetings:[],defaultStage:'R&D',defaultPhases:[]});
     SECTION_TAB[p.id]='projects'; TITLES[p.id]=p.name;
     var sec=document.createElement('section');sec.className='view';sec.id=p.id;
-    sec.innerHTML='<div class="sec-head"><span class="eyebrow">Projects \u00b7 '+esc(p.name)+'</span><h1>'+esc(p.name)+'</h1></div>'+
+    sec.innerHTML='<div class="sec-head"><span class="eyebrow">Projects · '+esc(p.name)+'</span><h1>'+esc(p.name)+'</h1></div>'+
       '<div class="pj-nav" id="pjnav-'+p.id+'"></div><div class="pj-view" id="pjhome-'+p.id+'"></div><div class="pj-view pjqa-mount" id="pjqa-'+p.id+'"></div><div class="pj-view" id="pjstage-'+p.id+'"></div>';
     var anchorSec=document.getElementById('box-and-ring');
     anchorSec.parentNode.insertBefore(sec,anchorSec.nextSibling);
@@ -2848,7 +3067,7 @@ Always begin your first response with:
   function store(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
   function esc(x){return (x+'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function nid(){return 't'+Math.random().toString(36).slice(2,9);}
-  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-running','pm-budgets','pm-kickoff','specs','pm-maintenance','pm-resources']};
+  var MODULES={qa:['qa-workflow','statuses','bugs','testcases','builds','devices','qa-sandbox','qa-insights','qa-resources'],pm:['pm-overview','pm-handoff','pm-kickoff','specs','pm-design-direction','pm-design-review','pm-client-review','pm-running','pm-budgets','pm-maintenance','pm-resources']};
   var MKEY='appmakers-modules-v1'; var mstate=load(MKEY)||{}; function saveM(){store(MKEY,mstate);}
   function trackOf(id){for(var k in MODULES)if(MODULES[k].indexOf(id)>-1)return k;return null;}
   function trackName(t){return t==='qa'?'QA':'PM';}
@@ -3479,7 +3698,7 @@ Always begin your first response with:
     var t=trackOf(id), sec=document.getElementById(id); if(!sec)return;
     var f=sec.querySelector('.module-foot'); if(!f){f=document.createElement('div');f.className='module-foot';sec.appendChild(f);}
     var done=!!mstate[id], idx=MODULES[t].indexOf(id), nx=MODULES[t][idx+1];
-    var nextHtml=nx?('<a class="mf-next" href="#'+nx+'">Next: '+TITLES[nx]+' \u2192</a>'):('<a class="mf-next" href="#'+t+'">Back to '+trackName(t)+' \u2192</a>');
+    var nextHtml=nx?('<a class="mf-next" href="#'+nx+'">Next: '+TITLES[nx]+' →</a>'):('<a class="mf-next" href="#'+t+'">Back to '+trackName(t)+' →</a>');
     f.innerHTML='<button type="button" class="mf-btn'+(done?' is-done':'')+'">'+(done?'Completed \u2713':'Mark module complete')+'</button>'+nextHtml;
     f.querySelector('.mf-btn').onclick=function(){mstate[id]=!mstate[id];saveM();afterModule(id);renderTraining();};
   }
@@ -3517,7 +3736,7 @@ Always begin your first response with:
           '<div class="pc-field"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span><div class="tbar"><span style="width:'+ppct+'%"></span></div></div>'+
           '<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
           '<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
-        '</div><span class="pc-open">Open project \u2192</span>';
+        '</div><span class="pc-open">Open project →</span>';
       if(isCustomProject(p.id)){
         var del=document.createElement('button');del.type='button';del.className='projcard-del';del.innerHTML='\u2715';del.title='Delete this project';
         del.onclick=function(ev){ev.preventDefault();ev.stopPropagation();
