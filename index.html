@@ -1035,6 +1035,38 @@
   }
   /* embed: the hub page supplies width/padding */
   #pjqa-box-and-ring .qa-sessions{max-width:none;padding:0 0 56px}
+
+  /* ---- playbook cards ---- */
+  .gate{display:flex;gap:14px;align-items:flex-start;border-radius:var(--radius-sm);padding:14px 16px;
+    font-size:.92rem;border:1px solid var(--line);margin:0 0 16px;max-width:880px;background:var(--card);}
+  .gate .g-lbl{flex:0 0 auto;font-family:var(--mono);font-size:.6875rem;font-weight:600;text-transform:uppercase;
+    letter-spacing:.1em;padding:4px 10px;border-radius:99px;margin-top:1px;white-space:nowrap;}
+  .gate.start{background:#F5F7FC;border-color:#DDE4F2;}
+  .gate.start .g-lbl{background:#E4EAF7;color:#4A6FD0;}
+  .gate.done{background:var(--good-wash);border-color:#C8E4D3;}
+  .gate.done .g-lbl{background:#D6EDDF;color:var(--good);}
+  .playbook .block,.playbook .note{max-width:880px;}
+  .playbook .block{padding:22px 24px;}
+  .playbook .block>h3{font-family:var(--display);font-size:1rem;padding-bottom:12px;margin-bottom:16px;
+    border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .playbook .block.tasks{border-top:3px solid var(--accent);}
+  .chip-every{font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-wash);padding:3px 9px;border-radius:99px;}
+  .playbook ol.steps{gap:14px;}
+  .playbook .kv{gap:2px 22px;}
+  .playbook .kv dt{padding-top:11px;}
+  .playbook .kv dd{padding:9px 0;line-height:1.6;}
+  .example{max-width:880px;background:var(--card);border:1px dashed #E3D9BE;border-radius:var(--radius);
+    padding:18px 22px;margin-bottom:16px;}
+  .example .xl{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--warn);background:var(--warn-wash);padding:3px 9px;border-radius:99px;margin-bottom:10px;}
+  .example p{font-size:.93rem;line-height:1.65;}
+  /* PM landing area headers */
+  .area-h{grid-column:1/-1;margin:22px 0 0;}
+  .area-h .a-row{display:flex;align-items:center;gap:14px;}
+  .area-h h2{font-family:var(--display);font-size:1.02rem;font-weight:600;white-space:nowrap;}
+  .area-h .a-row::after{content:"";flex:1;height:1px;background:var(--line);}
+  .area-h p{color:var(--muted);font-size:.85rem;margin-top:4px;}
 </style>
 
 <!-- icon sprite -->
@@ -1950,9 +1982,9 @@ QA &amp; Project Manager, AppMakers LA
       <p class="desc">General reference first, then each phase of the process in order. Every phase card leads with the tasks you actually do, every project.</p>
     </div>
     <div class="grid">
-            <div style="grid-column:1/-1;margin:20px 0 0">
-        <h2 style="font:600 16px/1.2 var(--display,var(--font));letter-spacing:.01em">PM General</h2>
-        <p style="color:var(--muted);font-size:13.5px;margin-top:4px">The role, the map and the reference you use across every phase.</p>
+                  <div class="area-h">
+        <div class="a-row"><h2>PM General</h2></div>
+        <p>The role, the map and the reference you use across every phase.</p>
       </div>
 <a class="tile" href="#pm-overview">
         <span class="ico"><svg><use href="#i-users"/></svg></span>
@@ -1974,9 +2006,9 @@ QA &amp; Project Manager, AppMakers LA
         <h3>PM resources</h3><p>Key docs, tools and templates for the PM role.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <div style="grid-column:1/-1;margin:20px 0 0">
-        <h2 style="font:600 16px/1.2 var(--display,var(--font));letter-spacing:.01em">Phase 1 · R&amp;D</h2>
-        <p style="color:var(--muted);font-size:13.5px;margin-top:4px">From a fresh sales handoff to client-approved designs. About 4 to 5 hours of PM work.</p>
+            <div class="area-h">
+        <div class="a-row"><h2>Phase 1 · R&amp;D</h2></div>
+        <p>From a fresh sales handoff to client-approved designs. About 4 to 5 hours of PM work.</p>
       </div>
       <a class="tile" href="#pm-handoff">
         <span class="ico"><svg><use href="#i-doc"/></svg></span>
@@ -2003,27 +2035,27 @@ QA &amp; Project Manager, AppMakers LA
         <h3>Client design review</h3><p>Present the designs, handle scope and upsells, get sign-off.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <div style="grid-column:1/-1;margin:20px 0 0">
-        <h2 style="font:600 16px/1.2 var(--display,var(--font));letter-spacing:.01em">Phase 2 · Estimates</h2>
-        <p style="color:var(--muted);font-size:13.5px;margin-top:4px">Approved designs become the hours you are held to.</p>
+            <div class="area-h">
+        <div class="a-row"><h2>Phase 2 · Estimates</h2></div>
+        <p>Approved designs become the hours you are held to.</p>
       </div>
       <a class="tile" href="#pm-estimates">
         <span class="ico"><svg><use href="#i-chart"/></svg></span>
         <h3>Estimates</h3><p>Hand the designs to the dev team; lean and normal estimates come back.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <div style="grid-column:1/-1;margin:20px 0 0">
-        <h2 style="font:600 16px/1.2 var(--display,var(--font));letter-spacing:.01em">Phase 3 · Development &amp; sprints</h2>
-        <p style="color:var(--muted);font-size:13.5px;margin-top:4px">Direct the build.</p>
+            <div class="area-h">
+        <div class="a-row"><h2>Phase 3 · Development &amp; sprints</h2></div>
+        <p>Direct the build.</p>
       </div>
 <a class="tile" href="#pm-running">
         <span class="ico"><svg><use href="#i-flow"/></svg></span>
         <h3>Running a project</h3><p>Kickoff, estimates, sprints, delivery, client comms.</p>
         <span class="arrow">Open<svg style="width:13px;height:13px;stroke:currentColor" fill="none"><use href="#i-arr"/></svg></span>
       </a>
-      <div style="grid-column:1/-1;margin:20px 0 0">
-        <h2 style="font:600 16px/1.2 var(--display,var(--font));letter-spacing:.01em">After ship</h2>
-        <p style="color:var(--muted);font-size:13.5px;margin-top:4px">Ongoing work once the app is live.</p>
+            <div class="area-h">
+        <div class="a-row"><h2>After ship</h2></div>
+        <p>Ongoing work once the app is live.</p>
       </div>
 <a class="tile" href="#pm-maintenance">
         <span class="ico"><svg><use href="#i-cal"/></svg></span>
@@ -2139,14 +2171,15 @@ QA &amp; Project Manager, AppMakers LA
   </section>
 
   <!-- ============ PM HANDOFF & R&D PREP ============ -->
-  <section class="view" id="pm-handoff">
+  <section class="view playbook" id="pm-handoff">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 1 R&amp;D</span>
       <h1>R&amp;D prep</h1>
       <p class="desc">A new project has landed on you from Aaron's sales call. Before you speak to the client, do this. Your prepared questions become the kickoff transcript, and the transcript becomes the spec, so the quality of this prep sets the quality of everything downstream.</p>
     </div>
-    <div class="block">
-      <h3>Your tasks</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>A new project lands on you from Aaron's sales call.</div></div>
+    <div class="block tasks">
+      <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
         <li><b>Read the sales call.</b> It is the only context that exists on this project so far. Note what was discussed, what was promised, and what is vague.</li>
         <li><b>Research the company.</b> What they do, how they make money, what they already have.</li>
@@ -2156,10 +2189,7 @@ QA &amp; Project Manager, AppMakers LA
         <li><b>Draft specific kickoff questions</b> from all of the above. Specific beats broad: every vague answer you accept now becomes a misconception you pay for later.</li>
       </ol>
     </div>
-    <div class="block">
-      <h3>Done when</h3>
-      <p class="prose">You can walk into the kickoff call with a prepared list of specific questions, grounded in the sales call, the company, the industry and the competitors. Next: <a href="#pm-kickoff">Kickoff call to specs</a>.</p>
-    </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>You can walk into the kickoff call with a prepared list of specific questions, grounded in the sales call, the company, the industry and the competitors. Next: <a href="#pm-kickoff">Kickoff call to specs</a>.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose">Hours to capture. Log what prep actually takes on your first projects and record it here.</p>
@@ -2168,14 +2198,15 @@ QA &amp; Project Manager, AppMakers LA
   </section>
 
 <!-- ============ PM KICKOFF TO SPECS ============ -->
-  <section class="view" id="pm-kickoff">
+  <section class="view playbook" id="pm-kickoff">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 1 R&amp;D</span>
       <h1>Kickoff call to specs</h1>
       <p class="desc">Two jobs in one motion: run the kickoff call, then turn its transcript into an approved spec. The spec is what the designer builds from, so a missed or invented feature here is a wrong estimate later.</p>
     </div>
-    <div class="block">
-      <h3>Your tasks</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div><a href="#pm-handoff">R&amp;D prep</a> is done: you have specific, researched questions ready for the client.</div></div>
+    <div class="block tasks">
+      <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
         <li><b>Run the kickoff call.</b> Work through your <a href="#pm-handoff">prepared questions</a>, as specifically as possible. Make sure the call is <b>recorded in Fathom</b>. One call is usually enough; a complex project may need two or three.</li>
         <li><b>Park out-of-scope ideas as future features.</b> If the client drifts out of scope mid-call, never say no. Say "great idea, I'll note it as a future feature". It lands in the Future Features section and becomes a paid phase-two conversation near project end.</li>
@@ -2199,8 +2230,8 @@ QA &amp; Project Manager, AppMakers LA
     <div class="block">
       <h3>The prompt (copy this)</h3>
       <p class="prose" style="margin-bottom:12px">Paste this verbatim, then the transcript underneath it.</p>
-      <div class="tmpl">You are "R&amp;D Assistant," a product R&amp;D strategist working for Labinot Krasniqi. Your job is to turn raw client transcripts into structured R&amp;D documents for MVP development.
-Work in small steps, finish one section at a time and ask Labinot for approval before continuing. Ask follow-up questions if anything in the transcript is unclear or requires assumptions.
+      <div class="tmpl">You are "R&amp;D Assistant," a product R&amp;D strategist working for me. Your job is to turn raw client transcripts into structured R&amp;D documents for MVP development.
+Work in small steps, finish one section at a time and ask me for approval before continuing. Ask follow-up questions if anything in the transcript is unclear or requires assumptions.
 When Labinot pastes a transcript, analyze it carefully and extract only product-relevant information. Ignore chit-chat, small talk, and vague ideas.
 Use this structure:
 
@@ -2216,7 +2247,7 @@ Always ask for approval before moving to the next section
 Ask follow-up questions when transcript details are vague
 Be fast but precise, you are evaluated on clarity and accuracy
 Use short, crisp sentences and bullet points throughout
-Never output the full document unless Labinot says "go ahead"
+Never output the full document unless I say "go ahead"
 
 Always begin your first response with:
 "Here's the first section: [OVERVIEW], let me know when to continue or if you'd like changes."</div>
@@ -2229,10 +2260,7 @@ Always begin your first response with:
         <li><b>Everything is MVP-oriented.</b> If it is not needed to validate the product, it goes to Future Features, not the spec.</li>
       </ol>
     </div>
-    <div class="block">
-      <h3>Done when</h3>
-      <p class="prose">Every section is approved, checked against what the client actually said, and the spec is ready for the designer. Next: <a href="#pm-design-direction">Designs: direction to build</a>.</p>
-    </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>Every section is approved, checked against what the client actually said, and the spec is ready for the designer. Next: <a href="#pm-design-direction">Designs: direction to build</a>.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose">Kickoff call plus spec creation together: <b>about 3 to 4 hours</b>. Conservative on purpose; budgets are tight and R&amp;D does not bill like development does.</p>
@@ -2301,14 +2329,15 @@ Always begin your first response with:
 
   <!-- ============ PM MAINTENANCE PLANS ============ -->
   <!-- ============ PM DESIGNS: DIRECTION TO BUILD ============ -->
-  <section class="view" id="pm-design-direction">
+  <section class="view playbook" id="pm-design-direction">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 1 R&amp;D</span>
       <h1>Designs: direction to build</h1>
       <p class="desc">Get the designs built without betting the whole budget on an unconfirmed direction. Direction gets approved on 3 to 4 screens before anything else is drawn.</p>
     </div>
-    <div class="block">
-      <h3>Your tasks</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>The spec is approved section by section and ready for the designer.</div></div>
+    <div class="block tasks">
+      <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
         <li><b>Get the spec to the designer.</b> The designs come from the spec, nothing else.</li>
         <li><b>Have the designer build only the first 3 to 4 screens</b> (the onboarding screens, not even as far as sign-up), enough to establish design, colours and overall direction.</li>
@@ -2323,10 +2352,7 @@ Always begin your first response with:
       <h3>Placeholders are fine</h3>
       <p class="prose">Where information is missing (pricing, some copy), the designer uses templates. They are modular and get finalised before development, so do not block the build on them; flag them as questions for the client design review call.</p>
     </div>
-    <div class="block">
-      <h3>Done when</h3>
-      <p class="prose">Every screen is built from the spec and in Figma. Next: <a href="#pm-design-review">Internal design review</a>.</p>
-    </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>Every screen is built from the spec and in Figma. Next: <a href="#pm-design-review">Internal design review</a>.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose">Hours to capture. Most of this stage is the designer's clock, not yours, but watch it: designers can burn hours, and Labi keeps R&amp;D lean so projects reach development, where the real billing happens.</p>
@@ -2335,14 +2361,15 @@ Always begin your first response with:
   </section>
 
   <!-- ============ PM INTERNAL DESIGN REVIEW ============ -->
-  <section class="view" id="pm-design-review">
+  <section class="view playbook" id="pm-design-review">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 1 R&amp;D</span>
       <h1>Internal design review</h1>
       <p class="desc">The gate before the client ever sees the designs. "If this gets approved, this gets built. The estimations are from this. One missed flow, and you're over budget." Expect about an hour, done in three passes.</p>
     </div>
-    <div class="block">
-      <h3>Your tasks</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>The designer tells you the full build is ready in Figma.</div></div>
+    <div class="block tasks">
+      <h3>Your tasks <span class="chip-every">Every project</span></h3>
       <ol class="steps">
         <li><b>Re-read the spec first.</b> It is the source of truth you are checking against. Labi reviews from memory because he wrote it; until you have that context, put the spec next to the designs.</li>
         <li><b>Pass 1, scan.</b> Go top to bottom, screen by screen, and journal what views exist. No judgments yet, so you do not jump to conclusions.</li>
@@ -2396,6 +2423,7 @@ Always begin your first response with:
         <li><b>Defer nice-to-haves</b> (mute vs remove audio) as phase-two rather than forcing them in now.</li>
       </ol>
     </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>Every comment is actioned or answered, no unclassified out-of-scope items remain, and the flows checklist passes end to end. Then book the <a href="#pm-client-review">client design review</a>.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose"><b>About 1 hour</b>, deliberately conservative; budget for the possibility of a second pass after the designer's changes. Log it against the project.</p>
@@ -2405,14 +2433,15 @@ Always begin your first response with:
   </section>
 
   <!-- ============ PM CLIENT DESIGN REVIEW ============ -->
-  <section class="view" id="pm-client-review">
+  <section class="view playbook" id="pm-client-review">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 1 R&amp;D</span>
       <h1>Client design review</h1>
       <p class="desc">Present the reviewed designs to the client, get sign-off, and turn held-back scope into upsells. Approval here ends R&amp;D and moves the project to Estimates.</p>
     </div>
-    <div class="block">
-      <h3>Your tasks (what we know so far)</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>The internal review has come back clean: comments actioned, nothing left unclassified.</div></div>
+    <div class="block tasks">
+      <h3>Your tasks <span class="chip-every">What we know so far</span></h3>
       <ol class="steps">
         <li><b>Present the designs</b> to the client on a call.</li>
         <li><b>Raise the held-back out-of-scope items as upsells</b>, using the <a href="#pm-design-review">decision-tree script</a>. More upsell means more hours and more budget on the project.</li>
@@ -2420,6 +2449,7 @@ Always begin your first response with:
         <li><b>Collect the open placeholder decisions</b> (pricing, copy, naming) flagged during the reviews.</li>
       </ol>
     </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>The client signs off the designs. The project moves to <a href="#pm-estimates">Estimates</a>.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose">Hours to capture.</p>
@@ -2427,20 +2457,22 @@ Always begin your first response with:
     <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Deliberately thin.</span> Labi is preparing a list of videos of him presenting designs and upselling, and you will attend the live Glitter-verse client call. This card gets fleshed out from those, not from guesses.</div></div>
   </section>
 
-<section class="view" id="pm-estimates">
+<section class="view playbook" id="pm-estimates">
     <div class="sec-head">
       <span class="eyebrow">PM Job · Phase 2 Estimates</span>
       <h1>Estimates</h1>
       <p class="desc">The approved designs become the hours you are held to for the rest of the project.</p>
     </div>
-    <div class="block">
-      <h3>What we know so far</h3>
+    <div class="gate start"><span class="g-lbl">Start when</span><div>The client has approved the designs.</div></div>
+    <div class="block tasks">
+      <h3>What we know so far <span class="chip-every">To flesh out</span></h3>
       <ol class="steps">
         <li><b>Hand the approved designs to the dev team</b> to estimate against. Everything is estimated from the designs, which is why the design reviews are the gate.</li>
         <li><b>Lean and normal estimates are built.</b> These set the budget and the hours you manage the project against.</li>
         <li><b>Estimates are modular.</b> Features can be scoped in or out individually, which is what makes the upsell conversation on the client call workable.</li>
       </ol>
     </div>
+    <div class="gate done"><span class="g-lbl">Done when</span><div>The estimates are built and the client approves them; Aaron sends the contract and first invoice, and development can be scheduled.</div></div>
     <div class="block">
       <h3>Expected hours</h3>
       <p class="prose">Hours to capture.</p>
