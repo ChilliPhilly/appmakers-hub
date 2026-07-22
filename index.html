@@ -2848,7 +2848,7 @@ Always begin your first response with:
     </div>
     <div class="gate done"><span class="g-lbl">Done when</span><div>Every comment is actioned or answered, no unclassified out-of-scope items remain, and the flows checklist passes end to end. Then book the <a href="#pm-client-review">client design review</a>.</div></div>
     <div class="example"><span class="xl">Real-world example</span><p>On Glitter-verse the designer added a "Discover Effects" screen full of effects. The spec said two to three effect combinations, total. Labi's call: 100% out of scope, but it makes sense as a feature, so instead of deleting it he holds it for the client call as a modular, optional scope-in. Spot it, classify it, turn it into a removal or an upsell. That single catch is the job.</p></div>
-    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Coming later.</span> A reusable per-project design-review checklist feature is planned for the hub once all PM phases are captured, so these passes become tickable lists.</div></div>
+    <div class="note info"><svg fill="none"><use href="#i-alert"/></svg><div><span class="b">Now live.</span> These passes exist as a tickable <b>Design review checklist</b> on every project's <b>R&amp;D</b> tab: baseline checks for every app (this page's passes, plus app states, standard technical flows, platform/accessibility) and a Project-specific category for items derived from the spec. Add, edit or delete entries there; base-list changes apply to every project.</div></div>
   </section>
 
   <!-- ============ PM CLIENT DESIGN REVIEW ============ -->
@@ -3986,7 +3986,7 @@ Always begin your first response with:
       if(window.makeTipsBtn){ nav.appendChild(window.makeTipsBtn('margin-left:auto;align-self:center')); }
     }
     var home=document.getElementById('pjhome-'+id), rnd=document.getElementById('pjrnd-'+id), stg=document.getElementById('pjstage-'+id), tst=document.getElementById('pjtest-'+id), qa=document.getElementById('pjqa-'+id);
-    var isHome=(sub==='home'), isRnd=(sub==='R&D'), isTest=(sub==='Acceptance Testing'&&!!tst), isDev=(sub==='Development / QA'&&!!qa);
+    var isHome=(sub==='home'), isRnd=(sub==='R&D'&&!!rnd), isTest=(sub==='Acceptance Testing'&&!!tst), isDev=(sub==='Development / QA'&&!!qa);
     if(home)home.style.display=isHome?'':'none';
     if(rnd)rnd.style.display=isRnd?'':'none';
     if(tst)tst.style.display=isTest?'':'none';
@@ -4000,7 +4000,7 @@ Always begin your first response with:
         window.syncPullProject(id).then(function(ch){ if(ch && location.hash.slice(1)===id) renderPJHome(id); });
       }
     }
-    else if(isRnd)renderStageBar(id,rnd,'R&D');
+    else if(isRnd){renderStageBar(id,rnd,'R&D');renderDesignReview(id,rnd);}
     else if(isTest)renderStageBar(id,tst,'Acceptance Testing');
     else if(isDev){ if(window.__qaMount){ var _lnk=(projState(id).links||[]).map(function(l){return {type:'link',name:l.label,href:l.url};}); window.__qaMount(qa,id,{files:_lnk}); } }
     else renderPJStage(id,sub);
@@ -4019,6 +4019,116 @@ Always begin your first response with:
     var b=document.createElement('div');b.className='block';
     b.innerHTML='<h3>'+esc(stageName)+'</h3><p class="hmuted">This is where the '+esc(stageName)+' outputs live. Ask me to add stage-specific content here, or track the work as epics and tasks on the project Home.</p>';
     host.appendChild(b);
+    if(stageName==='R&D')renderDesignReview(id,host);
+  }
+
+  /* ===== Design review checklist =====
+     Baseline checks for every app (seeded from Labi's Glitterverse design
+     review) + per-project items. Base list is global and editable; ticks and
+     project items are per project. Lives in each project's R&D view. */
+  var DR_KEY='appmakers-drbase-v1';
+  var DR_CATS=['Core user flows','Standard technical flows','App states','Screen detail & consistency','Platform, devices & accessibility','Scope & spec mirror','Project-specific'];
+  var DR_SEED=[
+    {id:'dr-auth-methods',cat:DR_CATS[0],text:'Log in and sign up exist, with exactly the sign-up methods the client asked for (Google / Apple / email)'},
+    {id:'dr-auth-forgot',cat:DR_CATS[0],text:'Forgot password flow, end to end'},
+    {id:'dr-auth-verify',cat:DR_CATS[0],text:'Verification code screens, plus resend code'},
+    {id:'dr-auth-persist',cat:DR_CATS[0],text:'Persistent login / remember-me matches the spec decision'},
+    {id:'dr-flow-corefeat',cat:DR_CATS[0],text:'Every core feature in the spec is usable end to end in the designs'},
+    {id:'dr-flow-basics',cat:DR_CATS[0],text:'Basic functions: create project, import media, previews or samples where expected'},
+    {id:'dr-flow-journeys',cat:DR_CATS[0],text:'New user vs returning user journeys both exist'},
+    {id:'dr-flow-onboarding',cat:DR_CATS[0],text:'Onboarding screens communicate what the client asked for'},
+    {id:'dr-tech-payments',cat:DR_CATS[1],text:'Payment / subscription screens match the monetization decision (IAP vs kept off-app)'},
+    {id:'dr-tech-notifs',cat:DR_CATS[1],text:'Notification permission ask, and what notifications look like when they land'},
+    {id:'dr-tech-emails',cat:DR_CATS[1],text:'Email touchpoints designed where the spec needs them (verification, forgot password, invites)'},
+    {id:'dr-tech-offline',cat:DR_CATS[1],text:'Offline behaviour designed wherever the spec requires it'},
+    {id:'dr-state-empty',cat:DR_CATS[2],text:'Empty states on every list and dashboard screen'},
+    {id:'dr-state-loading',cat:DR_CATS[2],text:'Loading / processing states, designed rather than default spinners'},
+    {id:'dr-state-error',cat:DR_CATS[2],text:'Error states, each with a way out'},
+    {id:'dr-state-offline',cat:DR_CATS[2],text:'No-connection state'},
+    {id:'dr-state-perms',cat:DR_CATS[2],text:'Permission-denied states (camera roll, notifications, location)'},
+    {id:'dr-state-loggedout',cat:DR_CATS[2],text:'Logged-out / session-expired state'},
+    {id:'dr-det-naming',cat:DR_CATS[3],text:'Naming is consistent: one name per concept across all screens'},
+    {id:'dr-det-dupes',cat:DR_CATS[3],text:'No duplicate or ambiguous controls (two sliders both called "intensity")'},
+    {id:'dr-det-separation',cat:DR_CATS[3],text:'Controls live where users expect them; no orphan settings outside their home'},
+    {id:'dr-det-nav',cat:DR_CATS[3],text:'Navigation is coherent, not padded with items to fill slots'},
+    {id:'dr-det-deadends',cat:DR_CATS[3],text:'No dead ends: every button and nav item leads somewhere'},
+    {id:'dr-det-overlays',cat:DR_CATS[3],text:'Overlays, popups and walkthroughs dim the app behind them properly'},
+    {id:'dr-det-language',cat:DR_CATS[3],text:'Copy is clear and aligned with the client’s brand and vision'},
+    {id:'dr-det-dynamic',cat:DR_CATS[3],text:'Dynamic vs static real estate reasoned about: what does the user want mid-action?'},
+    {id:'dr-det-consistency',cat:DR_CATS[3],text:'Similar screens behave alike; any differences have a reason'},
+    {id:'dr-det-unexplained',cat:DR_CATS[3],text:'Unexplained elements flagged and asked about, not assumed'},
+    {id:'dr-det-benchmarks',cat:DR_CATS[3],text:'Benchmarked against the reference apps named in the spec'},
+    {id:'dr-plat-osdiff',cat:DR_CATS[4],text:'iOS vs Android differences accounted for'},
+    {id:'dr-plat-sizes',cat:DR_CATS[4],text:'Small and large screen sizes both hold up'},
+    {id:'dr-plat-a11y',cat:DR_CATS[4],text:'Accessibility basics: touch targets, contrast, font scaling'},
+    {id:'dr-plat-l10n',cat:DR_CATS[4],text:'Localisation needs checked, if the client has any'},
+    {id:'dr-scope-mirror',cat:DR_CATS[5],text:'Every spec core feature appears somewhere in the designs (tick after a full pass against the spec)'},
+    {id:'dr-scope-deferred',cat:DR_CATS[5],text:'Deferred post-MVP items are NOT in the designs'},
+    {id:'dr-scope-extras',cat:DR_CATS[5],text:'Anything in the designs that is not in the spec is classified: remove, or hold as an upsell for the client call'}
+  ];
+  function drBase(){var b=load(DR_KEY);if(!b||!b.length){b=DR_SEED.map(function(x){return {id:x.id,cat:x.cat,text:x.text};});store(DR_KEY,b);}return b;}
+  function renderDesignReview(id,container){
+    if(!container)return; var ps=projState(id); if(!ps.dr)ps.dr={checked:{},items:[]};
+    var old=document.getElementById('dr-'+id); if(old)old.remove();
+    var wrap=document.createElement('div'); wrap.id='dr-'+id;
+    var base=drBase(); var pitems=ps.dr.items||[];
+    var all=base.concat(pitems);
+    var done=all.filter(function(it){return !!ps.dr.checked[it.id];}).length;
+    var head=block('Design review checklist <span style="color:var(--muted);font-size:.8rem;font-weight:500">'+done+' / '+all.length+'</span>');
+    head.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">The baseline checks for every app, plus this project’s own items. Tick as you review; double-click any item to edit it. Base items are shared by every project; edits save in this browser.</p>');
+    var clr=document.createElement('button');clr.type='button';clr.className='mf-btn sm';clr.textContent='Clear ticks for re-review';
+    clr.onclick=function(){if(confirm('Clear all ticks for this project? Items themselves stay.')){ps.dr.checked={};savePS();renderProject(id);}};
+    head.appendChild(clr);
+    wrap.appendChild(head);
+    DR_CATS.forEach(function(cat){
+      var entries=base.filter(function(x){return x.cat===cat;}).map(function(x){return {it:x,scope:'base'};})
+        .concat(pitems.filter(function(x){return x.cat===cat;}).map(function(x){return {it:x,scope:'proj'};}));
+      var cd=entries.filter(function(e){return !!ps.dr.checked[e.it.id];}).length;
+      var cb=block(esc(cat)+' <span style="color:var(--muted);font-size:.8rem;font-weight:500">'+cd+' / '+entries.length+'</span>');
+      if(cat==='Project-specific'&&!entries.length)cb.insertAdjacentHTML('beforeend','<p class="hmuted">Items for this project only, usually derived from the spec. Add them below, or ask me to derive them.</p>');
+      entries.forEach(function(en){
+        var it=en.it;
+        var row=document.createElement('div');row.className='sub'+(ps.dr.checked[it.id]?' done':'');
+        var l=document.createElement('label');l.className='tcheck';
+        var c=document.createElement('input');c.type='checkbox';c.checked=!!ps.dr.checked[it.id];
+        c.onchange=function(){if(c.checked)ps.dr.checked[it.id]=true;else delete ps.dr.checked[it.id];savePS();renderProject(id);};
+        l.appendChild(c);row.appendChild(l);
+        var sp=document.createElement('span');sp.className='ttext';sp.textContent=it.text;sp.title='Double-click to edit';
+        sp.ondblclick=function(){
+          var inp=document.createElement('input');inp.className='tr-input';inp.value=it.text;inp.style.flex='1';
+          row.replaceChild(inp,sp);inp.focus();inp.select();
+          var saved=false;
+          function fin(save){if(saved)return;saved=true;if(save){var v=inp.value.trim();if(v){it.text=v;if(en.scope==='base')store(DR_KEY,base);else savePS();}}renderProject(id);}
+          inp.onblur=function(){fin(true);};
+          inp.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();fin(true);}else if(e.key==='Escape'){fin(false);}};
+        };
+        row.appendChild(sp);
+        if(en.scope==='proj'){var ch=document.createElement('span');ch.className='chip-every';ch.textContent='This project';ch.style.marginLeft='6px';row.appendChild(ch);}
+        var sa=document.createElement('div');sa.className='tactions';
+        sa.appendChild(btn('×',en.scope==='base'?'Delete from the base list (all projects)':'Delete this project item',function(){
+          if(en.scope==='base'){
+            if(!confirm('Remove this check from the BASE list for ALL projects?'))return;
+            var i2=base.indexOf(it);if(i2>-1)base.splice(i2,1);store(DR_KEY,base);
+          }else{
+            ps.dr.items=ps.dr.items.filter(function(x){return x.id!==it.id;});savePS();
+          }
+          renderProject(id);
+        }));
+        row.appendChild(sa);cb.appendChild(row);
+      });
+      var pf=document.createElement('form');pf.className='tr-add';
+      var pi=document.createElement('input');pi.className='tr-input';pi.placeholder='Add a check…';
+      var sel=document.createElement('select');sel.className='tr-input';sel.style.flex='0 0 auto';sel.style.width='auto';
+      sel.innerHTML='<option value="proj">This project</option><option value="base">Base (all projects)</option>';
+      pf.appendChild(pi);pf.appendChild(sel);
+      pf.onsubmit=function(e){e.preventDefault();var v=pi.value.trim();if(!v)return;
+        if(sel.value==='base'){base.push({id:nid(),cat:cat,text:v});store(DR_KEY,base);}
+        else{if(!ps.dr.items)ps.dr.items=[];ps.dr.items.push({id:nid(),cat:cat,text:v});savePS();}
+        renderProject(id);};
+      cb.appendChild(pf);
+      wrap.appendChild(cb);
+    });
+    container.appendChild(wrap);
   }
   function renderPJHome(id){
     var host=document.getElementById('pjhome-'+id); if(!host)return; host.innerHTML=''; var ps=projState(id);
@@ -4344,6 +4454,23 @@ Always begin your first response with:
       bps.links.push({label:'Estimates',url:'https://docs.google.com/spreadsheets/d/143JDlKki6RaLttopdPcwYBAV4oqCGtav0WytrAEXWFY/edit?gid=1942428754#gid=1942428754'});
       savePS();
     }
+  })();
+  // Glimmerverse: project-specific design-review items derived from the approved spec.
+  (function(){
+    var gps=projState('glimmerverse');
+    if(!gps.dr)gps.dr={checked:{},items:[]};
+    var seed=[
+      'Cosmic dashboard: projects visibly live in a nebula/galaxy environment, not a utility grid',
+      'Editor processing state is a designed cosmic moment, not a default spinner',
+      'Watermark state on free-tier export; clean export for subscribers',
+      'Brush and eraser designs make high-precision masking believable',
+      'Preset tray shows a locked state for gated free-tier presets',
+      'Layering UI communicates the 2-3 effect cap and the combined result',
+      'Preset names and the "project" replacement term carry the cosmic vocabulary'
+    ];
+    var ch=false;
+    seed.forEach(function(t){if(!gps.dr.items.some(function(x){return x.text===t;})){gps.dr.items.push({id:nid(),cat:'Project-specific',text:t});ch=true;}});
+    if(ch)savePS();
   })();
   var exB=document.getElementById('trExport'),imB=document.getElementById('trImport');
   var dp=document.getElementById('trDataPanel'),dt=document.getElementById('trDataText'),dap=document.getElementById('trDataApply'),dm=document.getElementById('trDataMsg');
