@@ -918,6 +918,13 @@
   .qa-sessions .item .chev{color:var(--qa-ink-3);transition:transform .15s;flex:none}
   .qa-sessions .item.open .chev{transform:rotate(90deg)}
   .qa-sessions .inum{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--qa-ink-3);width:20px;flex:none;font-variant-numeric:tabular-nums}
+  .qa-sessions .drag-grip{flex:none;cursor:grab;color:var(--qa-ink-3);opacity:0;font-size:13px;line-height:1;padding:4px 2px;user-select:none;-webkit-user-select:none;transition:opacity .12s}
+  .qa-sessions .row-line:hover .drag-grip,.qa-sessions .drag-grip:focus-visible{opacity:.75}
+  .qa-sessions .drag-grip:active{cursor:grabbing}
+  .qa-sessions .item.drag-src{opacity:.45}
+  .qa-sessions .item.drop-above{box-shadow:0 -2px 0 0 var(--qa-accent)}
+  .qa-sessions .item.drop-below{box-shadow:0 2px 0 0 var(--qa-accent)}
+  .qa-sessions .grp-head.drop-into{background:var(--qa-bg-soft);box-shadow:inset 0 0 0 1px var(--qa-accent);border-radius:8px}
   .qa-sessions .idchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;padding:2.5px 7px;border-radius:6px;flex:none;white-space:nowrap}
   .qa-sessions .idchip.cu{background:var(--qa-chip-cu-soft);color:var(--qa-chip-cu)}
   .qa-sessions .idchip.wb{background:var(--qa-chip-wb-soft);color:var(--qa-chip-wb)}
@@ -5302,6 +5309,71 @@ Always begin your first response with:
   const allN = () => { let m = 0; GROUPS.forEach(g => g.items.forEach(it => { if (it.n > m) m = it.n; })); state.__m.removedItems.forEach(n => { if (n > m) m = n; }); return m; };
   const nextN = () => allN() + 1;
 
+  // ---- drag-and-drop: reorder within a flow, or move between flows ----
+  // The dragged case's ORIGINAL def object travels with it, so id/baseN
+  // lineage, steps and every stored field survive intact. Plan-group items
+  // (legacy sessions) get a tombstone + full snapshot, same as the move
+  // dropdown. Results, notes and attachments are keyed by n — untouched.
+  let caseDrag = null;   // {grp, it, el} while a case row is being dragged
+
+  function extractDef(it){
+    for (const arr of Object.values(state.__c.extra)){
+      const i = arr.findIndex(d => d.n === it.n);
+      if (i >= 0) return arr.splice(i, 1)[0];
+    }
+    for (const f of state.__c.flows){
+      const i = (f.items || []).findIndex(d => d.n === it.n);
+      if (i >= 0) return f.items.splice(i, 1)[0];
+    }
+    return null;
+  }
+
+  // Move `it` out of srcGrp and insert it into targetGrp before beforeIt
+  // (append at the end when beforeIt is null). Persists + updates runtime
+  // arrays; returns the new runtime item for DOM placement.
+  function moveCase(srcGrp, it, targetGrp, beforeIt){
+    let def = null;
+    if (it.added){
+      def = extractDef(it);
+    } else {
+      state.__m.removedItems.push(it.n);   // tombstone in the plan; def carries it forward
+    }
+    if (!def) def = {n:it.n, title:it.title, id:it.id, kind:it.kind,
+      flag:it.flag||undefined,
+      steps:Array.isArray(it.steps) ? it.steps : (it.steps ? String(it.steps).split("\n") : undefined),
+      expected:it.expected||undefined, edge:it.edge||undefined,
+      spin:it.spin||undefined, copyOf:it.copyOf||undefined, baseN:it.baseN||undefined};
+    if (targetGrp.custom){
+      delete def.after;                    // custom flows order by array position
+      const arr = (targetGrp.def.items = targetGrp.def.items || []);
+      const ti = beforeIt ? arr.findIndex(d => d.n === beforeIt.n) : -1;
+      if (ti >= 0) arr.splice(ti, 0, def); else arr.push(def);
+    } else {
+      // plan group: extras anchor BELOW a row; dropping before X anchors after
+      // the row above X (a drop at the very top lands at the end — plan rows are fixed)
+      const idx = beforeIt ? targetGrp.items.indexOf(beforeIt) : -1;
+      const above = idx > 0 ? targetGrp.items[idx - 1] : null;
+      if (above) def.after = above.n; else delete def.after;
+      (state.__c.extra[targetGrp.planGi] = state.__c.extra[targetGrp.planGi] || []).push(def);
+    }
+    const si = srcGrp.items.indexOf(it); if (si >= 0) srcGrp.items.splice(si, 1);
+    const newIt = addedRt(def);
+    const ri = beforeIt ? targetGrp.items.indexOf(beforeIt) : -1;
+    if (ri >= 0) targetGrp.items.splice(ri, 0, newIt); else targetGrp.items.push(newIt);
+    save();
+    return newIt;
+  }
+
+  // Fresh element in the right slot of the target flow's body; opens the flow.
+  function placeMoved(targetGrp, newIt, beforeEl){
+    const targetG = [...root.querySelectorAll(".grp")].find(x => x.__grp === targetGrp);
+    if (!targetG) return;
+    const body = targetG.querySelector(".grp-body");
+    body.insertBefore(itemEl(targetGrp, newIt), beforeEl || body.querySelector(".add-btn"));
+    targetG.classList.add("open");
+    targetG.querySelector(".grp-head").setAttribute("aria-expanded","true");
+  }
+
   // effective field value: user edit wins over plan default
   const fval = (it, key, def) => {
     const f = (itemState(it.n).f)||{};
@@ -5397,6 +5469,54 @@ Always begin your first response with:
     const rowChips = el.querySelector(".rowchips");
     const titleSpan = el.querySelector(".ititle .t");
     const detail = el.querySelector(".detail");
+
+    // drag to reorder within this flow, or drop into another flow
+    const grip = document.createElement("span");
+    grip.className = "drag-grip"; grip.textContent = "⠿";
+    grip.setAttribute("draggable", "true");
+    grip.title = "Drag to reorder or move to another flow";
+    grip.setAttribute("aria-label", `Drag to move test ${it.n}`);
+    rowLine.insertBefore(grip, rowBtn);
+    grip.addEventListener("dragstart", e => {
+      caseDrag = {grp, it, el};
+      el.classList.add("drag-src");
+      try { e.dataTransfer.effectAllowed = "move"; e.dataTransfer.setData("text/plain", "case:" + it.n); e.dataTransfer.setDragImage(el, 16, 16); } catch(_){}
+    });
+    grip.addEventListener("dragend", () => {
+      el.classList.remove("drag-src");
+      caseDrag = null;
+      root.querySelectorAll(".drop-above,.drop-below,.grp-head.drop-into").forEach(x => x.classList.remove("drop-above","drop-below","drop-into"));
+    });
+    el.addEventListener("dragover", e => {
+      if (!caseDrag || caseDrag.it === it) return;
+      e.preventDefault(); e.stopPropagation();
+      e.dataTransfer.dropEffect = "move";
+      const r = el.getBoundingClientRect();
+      const below = e.clientY > r.top + r.height / 2;
+      el.classList.toggle("drop-above", !below);
+      el.classList.toggle("drop-below", below);
+    });
+    el.addEventListener("dragleave", () => el.classList.remove("drop-above","drop-below"));
+    el.addEventListener("drop", e => {
+      if (!caseDrag || caseDrag.it === it) return;
+      e.preventDefault(); e.stopPropagation();
+      const below = el.classList.contains("drop-below");
+      el.classList.remove("drop-above","drop-below");
+      const src = caseDrag; caseDrag = null;
+      src.el.classList.remove("drag-src");
+      // insert before this row (above) or before the row after it (below)
+      let beforeIt = it, beforeEl = el;
+      if (below){
+        const i = grp.items.indexOf(it);
+        beforeIt = grp.items[i + 1] || null;
+        beforeEl = (el.nextElementSibling && el.nextElementSibling.classList.contains("item")) ? el.nextElementSibling : null;
+      }
+      if (beforeIt === src.it) return;   // dropping into its own slot — no-op
+      const newIt = moveCase(src.grp, src.it, grp, beforeIt);
+      src.el.remove();
+      placeMoved(grp, newIt, beforeEl);
+      refresh();
+    });
 
     // bug-id + priority + attachment-count chips, LEFT of the result icons
     let attCount = 0;
@@ -5696,37 +5816,11 @@ Always begin your first response with:
       const target = GROUPS[+moveSel.value];
       moveSel.value = "";
       if (!target || target === grp) return;
-      // full snapshot so a moved plan test keeps id/kind/defaults in its new home
-      const def = {n:it.n, title:it.title, id:it.id, kind:it.kind,
-        flag:it.flag||undefined, steps:it.steps||undefined,
-        expected:it.expected||undefined, edge:it.edge||undefined, spin:it.spin||undefined};
-      // remove from source
-      if (it.added){
-        Object.values(state.__c.extra).forEach(arr => {
-          const i = arr.findIndex(d => d.n === it.n); if (i >= 0) arr.splice(i, 1);
-        });
-        state.__c.flows.forEach(f => {
-          const i = (f.items||[]).findIndex(d => d.n === it.n); if (i >= 0) f.items.splice(i, 1);
-        });
-      } else {
-        state.__m.removedItems.push(it.n);   // tombstone in the plan; def carries it forward
-      }
-      // add to target container
-      if (target.custom){ (target.def.items = target.def.items || []).push(def); }
-      else { (state.__c.extra[target.planGi] = state.__c.extra[target.planGi] || []).push(def); }
-      // runtime + DOM
-      const i = grp.items.indexOf(it); if (i >= 0) grp.items.splice(i, 1);
-      const newIt = addedRt(def);
-      target.items.push(newIt);
+      // shared with drag-and-drop: the original def travels (id/baseN intact)
+      const newIt = moveCase(grp, it, target, null);
       el.remove();
-      const targetG = [...root.querySelectorAll(".grp")].find(x => x.__grp === target);
-      if (targetG){
-        const body = targetG.querySelector(".grp-body");
-        body.insertBefore(itemEl(target, newIt), body.querySelector(".add-btn"));
-        targetG.classList.add("open");
-        targetG.querySelector(".grp-head").setAttribute("aria-expanded","true");
-      }
-      save(); refresh();
+      placeMoved(target, newIt, null);
+      refresh();
     });
     actRow.appendChild(moveSel);
 
@@ -5848,6 +5942,38 @@ Always begin your first response with:
       if (ev.target.closest(".grp-title") || ev.target.closest(".grp-del")) return;
       g.classList.toggle("open");
       head.setAttribute("aria-expanded", g.classList.contains("open"));
+    });
+
+    // dropping a dragged test on the flow header (even collapsed) or on empty
+    // body space appends it to the end of this flow
+    const grpDrop = e => {
+      if (!caseDrag) return;
+      e.preventDefault(); e.stopPropagation();
+      head.classList.remove("drop-into");
+      const src = caseDrag; caseDrag = null;
+      src.el.classList.remove("drag-src");
+      if (src.grp === grp && grp.items[grp.items.length - 1] === src.it) return;   // already last here
+      const newIt = moveCase(src.grp, src.it, grp, null);
+      src.el.remove();
+      placeMoved(grp, newIt, null);
+      refresh();
+    };
+    head.addEventListener("dragover", e => {
+      if (!caseDrag) return;
+      e.preventDefault(); e.stopPropagation();
+      e.dataTransfer.dropEffect = "move";
+      head.classList.add("drop-into");
+    });
+    head.addEventListener("dragleave", () => head.classList.remove("drop-into"));
+    head.addEventListener("drop", grpDrop);
+    body.addEventListener("dragover", e => {
+      if (!caseDrag || e.target.closest(".item")) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+    });
+    body.addEventListener("drop", e => {
+      if (e.target.closest(".item")) return;
+      grpDrop(e);
     });
 
     const ovKey = grp.custom ? null : grp.planGi;
