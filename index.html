@@ -1105,6 +1105,38 @@
   .edit-reset{display:block;font:600 .72rem var(--sans);color:var(--accent-ink);background:var(--accent-wash);
     border:1px solid transparent;border-radius:99px;padding:4px 11px;cursor:pointer;margin-top:12px;width:max-content;}
   .edit-reset:hover{border-color:var(--accent);}
+
+  /* ---- project status + delete dialog ---- */
+  .proj-group{margin:26px 0 12px;}
+  .proj-group:first-child{margin-top:0;}
+  .proj-group .a-row{display:flex;align-items:center;gap:14px;}
+  .proj-group h2{font-family:var(--display);font-size:1.02rem;font-weight:600;white-space:nowrap;}
+  .proj-group .a-row::after{content:"";flex:1;height:1px;background:var(--line);}
+  .proj-group p{color:var(--muted);font-size:.85rem;margin-top:4px;}
+  .pillrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
+  .projcard.hold{background:#FFF9EF;border-color:#EBD8B2;}
+  .projcard.hold:hover{border-color:var(--warn);box-shadow:0 2px 4px rgba(23,28,38,.05),0 12px 28px rgba(199,122,10,.12);}
+  .pill.hold{background:var(--warn-wash);color:var(--warn);}
+  .projcard.done{background:#F7FBF8;border-color:#D9E9DF;}
+  .pill.donep{background:var(--good-wash);color:var(--good);}
+  .pc-actions{display:flex;gap:8px;margin-top:14px;align-items:center;}
+  .pc-chip{font:600 .72rem var(--sans);color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 11px;cursor:pointer;}
+  .pc-chip:hover{color:var(--ink);border-color:var(--slate);}
+  .pc-chip.warn:hover{color:var(--warn);border-color:var(--warn);background:var(--warn-wash);}
+  .pc-chip.good:hover{color:var(--good);border-color:var(--good);background:var(--good-wash);}
+  .pdel-overlay{position:fixed;inset:0;z-index:90;background:rgba(23,24,29,.45);display:grid;place-items:center;padding:20px;}
+  .pdel-box{background:var(--card);border-radius:var(--radius);box-shadow:0 20px 60px rgba(23,28,38,.3);max-width:540px;width:100%;padding:24px;max-height:86vh;overflow:auto;}
+  .pdel-box h3{font-family:var(--display);margin-bottom:4px;}
+  .pd-sub{color:var(--muted);font-size:.9rem;margin:10px 0;}
+  .pd-inv dt{padding-top:8px;}
+  .pd-inv dd{font-size:.9rem;}
+  .pd-input{width:100%;font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;margin-top:2px;box-sizing:border-box;}
+  .pd-input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+  .pd-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px;}
+  .pd-cancel{font:600 .85rem var(--sans);background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:8px 16px;cursor:pointer;}
+  .pd-cancel:hover{border-color:var(--slate);}
+  .pd-del{font:600 .85rem var(--sans);color:#fff;background:var(--crit);border:none;border-radius:99px;padding:8px 16px;cursor:pointer;}
+  .pd-del:disabled{opacity:.4;cursor:not-allowed;}
 </style>
 
 <!-- icon sprite -->
@@ -3767,7 +3799,7 @@ Always begin your first response with:
   function importData(txt){var obj=JSON.parse(txt);var n=0;for(var k in obj){if(DATA_KEYS.indexOf(k)>-1||/^qa-session/.test(k)){localStorage.setItem(k,obj[k]);n++;}}return n;}
   var PKEY='appmakers-projects-v1'; var pstate=load(PKEY)||{};
   var STAGE_MIG={'Development':'Development / QA','Testing':'Acceptance Testing'};
-  function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];if(!pstate[id].creds)pstate[id].creds=[];return pstate[id];}
+  function projState(id){if(pstate[id]&&STAGE_MIG[pstate[id].stage])pstate[id].stage=STAGE_MIG[pstate[id].stage];if(!pstate[id]){var d=proj(id)||{};pstate[id]={stage:d.defaultStage||STAGES[0],phases:(d.defaultPhases||[]).map(function(t){return {id:nid(),text:t,done:false};})};}if(!pstate[id].budget)pstate[id].budget={used:'',total:''};if(!pstate[id].links)pstate[id].links=((proj(id)||{}).links||[]).slice();if(!pstate[id].dates)pstate[id].dates=[];if(!pstate[id].meetings)pstate[id].meetings=[];if(!pstate[id].creds)pstate[id].creds=[];if(!pstate[id].status)pstate[id].status='active';return pstate[id];}
   function savePS(){store(PKEY,pstate);}
   window.__projState=projState; window.__savePS=savePS;   // bridge to the sync <script> block
   var RESKEY='appmakers-resources-v1'; var resData=load(RESKEY)||{};
@@ -4360,51 +4392,120 @@ Always begin your first response with:
   function decorate(id){tileProg('ob-sequence','onboarding');tileProg('habits','habits');if(MODULES[id])renderTrack(id);if(trackOf(id))afterModule(id);renderTraining();}
 
   function currentEpic(ps){for(var i=0;i<ps.phases.length;i++)if(!ps.phases[i].done)return ps.phases[i].text;return ps.phases.length?'All epics complete':'No epics yet';}
-  function renderProjectsList(){
-    var host=document.getElementById('projectsList'); if(!host)return; host.innerHTML='';
-    PROJECTS.forEach(function(p){
-      var ps=projState(p.id);
-      var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
-      var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length, ppct=pt?Math.round(pd/pt*100):0;
-      var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
-      var a=document.createElement('a');a.className='projcard';a.href='#'+p.id;
-      a.innerHTML='<div class="projcard-top"><h3>'+esc(p.name)+'</h3><span class="pill">'+esc(ps.stage)+'</span></div>'+
-        '<div class="pc-grid">'+
-          '<div class="pc-field wide"><span class="k">Current epic</span><span class="v">'+esc(currentEpic(ps))+'</span></div>'+
-          '<div class="pc-field"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span><div class="tbar"><span style="width:'+ppct+'%"></span></div></div>'+
-          '<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
-          '<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
-        '</div><span class="pc-open">Open project →</span>';
-      if(isCustomProject(p.id)){
-        var del=document.createElement('button');del.type='button';del.className='projcard-del';del.innerHTML='\u2715';del.title='Delete this project';
-        del.onclick=function(ev){ev.preventDefault();ev.stopPropagation();
-          if(!confirm('Delete project "'+p.name+'"? Its tasks move to "No project". Stages, links and meetings are removed.'))return;
-          customProjects=customProjects.filter(function(c){return c.id!==p.id;});saveCustomProjects();
-          tstate.tasks.forEach(function(t){if(t.project===p.id)t.project=null;});saveTasks();
-          delete pstate[p.id];savePS();
-          for(var i=PROJECTS.length-1;i>=0;i--)if(PROJECTS[i].id===p.id)PROJECTS.splice(i,1);
-          delete SECTION_TAB[p.id];delete TITLES[p.id];
-          var sec=document.getElementById(p.id);
-          if(sec){var vi=views.indexOf(sec);if(vi>-1)views.splice(vi,1);sec.remove();}
-          renderProjectsList();renderHome();};
-        a.appendChild(del);
-      }
-      host.appendChild(a);
-    });
-    var add=document.createElement('button');add.type='button';add.className='projcard projcard-add';
-    add.innerHTML='<span class="pa-plus">+</span><span class="pa-t">New project</span><span class="pa-d">Creates a project page with stages, tasks, links, budget and meetings</span>';
-    add.onclick=function(){
-      var name=(prompt('Project name?')||'').trim(); if(!name)return;
-      var slug='p-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-      if(!slug||slug==='p-'){alert('That name needs at least one letter or number.');return;}
-      if(proj(slug)||document.getElementById(slug)){alert('A project with that name already exists.');return;}
-      var rec={id:slug,name:name};
-      customProjects.push(rec);saveCustomProjects();registerProject(rec);
-      location.hash='#'+slug;
-    };
-    host.appendChild(add);
-  }
-  function renderResList(host,track,kind,title,desc){
+  function projStatus(id){return projState(id).status||'active';}
+function setProjStatus(id,st){projState(id).status=st;savePS();renderProjectsList();if(typeof decorate==='function')decorate('projects');}
+function projInventory(p){
+var ps=projState(p.id);
+var open=0,closed=0;tstate.tasks.forEach(function(t){if(t.project===p.id){if(taskDone(t))closed++;else open++;}});
+var qa=0;try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('qa-session-'+p.id+'-')===0)qa++;}}catch(e){}
+var ed=0;try{var edits=load('appmakers-edits-v1')||{};for(var k2 in edits)if(k2.indexOf(p.id+'|')===0)ed++;}catch(e){}
+return {open:open,closed:closed,phases:ps.phases.length,links:(ps.links||[]).length,dates:(ps.dates||[]).length,
+meetings:(ps.meetings||[]).length,creds:(ps.creds||[]).length,qa:qa,
+budget:(ps.budget&&ps.budget.total!=='')?'set ('+ps.budget.used+' / '+ps.budget.total+'h)':'not set',edits:ed};
+}
+function openProjDelete(p){
+var inv=projInventory(p);
+var ov=document.createElement('div');ov.className='pdel-overlay';
+ov.innerHTML='<div class="pdel-box" role="dialog" aria-modal="true">'
++'<h3>Delete "'+esc(p.name)+'"?</h3>'
++'<p class="pd-sub">Check what this project holds before you decide. Deleting removes it from this browser only; files on disk, the workbook and anything on the QA sync server are untouched.</p>'
++'<dl class="kv pd-inv">'
++'<div><dt>Tasks</dt><dd>'+inv.open+' open, '+inv.closed+' completed. <b>Kept</b>: they move to "No project".</dd></div>'
++'<div><dt>Stages / epics</dt><dd>'+inv.phases+' → deleted</dd></div>'
++'<div><dt>Links</dt><dd>'+inv.links+' → deleted</dd></div>'
++'<div><dt>Key dates</dt><dd>'+inv.dates+' → deleted</dd></div>'
++'<div><dt>Meetings</dt><dd>'+inv.meetings+' → deleted</dd></div>'
++'<div><dt>Test credentials</dt><dd>'+inv.creds+' → deleted</dd></div>'
++'<div><dt>QA test sessions</dt><dd>'+inv.qa+' → deleted from this browser</dd></div>'
++'<div><dt>Budget</dt><dd>'+inv.budget+'</dd></div>'
++(inv.edits?'<div><dt>Edited fields</dt><dd>'+inv.edits+' → reset</dd></div>':'')
++'</dl>'
++'<p class="pd-sub">Type the project name to confirm.</p>'
++'<input class="pd-input" type="text" placeholder="'+esc(p.name)+'">'
++'<div class="pd-actions"><button type="button" class="pd-cancel">Cancel</button><button type="button" class="pd-del" disabled>Delete project</button></div>'
++'</div>';
+document.body.appendChild(ov);
+var input=ov.querySelector('.pd-input'),delBtn=ov.querySelector('.pd-del');
+input.addEventListener('input',function(){delBtn.disabled=input.value.trim().toLowerCase()!==p.name.trim().toLowerCase();});
+ov.querySelector('.pd-cancel').onclick=function(){ov.remove();};
+ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+delBtn.onclick=function(){
+customProjects=customProjects.filter(function(c){return c.id!==p.id;});saveCustomProjects();
+tstate.tasks.forEach(function(t){if(t.project===p.id)t.project=null;});saveTasks();
+delete pstate[p.id];savePS();
+try{localStorage.removeItem('qa-sessions-idx-'+p.id);
+var kill=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('qa-session-'+p.id+'-')===0)kill.push(k);}
+kill.forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+try{var EK='appmakers-edits-v1';var edd=load(EK)||{};var ch=false;for(var k3 in edd)if(k3.indexOf(p.id+'|')===0){delete edd[k3];ch=true;}if(ch)store(EK,edd);}catch(e){}
+for(var i2=PROJECTS.length-1;i2>=0;i2--)if(PROJECTS[i2].id===p.id)PROJECTS.splice(i2,1);
+delete SECTION_TAB[p.id];delete TITLES[p.id];
+var sec=document.getElementById(p.id);
+if(sec){var vi=views.indexOf(sec);if(vi>-1)views.splice(vi,1);sec.remove();}
+ov.remove();renderProjectsList();if(typeof decorate==='function')decorate('projects');
+};
+input.focus();
+}
+function renderProjectsList(){
+var host=document.getElementById('projectsList'); if(!host)return; host.innerHTML=''; host.classList.remove('proj-cards');
+function ghead(t,sub){var h=document.createElement('div');h.className='proj-group';
+h.innerHTML='<div class="a-row"><h2>'+t+'</h2></div>'+(sub?'<p>'+sub+'</p>':'');return h;}
+function ggrid(){var g=document.createElement('div');g.className='proj-cards';return g;}
+function card(p){
+var ps=projState(p.id), st=ps.status||'active';
+var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
+var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length, ppct=pt?Math.round(pd/pt*100):0;
+var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
+var a=document.createElement('a');a.className='projcard'+(st==='hold'?' hold':'')+(st==='done'?' done':'');a.href='#'+p.id;
+var stPill=st==='hold'?'<span class="pill hold">On hold</span>':(st==='done'?'<span class="pill donep">Completed</span>':'');
+a.innerHTML='<div class="projcard-top"><h3>'+esc(p.name)+'</h3><span class="pillrow">'+stPill+'<span class="pill">'+esc(ps.stage)+'</span></span></div>'+
+'<div class="pc-grid">'+
+'<div class="pc-field wide"><span class="k">Current epic</span><span class="v">'+esc(currentEpic(ps))+'</span></div>'+
+'<div class="pc-field"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span><div class="tbar"><span style="width:'+ppct+'%"></span></div></div>'+
+'<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
+'<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
+'</div>';
+var act=document.createElement('div');act.className='pc-actions';
+var hb=document.createElement('button');hb.type='button';hb.className='pc-chip warn';
+hb.textContent=st==='hold'?'Resume':'Put on hold';
+hb.onclick=function(ev){ev.preventDefault();ev.stopPropagation();setProjStatus(p.id,st==='hold'?'active':'hold');};
+var db=document.createElement('button');db.type='button';db.className='pc-chip good';
+db.textContent=st==='done'?'Reopen project':'Mark completed';
+db.onclick=function(ev){ev.preventDefault();ev.stopPropagation();setProjStatus(p.id,st==='done'?'active':'done');};
+act.appendChild(hb);act.appendChild(db);
+var openLink=document.createElement('span');openLink.className='pc-open';openLink.style.marginLeft='auto';openLink.textContent='Open project →';
+act.appendChild(openLink);
+a.appendChild(act);
+if(isCustomProject(p.id)){
+var del=document.createElement('button');del.type='button';del.className='projcard-del';del.innerHTML='✕';del.title='Delete this project';
+del.onclick=function(ev){ev.preventDefault();ev.stopPropagation();openProjDelete(p);};
+a.appendChild(del);
+}
+return a;
+}
+var active=PROJECTS.filter(function(p){return projStatus(p.id)!=='done';});
+var done=PROJECTS.filter(function(p){return projStatus(p.id)==='done';});
+host.appendChild(ghead('Active projects',null));
+var g1=ggrid();
+active.forEach(function(p){g1.appendChild(card(p));});
+var add=document.createElement('button');add.type='button';add.className='projcard projcard-add';
+add.innerHTML='<span class="pa-plus">+</span><span class="pa-t">New project</span><span class="pa-d">Creates a project page with stages, tasks, links, budget and meetings</span>';
+add.onclick=function(){
+var name=(prompt('Project name?')||'').trim(); if(!name)return;
+var slug='p-'+name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+if(!slug||slug==='p-'){alert('That name needs at least one letter or number.');return;}
+if(proj(slug)||document.getElementById(slug)){alert('A project with that name already exists.');return;}
+var rec={id:slug,name:name};
+customProjects.push(rec);saveCustomProjects();registerProject(rec);
+location.hash='#'+slug;
+};
+g1.appendChild(add);
+host.appendChild(g1);
+if(done.length){
+host.appendChild(ghead('Completed projects','Kept for reference. Reopen any time.'));
+var g2=ggrid();done.forEach(function(p){g2.appendChild(card(p));});host.appendChild(g2);
+}
+}
+function renderResList(host,track,kind,title,desc){
     var data=resState(track)[kind]; host.innerHTML='';
     var b=block(title); b.insertAdjacentHTML('beforeend','<p class="hmuted" style="margin-bottom:10px">'+desc+'</p>');
     var list=document.createElement('div');
