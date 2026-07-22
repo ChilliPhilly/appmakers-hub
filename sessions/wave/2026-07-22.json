@@ -1,0 +1,688 @@
+{
+ "1": {
+  "f": {
+   "steps": "1. Fresh install\n2. Launch the app",
+   "expected": "Welcome/Get Started screen shows with both Sign up and Log in options."
+  }
+ },
+ "2": {
+  "f": {
+   "steps": "1. Tap Sign up\n2. Enter email, password, first name, last name; pick nationality from dropdown\n3. Submit",
+   "expected": "Account created; a 6-digit verification code is emailed; verification screen shows."
+  }
+ },
+ "3": {
+  "f": {
+   "steps": "1. Complete sign up\n2. Enter the emailed 6-digit code",
+   "expected": "Verification succeeds; user proceeds to rank selection."
+  }
+ },
+ "4": {
+  "f": {
+   "steps": "1. From Welcome, tap Log in\n2. Enter valid email + password",
+   "expected": "User lands in the app (dashboard/wallet)."
+  }
+ },
+ "5": {
+  "f": {
+   "steps": "1. Log in with a valid email but wrong password",
+   "expected": "Clear, professional error message; no crash; no access.",
+   "notes2": "Regression watch: after the failed attempt, tap outside the fields \u2014 the keyboard must dismiss (P0 bug filed 14 Jul)."
+  }
+ },
+ "6": {
+  "f": {
+   "steps": "1. From Log in, tap Forgot password\n2. Enter account email\n3. Follow the reset flow end to end\n4. Sign in with the new password",
+   "expected": "Reset completes; old password stops working; new password signs in."
+  }
+ },
+ "7": {
+  "f": {
+   "steps": "1. From Welcome, choose Google login\n2. Complete the Google flow with a test account",
+   "expected": "Account created/signed in via Google; onboarding continues normally."
+  }
+ },
+ "8": {
+  "f": {
+   "steps": "1. From Welcome, choose Apple login\n2. Complete Sign in with Apple",
+   "expected": "Account created/signed in via Apple; onboarding continues normally."
+  }
+ },
+ "9": {
+  "f": {
+   "steps": "1. After verification, reach 'Choose your current rank'",
+   "expected": "Main categories shown: Officer, Rating, Galley/Hotel Department, Staff Crew, Technical Support & Roles."
+  }
+ },
+ "10": {
+  "f": {
+   "steps": "1. After rank, reach 'Choose Your Vessel Type'\n2. Open Commercial Cargo Ships\n3. Open Tanker Ships",
+   "expected": "Commercial Cargo lists its 12 subtypes (Container \u2026 Log Carrier); Tanker lists Oil Tanker (+ any others built)."
+  }
+ },
+ "11": {
+  "f": {
+   "steps": "1. Complete rank + vessel selection",
+   "expected": "User reaches the app with a basic profile reflecting rank + vessel choices."
+  }
+ },
+ "12": {
+  "f": {
+   "steps": "1. Fresh account (no certs)\n2. Open the Certificates tab",
+   "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile."
+  }
+ },
+ "13": {
+  "f": {
+   "steps": "1. Open Certificates\n2. Use the upload form to add a certificate file\n3. Assign it to a category/folder",
+   "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer."
+  }
+ },
+ "14": {
+  "f": {
+   "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
+   "expected": "Scan captures legibly and saves as a document in the chosen folder."
+  }
+ },
+ "15": {
+  "f": {
+   "steps": "1. On populated My Certificates, review the category folders",
+   "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list."
+  }
+ },
+ "16": {
+  "f": {
+   "steps": "1. Add 3+ certificates to the same category",
+   "expected": "All entries listed and individually openable; count correct."
+  }
+ },
+ "17": {
+  "f": {
+   "steps": "1. Browse the certificate wallet home",
+   "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred).",
+   "notes2": "Card border colour + 'Active' badge encode validity \u2014 exact mapping unconfirmed; record what you see."
+  }
+ },
+ "18": {
+  "f": {
+   "steps": "1. Open a certificate card",
+   "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code."
+  }
+ },
+ "19": {
+  "f": {
+   "steps": "1. Open an uploaded multi-page certificate",
+   "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly."
+  }
+ },
+ "20": {
+  "f": {
+   "steps": "1. On the detail screen, use the QR code / verification link",
+   "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)",
+   "notes2": "Backend-dependent \u2014 if the verification server can't be reached, mark Unverifiable."
+  }
+ },
+ "21": {
+  "f": {
+   "steps": "1. Use Search Certificates with a full term, then a partial term",
+   "expected": "Matching certificates surface; non-matches excluded; clear empty-result state."
+  }
+ },
+ "22": {
+  "f": {
+   "steps": "1. Open a certificate\n2. Use export/share",
+   "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)"
+  }
+ },
+ "23": {
+  "f": {
+   "steps": "1. Open a certificate\n2. Print via the OS print flow",
+   "expected": "Print preview correct; full document prints."
+  }
+ },
+ "24": {
+  "f": {
+   "steps": "1. Delete a certificate\n2. Check the folder and total counts",
+   "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it."
+  }
+ },
+ "25": {
+  "f": {
+   "steps": "1. Precondition: a multi-page document uploaded to a chosen folder\n2. Reopen the document from its folder",
+   "expected": "Document is in the folder it was tagged to, all pages present, correct orientation, no corruption \u2014 exactly what was uploaded."
+  }
+ },
+ "26": {
+  "f": {
+   "steps": "1. Precondition: several documents uploaded across different folders\n2. Enable airplane mode (zero connectivity)\n3. Force-quit the app, then cold-start it\n4. Open each folder and view every uploaded document",
+   "expected": "Every document opens and renders completely with zero connectivity, including after force-quit + cold start. STOP-SHIP if broken.",
+   "notes2": "STOP-SHIP if any document fails to open fully offline (incl. after force-quit + cold start)."
+  }
+ },
+ "27": {
+  "f": {
+   "steps": "1. Open Service Records\n2. Add an entry (vessel, dates, role)",
+   "expected": "Record saves and appears in the listing."
+  }
+ },
+ "28": {
+  "f": {
+   "steps": "1. Add several records with different dates",
+   "expected": "Listing shows all records, ordered sensibly (chronological)."
+  }
+ },
+ "29": {
+  "f": {
+   "steps": "1. Add a record spanning a known date range\n2. Check the sea-days total",
+   "expected": "Sea days match the date range exactly (inclusive rules consistent)."
+  }
+ },
+ "30": {
+  "f": {
+   "steps": "1. Edit an existing record's dates",
+   "expected": "Changes save; listing and sea-days totals update correctly."
+  }
+ },
+ "31": {
+  "f": {
+   "steps": "1. Delete a record",
+   "expected": "Record removed; totals update; no orphan data."
+  }
+ },
+ "32": {
+  "f": {
+   "steps": "1. Open the career dashboard with several records\n2. Apply filters",
+   "expected": "Chronological listing correct; filters narrow correctly."
+  }
+ },
+ "33": {
+  "f": {
+   "steps": "1. Set a rank goal\n2. Check the goal progress bar",
+   "expected": "Goal saved; progress bar reflects progress logic."
+  }
+ },
+ "34": {
+  "f": {
+   "steps": "1. Export a report from the dashboard",
+   "expected": "Report exports with correct data. (Format unspecified.)"
+  }
+ },
+ "35": {
+  "f": {
+   "steps": "1. Scan a certificate carrying an issue date, expiry date and certificate number",
+   "expected": "Issue date, expiration date and certificate number are extracted correctly into the entry's fields.",
+   "notes2": "If auto-extraction isn't in this build, mark Skipped/Blocked, not Fail."
+  }
+ },
+ "36": {
+  "f": {
+   "steps": "1. Enable notifications when prompted\n2. Trigger a notification event (per dev guidance)",
+   "expected": "Notification arrives and deep-links sensibly.",
+   "notes2": "Trigger = certificate-expiry push; if none can be triggered on demand, mark Unverifiable."
+  }
+ },
+ "37": {
+  "f": {
+   "steps": "1. Open profile\n2. Change rank and vessel type\n3. Save",
+   "expected": "Edits persist and reflect across the app."
+  }
+ },
+ "38": {
+  "f": {
+   "steps": "1. Open Contact us from settings",
+   "expected": "Page loads and the contact action works (form/email)."
+  }
+ },
+ "39": {
+  "f": {
+   "steps": "1. On an account with NO active subscription, open Terms, Privacy, Contact Us",
+   "expected": "All accessible without hitting the paywall."
+  }
+ },
+ "40": {
+  "f": {
+   "steps": "1. Sign in and land on My Certificates\n2. Go to Profile\n3. Tap Log out",
+   "expected": "User is returned cleanly to the sign-in/welcome screen \u2014 no black screen, no dead end; signing back in afterwards works."
+  }
+ },
+ "41": {
+  "f": {
+   "steps": "1. Settings \u2192 delete account\n2. Confirm\n3. Attempt to sign in again",
+   "expected": "Account deletes with clear confirmation; sign-in afterwards fails appropriately.",
+   "notes2": "Destructive \u2014 run LAST with a throwaway account."
+  }
+ },
+ "42": {
+  "f": {
+   "steps": "1. Enable airplane mode\n2. Cold-start the app\n3. Navigate: dashboard \u2192 folders \u2192 viewer \u2192 profile",
+   "expected": "All primary navigation works offline; no crash, no infinite spinner, no dead screens."
+  }
+ },
+ "43": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A: airplane mode\n3. Device A: add a new Sea Service Record\n4. Verify it appears locally on A\n5. Device A back online",
+   "expected": "Record appears on Device B within a few seconds.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "44": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Repeat scenarios 1\u20133 with Certificates (add, edit, delete) on Device A offline\n3. Bring A back online after each",
+   "expected": "Each certificate change syncs to Device B correctly.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "45": {
+  "f": {
+   "steps": "1. Precondition: server minimum build is 54; skip build 52 entirely (bad publish)\n2. Install build 53 from TestFlight (delete the app first, then TestFlight \u2192 Wave \u2192 Previous Builds \u2192 53)\n3. Open the app",
+   "expected": "The forced-version-update screen appears and blocks normal use of the app. (The store Update link won't resolve until the app is live in the App Store \u2014 the wall appearing is the check.)",
+   "notes2": "Needs build 53 (skip 52 \u2014 bad publish): delete the app, TestFlight \u2192 Previous Builds \u2192 53. The store Update link won't work until the app is live \u2014 the wall appearing IS the pass."
+  }
+ },
+ "46": {
+  "f": {
+   "steps": "1. From build 53 showing the update wall, update to build 54 in TestFlight\n2. Open the app\n3. Background the app, then resume it once",
+   "expected": "Forced-update screen is gone on build 54; the app opens normally. The version check runs on startup and on resume without re-walling a compliant build.",
+   "notes2": "Update to build 54 via TestFlight. Check runs on startup AND on resume from background."
+  }
+ },
+ "47": {
+  "f": {
+   "steps": "1. On build 53, sign in while online\n2. Force-quit the app\n3. Enable airplane mode AND turn off Wi-Fi\n4. Reopen the app",
+   "expected": "With no connectivity the version check cannot run and does NOT block the user \u2014 the app opens with their content available in offline mode (a user with no internet who already got the upgrade request isn't stuck).",
+   "notes2": "Run on build 53 while it is below the minimum."
+  }
+ },
+ "48": {
+  "f": {
+   "steps": "1. Open the web admin\n2. Log in with admin credentials\n3. Try a non-admin account",
+   "expected": "Admin signs in; non-admin is rejected.",
+   "notes2": "Web surface \u2014 run in a browser; skip this flow if the admin panel isn't part of this release."
+  }
+ },
+ "49": {
+  "f": {
+   "steps": "1. In admin, open the users table",
+   "expected": "Registered users listed with sensible columns."
+  }
+ },
+ "50": {
+  "f": {
+   "steps": "1. Open a user from the table",
+   "expected": "Profile viewer shows that user's details."
+  }
+ },
+ "__c": {
+  "flows": [
+   {
+    "title": "User Flow 1 \u2014 Sign-up, onboarding & sign-in",
+    "desc": "Done when a new user can sign up (email + Google + Apple), verify their email, complete rank and vessel onboarding into a profile, and an existing user can sign in and recover a forgotten password.",
+    "items": [
+     {
+      "n": 1,
+      "title": "Auth: Welcome screen offers sign up and login",
+      "baseN": 4,
+      "id": "W-AUTH-001"
+     },
+     {
+      "n": 2,
+      "title": "Auth: Create account \u2014 happy path",
+      "baseN": 5,
+      "id": "W-AUTH-002"
+     },
+     {
+      "n": 3,
+      "title": "Auth: 6-digit verification \u2014 correct code",
+      "baseN": 10,
+      "id": "W-AUTH-007"
+     },
+     {
+      "n": 4,
+      "title": "Auth: Sign in \u2014 happy path",
+      "baseN": 12,
+      "id": "W-AUTH-009"
+     },
+     {
+      "n": 5,
+      "title": "Auth: Sign in \u2014 wrong password",
+      "baseN": 13,
+      "id": "W-AUTH-010"
+     },
+     {
+      "n": 6,
+      "title": "Auth: Forgot password flow",
+      "baseN": 14,
+      "id": "W-AUTH-011"
+     },
+     {
+      "n": 7,
+      "title": "Auth: Google login",
+      "baseN": 15,
+      "id": "W-AUTH-012"
+     },
+     {
+      "n": 8,
+      "title": "Auth: Apple login",
+      "baseN": 16,
+      "id": "W-AUTH-013"
+     },
+     {
+      "n": 9,
+      "title": "Auth: Rank selection \u2014 main categories",
+      "baseN": 18,
+      "id": "W-AUTH-015"
+     },
+     {
+      "n": 10,
+      "title": "Auth: Vessel type \u2014 main categories and subcategories",
+      "baseN": 20,
+      "id": "W-AUTH-017"
+     },
+     {
+      "n": 11,
+      "title": "Auth: Onboarding completes into basic profile",
+      "baseN": 21,
+      "id": "W-AUTH-018"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 2 \u2014 Certificates wallet",
+    "desc": "Done when a seafarer can add certificates by upload and scan, organise them across the five categories, view / search / export / print / delete them \u2014 and every stored document survives intact and opens fully offline (stop-ship).",
+    "items": [
+     {
+      "n": 12,
+      "title": "Certificates: Empty state \u2014 No Certificates Yet",
+      "baseN": 33,
+      "id": "W-CERT-010"
+     },
+     {
+      "n": 13,
+      "title": "Certificates: Upload a certificate via file upload",
+      "baseN": 24,
+      "id": "W-CERT-001"
+     },
+     {
+      "n": 14,
+      "title": "Certificates: Scan a certificate with the camera",
+      "baseN": 25,
+      "id": "W-CERT-002"
+     },
+     {
+      "n": 15,
+      "title": "Certificates: Category folders present & colour-coded",
+      "baseN": 35,
+      "id": "W-CERT-012"
+     },
+     {
+      "n": 16,
+      "title": "Certificates: Multiple certificates in one category",
+      "baseN": 26,
+      "id": "W-CERT-003"
+     },
+     {
+      "n": 17,
+      "title": "Certificates: Wallet-style presentation",
+      "baseN": 32,
+      "id": "W-CERT-009"
+     },
+     {
+      "n": 18,
+      "title": "Certificates: Certificate detail screen",
+      "baseN": 36,
+      "id": "W-CERT-013"
+     },
+     {
+      "n": 19,
+      "title": "Certificates: Document viewer",
+      "baseN": 27,
+      "id": "W-CERT-004"
+     },
+     {
+      "n": 20,
+      "title": "Certificates: QR verification opens in-app browser",
+      "baseN": 37,
+      "id": "W-CERT-014"
+     },
+     {
+      "n": 21,
+      "title": "Certificates: Search certificates",
+      "baseN": 38,
+      "id": "W-CERT-015"
+     },
+     {
+      "n": 22,
+      "title": "Certificates: Export a certificate",
+      "baseN": 30,
+      "id": "W-CERT-007"
+     },
+     {
+      "n": 23,
+      "title": "Certificates: Print a certificate",
+      "baseN": 31,
+      "id": "W-CERT-008"
+     },
+     {
+      "n": 24,
+      "title": "Certificates: Delete a certificate",
+      "baseN": 29,
+      "id": "W-CERT-006"
+     },
+     {
+      "n": 25,
+      "title": "Core: Document integrity after upload",
+      "baseN": 2,
+      "id": "W-INV-002"
+     },
+     {
+      "n": 26,
+      "title": "Core: View every uploaded document fully offline",
+      "baseN": 1,
+      "id": "W-INV-001"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 3 \u2014 Service records & sea days",
+    "desc": "Done when service records can be added, listed, edited and deleted, and the sea-days calculation stays correct through each change.",
+    "items": [
+     {
+      "n": 27,
+      "title": "Service Records: Add a service record",
+      "baseN": 39,
+      "id": "W-SR-001"
+     },
+     {
+      "n": 28,
+      "title": "Service Records: Service record listing",
+      "baseN": 40,
+      "id": "W-SR-002"
+     },
+     {
+      "n": 29,
+      "title": "Service Records: Sea days calculation",
+      "baseN": 41,
+      "id": "W-SR-003"
+     },
+     {
+      "n": 30,
+      "title": "Service Records: Edit a service record recalculates",
+      "baseN": 43,
+      "id": "W-SR-005"
+     },
+     {
+      "n": 31,
+      "title": "Service Records: Delete a service record",
+      "baseN": 44,
+      "id": "W-SR-006"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 4 \u2014 Career dashboard, goals & notifications",
+    "desc": "Done when the career dashboard lists records chronologically with working filters, a rank goal shows progress, career/service reports export, scan auto-extraction fills the form, and a push notification arrives.",
+    "items": [
+     {
+      "n": 32,
+      "title": "Advanced: Career dashboard \u2014 chronological records + filters",
+      "baseN": 86,
+      "id": "W-ADV-003"
+     },
+     {
+      "n": 33,
+      "title": "Advanced: Set rank goal + progress bar",
+      "baseN": 87,
+      "id": "W-ADV-004"
+     },
+     {
+      "n": 34,
+      "title": "Advanced: Export career/service reports",
+      "baseN": 88,
+      "id": "W-ADV-005"
+     },
+     {
+      "n": 35,
+      "title": "Advanced: Auto data extraction from scan",
+      "baseN": 85,
+      "id": "W-ADV-002"
+     },
+     {
+      "n": 36,
+      "title": "Advanced: Push notification received",
+      "baseN": 89,
+      "id": "W-ADV-006"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 5 \u2014 Profile, settings & account",
+    "desc": "Done when the profile can be viewed and edited, contact and legal pages open, logging out lands cleanly on sign-in, and the delete-account flow removes the account.",
+    "items": [
+     {
+      "n": 37,
+      "title": "Profile: View and edit profile",
+      "baseN": 45,
+      "id": "W-PROF-001"
+     },
+     {
+      "n": 38,
+      "title": "Profile: Contact us page",
+      "baseN": 46,
+      "id": "W-PROF-002"
+     },
+     {
+      "n": 39,
+      "title": "Profile: Legal pages accessible without subscription",
+      "baseN": 47,
+      "id": "W-PROF-003"
+     },
+     {
+      "n": 40,
+      "title": "Auth: Log out returns to sign-in",
+      "baseN": 23,
+      "id": "W-AUTH-020"
+     },
+     {
+      "n": 41,
+      "title": "Profile: Delete account flow",
+      "baseN": 48,
+      "id": "W-PROF-004"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 6 \u2014 Offline & sync",
+    "desc": "Done when the app stays usable offline with no lockups, and offline-made changes sync up correctly once connectivity returns.",
+    "items": [
+     {
+      "n": 42,
+      "title": "Core: App navigates offline without lockups",
+      "baseN": 3,
+      "id": "W-INV-003"
+     },
+     {
+      "n": 43,
+      "title": "Offline Sync: Offline create \u2192 sync",
+      "baseN": 74,
+      "id": "W-SYNC-001"
+     },
+     {
+      "n": 44,
+      "title": "Offline Sync: Offline certificate CRUD \u2192 sync",
+      "baseN": 77,
+      "id": "W-SYNC-004"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 7 \u2014 Forced version update",
+    "desc": "Done when a below-minimum build is walled by the forced-update screen, updating clears it, and an already-signed-in offline user is never blocked by the check.",
+    "items": [
+     {
+      "n": 45,
+      "title": "Forced Update: Outdated build shows the forced-update screen",
+      "baseN": 94,
+      "id": "W-UPD-001"
+     },
+     {
+      "n": 46,
+      "title": "Forced Update: Updating past the minimum clears the forced-update screen",
+      "baseN": 95,
+      "id": "W-UPD-002"
+     },
+     {
+      "n": 47,
+      "title": "Forced Update: Offline user is not blocked by the version check",
+      "baseN": 96,
+      "id": "W-UPD-003"
+     }
+    ]
+   },
+   {
+    "title": "User Flow 8 \u2014 Admin panel sanity (web)",
+    "desc": "Done when an admin can sign in on the web panel, see the users table, and open a user's profile.",
+    "items": [
+     {
+      "n": 48,
+      "title": "Admin: Admin authentication",
+      "baseN": 91,
+      "id": "W-ADMIN-001"
+     },
+     {
+      "n": 49,
+      "title": "Admin: Users table",
+      "baseN": 92,
+      "id": "W-ADMIN-002"
+     },
+     {
+      "n": 50,
+      "title": "Admin: User profile viewer",
+      "baseN": 93,
+      "id": "W-ADMIN-003"
+     }
+    ]
+   }
+  ],
+  "extra": {}
+ },
+ "__m": {
+  "groups": {},
+  "removedItems": [],
+  "removedGroups": [],
+  "type": [
+   "Acceptance"
+  ],
+  "platform": [
+   "iOS"
+  ],
+  "purpose": "Wave \u2014 production release acceptance across all main flows (subscriptions excluded; run separately). Happy-path weighted; edges only where release-critical. Narrate the item number before each test."
+ },
+ "__meta": {
+  "build": "",
+  "date": "22 Jul 2026",
+  "device": "iPhone 15 Pro",
+  "os": "iOS 18.5",
+  "tester": "Phill"
+ },
+ "__seedV": 1
+}

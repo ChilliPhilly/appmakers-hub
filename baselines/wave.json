@@ -118,6 +118,11 @@
       "n": 22,
       "title": "Kill app mid-onboarding",
       "id": "W-AUTH-019"
+     },
+     {
+      "n": 23,
+      "title": "Log out returns to sign-in",
+      "id": "W-AUTH-020"
      }
     ]
    },
@@ -125,77 +130,77 @@
     "title": "Certificates",
     "items": [
      {
-      "n": 23,
+      "n": 24,
       "title": "Upload a certificate via file upload",
       "id": "W-CERT-001"
      },
      {
-      "n": 24,
+      "n": 25,
       "title": "Scan a certificate with the camera",
       "id": "W-CERT-002"
      },
      {
-      "n": 25,
+      "n": 26,
       "title": "Multiple certificates in one category",
       "id": "W-CERT-003"
      },
      {
-      "n": 26,
+      "n": 27,
       "title": "Document viewer",
       "id": "W-CERT-004"
      },
      {
-      "n": 27,
+      "n": 28,
       "title": "Folders/categories navigation",
       "id": "W-CERT-005"
      },
      {
-      "n": 28,
+      "n": 29,
       "title": "Delete a certificate",
       "id": "W-CERT-006"
      },
      {
-      "n": 29,
+      "n": 30,
       "title": "Export a certificate",
       "id": "W-CERT-007"
      },
      {
-      "n": 30,
+      "n": 31,
       "title": "Print a certificate",
       "id": "W-CERT-008"
      },
      {
-      "n": 31,
+      "n": 32,
       "title": "Wallet-style presentation",
       "id": "W-CERT-009"
      },
      {
-      "n": 32,
+      "n": 33,
       "title": "Empty state \u2014 No Certificates Yet",
       "id": "W-CERT-010"
      },
      {
-      "n": 33,
+      "n": 34,
       "title": "Save disabled until a file is attached",
       "id": "W-CERT-011"
      },
      {
-      "n": 34,
+      "n": 35,
       "title": "Category folders present & colour-coded",
       "id": "W-CERT-012"
      },
      {
-      "n": 35,
+      "n": 36,
       "title": "Certificate detail screen",
       "id": "W-CERT-013"
      },
      {
-      "n": 36,
+      "n": 37,
       "title": "QR verification opens in-app browser",
       "id": "W-CERT-014"
      },
      {
-      "n": 37,
+      "n": 38,
       "title": "Search certificates",
       "id": "W-CERT-015"
      }
@@ -205,32 +210,32 @@
     "title": "Service Records & Sea Days",
     "items": [
      {
-      "n": 38,
+      "n": 39,
       "title": "Add a service record",
       "id": "W-SR-001"
      },
      {
-      "n": 39,
+      "n": 40,
       "title": "Service record listing",
       "id": "W-SR-002"
      },
      {
-      "n": 40,
+      "n": 41,
       "title": "Sea days calculation",
       "id": "W-SR-003"
      },
      {
-      "n": 41,
+      "n": 42,
       "title": "Sea days \u2014 overlapping records",
       "id": "W-SR-004"
      },
      {
-      "n": 42,
+      "n": 43,
       "title": "Edit a service record recalculates",
       "id": "W-SR-005"
      },
      {
-      "n": 43,
+      "n": 44,
       "title": "Delete a service record",
       "id": "W-SR-006"
      }
@@ -240,22 +245,22 @@
     "title": "Profile & Settings",
     "items": [
      {
-      "n": 44,
+      "n": 45,
       "title": "View and edit profile",
       "id": "W-PROF-001"
      },
      {
-      "n": 45,
+      "n": 46,
       "title": "Contact us page",
       "id": "W-PROF-002"
      },
      {
-      "n": 46,
+      "n": 47,
       "title": "Legal pages accessible without subscription",
       "id": "W-PROF-003"
      },
      {
-      "n": 47,
+      "n": 48,
       "title": "Delete account flow",
       "id": "W-PROF-004"
      }
@@ -265,127 +270,127 @@
     "title": "Subscriptions & Gating",
     "items": [
      {
-      "n": 48,
+      "n": 49,
       "title": "iOS \u2014 free trial start",
       "id": "W-SUB-I01"
      },
      {
-      "n": 49,
+      "n": 50,
       "title": "iOS \u2014 trial auto-converts to paid",
       "id": "W-SUB-I02"
      },
      {
-      "n": 50,
+      "n": 51,
       "title": "iOS \u2014 cancel during trial",
       "id": "W-SUB-I03"
      },
      {
-      "n": 51,
+      "n": 52,
       "title": "iOS \u2014 cancel active subscription",
       "id": "W-SUB-I04"
      },
      {
-      "n": 52,
+      "n": 53,
       "title": "iOS \u2014 subscription expires naturally",
       "id": "W-SUB-I05"
      },
      {
-      "n": 53,
+      "n": 54,
       "title": "iOS \u2014 restore purchases",
       "id": "W-SUB-I06"
      },
      {
-      "n": 54,
+      "n": 55,
       "title": "iOS \u2014 switch plans monthly \u2194 yearly",
       "id": "W-SUB-I07"
      },
      {
-      "n": 55,
+      "n": 56,
       "title": "iOS \u2014 subscription screen without dashboard flash",
       "id": "W-SUB-I08"
      },
      {
-      "n": 56,
+      "n": 57,
       "title": "Android \u2014 free trial start",
       "id": "W-SUB-A01"
      },
      {
-      "n": 57,
+      "n": 58,
       "title": "Android \u2014 trial auto-converts to paid",
       "id": "W-SUB-A02"
      },
      {
-      "n": 58,
+      "n": 59,
       "title": "Android \u2014 cancel during trial",
       "id": "W-SUB-A03"
      },
      {
-      "n": 59,
+      "n": 60,
       "title": "Android \u2014 cancel active subscription",
       "id": "W-SUB-A04"
      },
      {
-      "n": 60,
+      "n": 61,
       "title": "Android \u2014 subscription expires naturally",
       "id": "W-SUB-A05"
      },
      {
-      "n": 61,
+      "n": 62,
       "title": "Android \u2014 payment failure (declined card)",
       "id": "W-SUB-A06"
      },
      {
-      "n": 62,
+      "n": 63,
       "title": "Android \u2014 restore purchases",
       "id": "W-SUB-A07"
      },
      {
-      "n": 63,
+      "n": 64,
       "title": "Android \u2014 subscription screen without dashboard flash",
       "id": "W-SUB-A08"
      },
      {
-      "n": 64,
+      "n": 65,
       "title": "Gating \u2014 full access during trial/active",
       "id": "W-SUB-G01"
      },
      {
-      "n": 65,
+      "n": 66,
       "title": "Paywall layout referee",
       "id": "W-SUB-I09"
      },
      {
-      "n": 66,
+      "n": 67,
       "title": "Price consistency \u2014 paywall vs Apple Pay sheet",
       "id": "W-SUB-I10"
      },
      {
-      "n": 67,
+      "n": 68,
       "title": "iOS \u2014 legal & support pages reachable without a subscription",
       "id": "W-SUB-I11"
      },
      {
-      "n": 68,
+      "n": 69,
       "title": "iOS \u2014 payment failure surfaces an error, no crash",
       "id": "W-SUB-I12"
      },
      {
-      "n": 69,
+      "n": 70,
       "title": "iOS \u2014 cancel/dismiss the Apple payment sheet mid-purchase",
       "id": "W-SUB-I13"
      },
      {
-      "n": 70,
+      "n": 71,
       "title": "iOS \u2014 returning user is not offered a second free trial",
       "id": "W-SUB-I14"
      },
      {
-      "n": 71,
+      "n": 72,
       "title": "iOS \u2014 re-subscribe from the paywall after expiry/cancellation",
       "id": "W-SUB-I15"
      },
      {
-      "n": 72,
+      "n": 73,
       "title": "iOS \u2014 purchase under lost/poor connectivity",
       "id": "W-SUB-I16"
      }
@@ -395,52 +400,52 @@
     "title": "Offline-First Sync (two devices)",
     "items": [
      {
-      "n": 73,
+      "n": 74,
       "title": "Offline create \u2192 sync",
       "id": "W-SYNC-001"
      },
      {
-      "n": 74,
+      "n": 75,
       "title": "Offline edit \u2192 sync",
       "id": "W-SYNC-002"
      },
      {
-      "n": 75,
+      "n": 76,
       "title": "Offline delete \u2192 sync",
       "id": "W-SYNC-003"
      },
      {
-      "n": 76,
+      "n": 77,
       "title": "Offline certificate CRUD \u2192 sync",
       "id": "W-SYNC-004"
      },
      {
-      "n": 77,
+      "n": 78,
       "title": "Offline profile update \u2192 sync",
       "id": "W-SYNC-005"
      },
      {
-      "n": 78,
+      "n": 79,
       "title": "Both offline \u2014 different records, no conflict",
       "id": "W-SYNC-006"
      },
      {
-      "n": 79,
+      "n": 80,
       "title": "Both offline \u2014 same record (conflict)",
       "id": "W-SYNC-007"
      },
      {
-      "n": 80,
+      "n": 81,
       "title": "Extended offline \u2014 batch sync",
       "id": "W-SYNC-008"
      },
      {
-      "n": 81,
+      "n": 82,
       "title": "Connectivity flicker",
       "id": "W-SYNC-009"
      },
      {
-      "n": 82,
+      "n": 83,
       "title": "App kill while offline",
       "id": "W-SYNC-010"
      }
@@ -450,37 +455,37 @@
     "title": "Phase 2 \u2014 Advanced",
     "items": [
      {
-      "n": 83,
+      "n": 84,
       "title": "Document search",
       "id": "W-ADV-001"
      },
      {
-      "n": 84,
+      "n": 85,
       "title": "Auto data extraction from scan",
       "id": "W-ADV-002"
      },
      {
-      "n": 85,
+      "n": 86,
       "title": "Career dashboard \u2014 chronological records + filters",
       "id": "W-ADV-003"
      },
      {
-      "n": 86,
+      "n": 87,
       "title": "Set rank goal + progress bar",
       "id": "W-ADV-004"
      },
      {
-      "n": 87,
+      "n": 88,
       "title": "Export career/service reports",
       "id": "W-ADV-005"
      },
      {
-      "n": 88,
+      "n": 89,
       "title": "Push notification received",
       "id": "W-ADV-006"
      },
      {
-      "n": 89,
+      "n": 90,
       "title": "Push permission denied",
       "id": "W-ADV-007"
      }
@@ -490,19 +495,39 @@
     "title": "Phase 3 \u2014 Admin Panel (web)",
     "items": [
      {
-      "n": 90,
+      "n": 91,
       "title": "Admin authentication",
       "id": "W-ADMIN-001"
      },
      {
-      "n": 91,
+      "n": 92,
       "title": "Users table",
       "id": "W-ADMIN-002"
      },
      {
-      "n": 92,
+      "n": 93,
       "title": "User profile viewer",
       "id": "W-ADMIN-003"
+     }
+    ]
+   },
+   {
+    "title": "Forced Version Update",
+    "items": [
+     {
+      "n": 94,
+      "title": "Outdated build shows the forced-update screen",
+      "id": "W-UPD-001"
+     },
+     {
+      "n": 95,
+      "title": "Updating past the minimum clears the forced-update screen",
+      "id": "W-UPD-002"
+     },
+     {
+      "n": 96,
+      "title": "Offline user is not blocked by the version check",
+      "id": "W-UPD-003"
      }
     ]
    }
@@ -649,422 +674,446 @@
  },
  "23": {
   "f": {
+   "steps": "1. Sign in and land on My Certificates\n2. Go to Profile\n3. Tap Log out",
+   "expected": "User is returned cleanly to the sign-in/welcome screen \u2014 no black screen, no dead end; signing back in afterwards works."
+  }
+ },
+ "24": {
+  "f": {
    "steps": "1. Open Certificates\n2. Use the upload form to add a certificate file\n3. Assign it to a category/folder",
    "expected": "Certificate uploads, appears in the chosen folder, opens in the viewer."
   }
  },
- "24": {
+ "25": {
   "f": {
    "steps": "1. Open Certificates\n2. Choose scan\n3. Scan a physical document\n4. Save to a folder",
    "expected": "Scan captures legibly and saves as a document in the chosen folder."
   }
  },
- "25": {
+ "26": {
   "f": {
    "steps": "1. Add 3+ certificates to the same category",
    "expected": "All entries listed and individually openable; count correct."
   }
  },
- "26": {
+ "27": {
   "f": {
    "steps": "1. Open an uploaded multi-page certificate",
    "expected": "Viewer shows all pages, supports zoom/scroll, renders text legibly."
   }
  },
- "27": {
+ "28": {
   "f": {
    "steps": "1. Create/choose several categories\n2. Move between folders",
    "expected": "Folder structure navigable; each doc is where it was tagged. (Folder create/rename/delete rules unspecified \u2014 see thinness report.)"
   }
  },
- "28": {
+ "29": {
   "f": {
    "steps": "1. Delete a certificate\n2. Check the folder and total counts",
    "expected": "Certificate removed from folder; no orphan entries; viewer no longer opens it."
   }
  },
- "29": {
+ "30": {
   "f": {
    "steps": "1. Open a certificate\n2. Use export/share",
    "expected": "Document exports (share sheet / file) intact and readable outside the app. (Formats unspecified \u2014 see thinness report.)"
   }
  },
- "30": {
+ "31": {
   "f": {
    "steps": "1. Open a certificate\n2. Print via the OS print flow",
    "expected": "Print preview correct; full document prints."
   }
  },
- "31": {
+ "32": {
   "f": {
    "steps": "1. Browse the certificate wallet home",
    "expected": "Presentation follows the Apple-Wallet-like card metaphor described in the spec (general check; per-screen Figma validation deferred)."
   }
  },
- "32": {
+ "33": {
   "f": {
    "steps": "1. Fresh account (no certs)\n2. Open the Certificates tab",
    "expected": "'No Certificates Yet' secure-wallet message; Add Certificate CTA; Search Certificates field; bottom nav = Certificates / Sea Service Records / Profile."
   }
  },
- "33": {
+ "34": {
   "f": {
    "steps": "1. Add Certificate \u2192 fill ALL text fields\n2. Attach NO file\n3. Observe Save License button",
    "expected": "Correct behaviour defined: Save enabled with validation, OR intentionally disabled with a visible 'attach a file' hint. (Figma showed Save staying disabled with fields filled.)"
   }
  },
- "34": {
+ "35": {
   "f": {
    "steps": "1. On populated My Certificates, review the category folders",
    "expected": "Five categories: Travel Documents, Licensing Certifications, Regulatory Statutory Documents, Industry Required, Other \u2014 colour-coded, each opening its own list."
   }
  },
- "35": {
+ "36": {
   "f": {
    "steps": "1. Open a certificate card",
    "expected": "Full field set; Edit (pencil) + Delete (trash) icons; attached Files with View; a QR code."
   }
  },
- "36": {
+ "37": {
   "f": {
    "steps": "1. On the detail screen, use the QR code / verification link",
    "expected": "In-app browser opens the verification URL showing 'Document status: VALID', with back/forward/reload. (Backend-dependent.)"
   }
  },
- "37": {
+ "38": {
   "f": {
    "steps": "1. Use Search Certificates with a full term, then a partial term",
    "expected": "Matching certificates surface; non-matches excluded; clear empty-result state."
   }
  },
- "38": {
+ "39": {
   "f": {
    "steps": "1. Open Service Records\n2. Add an entry (vessel, dates, role)",
    "expected": "Record saves and appears in the listing."
   }
  },
- "39": {
+ "40": {
   "f": {
    "steps": "1. Add several records with different dates",
    "expected": "Listing shows all records, ordered sensibly (chronological)."
   }
  },
- "40": {
+ "41": {
   "f": {
    "steps": "1. Add a record spanning a known date range\n2. Check the sea-days total",
    "expected": "Sea days match the date range exactly (inclusive rules consistent)."
   }
  },
- "41": {
+ "42": {
   "f": {
    "steps": "1. Add two records with overlapping date ranges\n2. Check the total",
    "expected": "Total handles overlap per product rules without double-counting silently (verify + record actual behaviour)."
   }
  },
- "42": {
+ "43": {
   "f": {
    "steps": "1. Edit an existing record's dates",
    "expected": "Changes save; listing and sea-days totals update correctly."
   }
  },
- "43": {
+ "44": {
   "f": {
    "steps": "1. Delete a record",
    "expected": "Record removed; totals update; no orphan data."
   }
  },
- "44": {
+ "45": {
   "f": {
    "steps": "1. Open profile\n2. Change rank and vessel type\n3. Save",
    "expected": "Edits persist and reflect across the app."
   }
  },
- "45": {
+ "46": {
   "f": {
    "steps": "1. Open Contact us from settings",
    "expected": "Page loads and the contact action works (form/email)."
   }
  },
- "46": {
+ "47": {
   "f": {
    "steps": "1. On an account with NO active subscription, open Terms, Privacy, Contact Us",
    "expected": "All accessible without hitting the paywall."
   }
  },
- "47": {
+ "48": {
   "f": {
    "steps": "1. Settings \u2192 delete account\n2. Confirm\n3. Attempt to sign in again",
    "expected": "Account deletes with clear confirmation; sign-in afterwards fails appropriately."
   }
  },
- "48": {
+ "49": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a new user, complete onboarding\n2. On the subscription screen, tap \"Start 30 days trial\"\n3. Confirm the purchase in the Apple payment sheet",
    "expected": "Payment sheet shows \"Free Trial\", purchase succeeds, app navigates to dashboard"
   }
  },
- "49": {
+ "50": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. After completing TC-1, wait for the trial period to end (~5 min for monthly)",
    "expected": "- Subscription auto-renews to paid. User stays on dashboard with full access\n- Subscription status changes from trialing to active (In-Backend)"
   }
  },
- "50": {
+ "51": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Start a new trial (use a fresh sandbox account or clear purchase history)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription",
    "expected": "- User keeps access until trial end, then loses access\n- After trial ends, app redirects to subscription paywall"
   }
  },
- "51": {
+ "52": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe (past the trial period)\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Cancel the subscription\n4. Wait for the current period to end (~5 min for monthly)",
    "expected": "- User keeps access until period ends\n- After expiry, app redirects to subscription paywall"
   }
  },
- "52": {
+ "53": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe and let it renew up to 12 times (takes ~60 min for monthly at fastest speed)",
    "expected": "- After 12 renewals, subscription expires automatically\n- App redirects to subscription paywall"
   }
  },
- "53": {
+ "54": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe on one sandbox account\n2. Sign out of the app, sign back in (or reinstall)\n3. On the subscription screen, tap \"Restore Purchases\"",
    "expected": "Previous subscription is restored, user gets access"
   }
  },
- "54": {
+ "55": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Subscribe to monthly\n2. Go to Settings > Developer > Sandbox Account > Manage > Subscriptions\n3. Change to yearly (or vice versa)",
    "expected": "Plan changes at next renewal."
   }
  },
- "55": {
+ "56": {
   "f": {
    "steps": "Precondition (one-time setup): sandbox Apple account signed in (Settings > Developer > Sandbox Account); app installed via TestFlight (sandbox billing).\n1. Sign up as a brand new user (fresh sandbox account)\n2. Complete the full signup flow (name, email verify, onboarding)",
    "expected": "After onboarding, subscription screen appears directly \u2014 NO brief flash of the dashboard/certificates screen"
   }
  },
- "56": {
+ "57": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Sign up as a new user, complete onboarding\n3. Tap 'Start 30 days trial'\n4. Select 'Test card, always approves', confirm",
    "expected": "Sheet shows 'Free Trial'; success; dashboard; profile shows trialing."
   }
  },
- "57": {
+ "58": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Complete W-SUB-A01\n3. Wait ~3 minutes",
    "expected": "Converts to paid; status trialing \u2192 active; access retained."
   }
  },
- "58": {
+ "59": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Start a fresh trial\n3. Play Store > Payments & subscriptions \u2192 cancel Wave",
    "expected": "Access until trial end (~3 min), then paywall."
   }
  },
- "59": {
+ "60": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe past trial\n3. Cancel in Play Store\n4. Wait for period end (~5 min)",
    "expected": "Access until period end, then paywall."
   }
  },
- "60": {
+ "61": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe; allow 6 renewals (~30 min)",
    "expected": "Expires after 6 renewals \u2192 paywall."
   }
  },
- "61": {
+ "62": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe with approve card\n3. Switch to 'Test card, always declines' (Play Billing Lab) or resubscribe with it\n4. Wait for next renewal",
    "expected": "Grace period first (brief access), then expiry if payment keeps failing; app shows error overlay, never crashes."
   }
  },
- "62": {
+ "63": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Subscribe\n3. Sign out/in or reinstall\n4. Tap 'Restore Purchases'",
    "expected": "Subscription restored; access granted."
   }
  },
- "63": {
+ "64": {
   "f": {
    "steps": "1. Precondition: Gmail in License Testers; app from internal test track; pay with 'Test card, always approves'\n2. Brand-new user: full signup",
    "expected": "Subscription screen appears directly \u2014 NO dashboard flash."
   }
  },
- "64": {
+ "65": {
   "f": {
    "steps": "1. With a trialing account, then an active one, use certificates + service records",
    "expected": "All gated features fully usable in both states."
   }
  },
- "65": {
+ "66": {
   "f": {
    "steps": "1. On the paywall, review layout",
    "expected": "Header 'Stay Contract-Ready. Advance Your Career.'; benefit bullets; Monthly $5/mo vs Yearly $50/yr (16% off, pre-selected); '30 Days Free' banner; 'Start 30 days trial' CTA; 'Recover Subscription'; Apple auto-renew legal + Manage subscriptions."
   }
  },
- "66": {
+ "67": {
   "f": {
    "steps": "1. From paywall tap Start 30 days trial\n2. Read the Apple Pay sheet amount\n3. Compare to the paywall's $5 / $50",
    "expected": "Apple Pay sheet price matches the selected plan. (Figma showed the sheet reading '10 $' against a $50/yr paywall.)"
   }
  },
- "67": {
+ "68": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account, signed out of any Wave subscription; app on the paywall / subscription screen (not subscribed)\n2. From the paywall, open Terms of Use\n3. Go back, open Privacy Policy\n4. Go back, open Contact Us / support\n5. Return to the paywall",
    "expected": "Terms, Privacy Policy and Contact Us all open and render fully WITHOUT an active subscription; navigation back to the paywall works each time; no crash and no forced purchase to view them."
   }
  },
- "68": {
+ "69": {
   "f": {
    "steps": "1. Precondition: sandbox account configured to fail/decline the purchase (or trigger a failed transaction in the sandbox)\n2. On the paywall tap Start 30 days trial / Subscribe\n3. Proceed through the Apple payment sheet so the transaction fails\n4. Observe the app after the failure",
    "expected": "App shows a clear error overlay/message (e.g. purchase could not be completed) and does NOT crash; user is NOT granted access; user is returned to the paywall and can retry. No entitlement is written for a failed purchase."
   }
  },
- "69": {
+ "70": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account on the paywall, not subscribed\n2. Tap Start 30 days trial / Subscribe to bring up the Apple payment sheet\n3. Dismiss the sheet (tap Cancel / swipe down) before confirming",
    "expected": "App returns to the paywall with NO subscription started and NO access granted; no crash, no stuck spinner; the CTA is tappable again for a fresh attempt."
   }
  },
- "70": {
+ "71": {
   "f": {
    "steps": "1. Precondition: a sandbox Apple ID that has ALREADY consumed the 30-day trial once (trial used / expired)\n2. Sign up / reach the paywall again on that Apple ID\n3. Inspect the CTA and the Apple payment sheet",
    "expected": "No second free trial is offered on an Apple ID that already used one \u2014 the paywall/CTA and Apple sheet show the paid price (no Free Trial label), matching Apple's one-trial-per-Apple-ID rule. Purchasing charges the paid plan with no trial."
   }
  },
- "71": {
+ "72": {
   "f": {
    "steps": "1. Precondition: account that has lost access (post TC-4 cancel or TC-5 natural expiry), sitting on the paywall\n2. Tap Subscribe and confirm a new subscription in the Apple sheet\n3. Complete the purchase",
    "expected": "New subscription is created, access is restored, and the app returns to the dashboard with full access; backend status returns to active for the new period. No duplicate/overlapping entitlement."
   }
  },
- "72": {
+ "73": {
   "f": {
    "steps": "1. Precondition: fresh sandbox account on the paywall\n2. Tap Start 30 days trial / Subscribe\n3. Drop connectivity (airplane mode) at the moment of confirming the Apple sheet, then restore connectivity a few seconds later\n4. Observe how the app resolves the pending/deferred purchase",
    "expected": "App handles the interruption gracefully \u2014 either completes once connectivity returns or shows a retry/error, never a crash or infinite spinner; access is granted exactly once (no duplicate entitlement, no double-charge) and state is consistent after reconnect."
   }
  },
- "73": {
+ "74": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A: airplane mode\n3. Device A: add a new Sea Service Record\n4. Verify it appears locally on A\n5. Device A back online",
    "expected": "Record appears on Device B within a few seconds."
   }
  },
- "74": {
+ "75": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Edit an existing Service Record (e.g. vessel name)\n4. Device A back online",
    "expected": "Updated record syncs to Device B."
   }
  },
- "75": {
+ "76": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Delete a Service Record on A\n4. Verify it disappears locally on A\n5. Device A back online",
    "expected": "Record disappears from Device B."
   }
  },
- "76": {
+ "77": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Repeat scenarios 1\u20133 with Certificates (add, edit, delete) on Device A offline\n3. Bring A back online after each",
    "expected": "Each certificate change syncs to Device B correctly."
   }
  },
- "77": {
+ "78": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Update profile (rank, vessel type, career goal)\n4. Device A back online",
    "expected": "Device B shows the updated profile."
   }
  },
- "78": {
+ "79": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: edit Record X (vessel name)\n4. B: edit Record Y (different record)\n5. Bring both online",
    "expected": "Both changes appear on both devices."
   }
  },
- "79": {
+ "80": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: Record X vessel name \u2192 'Ship Alpha'\n4. B: Record X vessel name \u2192 'Ship Beta'\n5. Bring both online",
    "expected": "Both devices converge to the same value (last-write-wins)."
   }
  },
- "80": {
+ "81": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Make multiple changes: add 2 records, edit 1, delete 1\n4. Wait 5+ minutes\n5. Device A back online",
    "expected": "All changes batch-sync to Device B."
   }
  },
- "81": {
+ "82": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Start adding a record on Device A\n3. Toggle airplane mode on/off rapidly mid-operation",
    "expected": "No duplicate records, no data loss; Device B receives exactly one record."
   }
  },
- "82": {
+ "83": {
   "f": {
    "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Add a Service Record\n4. Force-kill the app, reopen (still offline)\n5. Verify the record persists locally\n6. Go online",
    "expected": "Record persisted offline and syncs to Device B."
   }
  },
- "83": {
+ "84": {
   "f": {
    "steps": "1. Upload certificates with distinct names\n2. Search by name/partial text",
    "expected": "Matching documents found; non-matches excluded."
   }
  },
- "84": {
+ "85": {
   "f": {
    "steps": "1. Scan a certificate carrying an issue date, expiry date and certificate number",
    "expected": "Issue date, expiration date and certificate number are extracted correctly into the entry's fields."
   }
  },
- "85": {
+ "86": {
   "f": {
    "steps": "1. Open the career dashboard with several records\n2. Apply filters",
    "expected": "Chronological listing correct; filters narrow correctly."
   }
  },
- "86": {
+ "87": {
   "f": {
    "steps": "1. Set a rank goal\n2. Check the goal progress bar",
    "expected": "Goal saved; progress bar reflects progress logic."
   }
  },
- "87": {
+ "88": {
   "f": {
    "steps": "1. Export a report from the dashboard",
    "expected": "Report exports with correct data. (Format unspecified.)"
   }
  },
- "88": {
+ "89": {
   "f": {
    "steps": "1. Enable notifications when prompted\n2. Trigger a notification event (per dev guidance)",
    "expected": "Notification arrives and deep-links sensibly."
   }
  },
- "89": {
+ "90": {
   "f": {
    "steps": "1. Deny the notification permission\n2. Use the app normally",
    "expected": "No crash, no nagging loop; notification-dependent features degrade gracefully."
   }
  },
- "90": {
+ "91": {
   "f": {
    "steps": "1. Open the web admin\n2. Log in with admin credentials\n3. Try a non-admin account",
    "expected": "Admin signs in; non-admin is rejected."
   }
  },
- "91": {
+ "92": {
   "f": {
    "steps": "1. In admin, open the users table",
    "expected": "Registered users listed with sensible columns."
   }
  },
- "92": {
+ "93": {
   "f": {
    "steps": "1. Open a user from the table",
    "expected": "Profile viewer shows that user's details."
+  }
+ },
+ "94": {
+  "f": {
+   "steps": "1. Precondition: server minimum build is 54; skip build 52 entirely (bad publish)\n2. Install build 53 from TestFlight (delete the app first, then TestFlight \u2192 Wave \u2192 Previous Builds \u2192 53)\n3. Open the app",
+   "expected": "The forced-version-update screen appears and blocks normal use of the app. (The store Update link won't resolve until the app is live in the App Store \u2014 the wall appearing is the check.)"
+  }
+ },
+ "95": {
+  "f": {
+   "steps": "1. From build 53 showing the update wall, update to build 54 in TestFlight\n2. Open the app\n3. Background the app, then resume it once",
+   "expected": "Forced-update screen is gone on build 54; the app opens normally. The version check runs on startup and on resume without re-walling a compliant build."
+  }
+ },
+ "96": {
+  "f": {
+   "steps": "1. On build 53, sign in while online\n2. Force-quit the app\n3. Enable airplane mode AND turn off Wi-Fi\n4. Reopen the app",
+   "expected": "With no connectivity the version check cannot run and does NOT block the user \u2014 the app opens with their content available in offline mode (a user with no internet who already got the upgrade request isn't stuck)."
   }
  }
 }

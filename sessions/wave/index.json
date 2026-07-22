@@ -11,5 +11,18 @@
   "platform": [
    "iOS"
   ]
+ },
+ {
+  "sid": "2026-07-22",
+  "date": "22 Jul 2026",
+  "build": "",
+  "label": "Production release \u2014 main flows",
+  "v": 1,
+  "type": [
+   "Acceptance"
+  ],
+  "platform": [
+   "iOS"
+  ]
  }
 ]
