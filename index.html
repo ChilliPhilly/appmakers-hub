@@ -3481,6 +3481,7 @@ Always begin your first response with:
       <span class="sess-lbl mono" id="qa-sess-lbl"></span>
       <button class="btn-plain" id="qa-report-btn" type="button" title="Open a readable, printable report of this session — every test, your inputs, results and screenshot evidence">⬇ Report</button>
       <button class="btn-plain" id="qa-md-btn" type="button" title="Copy this session as Markdown — paste into ClickUp, Slack or a doc">⧉ Copy MD</button>
+      <button class="btn-plain" id="qa-word-btn" type="button" title="Download as a Word document (.doc) — opens in Word, and uploads straight into Google Docs">⬇ Word</button>
       <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import THIS session's data (moving between browsers, or importing a generated Baseline)">⇅ Data</button>
       <button class="back" id="qa-back" type="button">&larr; All sessions</button>
     </div>
@@ -3642,6 +3643,7 @@ Always begin your first response with:
      defaultStage:'R&D',
      defaultPhases:[]});
   function proj(id){for(var i=0;i<PROJECTS.length;i++)if(PROJECTS[i].id===id)return PROJECTS[i];return null;}
+  window.PROJECTS = PROJECTS;   // shared: QA board reports resolve proper project names from this
 
   var SECTION_TAB={home:'home',
     onboarding:'onboarding','ob-sequence':'onboarding',habits:'onboarding',rules:'onboarding',
@@ -5014,6 +5016,7 @@ function renderResList(host,track,kind,title,desc){
 
   // The currently-mounted board exposes what the shared modals need.
   const CB = {};
+  window.__qaCB = CB;   // debug/integration handle (report + session data hooks)
   const esc0 = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 
   // ---- shared modals, wired once ----
@@ -5698,7 +5701,7 @@ function renderResList(host,track,kind,title,desc){
     fr.readAsDataURL(blob);
   });
   async function collectSessionData(withImages){
-    const label = (document.getElementById("qa-sess-lbl") || {}).textContent || cfg.sid;
+    const label = String((document.getElementById("qa-sess-lbl") || {}).textContent || cfg.sid).replace(/^Session\s*·\s*/i, "");
     const M = k => (state.__meta && state.__meta[k]) || CFGMETA[k] || "";
     const counts = {pass:0, fail:0, unsure:0, block:0, skip:0, standby:0};
     const flows = [];
@@ -5744,7 +5747,8 @@ function renderResList(host,track,kind,title,desc){
       }
       bugs.push({...b, imgs});
     }
-    return {label, pid: cfg.projectId, meta: {build:M("build"), device:M("device"), os:M("os"), date:M("date"), tester:M("tester")},
+    const project = ((window.PROJECTS || []).find(p => p.id === cfg.projectId) || {}).name || cfg.projectId;
+    return {label, pid: cfg.projectId, project, meta: {build:M("build"), device:M("device"), os:M("os"), date:M("date"), tester:M("tester")},
       purpose: (state.__m && state.__m.purpose) || DEFAULT_PURPOSE || "", counts, total: flows.reduce((a, f) => a + f.items.length, 0), flows, bugs};
   }
   const ST_LBL = {pass:"Pass", fail:"FAIL", unsure:"Unsure", block:"Blocked", skip:"Skipped", standby:"Standby"};
@@ -5786,12 +5790,12 @@ function renderResList(host,track,kind,title,desc){
     const sum = [["Pass", cts.pass, ST_COL.pass], ["Fail", cts.fail, ST_COL.fail], ["Unsure", cts.unsure, ST_COL.unsure],
       ["Blocked", cts.block, ST_COL.block], ["Skipped", cts.skip, ST_COL.skip], ["Standby", cts.standby, ST_COL.standby]]
       .filter(x => x[1]).map(([l, v, c]) => `<span style="margin-right:14px"><b style="color:${c}">${v}</b> ${l}</span>`).join("");
-    return `<!doctype html><html><head><meta charset="utf-8"><title>${e(d.label)} — QA report</title></head>
+    return `<!doctype html><html><head><meta charset="utf-8"><title>${e(d.project)} — ${e(d.label)} — QA report</title></head>
       <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#101828;max-width:860px;margin:0 auto;padding:32px 24px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
         <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#98a2b3">QA session report · ${e(d.pid)}</div>
-          <h1 style="font-size:24px;margin:4px 0 6px">${e(d.label)}</h1>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#98a2b3">QA session report · project: ${e(d.project)}</div>
+          <h1 style="font-size:24px;margin:4px 0 6px">${e(d.project)} — ${e(d.label)}</h1>
           <div style="font-size:12.5px;color:#667085">${["build", "device", "os", "date", "tester"].map(k => d.meta[k] ? `<b>${k}:</b> ${e(d.meta[k])}` : "").filter(Boolean).join(" · ")}</div>
         </div>
         <button onclick="window.print()" style="border:1px solid #d0d5dd;border-radius:8px;background:#fff;padding:8px 14px;font-size:13px;cursor:pointer" class="noprint">🖨 Print / Save as PDF</button>
@@ -5802,8 +5806,53 @@ function renderResList(host,track,kind,title,desc){
       <p style="margin-top:36px;font-size:11px;color:#98a2b3">Generated ${new Date().toLocaleString("en-GB")} from the AppMakers QA hub.</p>
       <style>@media print{.noprint{display:none}}</style></body></html>`;
   }
+  // Word-friendly rendering (no flexbox — Word's HTML engine ignores it) packaged
+  // as MHTML, Word's own "single file web page" format: opens in Word with images
+  // embedded, and Google Drive converts it to a Google Doc on upload.
+  function renderWordHTML(d){
+    const e = esc;
+    let imgIdx = 0;
+    const imgs = [];
+    const imgTag = uri => {
+      const m = String(uri).match(/^data:(image\/[\w+.-]+);base64,(.+)$/s);
+      if (!m) return "";
+      const name = `img${String(++imgIdx).padStart(3, "0")}.${m[1].split("/")[1].replace(/[^\w]/g, "")}`;
+      imgs.push({name, mime: m[1], b64: m[2]});
+      return `<p style="margin:6pt 0 0"><img src="${name}" width="330"></p>`;
+    };
+    const stTag = s => `<b style="color:${ST_COL[s]}">${ST_LBL[s].toUpperCase()}</b>`;
+    const fld = (lbl, v) => v ? `<p style="margin:4pt 0 0"><b>${lbl}:</b><br>${e(v).replace(/\n/g, "<br>")}</p>` : "";
+    const body = `
+      <h1 style="font-size:20pt;margin:0 0 4pt">${e(d.project)} — ${e(d.label)}</h1>
+      <p style="color:#667085;margin:0 0 10pt">QA session report${["build","device","os","date","tester"].map(k => d.meta[k] ? ` · <b>${k}:</b> ${e(d.meta[k])}` : "").join("")}</p>
+      ${d.purpose ? `<p style="margin:0 0 8pt">${e(d.purpose)}</p>` : ""}
+      <p style="margin:0 0 14pt"><b>${d.total} tests</b> — ${[["pass","Pass"],["fail","Fail"],["unsure","Unsure"],["block","Blocked"],["skip","Skipped"],["standby","Standby"]].filter(([k]) => d.counts[k]).map(([k, l]) => `${d.counts[k]} ${l}`).join(" · ")}</p>
+      ${d.flows.map(f => `
+        <h2 style="font-size:14pt;margin:16pt 0 2pt">${e(f.title)}</h2>
+        ${f.desc ? `<p style="color:#667085;margin:0 0 6pt">${e(f.desc)}</p>` : ""}
+        ${f.items.map(it => `
+          <h3 style="font-size:11.5pt;margin:12pt 0 2pt">#${it.n} · ${e(it.id)} — ${e(it.title)} — ${stTag(it.status)}${it.prio ? ` · ${e(it.prio)}` : ""}${it.bug ? ` · ${e(it.bug)}` : ""}</h3>
+          ${fld("Steps", it.steps)}${fld("Expected", it.expected)}${fld("Actual", it.actual)}${fld("Edge", it.edge)}${fld("Notes", it.notes)}
+          ${(it.attImgs || []).map(imgTag).join("")}
+          ${it.attNames.length ? `<p style="color:#98a2b3;font-size:9pt;margin:4pt 0 0">Evidence: ${e(it.attNames.join(", "))}</p>` : ""}`).join("")}`).join("")}
+      ${d.bugs.length ? `<h2 style="font-size:14pt;color:#c62828;margin:20pt 0 6pt">Defects (${d.bugs.length})</h2>` +
+        d.bugs.map(b => `<p style="font-family:Consolas,monospace;font-size:10pt;white-space:pre-wrap;border:1pt solid #f0c4c4;padding:8pt">${e(bugBlock(b)).replace(/\n/g, "<br>")}</p>${(b.imgs || []).map(imgTag).join("")}`).join("") : ""}
+      <p style="color:#98a2b3;font-size:9pt;margin-top:20pt">Generated ${new Date().toLocaleString("en-GB")} from the AppMakers QA hub.</p>`;
+    const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${e(d.project)} — ${e(d.label)}</title></head><body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#101828">${body}</body></html>`;
+    return {html, imgs};
+  }
+  function mhtmlDoc(html, imgs){
+    const B = "----=_QAHUB_PART";
+    let out = `MIME-Version: 1.0\r\nContent-Type: multipart/related; boundary="${B}"; type="text/html"\r\n\r\n`;
+    out += `--${B}\r\nContent-Type: text/html; charset="utf-8"\r\nContent-Location: report.htm\r\n\r\n${html}\r\n\r\n`;
+    imgs.forEach(im => {
+      out += `--${B}\r\nContent-Type: ${im.mime}\r\nContent-Transfer-Encoding: base64\r\nContent-Location: ${im.name}\r\n\r\n${im.b64.replace(/.{76}/g, "$&\r\n")}\r\n\r\n`;
+    });
+    return out + `--${B}--`;
+  }
+
   function renderMarkdown(d){
-    const L = [`# ${d.label} — QA session report`];
+    const L = [`# ${d.project} — ${d.label} — QA session report`];
     const m = ["build", "device", "os", "date", "tester"].map(k => d.meta[k] ? `**${k}:** ${d.meta[k]}` : "").filter(Boolean).join(" · ");
     if (m) L.push(m);
     const cts = d.counts;
@@ -6512,6 +6561,25 @@ function renderResList(host,track,kind,title,desc){
       setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     }
   });
+  document.getElementById("qa-word-btn").addEventListener("click", async ev => {
+    const btn = ev.target; const orig = "⬇ Word"; btn.textContent = "…";
+    try {
+      const data = await collectSessionData(true);
+      const w = renderWordHTML(data);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([mhtmlDoc(w.html, w.imgs)], {type: "application/msword"}));
+      a.download = (cfg.projectId + "-" + cfg.sid + "-qa-report.doc").replace(/[^\w.-]+/g, "-");
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      btn.textContent = "✓ Downloaded";
+    } catch(err){ btn.textContent = "failed — see console"; console.error("word export", err); }
+    setTimeout(() => { btn.textContent = orig; }, 1800);
+  });
+  // debug/integration hooks: lets tooling pull a session report without the UI
+  CB.collectSession = collectSessionData;
+  CB.renderReport = renderReportHTML;
+  CB.renderMarkdown = renderMarkdown;
+  CB.renderWord = renderWordHTML;
   document.getElementById("qa-md-btn").addEventListener("click", async ev => {
     const btn = ev.target;
     btn.textContent = "…";
