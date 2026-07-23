@@ -23,8 +23,8 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
   :root{
-    --paper:#FAFAF9; --card:#FFFFFF; --ink:#26272B; --muted:#71717A;
-    --line:#EAEAEC; --line-soft:#F0F0F2;
+    --paper:#F2F2EF; --card:#FFFFFF; --ink:#26272B; --muted:#71717A;
+    --line:#E3E3E1; --line-soft:#F0F0F2;
     --accent:#E11D5F; --accent-ink:#B3123F; --accent-wash:#FCEDF3;
     --good:#1F9D57; --good-wash:#E6F4EC;
     --warn:#C77A0A; --warn-wash:#FBF0DE;
@@ -34,7 +34,7 @@
     --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     --radius:14px; --radius-sm:10px;
     --display:"Poppins",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    --shadow:0 1px 3px rgba(38,39,43,.04);
+    --shadow:0 1px 2px rgba(38,39,43,.05),0 5px 16px rgba(38,39,43,.06);
     --wrap:1400px;
   }
   *{box-sizing:border-box}
@@ -49,7 +49,7 @@
 
   /* ---- shell ---- */
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px;}
-  .topbar{position:sticky;top:0;z-index:20;background:rgba(246,247,249,.86);
+  .topbar{position:sticky;top:0;z-index:20;background:rgba(242,242,239,.86);
     backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--line);}
   .topbar-in{display:flex;align-items:center;gap:14px;height:56px;}
   .brand{display:flex;align-items:center;gap:10px;font-weight:650;letter-spacing:-.01em;
@@ -426,16 +426,7 @@
   .pa-plus{font-size:2.1rem;line-height:1;font-weight:300;}
   .pa-t{font-weight:650;font-size:.95rem;}
   .pa-d{font-size:.76rem;color:var(--muted);text-align:center;max-width:230px;}
-  .projcard{position:relative;}
-  .projcard-del{position:absolute;top:10px;right:10px;width:24px;height:24px;border:none;border-radius:7px;
-    background:none;color:var(--muted);cursor:pointer;font-size:12px;line-height:1;display:none;}
-  .projcard:hover .projcard-del{display:block;}
-  .projcard-del:hover{color:#cf3434;background:#fbebeb;}
   .proj-cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
-  a.projcard{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
-    border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;transition:transform .18s,border-color .18s,box-shadow .18s;}
-  a.projcard:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 2px 4px rgba(23,28,38,.05),0 12px 28px rgba(225,29,95,.10);}
-  .projcard-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
   .projcard h3{font-size:1.1rem;}
   .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;margin:14px 0 12px;}
   .pc-field{display:flex;flex-direction:column;gap:3px;}
@@ -443,7 +434,6 @@
   .pc-field .k{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);}
   .pc-field .v{font-size:.86rem;font-weight:600;}
   .pc-field .tbar{margin-top:4px;}
-  .pc-open{font-size:.82rem;color:var(--accent-ink);font-weight:600;}
   .budget-edit{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.85rem;}
   .budget-edit label{display:inline-flex;align-items:center;gap:6px;color:var(--muted);}
   .budget-edit .bnum{width:92px;font:inherit;font-size:.85rem;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);}
@@ -452,7 +442,7 @@
   .budget-edit .bpct.muted{color:var(--muted);font-weight:400;}
   /* ===== in-project navigator + sub-views ===== */
   .pj-nav{position:sticky;top:56px;z-index:15;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-    background:rgba(246,247,249,.93);backdrop-filter:saturate(140%) blur(8px);padding:10px 0;margin-bottom:22px;border-bottom:1px solid var(--line);}
+    background:rgba(242,242,239,.93);backdrop-filter:saturate(140%) blur(8px);padding:10px 0;margin-bottom:22px;border-bottom:1px solid var(--line);}
   .pjstages{display:flex;gap:6px;flex-wrap:wrap;}
   .pjtab{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:99px;
     padding:7px 14px;font:inherit;font-size:.82rem;cursor:pointer;}
@@ -739,8 +729,8 @@
     --qa-shadow:0 1px 2px rgba(22,24,29,.05),0 4px 16px rgba(22,24,29,.05);
   }
 
-  /* Standalone-page shell only — dropped at hub integration (host supplies its own). */
-  body{background:var(--qa-bg);color:var(--qa-ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;line-height:1.5;font-size:15px}
+  /* Standalone-page body shell removed at hub integration: the hub's own body rule
+     (background:var(--paper), 16px) applies. .qa-sessions styles below are self-contained. */
 
   /* Everything below is scoped under .qa-sessions for safe embedding. */
   .qa-sessions{max-width:980px;margin:0 auto;padding:32px 24px 96px}
@@ -925,6 +915,24 @@
   .qa-sessions .item.drop-above{box-shadow:0 -2px 0 0 var(--qa-accent)}
   .qa-sessions .item.drop-below{box-shadow:0 2px 0 0 var(--qa-accent)}
   .qa-sessions .grp-head.drop-into{background:var(--qa-bg-soft);box-shadow:inset 0 0 0 1px var(--qa-accent);border-radius:8px}
+  .qa-sessions .bugform{display:flex;flex-direction:column;gap:10px;padding:16px;max-height:72vh;overflow:auto}
+  .qa-sessions .bugform .bf-row{display:flex;flex-direction:column;gap:4px}
+  .qa-sessions .bugform .bf-row>label{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--qa-ink-3)}
+  .qa-sessions .bugform input[type="text"],.qa-sessions .bugform textarea,.qa-sessions .bugform select{border:1px solid var(--qa-line-strong);border-radius:8px;background:var(--qa-bg-soft);color:var(--qa-ink);font:inherit;font-size:13px;padding:8px 10px;resize:vertical;width:100%}
+  .qa-sessions .bugform .bf-split{display:flex;gap:10px}
+  .qa-sessions .bugform .bf-split .bf-row{flex:1}
+  .qa-sessions .bugform .bf-atts{display:flex;flex-wrap:wrap;gap:8px}
+  .qa-sessions .bugform .bf-atts label{display:flex;align-items:center;gap:6px;font-size:12px;border:1px solid var(--qa-line);border-radius:8px;padding:5px 9px;cursor:pointer;color:var(--qa-ink)}
+  .qa-sessions .bugform .bf-atts .none{font-size:12px;color:var(--qa-ink-3)}
+  .qa-sessions .bugform .bf-foot{display:flex;justify-content:flex-end;gap:8px;padding-top:4px}
+  .qa-sessions .defects-card{margin-top:20px}
+  .qa-sessions .defect{border:1px solid var(--qa-line);border-radius:12px;margin-top:10px;background:var(--qa-card);overflow:hidden}
+  .qa-sessions .defect-head{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap}
+  .qa-sessions .defect-head .dname{font-weight:600;font-size:13.5px;flex:1;min-width:200px}
+  .qa-sessions .defect-head .dsrc{font-size:11.5px;color:var(--qa-ink-3);white-space:nowrap}
+  .qa-sessions .defect-head .dbtn{border:1px solid var(--qa-line-strong);background:var(--qa-bg-soft);color:var(--qa-ink);border-radius:8px;font-size:12px;padding:4px 10px;cursor:pointer}
+  .qa-sessions .defect-head .dbtn:hover{border-color:var(--qa-accent);color:var(--qa-accent)}
+  .qa-sessions .defect pre{margin:0;padding:12px 14px;border-top:1px solid var(--qa-line);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.55;white-space:pre-wrap;color:var(--qa-ink)}
   .qa-sessions .idchip{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;padding:2.5px 7px;border-radius:6px;flex:none;white-space:nowrap}
   .qa-sessions .idchip.cu{background:var(--qa-chip-cu-soft);color:var(--qa-chip-cu)}
   .qa-sessions .idchip.wb{background:var(--qa-chip-wb-soft);color:var(--qa-chip-wb)}
@@ -1119,11 +1127,6 @@
   .pill.hold{background:var(--warn-wash);color:var(--warn);}
   .projcard.done{background:#F7FBF8;border-color:#D9E9DF;}
   .pill.donep{background:var(--good-wash);color:var(--good);}
-  .pc-actions{display:flex;gap:8px;margin-top:14px;align-items:center;}
-  .pc-chip{font:600 .72rem var(--sans);color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 11px;cursor:pointer;}
-  .pc-chip:hover{color:var(--ink);border-color:var(--slate);}
-  .pc-chip.warn:hover{color:var(--warn);border-color:var(--warn);background:var(--warn-wash);}
-  .pc-chip.good:hover{color:var(--good);border-color:var(--good);background:var(--good-wash);}
   .pdel-overlay{position:fixed;inset:0;z-index:90;background:rgba(23,24,29,.45);display:grid;place-items:center;padding:20px;}
   .pdel-box{background:var(--card);border-radius:var(--radius);box-shadow:0 20px 60px rgba(23,28,38,.3);max-width:540px;width:100%;padding:24px;max-height:86vh;overflow:auto;}
   .pdel-box h3{font-family:var(--display);margin-bottom:4px;}
@@ -1137,6 +1140,34 @@
   .pd-cancel:hover{border-color:var(--slate);}
   .pd-del{font:600 .85rem var(--sans);color:#fff;background:var(--crit);border:none;border-radius:99px;padding:8px 16px;cursor:pointer;}
   .pd-del:disabled{opacity:.4;cursor:not-allowed;}
+
+  /* ---- project cards v2: stretched link + icon actions ---- */
+  .projcard{position:relative;display:block;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;
+    transition:transform .18s,border-color .18s,box-shadow .18s;}
+  .projcard:hover{transform:translateY(-2px);border-color:var(--accent);
+    box-shadow:0 2px 4px rgba(23,28,38,.05),0 12px 28px rgba(225,29,95,.10);}
+  .pc-link{text-decoration:none;color:inherit;}
+  .pc-link::after{content:"";position:absolute;inset:0;border-radius:inherit;}
+  .pc-link:focus-visible{outline:none;}
+  .pc-link:focus-visible::after{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius);}
+  .pc-head{padding-right:104px;}
+  .pillrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .pc-icons{position:absolute;top:14px;right:14px;display:flex;gap:6px;z-index:2;}
+  .pc-ic{position:relative;width:28px;height:28px;display:grid;place-items:center;border:1px solid transparent;
+    border-radius:8px;background:none;cursor:pointer;color:var(--muted);opacity:.55;
+    transition:opacity .15s,background .15s,color .15s,border-color .15s;}
+  .pc-ic svg{width:15px;height:15px;stroke:currentColor;}
+  .pc-ic:hover,.pc-ic:focus-visible{opacity:1;background:var(--paper);border-color:var(--line);}
+  .pc-ic.ic-hold:hover{color:var(--warn);}
+  .pc-ic.ic-hold.on{opacity:1;color:var(--warn);background:var(--warn-wash);border-color:#EBD8B2;}
+  .pc-ic.ic-done:hover{color:var(--good);}
+  .pc-ic.ic-done.on{opacity:1;color:var(--good);background:var(--good-wash);border-color:#CBE6D4;}
+  .pc-ic.ic-del{margin-left:8px;}
+  .pc-ic.ic-del:hover{color:var(--crit);background:var(--crit-wash);border-color:#F1C9C9;}
+  .pc-ic[data-tip]:hover::after,.pc-ic[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;
+    top:calc(100% + 7px);right:0;background:#26272B;color:#F4F4F5;font:600 .68rem var(--sans);
+    padding:4px 9px;border-radius:6px;white-space:nowrap;z-index:5;pointer-events:none;}
 </style>
 
 <!-- icon sprite -->
@@ -3446,6 +3477,8 @@ Always begin your first response with:
   <section class="qa-view" id="qa-view-detail">
     <div class="detail-top">
       <span class="sess-lbl mono" id="qa-sess-lbl"></span>
+      <button class="btn-plain" id="qa-report-btn" type="button" title="Open a readable, printable report of this session — every test, your inputs, results and screenshot evidence">⬇ Report</button>
+      <button class="btn-plain" id="qa-md-btn" type="button" title="Copy this session as Markdown — paste into ClickUp, Slack or a doc">⧉ Copy MD</button>
       <button class="btn-plain" id="qa-data-btn" type="button" title="Export or import THIS session's data (moving between browsers, or importing a generated Baseline)">⇅ Data</button>
       <button class="back" id="qa-back" type="button">&larr; All sessions</button>
     </div>
@@ -3491,6 +3524,7 @@ Always begin your first response with:
 
     <div id="qa-groups"></div>
     <button class="add-btn flow" id="qa-add-flow" type="button">+ Add flow</button>
+    <div id="qa-defects"></div>
   </section>
 </template>
 
@@ -3502,6 +3536,18 @@ Always begin your first response with:
         <button class="x" id="qa-att-close" type="button" aria-label="Close">✕</button>
       </div>
       <div id="qa-att-body"></div>
+    </div>
+  </div>
+</div>
+
+<div class="qa-modal-overlay" id="qa-bug-overlay">
+  <div class="qa-sessions" style="padding:0;max-width:none;margin:0;display:contents">
+    <div class="qa-modal" role="dialog" aria-modal="true" aria-label="Defect editor">
+      <div class="qa-modal-head">
+        <span class="t" id="qa-bug-title">Create defect</span>
+        <button class="x" id="qa-bug-close" type="button" aria-label="Close">✕</button>
+      </div>
+      <div id="qa-bug-body"></div>
     </div>
   </div>
 </div>
@@ -4455,32 +4501,26 @@ var ps=projState(p.id), st=ps.status||'active';
 var open=tstate.tasks.filter(function(t){return t.project===p.id&&!taskDone(t);}).length;
 var pd=ps.phases.filter(function(x){return x.done;}).length, pt=ps.phases.length, ppct=pt?Math.round(pd/pt*100):0;
 var bpct=(ps.budget.total!==''&&Number(ps.budget.total)>0&&ps.budget.used!=='')?Math.round(Number(ps.budget.used)/Number(ps.budget.total)*100):null;
-var a=document.createElement('a');a.className='projcard'+(st==='hold'?' hold':'')+(st==='done'?' done':'');a.href='#'+p.id;
+var art=document.createElement('article');
+art.className='projcard'+(st==='hold'?' hold':'')+(st==='done'?' done':'');
 var stPill=st==='hold'?'<span class="pill hold">On hold</span>':(st==='done'?'<span class="pill donep">Completed</span>':'');
-a.innerHTML='<div class="projcard-top"><h3>'+esc(p.name)+'</h3><span class="pillrow">'+stPill+'<span class="pill">'+esc(ps.stage)+'</span></span></div>'+
+art.innerHTML='<div class="pc-head"><h3><a class="pc-link" href="#'+p.id+'">'+esc(p.name)+'</a></h3></div>'+
+'<div class="pillrow">'+stPill+'<span class="pill">'+esc(ps.stage)+'</span></div>'+
 '<div class="pc-grid">'+
 '<div class="pc-field wide"><span class="k">Current epic</span><span class="v">'+esc(currentEpic(ps))+'</span></div>'+
 '<div class="pc-field"><span class="k">Epics done</span><span class="v">'+pd+' / '+pt+'</span><div class="tbar"><span style="width:'+ppct+'%"></span></div></div>'+
 '<div class="pc-field"><span class="k">Budget used</span><span class="v">'+(bpct!=null?bpct+'%':'Not set')+'</span>'+(bpct!=null?'<div class="tbar"><span style="width:'+bpct+'%"></span></div>':'')+'</div>'+
 '<div class="pc-field"><span class="k">Open tasks</span><span class="v">'+open+'</span></div>'+
 '</div>';
-var act=document.createElement('div');act.className='pc-actions';
-var hb=document.createElement('button');hb.type='button';hb.className='pc-chip warn';
-hb.textContent=st==='hold'?'Resume':'Put on hold';
-hb.onclick=function(ev){ev.preventDefault();ev.stopPropagation();setProjStatus(p.id,st==='hold'?'active':'hold');};
-var db=document.createElement('button');db.type='button';db.className='pc-chip good';
-db.textContent=st==='done'?'Reopen project':'Mark completed';
-db.onclick=function(ev){ev.preventDefault();ev.stopPropagation();setProjStatus(p.id,st==='done'?'active':'done');};
-act.appendChild(hb);act.appendChild(db);
-var openLink=document.createElement('span');openLink.className='pc-open';openLink.style.marginLeft='auto';openLink.textContent='Open project →';
-act.appendChild(openLink);
-a.appendChild(act);
-if(isCustomProject(p.id)){
-var del=document.createElement('button');del.type='button';del.className='projcard-del';del.innerHTML='✕';del.title='Delete this project';
-del.onclick=function(ev){ev.preventDefault();ev.stopPropagation();openProjDelete(p);};
-a.appendChild(del);
-}
-return a;
+var icons=document.createElement('div');icons.className='pc-icons';
+function ic(cls,icon,tip,fn){var b=document.createElement('button');b.type='button';b.className='pc-ic '+cls;
+b.setAttribute('data-tip',tip);b.setAttribute('aria-label',tip);
+b.innerHTML='<svg fill="none"><use href="#'+icon+'"/></svg>';b.onclick=fn;return b;}
+icons.appendChild(ic('ic-hold'+(st==='hold'?' on':''),'i-pause',st==='hold'?'Resume':'Put on hold',function(){setProjStatus(p.id,st==='hold'?'active':'hold');}));
+icons.appendChild(ic('ic-done'+(st==='done'?' on':''),'i-check',st==='done'?'Reopen project':'Mark completed',function(){setProjStatus(p.id,st==='done'?'active':'done');}));
+if(isCustomProject(p.id))icons.appendChild(ic('ic-del','i-trash','Delete project',function(){openProjDelete(p);}));
+art.appendChild(icons);
+return art;
 }
 var active=PROJECTS.filter(function(p){return projStatus(p.id)!=='done';});
 var done=PROJECTS.filter(function(p){return projStatus(p.id)==='done';});
@@ -5023,10 +5063,15 @@ function renderResList(host,track,kind,title,desc){
     } catch(e){ dataMsg0.textContent = "That doesn't look like a valid export — paste the full JSON."; }
   };
 
+  const bugOverlay0 = document.getElementById("qa-bug-overlay");
+  document.getElementById("qa-bug-close").onclick = () => bugOverlay0.classList.remove("open");
+  bugOverlay0.onclick = ev => { if (ev.target === bugOverlay0) bugOverlay0.classList.remove("open"); };
+
   document.addEventListener("keydown", ev => {
     if (ev.key !== "Escape") return;
     closeBn(); dataOverlay0.classList.remove("open");
     confirmOverlay0.classList.remove("open"); confirmCb = null; attClose();
+    bugOverlay0.classList.remove("open");
   });
 
   // ---- the board factory: mounts one project's SESSIONS board ----
@@ -5475,6 +5520,313 @@ function renderResList(host,track,kind,title,desc){
     targetG.querySelector(".grp-head").setAttribute("aria-expanded","true");
   }
 
+  // ---- defects: full bug write-ups authored from a test case ----
+  if (!Array.isArray(state.__bugs)) state.__bugs = [];
+  const CHIP_RENDER = {};   // n -> that row's renderChips, so defect ops can update chips
+  const defStepsOf = it => Array.isArray(it.steps) ? it.steps.join("\n") : (it.steps || "");
+  // runtime id shows "BASE" for baseline clones — recover the workbook case ID from the def
+  const realId = it => {
+    if (it.baseN){
+      for (const f of state.__c.flows){ const d = (f.items||[]).find(x => x.n === it.n); if (d && d.id) return d.id; }
+      for (const arr of Object.values(state.__c.extra)){ const d = arr.find(x => x.n === it.n); if (d && d.id) return d.id; }
+    }
+    return it.id;
+  };
+  const nextBugId = () => {
+    let m = 0;
+    state.__bugs.forEach(b => { const k = +((String(b.id||"").match(/(\d+)$/)||[])[1]||0); if (k > m) m = k; });
+    return "BUG-" + String(m + 1).padStart(2, "0");
+  };
+  const findItByN = n => {
+    for (const g of GROUPS){ const it = g.items.find(x => x.n === n); if (it) return it; }
+    return null;
+  };
+  // the copy-paste block, in the agreed ClickUp defect format
+  const bugBlock = b => {
+    const L = [b.name || "[BUG]"];
+    L.push("", "Description", b.desc || "—", "", "Steps", "");
+    let i = 1;
+    if (b.pre) L.push(`${i++}. Precondition: ${b.pre}`);
+    String(b.steps || "").split("\n").map(s => s.replace(/^\s*\d+[.)]\s*/, "").trim()).filter(Boolean)
+      .forEach(s => L.push(`${i++}. ${s}`));
+    L.push("", "Expected behaviour", b.expected || "—", "", "Actual Behaviour", b.actual || "—");
+    if ((b.atts || []).length) L.push("", "Evidence: " + b.atts.map(a => a.name).join(", ") + "  (files on the session board — attach in ClickUp)");
+    L.push("", "Platform: " + (b.platform || ""), "Priority: " + String(b.priority || "").replace(/^P/i, ""));
+    return L.join("\n");
+  };
+
+  function renderDefectsCard(){
+    const mount = document.getElementById("qa-defects");
+    if (!mount) return;
+    mount.innerHTML = "";
+    if (cfg.sid === "0" || !state.__bugs.length) return;
+    const card = document.createElement("div");
+    card.className = "card defects-card";
+    card.innerHTML = `<div class="card-head"><h2>Defects (${state.__bugs.length})</h2></div>`;
+    state.__bugs.forEach(b => {
+      const d = document.createElement("div");
+      d.className = "defect";
+      d.innerHTML = `
+        <div class="defect-head">
+          <span class="bugidchip">${esc(b.id)}</span>
+          <span class="dname">${esc(b.name)}</span>
+          ${b.priority ? `<span class="priochip ${esc(b.priority)}">${esc(b.priority)}</span>` : ""}
+          <span class="dsrc">from test ${b.n}${(b.atts||[]).length ? ` · ${b.atts.length} 📎` : ""}</span>
+          <button type="button" class="dbtn" data-act="copy">⧉ Copy for ClickUp</button>
+          <button type="button" class="dbtn" data-act="edit">Edit</button>
+          <button type="button" class="dbtn" data-act="del">Delete</button>
+        </div>
+        <pre></pre>`;
+      d.querySelector("pre").textContent = bugBlock(b);
+      d.querySelector('[data-act="copy"]').addEventListener("click", ev => {
+        navigator.clipboard.writeText(bugBlock(b)).then(() => {
+          ev.target.textContent = "✓ Copied"; setTimeout(() => { ev.target.textContent = "⧉ Copy for ClickUp"; }, 1500);
+        }).catch(() => { ev.target.textContent = "select the text below"; });
+      });
+      d.querySelector('[data-act="edit"]').addEventListener("click", () => {
+        const it = findItByN(b.n);
+        openBugModal(it || {n:b.n, title:b.name, steps:null, expected:null}, itemState(b.n), () => { if (CHIP_RENDER[b.n]) CHIP_RENDER[b.n](); });
+      });
+      d.querySelector('[data-act="del"]').addEventListener("click", () => {
+        confirmBox(`Delete defect ${b.id} — “${b.name}”? The test's result is untouched.`, () => {
+          const i = state.__bugs.indexOf(b); if (i >= 0) state.__bugs.splice(i, 1);
+          const st2 = state[b.n];
+          if (st2 && st2.bug === b.id){ delete st2.bug; if (CHIP_RENDER[b.n]) CHIP_RENDER[b.n](); }
+          save(); renderDefectsCard();
+        });
+      });
+      card.appendChild(d);
+    });
+    mount.appendChild(card);
+  }
+
+  // Create/edit a defect from a test case: prefilled from the case's own fields.
+  function openBugModal(it, st, onChipChange){
+    const overlay = document.getElementById("qa-bug-overlay");
+    const bodyEl = document.getElementById("qa-bug-body");
+    const existing = state.__bugs.find(b => b.n === it.n) || null;
+    document.getElementById("qa-bug-title").textContent = existing ? `Edit defect ${existing.id} (test ${it.n})` : `Create defect from test ${it.n}`;
+    // split the case's steps into precondition lines + repro lines for prefill
+    const preLines = [], stepLines = [];
+    String(fval(it, "steps", defStepsOf(it)) || "").split("\n").forEach(l => {
+      const c = l.replace(/^\s*\d+[.)]\s*/, "").trim();
+      if (!c) return;
+      if (/^precondition/i.test(c)) preLines.push(c.replace(/^precondition[:\s—-]*/i, ""));
+      else stepLines.push(c);
+    });
+    const val = {
+      name: existing ? existing.name : "[BUG] " + fval(it, "title", it.title),
+      desc: existing ? existing.desc : "",
+      pre: existing ? existing.pre : preLines.join(" "),
+      steps: existing ? existing.steps : stepLines.map((s, i) => `${i+1}. ${s}`).join("\n"),
+      expected: existing ? existing.expected : fval(it, "expected", it.expected || ""),
+      actual: existing ? existing.actual : fval(it, "actual", ""),
+      platform: existing ? existing.platform : ((state.__m.platform || []).join(", ") || "iOS"),
+      priority: existing ? existing.priority : (st.p || "P1")
+    };
+    bodyEl.innerHTML = `<div class="bugform">
+      <div class="bf-row"><label>Name</label><input type="text" data-bf="name" maxlength="140"></div>
+      <div class="bf-row"><label>Description</label><textarea data-bf="desc" rows="3" placeholder="One or two sentences — what is wrong, in plain words."></textarea></div>
+      <div class="bf-row"><label>Precondition (if necessary)</label><textarea data-bf="pre" rows="2" placeholder="What must be true before reproducing. Becomes step 1."></textarea></div>
+      <div class="bf-row"><label>Steps to reproduce</label><textarea data-bf="steps" rows="6"></textarea></div>
+      <div class="bf-row"><label>Expected behaviour</label><textarea data-bf="expected" rows="3"></textarea></div>
+      <div class="bf-row"><label>Actual behaviour</label><textarea data-bf="actual" rows="3"></textarea></div>
+      <div class="bf-split">
+        <div class="bf-row"><label>Platform</label><input type="text" data-bf="platform"></div>
+        <div class="bf-row"><label>Priority</label><select data-bf="priority">
+          <option value="P0">P0 — critical</option><option value="P1">P1 — important</option>
+          <option value="P2">P2 — exists</option><option value="P3">P3 — trivial</option>
+        </select></div>
+      </div>
+      <div class="bf-row"><label>Evidence — attach screenshot / recording</label><div class="bf-atts"><span class="none">loading attachments…</span></div></div>
+      <div class="bf-foot">
+        <button type="button" class="btn-plain" data-bf-cancel>Cancel</button>
+        <button type="button" class="btn-danger" data-bf-save>${existing ? "Save changes" : "Create defect"}</button>
+      </div>
+    </div>`;
+    Object.entries(val).forEach(([k, v]) => { bodyEl.querySelector(`[data-bf="${k}"]`).value = v || ""; });
+    // attachment pick-list from the source case (checked by default / per existing selection)
+    const attsBox = bodyEl.querySelector(".bf-atts");
+    let recsCache = [];
+    attList(KEY + "::" + it.n).then(recs => {
+      recsCache = recs;
+      attsBox.innerHTML = "";
+      if (!recs.length){
+        attsBox.innerHTML = '<span class="none">No attachments on this test yet — drop a screenshot/clip onto the test case, then reopen this form. A defect should always carry evidence.</span>';
+        return;
+      }
+      recs.forEach(r => {
+        const lab = document.createElement("label");
+        const checked = existing ? (existing.atts || []).some(a => a.id === r.id) : true;
+        lab.innerHTML = `<input type="checkbox" ${checked ? "checked" : ""}> ${r.type.startsWith("video/") ? "🎬" : "🖼"} ${esc(r.name)}`;
+        lab.querySelector("input").dataset.attId = r.id;
+        attsBox.appendChild(lab);
+      });
+    });
+    bodyEl.querySelector("[data-bf-cancel]").addEventListener("click", () => overlay.classList.remove("open"));
+    bodyEl.querySelector("[data-bf-save]").addEventListener("click", () => {
+      const get = k => bodyEl.querySelector(`[data-bf="${k}"]`).value.trim();
+      const picked = [...attsBox.querySelectorAll("input:checked")].map(inp => {
+        const r = recsCache.find(x => x.id === inp.dataset.attId);
+        return r ? {id: r.id, name: r.name, type: r.type} : null;
+      }).filter(Boolean);
+      const b = existing || {id: nextBugId(), n: it.n, created: new Date().toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"})};
+      b.name = get("name") || "[BUG] (unnamed)";
+      b.desc = get("desc"); b.pre = get("pre"); b.steps = get("steps");
+      b.expected = get("expected"); b.actual = get("actual");
+      b.platform = get("platform"); b.priority = get("priority");
+      b.atts = picked;
+      if (!existing) state.__bugs.push(b);
+      // chip: point the test at this defect (never clobber a manually-typed ClickUp ID)
+      if (!st.bug || /^BUG-\d+$/.test(st.bug)) st.bug = b.id;
+      if (b.priority && !st.p){ st.p = b.priority; }
+      save();
+      overlay.classList.remove("open");
+      if (onChipChange) onChipChange();
+      renderDefectsCard();
+      refresh();
+    });
+    overlay.classList.add("open");
+  }
+
+  // ---- session export: readable report (print → PDF) + markdown copy ----
+  const blobToDataURI = blob => new Promise(res => {
+    const fr = new FileReader();
+    fr.onload = () => res(fr.result); fr.onerror = () => res(null);
+    fr.readAsDataURL(blob);
+  });
+  async function collectSessionData(withImages){
+    const label = (document.getElementById("qa-sess-lbl") || {}).textContent || cfg.sid;
+    const M = k => (state.__meta && state.__meta[k]) || CFGMETA[k] || "";
+    const counts = {pass:0, fail:0, unsure:0, block:0, skip:0, standby:0};
+    const flows = [];
+    for (const g of GROUPS){
+      const items = [];
+      for (const it of g.items){
+        const st2 = state[it.n] || {};
+        const s = st2.s || "standby";
+        counts[s] = (counts[s] || 0) + 1;
+        const recs = await attList(KEY + "::" + it.n);
+        const attNames = recs.map(r => r.name);
+        const attImgs = [];
+        if (withImages){
+          for (const r of recs){
+            if (/^image\//.test(r.type) && attImgs.length < 6){
+              const uri = await blobToDataURI(r.blob);
+              if (uri) attImgs.push(uri);
+            }
+          }
+        }
+        items.push({
+          n: it.n, id: realId(it), title: fval(it, "title", it.title), status: s,
+          prio: st2.p || "", bug: st2.bug || "",
+          steps: fval(it, "steps", defStepsOf(it)), expected: fval(it, "expected", it.expected || ""),
+          actual: fval(it, "actual", ""), notes: fval(it, "notes2", ""), edge: fval(it, "edge", it.edge || ""),
+          attNames, attImgs
+        });
+      }
+      flows.push({title: g.part, desc: g.desc || (g.custom && g.def.desc) || "", items});
+    }
+    const bugs = [];
+    for (const b of state.__bugs){
+      const imgs = [];
+      if (withImages && (b.atts || []).length){
+        const recs = await attList(KEY + "::" + b.n);
+        for (const a of b.atts){
+          const r = recs.find(x => x.id === a.id);
+          if (r && /^image\//.test(r.type) && imgs.length < 4){
+            const uri = await blobToDataURI(r.blob);
+            if (uri) imgs.push(uri);
+          }
+        }
+      }
+      bugs.push({...b, imgs});
+    }
+    return {label, pid: cfg.projectId, meta: {build:M("build"), device:M("device"), os:M("os"), date:M("date"), tester:M("tester")},
+      purpose: (state.__m && state.__m.purpose) || DEFAULT_PURPOSE || "", counts, total: flows.reduce((a, f) => a + f.items.length, 0), flows, bugs};
+  }
+  const ST_LBL = {pass:"Pass", fail:"FAIL", unsure:"Unsure", block:"Blocked", skip:"Skipped", standby:"Standby"};
+  const ST_COL = {pass:"#1a7f37", fail:"#c62828", unsure:"#b26a00", block:"#6a4fb3", skip:"#667085", standby:"#98a2b3"};
+  function renderReportHTML(d){
+    const e = esc;
+    const chip = (txt, col) => `<span style="display:inline-block;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;color:#fff;background:${col}">${e(txt)}</span>`;
+    const fld = (lbl, v, mono) => v ? `<div style="margin:6px 0 0"><span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#98a2b3">${lbl}</span><div style="white-space:pre-wrap;font-size:13px;line-height:1.5;${mono ? "font-family:ui-monospace,Menlo,monospace;font-size:12.5px;" : ""}margin-top:2px">${e(v)}</div></div>` : "";
+    const cases = d.flows.map(f => `
+      <section style="margin-top:28px;page-break-inside:avoid">
+        <h2 style="font-size:17px;margin:0 0 2px">${e(f.title)}</h2>
+        ${f.desc ? `<p style="margin:2px 0 10px;color:#667085;font-size:12.5px">${e(f.desc)}</p>` : ""}
+        ${f.items.map(it => `
+          <article style="border:1px solid #e4e7ec;border-radius:10px;padding:12px 16px;margin-top:10px;page-break-inside:avoid">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <b style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#98a2b3">#${it.n}</b>
+              <span style="font-family:ui-monospace,Menlo,monospace;font-size:11px;background:#f2f4f7;border-radius:6px;padding:2px 7px">${e(it.id)}</span>
+              <b style="font-size:14px;flex:1">${e(it.title)}</b>
+              ${it.prio ? chip(it.prio, "#6a4fb3") : ""}${it.bug ? chip(it.bug, "#444") : ""}${chip(ST_LBL[it.status], ST_COL[it.status])}
+            </div>
+            ${fld("Steps", it.steps, true)}${fld("Expected", it.expected)}${fld("Actual", it.actual)}${fld("Edge", it.edge)}${fld("Notes", it.notes)}
+            ${it.attImgs.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${it.attImgs.map(u => `<img src="${u}" style="max-height:180px;max-width:32%;border:1px solid #e4e7ec;border-radius:8px">`).join("")}</div>` : ""}
+            ${it.attNames.length ? `<div style="margin-top:6px;font-size:11.5px;color:#98a2b3">Evidence: ${e(it.attNames.join(", "))}</div>` : ""}
+          </article>`).join("")}
+      </section>`).join("");
+    const bugsHtml = d.bugs.length ? `
+      <section style="margin-top:34px">
+        <h2 style="font-size:17px;margin:0 0 10px;color:#c62828">Defects (${d.bugs.length})</h2>
+        ${d.bugs.map(b => `
+          <article style="border:1px solid #f0c4c4;border-radius:10px;padding:14px 16px;margin-top:10px;page-break-inside:avoid">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+              ${chip(b.id, "#444")}${b.priority ? chip(b.priority, "#6a4fb3") : ""}<span style="font-size:11.5px;color:#98a2b3">from test ${b.n} · ${e(b.created || "")}</span>
+            </div>
+            <pre style="margin:0;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.55">${e(bugBlock(b))}</pre>
+            ${b.imgs.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">${b.imgs.map(u => `<img src="${u}" style="max-height:200px;max-width:40%;border:1px solid #e4e7ec;border-radius:8px">`).join("")}</div>` : ""}
+          </article>`).join("")}
+      </section>` : "";
+    const cts = d.counts;
+    const sum = [["Pass", cts.pass, ST_COL.pass], ["Fail", cts.fail, ST_COL.fail], ["Unsure", cts.unsure, ST_COL.unsure],
+      ["Blocked", cts.block, ST_COL.block], ["Skipped", cts.skip, ST_COL.skip], ["Standby", cts.standby, ST_COL.standby]]
+      .filter(x => x[1]).map(([l, v, c]) => `<span style="margin-right:14px"><b style="color:${c}">${v}</b> ${l}</span>`).join("");
+    return `<!doctype html><html><head><meta charset="utf-8"><title>${e(d.label)} — QA report</title></head>
+      <body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#101828;max-width:860px;margin:0 auto;padding:32px 24px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#98a2b3">QA session report · ${e(d.pid)}</div>
+          <h1 style="font-size:24px;margin:4px 0 6px">${e(d.label)}</h1>
+          <div style="font-size:12.5px;color:#667085">${["build", "device", "os", "date", "tester"].map(k => d.meta[k] ? `<b>${k}:</b> ${e(d.meta[k])}` : "").filter(Boolean).join(" · ")}</div>
+        </div>
+        <button onclick="window.print()" style="border:1px solid #d0d5dd;border-radius:8px;background:#fff;padding:8px 14px;font-size:13px;cursor:pointer" class="noprint">🖨 Print / Save as PDF</button>
+      </div>
+      ${d.purpose ? `<p style="font-size:13px;color:#475467;margin-top:12px">${e(d.purpose)}</p>` : ""}
+      <div style="margin-top:14px;padding:12px 16px;border:1px solid #e4e7ec;border-radius:10px;font-size:13.5px"><b>${d.total} tests</b> — ${sum}</div>
+      ${cases}${bugsHtml}
+      <p style="margin-top:36px;font-size:11px;color:#98a2b3">Generated ${new Date().toLocaleString("en-GB")} from the AppMakers QA hub.</p>
+      <style>@media print{.noprint{display:none}}</style></body></html>`;
+  }
+  function renderMarkdown(d){
+    const L = [`# ${d.label} — QA session report`];
+    const m = ["build", "device", "os", "date", "tester"].map(k => d.meta[k] ? `**${k}:** ${d.meta[k]}` : "").filter(Boolean).join(" · ");
+    if (m) L.push(m);
+    const cts = d.counts;
+    L.push(`**Results:** ${d.total} tests — ` + [["pass", "pass"], ["fail", "FAIL"], ["unsure", "unsure"], ["block", "blocked"], ["skip", "skipped"], ["standby", "standby"]]
+      .filter(([k]) => cts[k]).map(([k, l]) => `${cts[k]} ${l}`).join(" · "));
+    d.flows.forEach(f => {
+      L.push("", `## ${f.title}`);
+      if (f.desc) L.push(`> ${f.desc}`);
+      f.items.forEach(it => {
+        L.push("", `### ${it.n} · ${it.id} — ${it.title} — **${ST_LBL[it.status].toUpperCase()}**${it.prio ? " · " + it.prio : ""}${it.bug ? " · " + it.bug : ""}`);
+        if (it.steps) L.push("**Steps**", ...it.steps.split("\n").map(s => s.trim()).filter(Boolean));
+        if (it.expected) L.push(`**Expected:** ${it.expected}`);
+        if (it.actual) L.push(`**Actual:** ${it.actual}`);
+        if (it.edge) L.push(`**Edge:** ${it.edge}`);
+        if (it.notes) L.push(`**Notes:** ${it.notes}`);
+        if (it.attNames.length) L.push(`**Evidence:** ${it.attNames.join(", ")}`);
+      });
+    });
+    if (d.bugs.length){
+      L.push("", "## Defects");
+      d.bugs.forEach(b => { L.push("", "```", bugBlock(b), "```"); });
+    }
+    return L.join("\n");
+  }
+
   // effective field value: user edit wins over plan default
   const fval = (it, key, def) => {
     const f = (itemState(it.n).f)||{};
@@ -5652,6 +6004,7 @@ function renderResList(host,track,kind,title,desc){
       }
     };
     renderChips();
+    CHIP_RENDER[it.n] = renderChips;
 
     const statGrp = document.createElement("span");
     statGrp.className = "statgrp";
@@ -5864,6 +6217,17 @@ function renderResList(host,track,kind,title,desc){
 
     const actRow = document.createElement("div");
     actRow.className = "act-row";
+
+    // full defect write-up, prefilled from this test — lands in the Defects panel
+    if (cfg.sid !== "0"){
+      const bugBtn = document.createElement("button");
+      bugBtn.type = "button"; bugBtn.className = "spin-btn";
+      const bugLbl = () => state.__bugs.some(b => b.n === it.n) ? "⚑ Edit defect" : "⚑ Create defect";
+      bugBtn.textContent = bugLbl();
+      bugBtn.title = "Author the full bug write-up (name, steps, expected/actual, evidence) — copy it for ClickUp from the Defects panel below";
+      bugBtn.addEventListener("click", () => openBugModal(it, st, () => { renderChips(); bugBtn.textContent = bugLbl(); }));
+      actRow.appendChild(bugBtn);
+    }
 
     // spin-off: the test passed, but you found a different bug on the way.
     // Creates a new failed test right below this one, steps copied, lineage recorded.
@@ -6128,6 +6492,39 @@ function renderResList(host,track,kind,title,desc){
   }
 
   GROUPS.forEach(grp => root.appendChild(groupEl(grp)));
+  renderDefectsCard();
+
+  // ---- export buttons: printable report + markdown copy ----
+  document.getElementById("qa-report-btn").addEventListener("click", async () => {
+    const w = window.open("", "_blank");
+    if (w){ w.document.write("<title>Building report…</title><p style='font-family:sans-serif;padding:2em;color:#667085'>Building report…</p>"); }
+    const data = await collectSessionData(true);
+    const html = renderReportHTML(data);
+    if (w){ w.document.open(); w.document.write(html); w.document.close(); }
+    else {
+      // popup blocked — download the report as a self-contained .html instead
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([html], {type: "text/html"}));
+      a.download = (cfg.projectId + "-" + cfg.sid + "-qa-report.html").replace(/[^\w.-]+/g, "-");
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+  });
+  document.getElementById("qa-md-btn").addEventListener("click", async ev => {
+    const btn = ev.target;
+    btn.textContent = "…";
+    const data = await collectSessionData(false);
+    const md = renderMarkdown(data);
+    navigator.clipboard.writeText(md).then(() => {
+      btn.textContent = "✓ Copied";
+    }).catch(() => {
+      // clipboard blocked — fall back to the Data modal so the text is selectable
+      dataText0.value = md; dataMsg0.textContent = "Markdown ready — select all + copy.";
+      dataOverlay0.classList.add("open");
+      btn.textContent = "⧉ Copy MD";
+    });
+    setTimeout(() => { btn.textContent = "⧉ Copy MD"; }, 1800);
+  });
 
   addForm(document.getElementById("qa-add-flow"), "New flow — name the journey (e.g. “Fight flow — start a disagreement”)", title => {
     const def = {title, items:[]};
