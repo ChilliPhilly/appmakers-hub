@@ -607,10 +607,58 @@
       "id": "W-SYNC-001"
      },
      {
+      "n": 53,
+      "title": "Offline Sync: Offline edit \u2192 sync",
+      "baseN": 75,
+      "id": "W-SYNC-002"
+     },
+     {
+      "n": 54,
+      "title": "Offline Sync: Offline delete \u2192 sync",
+      "baseN": 76,
+      "id": "W-SYNC-003"
+     },
+     {
       "n": 44,
       "title": "Offline Sync: Offline certificate CRUD \u2192 sync",
       "baseN": 77,
       "id": "W-SYNC-004"
+     },
+     {
+      "n": 55,
+      "title": "Offline Sync: Offline profile update \u2192 sync",
+      "baseN": 78,
+      "id": "W-SYNC-005"
+     },
+     {
+      "n": 56,
+      "title": "Offline Sync: Both offline \u2014 different records, no conflict",
+      "baseN": 79,
+      "id": "W-SYNC-006"
+     },
+     {
+      "n": 57,
+      "title": "Offline Sync: Both offline \u2014 same record (conflict)",
+      "baseN": 80,
+      "id": "W-SYNC-007"
+     },
+     {
+      "n": 58,
+      "title": "Offline Sync: Extended offline \u2014 batch sync",
+      "baseN": 81,
+      "id": "W-SYNC-008"
+     },
+     {
+      "n": 59,
+      "title": "Offline Sync: Connectivity flicker",
+      "baseN": 82,
+      "id": "W-SYNC-009"
+     },
+     {
+      "n": 60,
+      "title": "Offline Sync: App kill while offline",
+      "baseN": 83,
+      "id": "W-SYNC-010"
      }
     ]
    },
@@ -684,5 +732,61 @@
   "os": "iOS 18.5",
   "tester": "Phill"
  },
- "__seedV": 1
+ "__seedV": 2,
+ "53": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Edit an existing Service Record (e.g. vessel name)\n4. Device A back online",
+   "expected": "Updated record syncs to Device B.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "54": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Delete a Service Record on A\n4. Verify it disappears locally on A\n5. Device A back online",
+   "expected": "Record disappears from Device B.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "55": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Update profile (rank, vessel type, career goal)\n4. Device A back online",
+   "expected": "Device B shows the updated profile.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "56": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: edit Record X (vessel name)\n4. B: edit Record Y (different record)\n5. Bring both online",
+   "expected": "Both changes appear on both devices.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "57": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Both devices offline\n3. A: Record X vessel name \u2192 'Ship Alpha'\n4. B: Record X vessel name \u2192 'Ship Beta'\n5. Bring both online",
+   "expected": "Both devices converge to the same value (last-write-wins).",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "58": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Make multiple changes: add 2 records, edit 1, delete 1\n4. Wait 5+ minutes\n5. Device A back online",
+   "expected": "All changes batch-sync to Device B.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "59": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Start adding a record on Device A\n3. Toggle airplane mode on/off rapidly mid-operation",
+   "expected": "No duplicate records, no data loss; Device B receives exactly one record.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ },
+ "60": {
+  "f": {
+   "steps": "1. Precondition: Device A + Device B on the same account, both online and fully synced\n2. Device A offline\n3. Add a Service Record\n4. Force-kill the app, reopen (still offline)\n5. Verify the record persists locally\n6. Go online",
+   "expected": "Record persisted offline and syncs to Device B.",
+   "notes2": "Two-device scenario \u2014 needs the second device; on a single device mark Unverifiable and narrate."
+  }
+ }
 }
