@@ -7038,7 +7038,10 @@ function renderResList(host,track,kind,title,desc){
   // No-ops entirely until Sync settings (qa-sync-cfg) has url + token.
   var CFG='qa-sync-cfg', META='appmakers-hubsync-meta';
   var SYNC_KEYS=['appmakers-onboarding-v1','appmakers-tasks-v1','appmakers-projects-v1','appmakers-modules-v1','appmakers-resources-v1','appmakers-tools-v1','appmakers-tasksopen','appmakers-seed-ob1','appmakers-edits-v1','appmakers-customproj-v1','appmakers-drbase-v1','appmakers-feedseen','appmakers-removedproj-v1'];
-  function cfg(){try{var c=JSON.parse(localStorage.getItem(CFG))||{};return (c.url&&c.token)?c:null;}catch(e){return null;}}
+  var URL_DEF="https://qa-hub-sync.phillipcocks-7e3.workers.dev";
+  var TOK_DEF="ea5eb0ebbe7f4baf7eadf78108bcaea3"; // pilot default, same gate the QA sync ships with
+  function cfg(){var c={};try{c=JSON.parse(localStorage.getItem(CFG))||{};}catch(e){}
+    return {url:c.url||URL_DEF, token:c.token||TOK_DEF};}
   function base(c){return String(c.url).replace(/\/+$/,'');}
   function meta(){try{return JSON.parse(localStorage.getItem(META))||{};}catch(e){return {};}}
   var origSet=localStorage.setItem.bind(localStorage);
@@ -7070,10 +7073,17 @@ function renderResList(host,track,kind,title,desc){
       }).then(function(server){
         if(!server||!server.keys)return;
         var m=meta(), known=m.known||0;
+        function weight(keys){var w=0;['appmakers-tasks-v1','appmakers-projects-v1','appmakers-customproj-v1','appmakers-edits-v1','appmakers-drbase-v1'].forEach(function(k){var v=keys[k];if(v!=null)w+=String(v).length;});return w;}
         if(server.__savedAt>known){
-          for(var k in server.keys)if(SYNC_KEYS.indexOf(k)>-1)origSet(k,server.keys[k]);
-          m.known=server.__savedAt;setMeta(m);
-          if(!sessionStorage.getItem('am-hubsync-r')){sessionStorage.setItem('am-hubsync-r','1');location.reload();}
+          if(known===0 && weight(snapshot())>weight(server.keys)+200){
+            // first contact and this browser clearly holds more data than the server:
+            // assert local instead of letting a thinner remote overwrite it
+            doPush(false);
+          }else{
+            for(var k in server.keys)if(SYNC_KEYS.indexOf(k)>-1)origSet(k,server.keys[k]);
+            m.known=server.__savedAt;setMeta(m);
+            if(!sessionStorage.getItem('am-hubsync-r')){sessionStorage.setItem('am-hubsync-r','1');location.reload();}
+          }
         }else if(server.__savedAt<known){doPush(false);}
       }).catch(function(){});
     }catch(e){}
