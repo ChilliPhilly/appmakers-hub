@@ -4813,11 +4813,27 @@ function renderResList(host,track,kind,title,desc){
   };
   const syncOn = () => { const c = syncCfg(); return !!(c.url && c.token); };
   const syncBase = () => (syncCfg().url || "").replace(/\/+$/,"");
+  // Self-healing auth: if a SAVED token is rejected by the Worker (its secret
+  // rotated), silently fall back to the baked pilot defaults and persist that —
+  // sync must never stay dead waiting for someone to re-enter a token.
+  function syncHeal401(){
+    let saved = {}; try{ saved = JSON.parse(localStorage.getItem(SYNC_KEY)) || {}; }catch(e){}
+    const onDefaults = (!saved.token || saved.token === SYNC_TOKEN_DEFAULT) && (!saved.url || saved.url === SYNC_URL_DEFAULT);
+    if (onDefaults) return false;
+    try{ localStorage.setItem(SYNC_KEY, JSON.stringify({url: SYNC_URL_DEFAULT, token: SYNC_TOKEN_DEFAULT})); }catch(e){}
+    return true;
+  }
+  async function syncFetch(path, opts){
+    const go = () => { const c = syncCfg(); return fetch(syncBase()+path, {...(opts||{}), headers: {...((opts||{}).headers||{}), "X-QA-Token": c.token}}); };
+    let r = await go();
+    if (r && r.status === 401 && syncHeal401()) r = await go();
+    return r;
+  }
   function syncPush(pid, sid, state){
     const c = syncCfg(); if(!(c.url && c.token) || !pid || sid==null || sid==="0") return;
     try{
-      fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {
-        method:"PUT", headers:{"Content-Type":"application/json","X-QA-Token":c.token},
+      syncFetch("/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {
+        method:"PUT", headers:{"Content-Type":"application/json"},
         body: JSON.stringify(state)
       }).catch(()=>{});
     }catch(e){}
@@ -4825,20 +4841,21 @@ function renderResList(host,track,kind,title,desc){
   async function syncPull(pid){
     const c = syncCfg(); if(!(c.url && c.token) || !pid) return false;
     let changed = false;
+    window.__syncChangedSids = [];
     try{
-      const idxRes = await fetch(syncBase()+"/index/"+encodeURIComponent(pid), {headers:{"X-QA-Token":c.token}});
+      const idxRes = await syncFetch("/index/"+encodeURIComponent(pid));
       if(!idxRes.ok) return false;
       const sids = await idxRes.json();
       for(const sid of (Array.isArray(sids)?sids:[])){
         if(String(sid).startsWith("__")) continue;   // reserved project-meta blobs (e.g. __project) are not sessions
         try{
-          const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {headers:{"X-QA-Token":c.token}});
+          const r = await syncFetch("/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid));
           if(!r.ok) continue;
           const server = await r.json();
           if(!server || typeof server!=="object" || Array.isArray(server)) continue;
           const key = sessKey(pid, sid), local = peekState(key);
           const ls = (local && +local.__savedAt) || 0, ss = (+server.__savedAt) || 0;
-          if(!local || ss > ls){ try{ localStorage.setItem(key, JSON.stringify(server)); changed = true; }catch(e){} }
+          if(!local || ss > ls){ try{ localStorage.setItem(key, JSON.stringify(server)); changed = true; window.__syncChangedSids.push(String(sid)); }catch(e){} }
         }catch(e){}
       }
     }catch(e){ return false; }
@@ -4855,8 +4872,8 @@ function renderResList(host,track,kind,title,desc){
     const ps = window.__projState(pid);
     const blob = {creds: ps.creds || [], __savedAt: ps.credsAt || Date.now()};
     try{
-      fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {
-        method:"PUT", headers:{"Content-Type":"application/json","X-QA-Token":c.token},
+      syncFetch("/state/"+encodeURIComponent(pid)+"/__project", {
+        method:"PUT", headers:{"Content-Type":"application/json"},
         body: JSON.stringify(blob)
       }).catch(()=>{});
     }catch(e){}
@@ -4864,7 +4881,7 @@ function renderResList(host,track,kind,title,desc){
   async function syncPullProject(pid){
     const c = syncCfg(); if(!(c.url && c.token) || !pid || !window.__projState) return false;
     try{
-      const r = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/__project", {headers:{"X-QA-Token":c.token}});
+      const r = await syncFetch("/state/"+encodeURIComponent(pid)+"/__project");
       if(!r.ok) return false;
       const server = await r.json();
       if(!server || typeof server!=="object" || Array.isArray(server) || !Array.isArray(server.creds)) return false;
@@ -4880,8 +4897,7 @@ function renderResList(host,track,kind,title,desc){
     const changed = await syncPull(pid);
     syncPullProject(pid);   // also pull project-meta (creds) on reconcile
     try{
-      const c = syncCfg();
-      const r = await fetch(syncBase()+"/index/"+encodeURIComponent(pid), {headers:{"X-QA-Token":c.token}});
+      const r = await syncFetch("/index/"+encodeURIComponent(pid));
       const sids = r.ok ? await r.json() : [];
       const serverSet = new Set((Array.isArray(sids)?sids:[]).map(String));
       for(const s of loadIdx(pid)){
@@ -4889,7 +4905,7 @@ function renderResList(host,track,kind,title,desc){
         const local = peekState(sessKey(pid, sid)); if(!local) continue;
         let ss = 0;
         if(serverSet.has(sid)){
-          try{ const sr = await fetch(syncBase()+"/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid), {headers:{"X-QA-Token":c.token}});
+          try{ const sr = await syncFetch("/state/"+encodeURIComponent(pid)+"/"+encodeURIComponent(sid));
             if(sr.ok){ const j = await sr.json(); ss = (j && +j.__savedAt) || 0; } }catch(e){}
         }
         const ls = (+local.__savedAt) || 0;
@@ -5112,6 +5128,34 @@ function renderResList(host,track,kind,title,desc){
       syncReconcile(pid).then(changed => { if (changed && CURRENT.pid === pid) renderSessionRows(); });
     });
   }
+
+  // Live sync: re-reconcile whenever the tab regains focus and on a slow
+  // heartbeat, so backend-side changes land without a manual reload. If the
+  // currently-open session was among the pulled changes, re-mount it so the
+  // board reflects the new state (all local edits save() instantly, so a
+  // re-mount from localStorage loses nothing).
+  let syncTickBusy = false;
+  async function syncTick(){
+    if (syncTickBusy || document.hidden || !CURRENT.pid) return;
+    syncTickBusy = true;
+    try{
+      const pid = CURRENT.pid;
+      const changed = await syncReconcile(pid);
+      if (changed && CURRENT.pid === pid){
+        renderSessionRows();
+        const detailOpen = document.getElementById("qa-view-detail");
+        const sid = CURRENT.sid;
+        if (detailOpen && detailOpen.classList.contains("active") && sid != null &&
+            (window.__syncChangedSids || []).includes(String(sid))){
+          openSession(sid);
+        }
+      }
+    }catch(e){}
+    syncTickBusy = false;
+  }
+  window.addEventListener("focus", syncTick);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) syncTick(); });
+  setInterval(syncTick, 60000);
 
   // Auto-seed Session 0 from the repo (baselines/<pid>.json) when this browser's
   // catalog is empty — same same-origin fetch pattern as meetings.json, so every
@@ -7048,14 +7092,23 @@ function renderResList(host,track,kind,title,desc){
   function setMeta(m){try{origSet(META,JSON.stringify(m));}catch(e){}}
   function snapshot(){var out={};SYNC_KEYS.forEach(function(k){var v=localStorage.getItem(k);if(v!=null)out[k]=v;});return out;}
   var timer=null, dirty=false;
-  function doPush(keepalive){
+  // Self-heal: a saved token the Worker rejects falls back to the pilot defaults
+  // (same rule as the QA sync layer) — sync never stays dead on a stale token.
+  function heal(){var c={};try{c=JSON.parse(localStorage.getItem(CFG))||{};}catch(e){}
+    if((!c.token||c.token===TOK_DEF)&&(!c.url||c.url===URL_DEF))return false;
+    try{origSet(CFG,JSON.stringify({url:URL_DEF,token:TOK_DEF}));}catch(e){}
+    return true;}
+  function doPush(keepalive,retried){
     var c=cfg(); if(!c)return;
     var ts=Date.now();
     try{
       fetch(base(c)+'/state/__hub/state',{method:'PUT',keepalive:!!keepalive,
         headers:{'Content-Type':'application/json','X-QA-Token':c.token},
         body:JSON.stringify({__savedAt:ts,keys:snapshot()})})
-      .then(function(r){if(r&&r.ok){var m=meta();m.known=ts;setMeta(m);dirty=false;}})
+      .then(function(r){
+        if(r&&r.ok){var m=meta();m.known=ts;setMeta(m);dirty=false;return;}
+        if(r&&r.status===401&&!retried&&heal())doPush(keepalive,true);
+      })
       .catch(function(){});
     }catch(e){}
   }
@@ -7063,11 +7116,12 @@ function renderResList(host,track,kind,title,desc){
   localStorage.setItem=function(k,v){origSet(k,v);try{if(SYNC_KEYS.indexOf(k)>-1)schedule();}catch(e){}};
   window.addEventListener('beforeunload',function(){if(dirty)doPush(true);});
   document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'&&dirty)doPush(true);});
-  (function pull(){
+  (function pull(retried){
     var c=cfg(); if(!c)return;
     try{
       fetch(base(c)+'/state/__hub/state',{headers:{'X-QA-Token':c.token}}).then(function(r){
         if(r.status===404){doPush(false);return null;}
+        if(r.status===401&&!retried&&heal()){setTimeout(function(){pull(true);},50);return null;}
         if(!r.ok)return null;
         return r.json();
       }).then(function(server){
